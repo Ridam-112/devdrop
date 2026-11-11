@@ -104,6 +104,17 @@ export const Navbar: React.FC = () => {
 
         {/* CTA & Search Action */}
         <div className="hidden md:flex items-center gap-3">
+          <a
+            href="https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-card/80 hover:bg-cyber-card border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono font-medium hover:border-cyber-cyan transition-all"
+            title="Explore sponsored partner promotions"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse" />
+            <span>PARTNER DEALS</span>
+          </a>
+
           <Link
             href="/tools"
             className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyber-green text-black text-xs font-bold font-mono tracking-wider hover:bg-cyber-green/90 transition-all shadow-neon-green/40 hover:scale-[1.02] active:scale-[0.98]"
@@ -156,6 +167,16 @@ export const Navbar: React.FC = () => {
               ))}
             </div>
           </div>
+
+          <a
+            href="https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429"
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            onClick={() => setMobileMenuOpen(false)}
+            className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2 rounded-lg bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan font-bold font-mono text-xs text-center hover:bg-cyber-cyan hover:text-black transition-all"
+          >
+            ⚡ Partner Deals & Cloud Perks
+          </a>
 
           <Link
             href="/tools"
