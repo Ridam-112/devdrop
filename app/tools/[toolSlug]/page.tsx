@@ -62,7 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const canonicalUrl = `https://devdrop.vercel.app/tools/${tool.slug}`;
+  const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
 
   return {
     title: tool.metaTitle,
@@ -90,7 +90,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://devdrop.vercel.app/og-image.png",
+          url: "https://devdrop.online/og-image.png",
           width: 1200,
           height: 630,
           alt: `${tool.name} simulation interface preview on DEVDROP`,
@@ -117,7 +117,7 @@ export default function ToolDetailPage({ params }: Props) {
   const category = CATEGORIES.find((c) => c.slug === tool.categorySlug);
   const relatedTools = TOOLS.filter((t) => tool.relatedSlugs.includes(t.slug));
 
-  const canonicalUrl = `https://devdrop.vercel.app/tools/${tool.slug}`;
+  const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -128,13 +128,13 @@ export default function ToolDetailPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.vercel.app",
+        item: "https://devdrop.online",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "All Tools",
-        item: "https://devdrop.vercel.app/tools",
+        item: "https://devdrop.online/tools",
       },
       ...(category
         ? [
@@ -142,7 +142,7 @@ export default function ToolDetailPage({ params }: Props) {
               "@type": "ListItem",
               position: 3,
               name: category.name,
-              item: `https://devdrop.vercel.app/category/${category.slug}`,
+              item: `https://devdrop.online/category/${category.slug}`,
             },
             {
               "@type": "ListItem",

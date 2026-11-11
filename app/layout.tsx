@@ -18,7 +18,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://devdrop.vercel.app"),
+  metadataBase: new URL("https://devdrop.online"),
   title: {
     default: "DEVDROP — Enter the Digital Underground | Cybersecurity Tools & Simulators",
     template: "%s | DEVDROP",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://devdrop.vercel.app",
+    url: "https://devdrop.online",
     siteName: "DEVDROP",
     title: "DEVDROP — Enter the Digital Underground",
     description:
@@ -101,12 +101,12 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "DEVDROP",
-              url: "https://devdrop.vercel.app",
+              url: "https://devdrop.online",
               description:
                 "Interactive cybersecurity tools and digital telemetry benchmarks.",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://devdrop.vercel.app/tools?q={search_term_string}",
+                target: "https://devdrop.online/tools?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),

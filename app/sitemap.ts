@@ -2,7 +2,7 @@ import { MetadataRoute } from "next";
 import { TOOLS, CATEGORIES } from "@/lib/data/tools";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://devdrop.vercel.app";
+  const baseUrl = "https://devdrop.online";
   const now = new Date();
 
   // Static core routes
