@@ -1,0 +1,136 @@
+# DevDrop (https://devdrop.online)
+
+> DevDrop is an open-access web utility and browser diagnostic platform featuring 87 interactive tools across cybersecurity visualization, network telemetry, developer utilities, and privacy diagnostics. All tools execute client-side in the browser with zero server data retention.
+
+## Platform Overview
+- Canonical Domain: https://devdrop.online
+- Sitemap: https://devdrop.online/sitemap.xml
+- Total Diagnostic Tools: 87
+- Architecture: Next.js 14, Client-Side HTML5 Canvas / Web APIs
+- Privacy Policy: No cookies, no server tracking, 100% in-browser processing
+
+## Tool Catalog by Category
+
+### Wi-Fi & Network Security
+802.11 beacon sniffers, WPA handshake crackers, signal radars, router admin gateways, and packet attack simulators.
+
+- [Wi-Fi Network Penetration Suite](https://devdrop.online/tools/wifi-hacker-engine): Simulate wireless monitor mode, beacon frame injection, and 4-way EAPOL handshake interception across local networks.
+- [Wi-Fi WPA Key Decryption Engine](https://devdrop.online/tools/wifi-password-cracker): Simulate GPU-accelerated hashcat wordlist attacks and WPS PIN entropy testing on wireless access points.
+- [Wi-Fi Spectrum Frequency Radar](https://devdrop.online/tools/wifi-radar): Visualize wireless signal density, channel overlap, and RF attenuation across 2.4 GHz and 5 GHz frequency bands.
+- [Router Gateway Admin Exploit Console](https://devdrop.online/tools/router-admin-tool): Simulate administrative gateway credential exploitation and BusyBox Linux kernel shell penetration.
+- [Network Subnet Port Scanner](https://devdrop.online/tools/network-scanner): Discover open ports, services, and live network nodes using live SYN packet probes across a /24 subnet.
+- [Connected LAN Device Explorer](https://devdrop.online/tools/connected-devices): Inspect local subnet nodes and uncover live unauthorized devices, smart TVs, and IoT hardware on your network.
+- [Wi-Fi Multi-Stream Throughput Benchmark](https://devdrop.online/tools/wifi-speed-test): Benchmark live internet bandwidth, multi-stream downlink throughput, uplink capacity, and bufferbloat latency.
+- [Volumetric Network Stress Tester](https://devdrop.online/tools/network-attack): Simulate massive volumetric DDoS attacks, SYN flood packet surges, and firewall mitigation thresholds.
+
+### Free Fire & BGMI Gaming
+Esports tournament predictors, UC & Diamond generators, Grandmaster rank boosters, and cosmetic skin unlockers.
+
+- [Free Fire Account Security Auditor](https://devdrop.online/tools/free-fire-hacker-tool): Simulate Free Fire MAX player UID verification, anti-cheat handshake bypass, and cosmetic bundle injection.
+- [BGMI Battlegrounds Profile Auditor](https://devdrop.online/tools/bgmi-hacker-engine): Simulate BGMI / PUBG Mobile account telemetry lookup, Conqueror tier verification, and UC inventory synchronization.
+- [Unknown Cash (UC) Credit Allocator](https://devdrop.online/tools/fake-uc-generator): Generate live Unknown Cash (UC) credit transfers with authentic sound effects and server synchronization logs.
+- [Diamond Air-Drop Resource Loader](https://devdrop.online/tools/fake-diamonds-generator): Simulate Free Fire diamond airdrops, top-up bonus multiplier calculations, and elite crate unlock animations.
+- [Conqueror ELO Rank Calculator](https://devdrop.online/tools/rank-booster): Simulate high-tier ranked matchmaking ELO gains, win streak multipliers, and instant Conqueror badge generation.
+- [Rare Cosmetic Armory Loader](https://devdrop.online/tools/skin-unlocker): Unlock and inspect live Level 7 Evo Guns, Glacier hit effects, and mythic character outfits in a virtual armory.
+- [Gaming ID & Combat Telemetry Inspector](https://devdrop.online/tools/gaming-id-lookup): Analyze public player statistics, combat efficiency indexes, win ratios, and match history for any gaming UID.
+- [Esports Tournament Champion Stat Card](https://devdrop.online/tools/pro-player-stats): Generate customized esports athlete stat cards with custom tournament trophies, MVP badges, and clutch ratings.
+- [Anti-Cheat Server Blacklist Auditor](https://devdrop.online/tools/gaming-ban-checker): Simulate querying server anti-cheat blacklists to audit suspicious reports, hardware ID bans, and account flags.
+- [Esports Tournament Victory Predictor](https://devdrop.online/tools/tournament-predictor): Calculate live tournament bracket outcomes, team win probabilities, and Grand Finals champion predictions.
+
+### Social Media Intelligence
+Verified blue badge previews, viral followers counters, account recovery simulators, and profile audit suites.
+
+- [Instagram Public Profile Auditor](https://devdrop.online/tools/instagram-hacker-engine): Analyze public profile parameters, engagement metadata density, and credential resilience hygiene scores for any public handle.
+- [Facebook Graph API Token Auditor](https://devdrop.online/tools/facebook-hacker): Simulate Graph API endpoint handshakes, access token validations, and public timeline privacy audits.
+- [Snapchat Ephemeral Protocol Auditor](https://devdrop.online/tools/snapchat-hacker): Simulate multiplying your Snap score into the millions, restoring lost streaks, and decrypting ephemeral cache data.
+- [WhatsApp Pairing Protocol Inspector](https://devdrop.online/tools/whatsapp-hacker): Simulate WhatsApp Web QR pairing, cryptographic key verification, and encrypted cloud backup analysis.
+- [YouTube Studio Analytics Auditor](https://devdrop.online/tools/youtube-hacker): Simulate channel subscriber count surges, 4,000 watch hours verification, and live AdSense monetization approval.
+- [Live Social Followers Ticker](https://devdrop.online/tools/followers-counter): Watch your follower count rapidly surge from a few hundred to over 500,000 with real-time animated tickers.
+- [Verified Blue Badge Profile Card](https://devdrop.online/tools/blue-tick-generator): Preview any username with an official verified blue badge, custom bio, follower statistics, and high-res layout.
+- [Digital Identity Verification Inspector](https://devdrop.online/tools/profile-verification): Simulate submitting official identification documents and passing verification approval algorithms.
+- [Social Media Breach Exposure Scanner](https://devdrop.online/tools/social-scanner): Audit public username exposure across social networks, paste sites, and live breach databases.
+- [2FA Account Recovery Protocol](https://devdrop.online/tools/account-recovery): Simulate account recovery workflows, emergency backup code generation, and SMS OTP resilience tests.
+
+### Mobile Hardware & Security
+Smartphone lockscreen PIN pads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.
+
+- [Satellite Telemetry Coordinate Triangulator](https://devdrop.online/tools/phone-location-tool): Triangulate target coordinates using live orbital satellites, radio carrier frequency analysis, and real-time radar sweep displays.
+- [Mobile Kernel & Keystore Security Auditor](https://devdrop.online/tools/mobile-hacker): Perform deep live kernel memory inspection, sandbox isolation tests, and hardware keystore audits across popular mobile hardware.
+- [Smartphone Screen Lock Interface](https://devdrop.online/tools/phone-unlock-engine): Interactive virtual smartphone lockscreen featuring a 4-digit PIN keypad, in-display optical fingerprint scanner, and rate-limiting lockout timer.
+- [Android Pattern Lock Diagnostic](https://devdrop.online/tools/android-unlock): Draw custom patterns on an interactive 9-dot grid and simulate Fastboot ADB kernel memory bypass protocols.
+- [iPhone Secure Enclave Passcode Diagnostic](https://devdrop.online/tools/iphone-unlock): Experience an iOS styled lockscreen with glowing keypad buttons, haptic click sounds, and Face ID scanning diagnostic.
+- [In-Display Biometric Optical Scanner](https://devdrop.online/tools/fingerprint-scanner): Touch and hold the glowing in-display biometric sensor to simulate sub-epidermal ridge scanning and authentication.
+- [3D TrueDepth Facial Geometry Scanner](https://devdrop.online/tools/face-id-scanner): Simulate firing 30,000 infrared VCSEL dots to map facial geometry, depth mesh contours, and anti-spoofing checks.
+- [NAND Flash Deep Data Recovery Utility](https://devdrop.online/tools/phone-data-recovery): Simulate carving raw NAND flash memory partitions to recover deleted databases, WhatsApp chats, and media files.
+- [Photo Cache & EXIF Reconstruction Utility](https://devdrop.online/tools/photo-recovery): Simulate scanning SD card storage and internal photo caches to uncover and restore deleted image thumbnails.
+- [RF Bug & Spy Camera Lens Detector](https://devdrop.online/tools/spy-camera-detector): Simulate scanning hotel rooms and changing spaces for hidden pinhole cameras, RF bugs, and infrared night vision glares.
+- [Mobile Malware & Threat Scanner](https://devdrop.online/tools/phone-virus-scan): Scan live mobile applications, APK permissions, and background processes for spyware, adware, and trojans.
+
+### IP & Cyber Intelligence
+Global IP traceroutes, recursive DNS inspectors, WHOIS lookups, live cyber warfare maps, and cyber defense quizzes.
+
+- [Global BGP Traceroute Visualizer](https://devdrop.online/tools/ip-trace): Track synthetic network packets across global Tier-1 internet backbones, submarine fiber optic cables, and autonomous systems.
+- [Targeted Street Coordinate Locator](https://devdrop.online/tools/exact-location-finder): Simulate zooming from high orbit down to street-level coordinates with tactical crosshairs and satellite telemetry feeds.
+- [Cyberpunk Underground Terminal CLI](https://devdrop.online/tools/fake-hacker-terminal): Authentic retro CRT terminal interface supporting command-line tools like scan, decrypt, inject, telemetry, and access overrides.
+- [Digital Footprint Exposure Analyzer](https://devdrop.online/tools/digital-footprint): Inspect live public records, search engine caches, and online presence vectors to understand your privacy footprint.
+- [Recursive DNS Record Resolver](https://devdrop.online/tools/dns-lookup): Query and inspect A, AAAA, MX, TXT, NS, and CNAME records with authoritative nameserver latency telemetry.
+- [Domain WHOIS & Registrar Inspector](https://devdrop.online/tools/domain-lookup): Audit domain registration details, registrar status, expiration timetables, and ICANN privacy protection.
+- [HTTP Protocol Header & TLS Inspector](https://devdrop.online/tools/http-inspector): Analyze HTTP request headers, browser user-agent strings, TLS ciphers, and security flags (CSP, HSTS).
+- [Password Cryptographic Entropy Analyzer](https://devdrop.online/tools/password-strength-checker): Calculate mathematical Shannon entropy, charset permutations, and estimated brute-force crack time against modern RTX 4090 clusters.
+- [Global Cyber Attack Warfare Map](https://devdrop.online/tools/cyber-attack-visualizer): Watch glowing packet arcs fire between international nodes, simulating global DDoS attacks, botnet telemetry, and zero-day strikes.
+- [Cyber Defense Certification Challenge](https://devdrop.online/tools/cybersecurity-quiz): Test your cybersecurity knowledge across phishing detection, password hygiene, network security, and cryptography.
+- [TCP Port & Firewall Vulnerability Scanner](https://devdrop.online/tools/port-scanner): Simulate probing standard TCP ports (21, 22, 25, 80, 443, 3306, 8080) to detect open services and firewall rules.
+
+### Money & Financial Protocols
+Realistic UPI payment success screens, high-net-worth bank balances, Bitcoin mining rigs, and ATM cash jackpotters.
+
+- [Bank Account Balance Statement Previewer](https://devdrop.online/tools/bank-balance-generator): Generate customized bank account balance screens with your chosen bank name, account number, and balance in millions.
+- [UPI Payment Transaction Receipt Generator](https://devdrop.online/tools/fake-upi-success): Generate realistic UPI payment confirmation screens with authentic green checkmarks, transaction UTR numbers, and payment chimes.
+- [High-Net-Worth Portfolio Tracker](https://devdrop.online/tools/millionaire-engine): Visualize a high-net-worth portfolio with stocks, luxury real estate, venture investments, and private jet asset breakdowns.
+- [Crypto Investment Profit & ROI Calculator](https://devdrop.online/tools/crypto-profit-calc): Simulate putting $100 into a 1000x crypto moonshot coin and watching your wallet explode to hundreds of thousands of dollars.
+- [ASIC Bitcoin Mining Rig Monitor](https://devdrop.online/tools/bitcoin-mining-sim): Watch a high-performance ASIC mining rig calculate SHA-256 hashes, monitor GPU temperatures, and tick up mined Satoshis.
+- [ATM Cash Dispenser Protocol Interface](https://devdrop.online/tools/atm-hacker): Simulate an ATM jackpotting cash dispensing sequence with spitting bills, solenoid sound effects, and cassette counters.
+- [Digital Payment Invoice & Receipt Generator](https://devdrop.online/tools/payment-receipt-maker): Create customizable digital payment receipts with custom merchant names, itemized line items, and transaction timestamps.
+- [High-Leverage Futures Trading Terminal](https://devdrop.online/tools/trading-engine): Simulate trading volatile cryptocurrency or stock markets with 100x leverage, live candlestick charts, and instant PnL gains.
+- [Credit Card Luhn Checksum Validator](https://devdrop.online/tools/credit-card-validator): Validate test credit card numbers locally using the mathematical Luhn MOD 10 algorithm and Bank Identification Number (BIN) tables.
+
+### AI Cognitive & Social Analytics
+Neural polygraph lie detectors, mind-reading algorithms, crush love calculators, and savage AI roasts.
+
+- [AI Neural Polygraph & Vocal Stress Analyzer](https://devdrop.online/tools/lie-detector): Analyze vocal stress, micro-hesitations, and cognitive dissonance through an animated real-time lie detector polygraph sweep.
+- [Neural Brainwave Mind Reader](https://devdrop.online/tools/mind-reader): Think of any secret number or concept; watch the AI read your mouse movements, scroll cadence, and reveal your exact thought.
+- [Cyber Oracle Future Predictor](https://devdrop.online/tools/future-predictor): Ask the underground cyber oracle any question about your career, wealth, or love life to receive witty, prophetic answers.
+- [Biometric Love Compatibility Meter](https://devdrop.online/tools/love-calculator): Enter your name and your crush's name to calculate relationship compatibility, emotional resonance, and marriage odds.
+- [Friendship Loyalty & Compatibility Index](https://devdrop.online/tools/friendship-test): Test how strong your friendship really is with a live loyalty quotient, secret-keeping score, and shared humor index.
+- [Vocal Frequency & Acoustic Analyzer](https://devdrop.online/tools/voice-analyzer): Analyze vocal pitch frequencies, micro-stutters, and emotional cadence with an oscillating acoustic frequency visualizer.
+- [Underground Hacker Callsign Creator](https://devdrop.online/tools/hacker-name-generator): Generate elite cyberpunk codenames, hacker handles, and underground developer aliases based on your favorite keywords.
+- [AI Cognitive Personality Scanner](https://devdrop.online/tools/personality-scanner): Discover your live AI personality type, introversion rating, and underground cyber alignment archetype.
+- [AI Savage Tech & Profile Roaster](https://devdrop.online/tools/ai-roast): Let our unfiltered AI hacker roast your Instagram username, coding habits, or bio with merciless cyber humor.
+- [Cryptographic Fortune Cookie & Oracle](https://devdrop.online/tools/fortune-generator): Crack open an encrypted digital fortune cookie to reveal daily cryptographic wisdom and hacker prophecies.
+- [Cyber Aptitude & Cognitive IQ Test](https://devdrop.online/tools/iq-test-engine): Test your logical deduction and pattern recognition to calculate a live 140+ Hacker IQ score and genius badge.
+
+### Malware & Threat Security Lab
+Windows 11 Blue Screen of Death (BSOD), WannaCry ransomware timers, falling Matrix code rain, and trojan alerts.
+
+- [Critical System Security Threat Alert](https://devdrop.online/tools/virus-infection): Trigger live critical virus alerts with flashing red sirens, loud alarm beeps, and trojan infection warnings.
+- [Encrypted Files Security Lockdown](https://devdrop.online/tools/ransomware-screen): Simulate an authentic WannaCry ransomware takeover with ticking 3-day destruction countdown, encrypted file paths, and bitcoin address.
+- [Windows Blue Screen System Crash (BSOD)](https://devdrop.online/tools/bsod-engine): Trigger a photorealistic fullscreen Windows 11 Blue Screen of Death with QR code, stop code KERNEL_SECURITY_CHECK_FAILURE, and 100% progress.
+- [Matrix Green Digital Stream Rain](https://devdrop.online/tools/matrix-rain): Immerse your screen in the iconic glowing green Katakana digital rain from The Matrix with speed and density controls.
+- [Enterprise Firewall Intrusion Alert](https://devdrop.online/tools/system-breach-alert): Simulate a high-priority enterprise SOC security alert indicating unauthorized administrative access and compromised firewall.
+- [Hexadecimal Data Decryption Visualizer](https://devdrop.online/tools/data-decryption): Watch encrypted hexadecimal ciphertext solve in real-time into plain English text like a high-budget Hollywood hacker film.
+- [Firewall Defense & Packet Interceptor](https://devdrop.online/tools/cyber-defense): An arcade-style defense challenge where you block incoming malicious IP vectors and maintain server uptime.
+- [Phishing Detection & Threat Audit](https://devdrop.online/tools/phishing-quiz): Test your ability to spot deceptive email sender addresses, PayPal invoices, and urgent spoofed security alerts.
+- [DDoS Defense & Traffic Scrubbing Center](https://devdrop.online/tools/ddos-defense): Simulate activating Anycast scrub centers and rate limiters to absorb a 500 Gbps volumetric traffic flood.
+- [Zero-Day Malware Sandbox Environment](https://devdrop.online/tools/firewall-sandbox): Detonate live zero-day samples inside an isolated virtual machine sandbox and inspect behavioral API hooks.
+
+### Classified Espionage Operations
+Official MI6/CIA secret agent ID cards, 10-second self-destruct timers, orbital spy satellites, and Morse code ciphers.
+
+- [Orbital Reconnaissance Satellite Telemetry](https://devdrop.online/tools/satellite-hacker): Simulate hacking into an orbital reconnaissance satellite and zooming high-resolution optics anywhere on Earth.
+- [Secret Agent Intelligence Credential Card](https://devdrop.online/tools/secret-agent-id): Create an official-looking secret agent identity badge for MI6, CIA, or Interpol with your photo, codename, and top secret clearance.
+- [Hardware Self-Destruct Protocol](https://devdrop.online/tools/self-destruct): Trigger a dramatic 10-second vocal countdown with flashing nuclear sirens, warning strobes, and harmless screen glitch explosion.
+- [Root Superuser Mainframe Access Protocol](https://devdrop.online/tools/admin-access): Simulate gaining root superuser privileges on a classified mainframe, displaying ACCESS GRANTED in giant glowing green letters.
+- [Tactical Night Vision Surveillance Lens](https://devdrop.online/tools/night-vision): Simulate military-grade Generation-3 phosphor green night vision and thermal heat signature tracking.
+- [Wiretap Radio Frequency Interceptor](https://devdrop.online/tools/wiretap-engine): Simulate tuning into encrypted radio frequencies and intercepting static-filled secret transmission chatter.
+- [Secret Agent Morse Code Cipher](https://devdrop.online/tools/morse-code-cipher): Translate secret agent messages into dots and dashes with real-time synthesized military Morse audio beeps.
+
