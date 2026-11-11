@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OmniUnlock Pro - Universal Mobile Screen Lock Recovery (Web Edition)</title>
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="prank.css">
+</head>
+<body>
+  <!-- Discreet Parody Watermark / Notice -->
+  <aside class="legal-parody-bar">
+    <div class="legal-inner">
+      <span class="parody-tag">PARODY / ENTERTAINMENT LAB</span>
+      <span>This website is an interactive parody simulator designed for pranks. No data is collected or altered.</span>
+      <a href="index.html" class="real-sim-link"><i data-lucide="smartphone"></i> Switch to Phone UI Simulator</a>
+    </div>
+  </aside>
+
+  <div class="saas-container">
+    <!-- Professional SaaS Navigation Bar -->
+    <header class="saas-navbar">
+      <div class="nav-brand">
+        <div class="brand-icon">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="brand-info">
+          <div class="brand-title">
+            <span>OmniUnlock</span>
+            <span class="pro-badge">PRO CLOUD</span>
+          </div>
+          <span class="brand-sub">Universal Screen Lock Diagnostics & Recovery v4.8</span>
+        </div>
+      </div>
+
+      <div class="nav-right">
+        <div class="server-badge">
+          <span class="ping-dot"></span>
+          <span>Cloud Gateway: <strong>US-East (Active)</strong></span>
+        </div>
+      </div>
+    </header>
+
+    <main class="saas-main">
+      <!-- Top Wizard Stepper -->
+      <div class="stepper-bar">
+        <div class="step-node active" id="stepNode1">
+          <div class="node-circle">1</div>
+          <span class="node-label">Device Info</span>
+        </div>
+        <div class="step-line" id="stepLine1"></div>
+        <div class="step-node" id="stepNode2">
+          <div class="node-circle">2</div>
+          <span class="node-label">Diagnostic Handshake</span>
+        </div>
+        <div class="step-line" id="stepLine2"></div>
+        <div class="step-node" id="stepNode3">
+          <div class="node-circle">3</div>
+          <span class="node-label">Recovery Solution</span>
+        </div>
+      </div>
+
+      <!-- MAIN CONFIGURATION CARD (Looks like genuine software) -->
+      <section class="pro-card" id="inputSection">
+        <div class="card-header">
+          <div class="header-text">
+            <h2>Select Device & Lock Parameters</h2>
+            <p>Enter your exact smartphone model to calibrate the cloud OTA recovery handshake.</p>
+          </div>
+          <div class="compat-badge">
+            <i data-lucide="check-circle-2"></i> iOS 18 & Android 15 Ready
+          </div>
+        </div>
+
+        <form id="recoveryForm" onsubmit="return false;">
+          <div class="form-columns">
+            <!-- Left: Device Input -->
+            <div class="form-block">
+              <label for="userPhoneInput" class="input-label">
+                <span>Phone Model / Name</span>
+                <span class="req">*Required</span>
+              </label>
+              <div class="input-container">
+                <i data-lucide="smartphone" class="field-icon"></i>
+                <input 
+                  type="text" 
+                  id="userPhoneInput" 
+                  class="pro-input" 
+                  placeholder="e.g., iPhone 15 Pro Max, Samsung Galaxy S24 Ultra..."
+                  autocomplete="off"
+                  value="iPhone 15 Pro Max"
+                >
+              </div>
+
+              <!-- Quick Click Pills for Popular Phones -->
+              <div class="quick-pill-row">
+                <span class="pill-label">Popular:</span>
+                <button type="button" class="phone-pill" data-name="iPhone 16 Pro Max">iPhone 16 Pro Max</button>
+                <button type="button" class="phone-pill" data-name="Samsung Galaxy S24 Ultra">Samsung S24 Ultra</button>
+                <button type="button" class="phone-pill" data-name="Google Pixel 9 Pro">Pixel 9 Pro</button>
+                <button type="button" class="phone-pill" data-name="Xiaomi 14 Ultra">Xiaomi 14 Ultra</button>
+                <button type="button" class="phone-pill" data-name="OnePlus 12">OnePlus 12</button>
+              </div>
+            </div>
+
+            <!-- Right: Lock Type -->
+            <div class="form-block">
+              <label for="lockTypeSelect" class="input-label">
+                <span>Forgotten Lock Type</span>
+              </label>
+              <div class="input-container">
+                <i data-lucide="lock" class="field-icon"></i>
+                <select id="lockTypeSelect" class="pro-select">
+                  <option value="pin4">4-Digit Numeric Passcode</option>
+                  <option value="pin6">6-Digit Numeric Passcode</option>
+                  <option value="pattern">Android Pattern Grid (Dots)</option>
+                  <option value="password">Custom Alphanumeric Password</option>
+                  <option value="biometric">Fingerprint / Face ID Not Responding</option>
+                </select>
+              </div>
+
+              <div class="toggle-container">
+                <div class="toggle-text">
+                  <span class="t-title">Preserve User Data Mode</span>
+                  <span class="t-sub">Extract cache without wiping photos or chats</span>
+                </div>
+                <label class="switch">
+                  <input type="checkbox" id="preserveDataToggle" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Button -->
+          <div class="form-submit-row">
+            <button id="startRecoveryBtn" class="pro-primary-btn">
+              <i data-lucide="unlock"></i>
+              <span>Start Cloud Screen Recovery</span>
+            </button>
+            <div class="btn-subtext">
+              <i data-lucide="shield"></i> 256-bit SSL encrypted connection • No root / jailbreak required
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- DIAGNOSTIC PROGRESS CARD (Revealed during processing) -->
+      <section class="pro-card processing-card" id="processingSection">
+        <div class="device-summary-strip">
+          <div class="dev-info-left">
+            <div class="phone-avatar-box">
+              <i data-lucide="smartphone"></i>
+            </div>
+            <div>
+              <div class="target-title" id="targetPhoneTitle">iPhone 15 Pro Max</div>
+              <div class="target-meta">
+                <span class="meta-tag" id="targetLockTypeBadge">4-Digit PIN</span>
+                <span class="meta-tag green">OTA Handshake: Connected</span>
+              </div>
+            </div>
+          </div>
+          <div class="dev-info-right">
+            <div class="cipher-status">
+              <span class="pulse-indicator"></span>
+              <span id="diagnosticPhaseText">Handshake Initialized</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress Bar Section -->
+        <div class="progress-box">
+          <div class="progress-info-row">
+            <span class="prog-label" id="detailedStatusMsg">Connecting to device over air-gap frequency...</span>
+            <span class="prog-num" id="progressPercentage">0%</span>
+          </div>
+          <div class="track-bar">
+            <div class="track-fill" id="trackFill"></div>
+          </div>
+        </div>
+
+        <!-- Real-time Console Log (Looks 100% genuine) -->
+        <div class="console-box">
+          <div class="console-header">
+            <div class="console-dots">
+              <span></span><span></span><span></span>
+            </div>
+            <span class="console-title">Diagnostic Kernel Log — secure_ota_bridge.log</span>
+            <span class="live-rec">LIVE</span>
+          </div>
+          <div class="console-output" id="consoleOutput">
+            <div class="c-line info">[READY] OmniUnlock Cloud Kernel v4.8 loaded.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- THE PRANK REVEAL MODAL (Pop-up after 100%) -->
+      <div class="reveal-overlay" id="revealOverlay">
+        <div class="prank-modal-box">
+          <div class="modal-badge">
+            <i data-lucide="party-popper"></i>
+          </div>
+          
+          <h2 class="modal-title">🎉 Device Analysis Complete!</h2>
+          <p class="modal-sub">
+            We have generated the official recovery solution for your <strong id="modalPhoneName">iPhone 15 Pro Max</strong>:
+          </p>
+
+          <div class="prank-solution-card">
+            <div class="sol-item">
+              <span class="sol-num">1</span>
+              <div class="sol-content">
+                <strong>Remember your passcode:</strong> It’s probably your birthday, anniversary, or <code>1234</code>!
+              </div>
+            </div>
+            <div class="sol-item">
+              <span class="sol-num">2</span>
+              <div class="sol-content">
+                <strong>Classic IT Solution:</strong> Have you tried turning it off and turning it on again? 📺
+              </div>
+            </div>
+            <div class="sol-item">
+              <span class="sol-num">3</span>
+              <div class="sol-content">
+                <strong>Reality Check:</strong> No random website on the internet can magically hack into your phone's hardware-encrypted Secure Enclave or Titan M chip! If you truly forgot your lock, use official <strong>Google Find My Device</strong> or <strong>Apple iCloud Recovery</strong>.
+              </div>
+            </div>
+          </div>
+
+          <div class="meme-banner">
+            <span>😂 YOU JUST GOT PRANKED! 😂</span>
+          </div>
+
+          <div class="modal-actions">
+            <button id="copyShareBtn" class="action-btn share-btn">
+              <i data-lucide="share-2"></i>
+              <span>Prank a Friend (Copy Link)</span>
+            </button>
+            <a href="index.html" class="action-btn outline-btn">
+              <i data-lucide="smartphone"></i>
+              <span>Try Real Screen Lock Simulator</span>
+            </a>
+            <button id="restartBtn" class="action-btn text-btn">
+              <i data-lucide="rotate-ccw"></i>
+              <span>Test Another Phone</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Professional Footer -->
+    <footer class="saas-footer">
+      <div class="footer-links">
+        <a href="#">Security Overview</a>
+        <a href="#">Supported Chipsets</a>
+        <a href="#">Cloud Node Status</a>
+        <a href="index.html">Interactive Lock UI Simulator</a>
+      </div>
+      <p class="copyright">OmniUnlock Web Cloud Platform • Built for humorous simulation & mobile security demonstration.</p>
+    </footer>
+  </div>
+
+  <script src="prank.js"></script>
+</body>
+</html>

@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>OmniLock - Realistic Mobile Screen Lock Simulator</title>
+  <!-- Google Fonts: Inter & SF Pro Display style font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient glow backdrop -->
+  <div class="ambient-glow" id="ambientGlow"></div>
+
+  <div class="app-container">
+    <!-- Top Global Header / Brand -->
+    <header class="studio-header">
+      <div class="brand">
+        <div class="brand-badge">
+          <i data-lucide="shield-check"></i>
+        </div>
+        <div class="brand-text">
+          <h1>OmniLock Simulator</h1>
+          <p>Interactive Mobile Security & Lock Screen Lab</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <a href="prank.html" class="pill-btn" style="text-decoration: none; border-color: rgba(245, 158, 11, 0.4); color: #fbbf24;">
+          <i data-lucide="sparkles"></i>
+          <span>Magic Prank Console</span>
+        </a>
+        <button id="lockPowerBtn" class="pill-btn danger-glow" title="Power / Lock Screen (Shortcut: Space or Esc)">
+          <i data-lucide="power"></i>
+          <span>Lock Device</span>
+        </button>
+      </div>
+    </header>
+
+    <main class="workbench">
+      <!-- LEFT: Control / Customization Sidebar -->
+      <aside class="control-panel">
+        <div class="panel-section">
+          <h3><i data-lucide="key-round"></i> Lock Mechanism</h3>
+          <div class="lock-type-grid" id="lockTypeSelector">
+            <button class="type-card active" data-type="pin">
+              <i data-lucide="hash"></i>
+              <div class="card-meta">
+                <span class="name">PIN Code</span>
+                <span class="sub">4 or 6 digits</span>
+              </div>
+            </button>
+            <button class="type-card" data-type="pattern">
+              <i data-lucide="grid-3x3"></i>
+              <div class="card-meta">
+                <span class="name">Pattern</span>
+                <span class="sub">3x3 Dot Grid</span>
+              </div>
+            </button>
+            <button class="type-card" data-type="fingerprint">
+              <i data-lucide="fingerprint"></i>
+              <div class="card-meta">
+                <span class="name">Fingerprint</span>
+                <span class="sub">Biometric Touch</span>
+              </div>
+            </button>
+            <button class="type-card" data-type="face">
+              <i data-lucide="scan-face"></i>
+              <div class="card-meta">
+                <span class="name">Face ID</span>
+                <span class="sub">3D Depth Mesh</span>
+              </div>
+            </button>
+            <button class="type-card" data-type="password">
+              <i data-lucide="keyboard"></i>
+              <div class="card-meta">
+                <span class="name">Password</span>
+                <span class="sub">Alphanumeric</span>
+              </div>
+            </button>
+            <button class="type-card" data-type="swipe">
+              <i data-lucide="chevrons-up"></i>
+              <div class="card-meta">
+                <span class="name">Swipe Only</span>
+                <span class="sub">Slide up</span>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Credentials & Passcode Manager -->
+        <div class="panel-section" id="credentialsConfigSection">
+          <h3><i data-lucide="sliders"></i> Security Passcode</h3>
+          <div class="config-card">
+            <!-- Dynamic context for selected lock type -->
+            <div id="pinConfigContent" class="config-content active">
+              <div class="input-group">
+                <label for="currentPinInput">Active PIN Code</label>
+                <div class="input-with-button">
+                  <input type="text" id="currentPinInput" maxlength="6" value="1234" autocomplete="off" placeholder="4-6 digits">
+                  <button id="savePinBtn" class="sm-btn">Set</button>
+                </div>
+                <div class="hint-text">Default: <strong>1234</strong> (or 6 digits: <strong>123456</strong>)</div>
+              </div>
+              <div class="quick-chips">
+                <span>Presets:</span>
+                <button class="chip" data-set-pin="1234">1234</button>
+                <button class="chip" data-set-pin="0000">0000</button>
+                <button class="chip" data-set-pin="2580">2580</button>
+                <button class="chip" data-set-pin="1998">1998</button>
+              </div>
+            </div>
+
+            <div id="patternConfigContent" class="config-content">
+              <div class="pattern-status-row">
+                <span class="label">Configured Pattern:</span>
+                <span class="pattern-badge" id="patternPresetBadge">Z-Shape (0-1-2-4-6-7-8)</span>
+              </div>
+              <div class="quick-chips">
+                <span>Patterns:</span>
+                <button class="chip" data-pattern="0,1,2,4,6,7,8">Z-Shape</button>
+                <button class="chip" data-pattern="0,3,6,7,8">L-Shape</button>
+                <button class="chip" data-pattern="0,1,2,5,8,7,6,3">Box</button>
+                <button class="chip" data-pattern="0,4,8,2,6">X-Cross</button>
+              </div>
+              <button id="recordPatternBtn" class="sm-action-btn">
+                <i data-lucide="circle-dot"></i> Record Custom Pattern
+              </button>
+            </div>
+
+            <div id="passwordConfigContent" class="config-content">
+              <div class="input-group">
+                <label for="currentPasswordInput">Active Password</label>
+                <div class="input-with-button">
+                  <input type="text" id="currentPasswordInput" value="secret123" placeholder="Enter password">
+                  <button id="savePasswordBtn" class="sm-btn">Set</button>
+                </div>
+                <div class="hint-text">Default: <strong>secret123</strong></div>
+              </div>
+            </div>
+
+            <div id="biometricConfigContent" class="config-content">
+              <div class="biometric-note">
+                <i data-lucide="info"></i>
+                <p>Simulates real-world biometric sensor scanning with haptics, optical animation, and verification latency.</p>
+              </div>
+              <div class="toggle-row">
+                <span>Simulate Recognition Failure</span>
+                <label class="switch">
+                  <input type="checkbox" id="biometricFailToggle">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Solution revealer -->
+            <div class="solution-hint-card">
+              <div class="solution-left">
+                <i data-lucide="help-circle"></i>
+                <div>
+                  <div class="title">Need the Key?</div>
+                  <div class="desc" id="currentSolutionDesc">PIN is 1234</div>
+                </div>
+              </div>
+              <button id="autoUnlockBtn" class="auto-test-btn" title="Instantly simulates entering the correct key">
+                <i data-lucide="sparkles"></i> Auto Unlock
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Device Styling & Customization -->
+        <div class="panel-section">
+          <h3><i data-lucide="smartphone"></i> Hardware & Styling</h3>
+          <div class="device-switchers">
+            <div class="toggle-row">
+              <span>Device Model</span>
+              <div class="segmented-control" id="deviceModelControl">
+                <button class="seg-btn active" data-model="ios">iPhone 16 Pro</button>
+                <button class="seg-btn" data-model="android">Pixel 9 Pro</button>
+              </div>
+            </div>
+
+            <div class="wallpaper-selector">
+              <label>Wallpaper</label>
+              <div class="wallpaper-thumbnails" id="wallpaperList">
+                <div class="thumb active" data-wp="ios-aurora" style="background: linear-gradient(135deg, #182848, #4b6cb7, #ff6b6b);"></div>
+                <div class="thumb" data-wp="deep-space" style="background: linear-gradient(135deg, #090a0f, #1b2735, #090a0f);"></div>
+                <div class="thumb" data-wp="cyber-neon" style="background: linear-gradient(135deg, #2b1055, #7597de, #240b36);"></div>
+                <div class="thumb" data-wp="sunset-peaks" style="background: linear-gradient(135deg, #fa709a, #fee140);"></div>
+                <div class="thumb" data-wp="emerald-mesh" style="background: linear-gradient(135deg, #0ba360, #3cba92);"></div>
+                <div class="thumb" data-wp="oled-minimal" style="background: radial-gradient(circle at center, #1a1a24, #050508);"></div>
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <span>Synthesized Audio FX</span>
+              <label class="switch">
+                <input type="checkbox" id="soundToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            
+            <div class="toggle-row">
+              <span>Haptic Vibration Effect</span>
+              <label class="switch">
+                <input type="checkbox" id="vibrationToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <span>Lock Screen Notifications</span>
+              <label class="switch">
+                <input type="checkbox" id="notificationsToggle" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simulation Scenarios -->
+        <div class="panel-section">
+          <h3><i data-lucide="zap"></i> Simulation Scenarios</h3>
+          <div class="scenario-actions">
+            <button class="scenario-btn" id="scenarioWrongAttempt">
+              <i data-lucide="alert-triangle"></i> Simulate Wrong Key (Error Shake)
+            </button>
+            <button class="scenario-btn" id="scenarioLockout">
+              <i data-lucide="timer"></i> Trigger 30s Lockout Warning
+            </button>
+            <button class="scenario-btn" id="scenarioPushNotif">
+              <i data-lucide="bell-ring"></i> Push Incoming Notification
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER: Interactive Phone Stage -->
+      <section class="stage">
+        <!-- Physical Phone Chassis -->
+        <div class="phone-wrapper">
+          <!-- Hardware Side Buttons -->
+          <div class="hw-button hw-mute" id="hwMute"></div>
+          <div class="hw-button hw-volume-up" id="hwVolUp"></div>
+          <div class="hw-button hw-volume-down" id="hwVolDown"></div>
+          <div class="hw-button hw-power" id="hwPower" title="Power / Lock Button"></div>
+
+          <!-- Phone Bezel & Screen -->
+          <div class="phone-body model-ios" id="phoneBody">
+            <div class="phone-glare"></div>
+
+            <!-- Dynamic Camera Notch / Island -->
+            <div class="notch-container" id="notchContainer">
+              <div class="dynamic-island" id="dynamicIsland">
+                <div class="island-camera"></div>
+                <div class="island-sensor"></div>
+                <!-- Dynamic Island Expanded Content during Face ID or music -->
+                <div class="island-content" id="islandContent">
+                  <i data-lucide="lock" class="island-lock-icon" id="islandLockIcon"></i>
+                  <span class="island-text" id="islandText">Face ID</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- PHONE DISPLAY CONTAINER -->
+            <div class="phone-screen" id="phoneScreen">
+              <!-- Background Wallpaper Layer -->
+              <div class="wallpaper-layer wp-ios-aurora" id="wallpaperLayer"></div>
+              <div class="screen-dimmer" id="screenDimmer"></div>
+
+              <!-- FLASH LIGHT BEAM EFFECT (when flashlight turned on) -->
+              <div class="flashlight-glow" id="flashlightGlow"></div>
+
+              <!-- Status Bar -->
+              <div class="phone-status-bar">
+                <div class="status-left">
+                  <span class="status-time" id="statusClock">09:41</span>
+                </div>
+                <div class="status-right">
+                  <span class="signal-bars">
+                    <span class="bar b1"></span>
+                    <span class="bar b2"></span>
+                    <span class="bar b3"></span>
+                    <span class="bar b4"></span>
+                  </span>
+                  <span class="carrier-text">5G</span>
+                  <i data-lucide="wifi" class="status-icon"></i>
+                  <div class="battery-icon">
+                    <div class="battery-pill"><span class="battery-fill"></span></div>
+                    <span class="battery-nub"></span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- ================= LAYER 1: LOCK SCREEN ================= -->
+              <div class="lockscreen-view" id="lockscreenView">
+                <!-- Lock Icon Top Indicator -->
+                <div class="lock-status-indicator" id="lockStatusIndicator">
+                  <div class="padlock-badge" id="padlockBadge">
+                    <i data-lucide="lock" id="padlockIcon"></i>
+                  </div>
+                  <div class="lock-status-caption" id="lockStatusCaption">Swipe up to unlock</div>
+                </div>
+
+                <!-- Big Clock & Date Display -->
+                <div class="clock-display" id="clockDisplay">
+                  <div class="clock-date" id="liveDate">Wednesday, October 29</div>
+                  <div class="clock-time" id="liveClock">09:41</div>
+                  <div class="clock-widgets" id="clockWidgets">
+                    <div class="widget-pill"><i data-lucide="cloud-sun"></i> 24°C Sunny</div>
+                    <div class="widget-pill"><i data-lucide="calendar"></i> 2 Events</div>
+                  </div>
+                </div>
+
+                <!-- Notifications Stack (Interactive) -->
+                <div class="notifications-container" id="notificationsContainer">
+                  <div class="notif-card" id="notifSample1">
+                    <div class="notif-header">
+                      <div class="notif-app">
+                        <span class="app-icon wa-icon"><i data-lucide="message-circle"></i></span>
+                        <span class="app-name">WhatsApp</span>
+                      </div>
+                      <span class="notif-time">2m ago</span>
+                    </div>
+                    <div class="notif-title">Alex Johnson</div>
+                    <div class="notif-body">Hey! Did you check out the new lock screen simulator? It looks insane! 🚀</div>
+                  </div>
+
+                  <div class="notif-card" id="notifSample2">
+                    <div class="notif-header">
+                      <div class="notif-app">
+                        <span class="app-icon gh-icon"><i data-lucide="github"></i></span>
+                        <span class="app-name">GitHub</span>
+                      </div>
+                      <span class="notif-time">15m ago</span>
+                    </div>
+                    <div class="notif-title">Pull Request #42 merged</div>
+                    <div class="notif-body">main: Add biometric unlock module with haptic audio feedback.</div>
+                  </div>
+                </div>
+
+                <!-- DYNAMIC SECURITY UNLOCK OVERLAYS -->
+
+                <!-- 1. PIN PAD OVERLAY -->
+                <div class="unlock-overlay pin-overlay" id="pinOverlay">
+                  <div class="overlay-header">
+                    <h2 class="auth-title">Enter Passcode</h2>
+                    <!-- PIN Dot Indicators (4 or 6) -->
+                    <div class="pin-dots-container" id="pinDots">
+                      <span class="pin-dot"></span>
+                      <span class="pin-dot"></span>
+                      <span class="pin-dot"></span>
+                      <span class="pin-dot"></span>
+                    </div>
+                    <div class="auth-error-msg" id="pinErrorMsg">Incorrect passcode</div>
+                  </div>
+
+                  <!-- Keypad 3x4 Grid -->
+                  <div class="numeric-keypad" id="numericKeypad">
+                    <button class="key-btn" data-digit="1"><span class="num">1</span><span class="letters"></span></button>
+                    <button class="key-btn" data-digit="2"><span class="num">2</span><span class="letters">A B C</span></button>
+                    <button class="key-btn" data-digit="3"><span class="num">3</span><span class="letters">D E F</span></button>
+                    <button class="key-btn" data-digit="4"><span class="num">4</span><span class="letters">G H I</span></button>
+                    <button class="key-btn" data-digit="5"><span class="num">5</span><span class="letters">J K L</span></button>
+                    <button class="key-btn" data-digit="6"><span class="num">6</span><span class="letters">M N O</span></button>
+                    <button class="key-btn" data-digit="7"><span class="num">7</span><span class="letters">P Q R S</span></button>
+                    <button class="key-btn" data-digit="8"><span class="num">8</span><span class="letters">T U V</span></button>
+                    <button class="key-btn" data-digit="9"><span class="num">9</span><span class="letters">W X Y Z</span></button>
+                    <button class="key-btn action-key" id="emergencyBtn"><span class="action-text">Emergency</span></button>
+                    <button class="key-btn" data-digit="0"><span class="num">0</span><span class="letters"></span></button>
+                    <button class="key-btn action-key" id="backspaceBtn"><i data-lucide="delete"></i></button>
+                  </div>
+
+                  <div class="overlay-footer">
+                    <button class="cancel-auth-btn" id="cancelPinBtn">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- 2. PATTERN LOCK OVERLAY -->
+                <div class="unlock-overlay pattern-overlay" id="patternOverlay">
+                  <div class="overlay-header">
+                    <h2 class="auth-title">Draw Unlock Pattern</h2>
+                    <p class="auth-sub" id="patternPrompt">Connect at least 4 dots</p>
+                    <div class="auth-error-msg" id="patternErrorMsg">Wrong pattern</div>
+                  </div>
+
+                  <div class="pattern-canvas-container" id="patternContainer">
+                    <canvas id="patternCanvas" width="300" height="300"></canvas>
+                  </div>
+
+                  <div class="overlay-footer">
+                    <button class="cancel-auth-btn" id="cancelPatternBtn">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- 3. FINGERPRINT BIOMETRIC OVERLAY -->
+                <div class="unlock-overlay fingerprint-overlay" id="fingerprintOverlay">
+                  <div class="overlay-header">
+                    <h2 class="auth-title">Touch ID / Fingerprint</h2>
+                    <p class="auth-sub" id="fpInstruction">Touch and hold sensor to verify</p>
+                    <div class="auth-error-msg" id="fpErrorMsg">Fingerprint not recognized</div>
+                  </div>
+
+                  <!-- Fingerprint scanner sensor area -->
+                  <div class="fingerprint-sensor-zone" id="fpSensorZone">
+                    <div class="fp-pulse-wave wave1"></div>
+                    <div class="fp-pulse-wave wave2"></div>
+                    <div class="fp-scanner-ring" id="fpScannerRing">
+                      <svg class="ring-svg" viewBox="0 0 100 100">
+                        <circle class="ring-bg" cx="50" cy="50" r="44"></circle>
+                        <circle class="ring-progress" id="fpProgressRing" cx="50" cy="50" r="44"></circle>
+                      </svg>
+                      <div class="fp-icon-wrapper" id="fpIconWrapper">
+                        <i data-lucide="fingerprint" class="fp-biometric-icon"></i>
+                      </div>
+                    </div>
+                    <div class="fp-status-label" id="fpStatusLabel">Press & Hold</div>
+                  </div>
+
+                  <div class="overlay-footer">
+                    <button class="cancel-auth-btn" id="cancelFpBtn">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- 4. FACE ID 3D OVERLAY -->
+                <div class="unlock-overlay face-overlay" id="faceOverlay">
+                  <div class="face-scanner-viewport" id="faceViewport">
+                    <!-- Holographic scanning grid & face outline -->
+                    <div class="face-mesh-grid"></div>
+                    <div class="face-laser-line"></div>
+                    <div class="face-target-brackets">
+                      <span class="corner tl"></span>
+                      <span class="corner tr"></span>
+                      <span class="corner bl"></span>
+                      <span class="corner br"></span>
+                    </div>
+                    <div class="face-avatar-silhouette">
+                      <i data-lucide="scan-face" class="face-mesh-icon"></i>
+                    </div>
+                    <div class="face-check-badge" id="faceCheckBadge">
+                      <i data-lucide="check"></i>
+                    </div>
+                  </div>
+
+                  <div class="face-hud-info">
+                    <h2 class="face-title" id="faceTitle">Scanning Face...</h2>
+                    <p class="face-sub" id="faceSub">Look directly at the sensor</p>
+                    <div class="auth-error-msg" id="faceErrorMsg">Face not recognized</div>
+                  </div>
+
+                  <div class="overlay-footer">
+                    <button class="retry-face-btn" id="retryFaceBtn"><i data-lucide="rotate-ccw"></i> Rescan</button>
+                    <button class="cancel-auth-btn" id="cancelFaceBtn">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- 5. PASSWORD OVERLAY -->
+                <div class="unlock-overlay password-overlay" id="passwordOverlay">
+                  <div class="overlay-header">
+                    <h2 class="auth-title">Enter Password</h2>
+                    <div class="password-input-box">
+                      <input type="password" id="screenPasswordInput" placeholder="Password" autocomplete="off">
+                      <button id="toggleShowPasswordBtn" class="eye-toggle"><i data-lucide="eye"></i></button>
+                    </div>
+                    <div class="auth-error-msg" id="passwordErrorMsg">Incorrect password</div>
+                  </div>
+
+                  <div class="virtual-keyboard" id="virtualKeyboard">
+                    <!-- QWERTY Virtual Keyboard keys generated by JS -->
+                  </div>
+
+                  <div class="overlay-footer">
+                    <button class="cancel-auth-btn" id="cancelPasswordBtn">Cancel</button>
+                  </div>
+                </div>
+
+                <!-- 6. LOCKOUT 30s TIMER MODAL -->
+                <div class="lockout-modal" id="lockoutModal">
+                  <div class="lockout-content">
+                    <div class="lockout-icon"><i data-lucide="shield-alert"></i></div>
+                    <h3>iPhone is Disabled</h3>
+                    <p>Too many failed passcode attempts.</p>
+                    <div class="lockout-timer" id="lockoutCountdown">Try again in 30 seconds</div>
+                    <button class="dismiss-lockout-btn" id="dismissLockoutBtn">Emergency SOS</button>
+                  </div>
+                </div>
+
+                <!-- Bottom Quick Action Buttons (Torch & Camera) -->
+                <div class="lock-bottom-actions">
+                  <button class="action-circle-btn" id="torchBtn" title="Flashlight Toggle">
+                    <i data-lucide="flashlight" id="torchIcon"></i>
+                  </button>
+                  <div class="swipe-hint-pill" id="swipeHintPill">
+                    <div class="home-bar-line"></div>
+                    <span class="swipe-label" id="bottomSwipeText">Swipe up to open</span>
+                  </div>
+                  <button class="action-circle-btn" id="cameraShortcutBtn" title="Quick Camera">
+                    <i data-lucide="camera"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- ================= LAYER 2: HOME SCREEN (UNLOCKED STATE) ================= -->
+              <div class="homescreen-view" id="homescreenView">
+                <div class="homescreen-content">
+                  <!-- Top Widget Row -->
+                  <div class="home-widgets-row">
+                    <div class="home-card clock-card">
+                      <div class="card-label">Cupertino</div>
+                      <div class="card-big-time" id="homeClockTime">09:41</div>
+                      <div class="card-sub" id="homeClockDate">Wed, Oct 29</div>
+                    </div>
+                    <div class="home-card weather-card">
+                      <div class="card-weather-top">
+                        <span class="city">New York</span>
+                        <i data-lucide="sun" class="weather-sun-icon"></i>
+                      </div>
+                      <div class="temp">24°</div>
+                      <div class="weather-desc">Sunny • H:26° L:18°</div>
+                    </div>
+                  </div>
+
+                  <!-- App Icons Grid -->
+                  <div class="app-grid">
+                    <div class="app-item" data-app="photos">
+                      <div class="app-icon-box gradient-photos"><i data-lucide="image"></i></div>
+                      <span class="app-name">Photos</span>
+                    </div>
+                    <div class="app-item" data-app="calendar">
+                      <div class="app-icon-box bg-white text-dark">
+                        <span class="cal-badge-day">WED</span>
+                        <span class="cal-badge-num">29</span>
+                      </div>
+                      <span class="app-name">Calendar</span>
+                    </div>
+                    <div class="app-item" data-app="maps">
+                      <div class="app-icon-box gradient-maps"><i data-lucide="map-pin"></i></div>
+                      <span class="app-name">Maps</span>
+                    </div>
+                    <div class="app-item" data-app="clock">
+                      <div class="app-icon-box bg-dark text-white"><i data-lucide="clock"></i></div>
+                      <span class="app-name">Clock</span>
+                    </div>
+                    <div class="app-item" data-app="weather">
+                      <div class="app-icon-box gradient-weather"><i data-lucide="cloud-sun"></i></div>
+                      <span class="app-name">Weather</span>
+                    </div>
+                    <div class="app-item" data-app="reminders">
+                      <div class="app-icon-box bg-white text-orange"><i data-lucide="list-checks"></i></div>
+                      <span class="app-name">Reminders</span>
+                    </div>
+                    <div class="app-item" data-app="notes">
+                      <div class="app-icon-box gradient-notes"><i data-lucide="file-text"></i></div>
+                      <span class="app-name">Notes</span>
+                    </div>
+                    <div class="app-item" data-app="settings" id="appSettingsIcon">
+                      <div class="app-icon-box bg-gray text-white"><i data-lucide="settings"></i></div>
+                      <span class="app-name">Settings</span>
+                    </div>
+                  </div>
+
+                  <!-- Lock Phone Action Tile inside Home Screen -->
+                  <div class="unlock-success-banner">
+                    <div class="banner-icon"><i data-lucide="unlock"></i></div>
+                    <div class="banner-body">
+                      <h4>Device Unlocked!</h4>
+                      <p>Security verification passed seamlessly.</p>
+                    </div>
+                    <button class="lock-again-btn" id="lockAgainBtn">
+                      <i data-lucide="lock"></i> Lock
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Bottom App Dock -->
+                <div class="home-dock">
+                  <div class="app-icon-box dock-icon gradient-phone"><i data-lucide="phone"></i></div>
+                  <div class="app-icon-box dock-icon gradient-safari"><i data-lucide="compass"></i></div>
+                  <div class="app-icon-box dock-icon gradient-messages"><i data-lucide="message-square"></i></div>
+                  <div class="app-icon-box dock-icon gradient-music"><i data-lucide="music"></i></div>
+                </div>
+
+                <!-- Bottom Home Bar Indicator -->
+                <div class="bottom-home-indicator">
+                  <div class="home-bar-line"></div>
+                </div>
+              </div>
+
+              <!-- CAMERA QUICK VIEW OVERLAY -->
+              <div class="camera-quickview" id="cameraQuickView">
+                <div class="cam-header">
+                  <button id="closeCamBtn"><i data-lucide="x"></i></button>
+                  <span>Camera</span>
+                  <i data-lucide="zap"></i>
+                </div>
+                <div class="cam-viewfinder">
+                  <div class="viewfinder-grid"></div>
+                  <div class="simulated-view-text">Simulated Camera Sensor View</div>
+                </div>
+                <div class="cam-shutter-row">
+                  <div class="shutter-circle" id="shutterBtn"></div>
+                </div>
+              </div>
+
+              <!-- SCREEN OFF / SLEEP OVERLAY -->
+              <div class="screen-off-layer" id="screenOffLayer"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RIGHT: Interactive Live Stats & Security Insights -->
+      <aside class="metrics-panel">
+        <div class="panel-section">
+          <h3><i data-lucide="shield"></i> Security Verification</h3>
+          <div class="status-summary-card">
+            <div class="status-row">
+              <span class="label">Device State:</span>
+              <span class="badge badge-locked" id="metricLockState">LOCKED</span>
+            </div>
+            <div class="status-row">
+              <span class="label">Active Method:</span>
+              <span class="badge" id="metricActiveMethod">PIN Code</span>
+            </div>
+            <div class="status-row">
+              <span class="label">Attempts:</span>
+              <span class="metric-val" id="metricAttempts">0</span>
+            </div>
+            <div class="status-row">
+              <span class="label">Auth Latency:</span>
+              <span class="metric-val" id="metricLatency">-- ms</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3><i data-lucide="activity"></i> Security Event Log</h3>
+          <div class="event-log-container" id="eventLogContainer">
+            <div class="log-entry">
+              <span class="log-time">Now</span>
+              <span class="log-tag info">SYSTEM</span>
+              <span class="log-msg">OmniLock simulator initialized ready.</span>
+            </div>
+          </div>
+          <button class="clear-log-btn" id="clearLogBtn">Clear Log</button>
+        </div>
+
+        <div class="panel-section help-section">
+          <h3><i data-lucide="info"></i> Quick Tips</h3>
+          <ul class="tip-list">
+            <li><strong>PIN:</strong> Click keypad or type numbers on your keyboard (1234).</li>
+            <li><strong>Pattern:</strong> Drag mouse across 3x3 dots. Try Z-shape!</li>
+            <li><strong>Fingerprint:</strong> Press and hold the sensor icon until progress ring fills.</li>
+            <li><strong>Face ID:</strong> Click or press Space to trigger 3D laser scan.</li>
+            <li><strong>Physical Keys:</strong> Click the Power button on the right edge or press <kbd>Space</kbd> / <kbd>Esc</kbd> to lock/wake.</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
