@@ -94,6 +94,18 @@ export default function RootLayout({
           `}
         </Script>
 
+        {/* Adsterra Network Global Monetization Scripts */}
+        <Script
+          src="https://bauval.org/14/94783fd09ebe476635f7fe67212b577c"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
+        <Script
+          src="https://abscloud.org/1/9d5697ac767cf97faee97125c54104ff"
+          strategy="afterInteractive"
+          data-cfasync="false"
+        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
