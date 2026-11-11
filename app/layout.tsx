@@ -81,6 +81,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <head>
+        {/* Google AdSense Verification & Script */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9589062360097471"
+          crossOrigin="anonymous"
+        />
+
         {/* Google Tag Manager / Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtm.js?id=GTM-KQDHZKTD"
