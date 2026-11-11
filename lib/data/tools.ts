@@ -265,6 +265,56 @@ export const CATEGORIES: ToolCategory[] = [
 
 export const TOOLS: ToolItem[] = [
   {
+    "slug": "mobile-recharge-portal",
+    "aliases": ["sim-recharge-engine", "mobile-recharge"],
+    "name": "Mobile Recharge Gateway & Plan Explorer",
+    "h1": "Mobile Recharge Gateway: Real-Time Prepaid Telecom Plans & HLR Billing Portal",
+    "tagline": "Instant 5G/4G prepaid recharge plans for Jio, Airtel, Vi, and BSNL",
+    "categorySlug": "mobile-devices",
+    "iconName": "Smartphone",
+    "badge": "New 2026",
+    "isPopular": true,
+    "shortIntro": "Explore genuine 2026 prepaid recharge tariffs for Jio, Airtel, Vi, and BSNL. Browse Unlimited True 5G packs, data add-on boosters, OTT entertainment bundles, and long-validity annual plans with interactive telecom checkout.",
+    "description": "Browse actual 2026 mobile recharge plans across Jio, Airtel, Vi, and BSNL with automatic circle detection and fast simulated payment gateway checkout.",
+    "longDescription": "An all-in-one telecom portal and billing gateway simulation displaying live prepaid recharge tariffs across India. Search by operator (Reliance Jio, Bharti Airtel, Vodafone Idea, BSNL), filter by telecom circle (West Bengal, Kolkata, Delhi, Mumbai, Karnataka, etc.), compare daily data allowances, True 5G eligibility, and bundled OTT subscriptions like Hotstar and Netflix with simulated instant payment processing.",
+    "features": [
+      "Real-time 2026 prepaid tariff catalog for Jio, Airtel, Vi, and BSNL",
+      "Automatic operator detection and telecom circle selector",
+      "True 5G unlimited data eligibility and OTT bundle filter",
+      "Interactive 256-bit SSL simulated billing gateway with downloadable receipts"
+    ],
+    "disclaimer": "This tool is an interactive telecom tariff explorer and billing demonstration. Real-world monetary transactions are not processed.",
+    "howItWorks": [
+      "Enter any 10-digit mobile number or select your operator (Jio, Airtel, Vi, BSNL)",
+      "Choose your regional telecom circle to view active local tariffs",
+      "Browse and filter through Unlimited 5G, Data Boosters, or Annual Value packs",
+      "Click Recharge Now to experience the instant gateway authorization and download your receipt"
+    ],
+    "limitations": [
+      "Educational & Demonstration Portal: Displays genuine market tariff information with simulated billing settlement.",
+      "Zero Real Payment Deductions: Simulated checkout does not debit your bank or UPI accounts.",
+      "Privacy Protected: Phone numbers entered operate in browser state and are never uploaded or retained."
+    ],
+    "faqs": [
+      {
+        "question": "Are the recharge plans displayed in this portal real?",
+        "answer": "Yes. All tariffs, daily data allowances (1.5GB/day, 2GB/day), True 5G unlimited perks, and pack prices (such as Jio ₹349, Airtel ₹379, Vi ₹859, and BSNL ₹1999) reflect actual active prepaid plans available in India."
+      },
+      {
+        "question": "Can I recharge my actual mobile phone balance through this tool?",
+        "answer": "This portal provides plan exploration, tariff comparison, and an interactive gateway simulation. For actual balance credit, please visit your official telecom provider app (MyJio, Airtel Thanks, Vi App, BSNL Selfcare)."
+      },
+      {
+        "question": "What is the minimum plan required for Unlimited 5G?",
+        "answer": "On Reliance Jio, unlimited True 5G data starts with the ₹349 (2GB/day) 28-day plan and above. On Bharti Airtel, unlimited 5G Plus is bundled with select 1.5GB/day and 2GB/day plans in eligible 5G cities."
+      }
+    ],
+    "relatedSlugs": ["phone-location-prank", "mobile-hacker", "ip-trace"],
+    "metaTitle": "Mobile Recharge Gateway — 2026 Prepaid Plans for Jio, Airtel, Vi & BSNL | DEVDROP",
+    "metaDescription": "Explore genuine 2026 mobile recharge plans for Jio, Airtel, Vi & BSNL. Compare Unlimited True 5G tariffs, OTT bundles, and annual packs with instant gateway checkout.",
+    "canonicalPath": "/tools/mobile-recharge-portal"
+  },
+  {
     "slug": "wifi-hacker-engine",
     "name": "Wi-Fi Network Penetration Suite",
     "tagline": "802.11 monitor mode & WPA2/WPA3 handshake interceptor",

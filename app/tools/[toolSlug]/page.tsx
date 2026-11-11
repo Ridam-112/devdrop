@@ -27,6 +27,7 @@ import { IpTraceSim } from "@/components/tools/IpTraceSim";
 import { PasswordCrackerSim } from "@/components/tools/PasswordCrackerSim";
 import { LieDetectorSim } from "@/components/tools/LieDetectorSim";
 import { HackerTerminalSim } from "@/components/tools/HackerTerminalSim";
+import { MobileRechargeSim } from "@/components/tools/MobileRechargeSim";
 
 // Expanded Category Engines
 import { WifiSimulatorEngine } from "@/components/tools/WifiSimulatorEngine";
@@ -217,6 +218,10 @@ export default function ToolDetailPage({ params }: Props) {
       case "fake-hacker-terminal":
       case "hacker-terminal":
         return <HackerTerminalSim />;
+      case "mobile-recharge-portal":
+      case "sim-recharge-engine":
+      case "mobile-recharge":
+        return <MobileRechargeSim />;
       default:
         switch (tool.categorySlug) {
           case "wifi-network":

@@ -5,7 +5,7 @@
 ## Platform Overview
 - Canonical Domain: https://devdrop.online
 - Sitemap: https://devdrop.online/sitemap.xml
-- Total Diagnostic Tools: 87
+- Total Diagnostic Tools: 88
 - Architecture: Next.js 14, Client-Side HTML5 Canvas / Web APIs
 - Privacy Policy: No cookies, no server tracking, 100% in-browser processing
 
@@ -54,6 +54,7 @@ Verified blue badge previews, viral followers counters, account recovery simulat
 ### Mobile Hardware & Security
 Smartphone lockscreen PIN pads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.
 
+- [Mobile Recharge Gateway & Plan Explorer](https://devdrop.online/tools/mobile-recharge-portal): Browse actual 2026 mobile recharge plans across Jio, Airtel, Vi, and BSNL with automatic circle detection and fast simulated payment gateway checkout.
 - [Satellite Telemetry Coordinate Triangulator](https://devdrop.online/tools/phone-location-tool): Triangulate target coordinates using live orbital satellites, radio carrier frequency analysis, and real-time radar sweep displays.
 - [Mobile Kernel & Keystore Security Auditor](https://devdrop.online/tools/mobile-hacker): Perform deep live kernel memory inspection, sandbox isolation tests, and hardware keystore audits across popular mobile hardware.
 - [Smartphone Screen Lock Interface](https://devdrop.online/tools/phone-unlock-engine): Interactive virtual smartphone lockscreen featuring a 4-digit PIN keypad, in-display optical fingerprint scanner, and rate-limiting lockout timer.
