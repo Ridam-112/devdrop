@@ -16,17 +16,17 @@ import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 import { LiveSearchBar } from "@/components/LiveSearchBar";
 
 export const metadata: Metadata = {
-  title: "HACKVERSE — Enter the Digital Underground | Cyber Simulator Platform",
+  title: "DEVDROP — Enter the Digital Underground | Cyber Simulator Platform",
   description:
     "Explore 80+ interactive cybersecurity tools, orbital satellite tracking radars, virtual smartphone diagnostics, and terminal command environments.",
   alternates: {
-    canonical: "https://hackverse-sim.vercel.app",
+    canonical: "https://devdrop.vercel.app",
   },
   openGraph: {
-    title: "HACKVERSE — Enter the Digital Underground",
+    title: "DEVDROP — Enter the Digital Underground",
     description:
       "Explore 80+ interactive cybersecurity tools, orbital satellite tracking radars, and terminal command environments.",
-    url: "https://hackverse-sim.vercel.app",
+    url: "https://devdrop.vercel.app",
     type: "website",
   },
 };
@@ -195,7 +195,7 @@ export default function HomePage() {
               Architecture & Transparency
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              How HACKVERSE Tools Work
+              How DEVDROP Tools Work
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-2">
               Every tool executes in your web browser. No external servers are breached, no data is stored, and personal privacy is strictly maintained.

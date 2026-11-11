@@ -6,7 +6,7 @@ const CATEGORIES = [
     slug: "wifi-network",
     name: "Wi-Fi & Network Pranks",
     h1: "Wi-Fi & Network Security Simulators",
-    metaTitle: "Wi-Fi & Network Security Simulators | HACKVERSE",
+    metaTitle: "Wi-Fi & Network Security Simulators | DEVDROP",
     metaDescription: "Explore 802.11 monitor mode, WPA handshake interception, spectrum radars, and router gateway diagnostic simulators in a safe environment.",
     description: "802.11 beacon sniffers, WPA handshake crackers, signal radars, router admin gateways, and packet attack simulators.",
     longDescription: "Dive into our comprehensive collection of 802.11 wireless network and routing simulators. Each tool in this category demonstrates fundamental networking and cybersecurity concepts such as RF spectrum utilization, WPA2/WPA3 4-way EAPOL handshakes, PMKID hashing, and gateway administration.",
@@ -30,7 +30,7 @@ const CATEGORIES = [
     slug: "gaming-sims",
     name: "Free Fire & BGMI Gaming",
     h1: "Free Fire & BGMI Gaming Data Simulators",
-    metaTitle: "Free Fire & BGMI Gaming Simulators & Generators | HACKVERSE",
+    metaTitle: "Free Fire & BGMI Gaming Simulators & Generators | DEVDROP",
     metaDescription: "Experience esports tournament predictors, cosmetic armory loaders, simulated UC and Diamond air-drops, and Conqueror rank calculators.",
     description: "Esports tournament predictors, fake UC & Diamond generators, Grandmaster rank boosters, and cosmetic skin unlockers.",
     longDescription: "Our gaming entertainment hub brings esports and battle royale enthusiasts an immersive array of telemetry and cosmetic inspection tools. Experience simulated UC air-drops, Free Fire diamond top-ups, Grandmaster tier ELO calculators, and rare weapon armory previews.",
@@ -42,11 +42,11 @@ const CATEGORIES = [
       },
       {
         question: "Can my gaming account get banned by using this website?",
-        answer: "Not at all. Because HACKVERSE runs entirely locally in your browser and never connects to game servers or asks for your account login, your gaming account is 100% safe."
+        answer: "Not at all. Because DEVDROP runs entirely locally in your browser and never connects to game servers or asks for your account login, your gaming account is 100% safe."
       },
       {
         question: "Do I need to enter my game password or OTP?",
-        answer: "Never. HACKVERSE will never request passwords, OTPs, or authentication cookies. Only cosmetic public gamer tags or UIDs are accepted for simulated demonstrations."
+        answer: "Never. DEVDROP will never request passwords, OTPs, or authentication cookies. Only cosmetic public gamer tags or UIDs are accepted for simulated demonstrations."
       }
     ]
   },
@@ -54,7 +54,7 @@ const CATEGORIES = [
     slug: "social-media",
     name: "Social Media Pranks",
     h1: "Social Media Security & Profile Simulators",
-    metaTitle: "Social Media Profile & Verification Simulators | HACKVERSE",
+    metaTitle: "Social Media Profile & Verification Simulators | DEVDROP",
     metaDescription: "Simulate verified blue badges, viral follower count surges, 2FA account recovery codes, and public social metadata security audits.",
     description: "Verified blue badge previews, viral followers counters, account recovery simulators, and profile audit suites.",
     longDescription: "Explore public metadata analysis, profile verification badges, and account security hygiene audits. Our social media simulators demonstrate how OpenGraph data is retrieved, how credential stuffing attacks operate, and why multi-factor authentication is crucial.",
@@ -62,7 +62,7 @@ const CATEGORIES = [
     faqs: [
       {
         question: "Can these tools access private social media accounts?",
-        answer: "No. HACKVERSE never connects to private social media APIs or databases. It is technically impossible to access private messages or accounts through a third-party website without official authorization."
+        answer: "No. DEVDROP never connects to private social media APIs or databases. It is technically impossible to access private messages or accounts through a third-party website without official authorization."
       },
       {
         question: "How do I get an actual verified blue tick on Instagram or X?",
@@ -78,7 +78,7 @@ const CATEGORIES = [
     slug: "mobile-devices",
     name: "Mobile & Device Simulators",
     h1: "Smartphone Chassis & Biometric Simulators",
-    metaTitle: "Mobile Hardware & Lockscreen Simulators | HACKVERSE",
+    metaTitle: "Mobile Hardware & Lockscreen Simulators | DEVDROP",
     metaDescription: "Test virtual smartphone chassis, 4-digit PIN keypads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.",
     description: "Smartphone lockscreen PIN pads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.",
     longDescription: "Experience authentic virtual smartphone hardware interfaces. Test 4-digit PIN keypads, draw 9-dot unlock patterns, simulate TrueDepth 3D infrared facial recognition, and learn how modern mobile hardware security modules (Apple Secure Enclave, Samsung Knox, Google Titan M2) protect personal data.",
@@ -102,7 +102,7 @@ const CATEGORIES = [
     slug: "ip-intelligence",
     name: "IP & Cyber Intelligence",
     h1: "Global IP Telemetry & Cyber Intelligence Tools",
-    metaTitle: "IP Trace, DNS & Cyber Intelligence Tools | HACKVERSE",
+    metaTitle: "IP Trace, DNS & Cyber Intelligence Tools | DEVDROP",
     metaDescription: "Analyze BGP autonomous system hops, DNS records, browser HTTP headers, live cyber attack visualizers, and Shannon password entropy.",
     description: "Global IP traceroutes, recursive DNS inspectors, WHOIS lookups, live cyber warfare maps, and cyber defense quizzes.",
     longDescription: "Our cyber intelligence suite visualizes global internet infrastructure. Follow BGP packet hops across undersea fiber cables, inspect recursive DNS query hierarchies, evaluate cryptographic Shannon entropy, and test your knowledge with interactive cybersecurity defense challenges.",
@@ -126,7 +126,7 @@ const CATEGORIES = [
     slug: "money-finance",
     name: "Money & Finance Pranks",
     h1: "Financial Protocol & Payment Simulators",
-    metaTitle: "UPI Payment & Banking Statement Simulators | HACKVERSE",
+    metaTitle: "UPI Payment & Banking Statement Simulators | DEVDROP",
     metaDescription: "Generate authentic UPI payment confirmation screens, high-net-worth portfolio asset breakdowns, Bitcoin mining rigs, and ATM cash dispensers.",
     description: "Realistic UPI payment success screens, high-net-worth bank balances, Bitcoin mining rigs, and ATM cash jackpotters.",
     longDescription: "A specialized financial simulation suite designed for content creators, game developers, and film productions. Generate realistic Indian UPI payment confirmation screens (GPay, PhonePe, Paytm), customize bank balance statements, and monitor real-time ASIC Bitcoin mining rigs.",
@@ -150,7 +150,7 @@ const CATEGORIES = [
     slug: "ai-funny",
     name: "AI & Funny Pranks",
     h1: "AI Cognitive & Humorous Parody Generators",
-    metaTitle: "AI Polygraph, Mind Reader & Parody Tools | HACKVERSE",
+    metaTitle: "AI Polygraph, Mind Reader & Parody Tools | DEVDROP",
     metaDescription: "Engage with neural polygraph lie detectors, psychic mind-reading algorithms, crush love calculators, and savage hacker AI roasts.",
     description: "Neural polygraph lie detectors, mind-reading algorithms, crush love calculators, and savage AI roasts.",
     longDescription: "Unleash witty and entertaining artificial intelligence experiences. Interrogate friends with our undulating galvanic polygraph analyzer, test romantic compatibility with the FLAMES algorithm, generate elite hacker codenames, and laugh at savage developer roasts.",
@@ -174,7 +174,7 @@ const CATEGORIES = [
     slug: "virus-security",
     name: "Virus & Security Simulators",
     h1: "Cyber Threat & BSOD Security Simulators",
-    metaTitle: "BSOD Crash, Ransomware & Cyber Threat Simulators | HACKVERSE",
+    metaTitle: "BSOD Crash, Ransomware & Cyber Threat Simulators | DEVDROP",
     metaDescription: "Safely simulate Windows 11 Blue Screens (BSOD), WannaCry ransomware countdowns, falling Matrix code rain, and trojan warning alarms.",
     description: "Windows 11 Blue Screen of Death (BSOD), WannaCry ransomware timers, falling Matrix code rain, and trojan alerts.",
     longDescription: "Experience dramatic cyber threat simulations inside a completely safe browser sandbox. Trigger photorealistic fullscreen Windows 11 Blue Screen of Death crashes, WannaCry-inspired ransomware countdown timers, falling Matrix green digital code rain, and trojan intrusion alerts.",
@@ -198,7 +198,7 @@ const CATEGORIES = [
     slug: "spy-stealth",
     name: "Spy & Secret Agent Pranks",
     h1: "Secret Agent & Espionage Intelligence Ops",
-    metaTitle: "Secret Agent ID & Espionage Simulators | HACKVERSE",
+    metaTitle: "Secret Agent ID & Espionage Simulators | DEVDROP",
     metaDescription: "Generate official MI6 and CIA agent identity cards, arm 10-second self-destruct timers, zoom orbital spy satellites, and decode Morse code.",
     description: "Official MI6/CIA secret agent ID cards, 10-second self-destruct timers, orbital spy satellites, and Morse code ciphers.",
     longDescription: "Step into the classified world of international espionage. Design personalized MI6 and CIA operative credentials with Level 5 clearance, trigger Mission Impossible-style 10-second self-destruct countdowns, take over mainframes with ACCESS GRANTED screens, and transmit real Morse code beeps.",

@@ -15,7 +15,7 @@ export const Footer: React.FC = () => {
                 <Terminal className="w-4 h-4" />
               </div>
               <span className="text-base font-black font-mono tracking-wider text-white">
-                HACKVERSE
+                DEVDROP
               </span>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
@@ -88,7 +88,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
                 <Link href="/about" className="hover:text-cyber-cyan transition-colors">
-                  About HACKVERSE
+                  About DEVDROP
                 </Link>
               </li>
               <li>
@@ -120,7 +120,7 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-cyber-amber flex-shrink-0" />
             <span>
-              All tools on HACKVERSE are for educational demonstration and simulation. Review our full{" "}
+              All tools on DEVDROP are for educational demonstration and simulation. Review our full{" "}
               <Link href="/disclaimer" className="text-cyber-green underline hover:text-white">
                 Disclaimer Page
               </Link>{" "}
@@ -132,7 +132,7 @@ export const Footer: React.FC = () => {
 
         {/* Bottom Copyright */}
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-cyber-muted">
-          <p>© {new Date().getFullYear()} HACKVERSE Platform. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} DEVDROP Platform. All rights reserved.</p>
           <p>
             Designed for cybersecurity education & entertainment
           </p>

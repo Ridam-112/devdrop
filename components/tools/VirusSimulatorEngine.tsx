@@ -288,7 +288,7 @@ export const VirusSimulatorEngine: React.FC<VirusSimulatorEngineProps> = ({ tool
           </p>
 
           <div className="p-3 bg-black/80 rounded-xl border border-cyber-borderSubtle text-xs font-mono text-cyber-red">
-            THREAT SIGNATURE: Trojan.Generic.Simulator.Hackverse / CVE-2026-9912
+            THREAT SIGNATURE: Trojan.Generic.Simulator.DevDrop / CVE-2026-9912
           </div>
         </div>
       )}

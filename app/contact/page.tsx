@@ -23,7 +23,7 @@ export default function ContactPage() {
           SUPPORT & FEEDBACK
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-          Contact HACKVERSE Lab
+          Contact DEVDROP Lab
         </h1>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed">
           Have an idea for a new cyber simulator, feedback, or a partnership inquiry? We&apos;d love to hear from you.
@@ -40,10 +40,10 @@ export default function ContactPage() {
             </h3>
             <p className="text-xs text-slate-400 mb-2">General inquiries & feedback:</p>
             <a
-              href="mailto:contact@hackverse-sim.example.com"
+              href="mailto:contact@devdrop-sim.example.com"
               className="text-xs font-mono text-cyber-cyan hover:underline break-all"
             >
-              contact@hackverse-sim.example.com
+              contact@devdrop-sim.example.com
             </a>
           </div>
 

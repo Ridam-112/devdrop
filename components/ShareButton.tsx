@@ -13,7 +13,7 @@ interface ShareButtonProps {
 
 export const ShareButton: React.FC<ShareButtonProps> = ({
   title,
-  text = "Check out this cybersecurity tool on HACKVERSE!",
+  text = "Check out this cybersecurity tool on DEVDROP!",
   url,
   className = "",
   variant = "secondary",

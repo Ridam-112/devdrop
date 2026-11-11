@@ -3,9 +3,9 @@ import Link from "next/link";
 import { Terminal, Shield, Sparkles, Heart, CheckCircle2, ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "About HACKVERSE — Cybersecurity Simulation Platform",
+  title: "About DEVDROP — Cybersecurity Simulation Platform",
   description:
-    "Learn about HACKVERSE's mission to provide honest, entertaining, and educational cybersecurity-themed simulators without deception.",
+    "Learn about DEVDROP's mission to provide honest, entertaining, and educational cybersecurity-themed simulators without deception.",
 };
 
 export default function AboutPage() {
@@ -19,7 +19,7 @@ export default function AboutPage() {
           Enter the Digital Underground
         </h1>
         <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-          HACKVERSE was built for tech enthusiasts, gamers, and curious minds who love cyberpunk aesthetics, movie hacker tropes, and interactive cybersecurity demonstrations.
+          DEVDROP was built for tech enthusiasts, gamers, and curious minds who love cyberpunk aesthetics, movie hacker tropes, and interactive cybersecurity demonstrations.
         </p>
       </div>
 
@@ -33,7 +33,7 @@ export default function AboutPage() {
             Across the web, millions of users search for tools like &quot;phone location tracker&quot;, &quot;Wi-Fi password unblocker&quot;, or &quot;social account unlocker&quot;. Unfortunately, predatory websites often exploit these users by delivering dangerous spyware, deceptive surveys, or fake phishing pages.
           </p>
           <p>
-            <strong>HACKVERSE takes the opposite approach:</strong> We build transparent, beautifully designed, and hilarious simulations that allow users to experience cinematic hacker visual effects while educating them on real-world security mechanisms.
+            <strong>DEVDROP takes the opposite approach:</strong> We build transparent, beautifully designed, and hilarious simulations that allow users to experience cinematic hacker visual effects while educating them on real-world security mechanisms.
           </p>
         </section>
 
@@ -73,7 +73,7 @@ export default function AboutPage() {
             Designed for Creators, Gamers, & Tech Enthusiasts
           </h2>
           <p>
-            Whether you want to test interactive cybersecurity tools, customize a retro green-phosphor hacker terminal for a movie prop, or evaluate your knowledge against password entropy mathematics, HACKVERSE is your playground.
+            Whether you want to test interactive cybersecurity tools, customize a retro green-phosphor hacker terminal for a movie prop, or evaluate your knowledge against password entropy mathematics, DEVDROP is your playground.
           </p>
 
           <div className="mt-6 flex flex-wrap gap-4">

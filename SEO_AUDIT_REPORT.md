@@ -1,4 +1,4 @@
-# HACKVERSE SEO & Programmatic Metadata Audit Report
+# DEVDROP SEO & Programmatic Metadata Audit Report
 
 **Date Generated:** 2026-10-29T15:44:31.744Z  
 **Total Canonical Routes Audited:** 96  

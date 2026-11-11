@@ -17,11 +17,11 @@ import {
 } from "lucide-react";
 
 export const metadata = {
-  title: "Disclaimer & Parody Statement — HACKVERSE",
+  title: "Disclaimer & Parody Statement — DEVDROP",
   description:
-    "Read HACKVERSE's comprehensive disclaimer regarding our fictional cyber simulators, visual effects, and educational demonstrations.",
+    "Read DEVDROP's comprehensive disclaimer regarding our fictional cyber simulators, visual effects, and educational demonstrations.",
   alternates: {
-    canonical: "https://hackverse-sim.vercel.app/disclaimer",
+    canonical: "https://devdrop.vercel.app/disclaimer",
   },
 };
 
@@ -36,7 +36,7 @@ export default function DisclaimerPage() {
           Disclaimer, Simulation &amp; Prank Policy
         </h1>
         <p className="text-xs text-cyber-muted mt-1 font-mono">
-          Comprehensive disclosure regarding all tools, algorithms, mock outputs, and operational boundaries on HACKVERSE.
+          Comprehensive disclosure regarding all tools, algorithms, mock outputs, and operational boundaries on DEVDROP.
         </p>
       </div>
 
@@ -47,7 +47,7 @@ export default function DisclaimerPage() {
             PRIMARY COMPLIANCE &amp; SIMULATION STATEMENT:
           </p>
           <p>
-            HACKVERSE (hackverse-sim.vercel.app) is an interactive cybersecurity entertainment, video parody, educational demonstration, and harmless cyber prank platform. <strong>None of the tools, diagnostic scanners, satellite radar sweeps, terminal interfaces, gaming utilities, payment receipt generators, or network consoles on this platform possess actual hacking capabilities or interact with third-party operating systems, banks, networks, or social platforms.</strong>
+            DEVDROP (devdrop.vercel.app) is an interactive cybersecurity entertainment, video parody, educational demonstration, and harmless cyber prank platform. <strong>None of the tools, diagnostic scanners, satellite radar sweeps, terminal interfaces, gaming utilities, payment receipt generators, or network consoles on this platform possess actual hacking capabilities or interact with third-party operating systems, banks, networks, or social platforms.</strong>
           </p>
           <p className="mt-2 text-slate-400">
             All tools operate 100% locally in your browser memory as simulated visual interfaces. They are designed for harmless amusement, cinematic media production, and cybersecurity awareness.
@@ -131,7 +131,7 @@ export default function DisclaimerPage() {
           7. Privacy &amp; Zero-Data Retention
         </h2>
         <p>
-          All calculations, visual animations, and inputs on HACKVERSE run client-side in your browser. We never collect, transmit, or store passwords, OTPs, telephone numbers, gamer UIDs, or personal credentials.
+          All calculations, visual animations, and inputs on DEVDROP run client-side in your browser. We never collect, transmit, or store passwords, OTPs, telephone numbers, gamer UIDs, or personal credentials.
         </p>
       </section>
 

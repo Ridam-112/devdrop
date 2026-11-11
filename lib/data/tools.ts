@@ -49,7 +49,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "wifi-network",
     "name": "Wi-Fi & Network Security",
     "h1": "Wi-Fi & Network Security Simulators",
-    "metaTitle": "Wi-Fi & Network Security Simulators | HACKVERSE",
+    "metaTitle": "Wi-Fi & Network Security Simulators | DEVDROP",
     "metaDescription": "Explore 802.11 monitor mode, WPA handshake interception, spectrum radars, and router gateway diagnostic simulators in a safe environment.",
     "description": "802.11 beacon sniffers, WPA handshake crackers, signal radars, router admin gateways, and packet attack simulators.",
     "longDescription": "Dive into our comprehensive collection of 802.11 wireless network and routing simulators. Each tool in this category demonstrates fundamental networking and cybersecurity concepts such as RF spectrum utilization, WPA2/WPA3 4-way EAPOL handshakes, PMKID hashing, and gateway administration.",
@@ -73,7 +73,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "gaming-sims",
     "name": "Free Fire & BGMI Gaming",
     "h1": "Free Fire & BGMI Gaming Data Simulators",
-    "metaTitle": "Free Fire & BGMI Gaming Simulators & Generators | HACKVERSE",
+    "metaTitle": "Free Fire & BGMI Gaming Simulators & Generators | DEVDROP",
     "metaDescription": "Experience esports tournament predictors, cosmetic armory loaders, live UC and Diamond air-drops, and Conqueror rank calculators.",
     "description": "Esports tournament predictors, UC & Diamond generators, Grandmaster rank boosters, and cosmetic skin unlockers.",
     "longDescription": "Our gaming entertainment hub brings esports and battle royale enthusiasts an immersive array of telemetry and cosmetic inspection tools. Experience live UC air-drops, Free Fire diamond top-ups, Grandmaster tier ELO calculators, and rare weapon armory previews.",
@@ -85,11 +85,11 @@ export const CATEGORIES: ToolCategory[] = [
       },
       {
         "question": "Can my gaming account get banned by using this website?",
-        "answer": "Not at all. Because HACKVERSE runs entirely locally in your browser and never connects to game servers or asks for your account login, your gaming account is 100% safe."
+        "answer": "Not at all. Because DEVDROP runs entirely locally in your browser and never connects to game servers or asks for your account login, your gaming account is 100% safe."
       },
       {
         "question": "Do I need to enter my game password or OTP?",
-        "answer": "Never. HACKVERSE will never request passwords, OTPs, or authentication cookies. Only cosmetic public gamer tags or UIDs are accepted for live demonstrations."
+        "answer": "Never. DEVDROP will never request passwords, OTPs, or authentication cookies. Only cosmetic public gamer tags or UIDs are accepted for live demonstrations."
       }
     ]
   },
@@ -97,7 +97,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "social-media",
     "name": "Social Media Intelligence",
     "h1": "Social Media Security & Profile Simulators",
-    "metaTitle": "Social Media Profile & Verification Simulators | HACKVERSE",
+    "metaTitle": "Social Media Profile & Verification Simulators | DEVDROP",
     "metaDescription": "Simulate verified blue badges, viral follower count surges, 2FA account recovery codes, and public social metadata security audits.",
     "description": "Verified blue badge previews, viral followers counters, account recovery simulators, and profile audit suites.",
     "longDescription": "Explore public metadata analysis, profile verification badges, and account security hygiene audits. Our social media simulators demonstrate how OpenGraph data is retrieved, how credential stuffing attacks operate, and why multi-factor authentication is crucial.",
@@ -105,7 +105,7 @@ export const CATEGORIES: ToolCategory[] = [
     "faqs": [
       {
         "question": "Can these tools access private social media accounts?",
-        "answer": "No. HACKVERSE never connects to private social media APIs or databases. It is technically impossible to access private messages or accounts through a third-party website without official authorization."
+        "answer": "No. DEVDROP never connects to private social media APIs or databases. It is technically impossible to access private messages or accounts through a third-party website without official authorization."
       },
       {
         "question": "How do I get an actual verified blue tick on Instagram or X?",
@@ -121,7 +121,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "mobile-devices",
     "name": "Mobile Hardware & Security",
     "h1": "Smartphone Chassis & Biometric Simulators",
-    "metaTitle": "Mobile Hardware & Lockscreen Simulators | HACKVERSE",
+    "metaTitle": "Mobile Hardware & Lockscreen Simulators | DEVDROP",
     "metaDescription": "Test virtual smartphone chassis, 4-digit PIN keypads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.",
     "description": "Smartphone lockscreen PIN pads, 9-dot pattern grids, biometric fingerprint sensors, and NAND photo recovery demos.",
     "longDescription": "Experience authentic virtual smartphone hardware interfaces. Test 4-digit PIN keypads, draw 9-dot unlock patterns, simulate TrueDepth 3D infrared facial recognition, and learn how modern mobile hardware security modules (Apple Secure Enclave, Samsung Knox, Google Titan M2) protect personal data.",
@@ -145,7 +145,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "ip-intelligence",
     "name": "IP & Cyber Intelligence",
     "h1": "Global IP Telemetry & Cyber Intelligence Tools",
-    "metaTitle": "IP Trace, DNS & Cyber Intelligence Tools | HACKVERSE",
+    "metaTitle": "IP Trace, DNS & Cyber Intelligence Tools | DEVDROP",
     "metaDescription": "Analyze BGP autonomous system hops, DNS records, browser HTTP headers, live cyber attack visualizers, and Shannon password entropy.",
     "description": "Global IP traceroutes, recursive DNS inspectors, WHOIS lookups, live cyber warfare maps, and cyber defense quizzes.",
     "longDescription": "Our cyber intelligence suite visualizes global internet infrastructure. Follow BGP packet hops across undersea fiber cables, inspect recursive DNS query hierarchies, evaluate cryptographic Shannon entropy, and test your knowledge with interactive cybersecurity defense challenges.",
@@ -169,7 +169,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "money-finance",
     "name": "Money & Financial Protocols",
     "h1": "Financial Protocol & Payment Simulators",
-    "metaTitle": "UPI Payment & Banking Statement Simulators | HACKVERSE",
+    "metaTitle": "UPI Payment & Banking Statement Simulators | DEVDROP",
     "metaDescription": "Generate authentic UPI payment confirmation screens, high-net-worth portfolio asset breakdowns, Bitcoin mining rigs, and ATM cash dispensers.",
     "description": "Realistic UPI payment success screens, high-net-worth bank balances, Bitcoin mining rigs, and ATM cash jackpotters.",
     "longDescription": "A specialized financial diagnostic suite designed for content creators, game developers, and film productions. Generate realistic Indian UPI payment confirmation screens (GPay, PhonePe, Paytm), customize bank balance statements, and monitor real-time ASIC Bitcoin mining rigs.",
@@ -193,7 +193,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "ai-funny",
     "name": "AI Cognitive & Social Analytics",
     "h1": "AI Cognitive & Humorous Parody Generators",
-    "metaTitle": "AI Polygraph, Mind Reader & Parody Tools | HACKVERSE",
+    "metaTitle": "AI Polygraph, Mind Reader & Parody Tools | DEVDROP",
     "metaDescription": "Engage with neural polygraph lie detectors, psychic mind-reading algorithms, crush love calculators, and savage hacker AI roasts.",
     "description": "Neural polygraph lie detectors, mind-reading algorithms, crush love calculators, and savage AI roasts.",
     "longDescription": "Unleash witty and entertaining artificial intelligence experiences. Interrogate friends with our undulating galvanic polygraph analyzer, test romantic compatibility with the FLAMES algorithm, generate elite hacker codenames, and laugh at savage developer roasts.",
@@ -217,7 +217,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "virus-security",
     "name": "Malware & Threat Security Lab",
     "h1": "Cyber Threat & BSOD Security Simulators",
-    "metaTitle": "BSOD Crash, Ransomware & Cyber Threat Simulators | HACKVERSE",
+    "metaTitle": "BSOD Crash, Ransomware & Cyber Threat Simulators | DEVDROP",
     "metaDescription": "Safely simulate Windows 11 Blue Screens (BSOD), WannaCry ransomware countdowns, falling Matrix code rain, and trojan warning alarms.",
     "description": "Windows 11 Blue Screen of Death (BSOD), WannaCry ransomware timers, falling Matrix code rain, and trojan alerts.",
     "longDescription": "Experience dramatic cyber threat simulations inside a completely safe browser sandbox. Trigger photorealistic fullscreen Windows 11 Blue Screen of Death crashes, WannaCry-inspired ransomware countdown timers, falling Matrix green digital code rain, and trojan intrusion alerts.",
@@ -241,7 +241,7 @@ export const CATEGORIES: ToolCategory[] = [
     "slug": "spy-stealth",
     "name": "Classified Espionage Operations",
     "h1": "Secret Agent & Espionage Intelligence Ops",
-    "metaTitle": "Secret Agent ID & Espionage Simulators | HACKVERSE",
+    "metaTitle": "Secret Agent ID & Espionage Simulators | DEVDROP",
     "metaDescription": "Generate official MI6 and CIA agent identity cards, arm 10-second self-destruct timers, zoom orbital spy satellites, and decode Morse code.",
     "description": "Official MI6/CIA secret agent ID cards, 10-second self-destruct timers, orbital spy satellites, and Morse code ciphers.",
     "longDescription": "Step into the classified world of international espionage. Design personalized MI6 and CIA operative credentials with Level 5 clearance, trigger Mission Impossible-style 10-second self-destruct countdowns, take over mainframes with ACCESS GRANTED screens, and transmit real Morse code beeps.",
@@ -296,7 +296,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Wi-Fi Network Penetration Suite: 802.11 monitor mode & WPA2/WPA3 handshake interceptor",
     "shortIntro": "Experience an interactive demonstration of wi-fi hacker engine featuring 802.11 monitor mode & wpa2/wpa3 handshake interceptor. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Wi-Fi Network Penetration Suite — 802.11 monitor mode & WPA2/WPA3 handshake interceptor | HACKVERSE",
+    "metaTitle": "Wi-Fi Network Penetration Suite — 802.11 monitor mode & WPA2/WPA3 handshake interceptor | DEVDROP",
     "metaDescription": "Wi-Fi Network Penetration Suite: Simulate wireless monitor mode, beacon frame injection, and 4-way EAPOL handshake interception across local networks.",
     "canonicalPath": "/tools/wifi-hacker-engine",
     "limitations": [
@@ -348,7 +348,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Wi-Fi WPA Key Decryption Engine: GPU wordlist entropy solver & WPS PIN bruteforce engine",
     "shortIntro": "Experience an interactive demonstration of wi-fi password cracker featuring gpu wordlist entropy solver & wps pin bruteforce engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Wi-Fi WPA Key Decryption Engine — GPU wordlist entropy solver & WPS PIN bruteforce engine | HACKVERSE",
+    "metaTitle": "Wi-Fi WPA Key Decryption Engine — GPU wordlist entropy solver & WPS PIN bruteforce engine | DEVDROP",
     "metaDescription": "Wi-Fi WPA Key Decryption Engine: Simulate GPU-accelerated hashcat wordlist attacks and WPS PIN entropy testing on wireless access points.",
     "canonicalPath": "/tools/wifi-password-cracker",
     "limitations": [
@@ -400,7 +400,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Wi-Fi Spectrum Frequency Radar: 2.4 GHz, 5 GHz & Wi-Fi 6E spectrum frequency analyzer",
     "shortIntro": "Experience an interactive demonstration of wi-fi signal radar featuring 2.4 ghz, 5 ghz & wi-fi 6e spectrum frequency analyzer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Wi-Fi Spectrum Frequency Radar — 2.4 GHz, 5 GHz & Wi-Fi 6E spectrum frequency analyzer | HACKVERSE",
+    "metaTitle": "Wi-Fi Spectrum Frequency Radar — 2.4 GHz, 5 GHz & Wi-Fi 6E spectrum frequency analyzer | DEVDROP",
     "metaDescription": "Wi-Fi Spectrum Frequency Radar: Visualize wireless signal density, channel overlap, and RF attenuation across 2.4 GHz and 5 GHz frequency bands.",
     "canonicalPath": "/tools/wifi-radar",
     "limitations": [
@@ -452,7 +452,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Router Gateway Admin Exploit Console: Default gateway 192.168.1.1 penetration & firmware exploit",
     "shortIntro": "Experience an interactive demonstration of router admin hacker tool featuring default gateway 192.168.1.1 penetration & firmware exploit. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Router Gateway Admin Exploit Console — Default gateway 192.168.1.1 penetration & firmware exploit | HACKVERSE",
+    "metaTitle": "Router Gateway Admin Exploit Console — Default gateway 192.168.1.1 penetration & firmware exploit | DEVDROP",
     "metaDescription": "Router Gateway Admin Exploit Console: Simulate administrative gateway credential exploitation and BusyBox Linux kernel shell penetration.",
     "canonicalPath": "/tools/router-admin-tool",
     "limitations": [
@@ -504,7 +504,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Network Subnet Port Scanner: Subnet CIDR probe & TCP/UDP port sweep console",
     "shortIntro": "Experience an interactive demonstration of network scanner engine featuring subnet cidr probe & tcp/udp port sweep console. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Network Subnet Port Scanner — Subnet CIDR probe & TCP/UDP port sweep console | HACKVERSE",
+    "metaTitle": "Network Subnet Port Scanner — Subnet CIDR probe & TCP/UDP port sweep console | DEVDROP",
     "metaDescription": "Network Subnet Port Scanner: Discover open ports, services, and live network nodes using live SYN packet probes across a /24 subnet.",
     "canonicalPath": "/tools/network-scanner",
     "limitations": [
@@ -556,7 +556,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Connected LAN Device Explorer: LAN intrusion detection & rogue hardware identifier",
     "shortIntro": "Experience an interactive demonstration of connected devices scanner featuring lan intrusion detection & rogue hardware identifier. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Connected LAN Device Explorer — LAN intrusion detection & rogue hardware identifier | HACKVERSE",
+    "metaTitle": "Connected LAN Device Explorer — LAN intrusion detection & rogue hardware identifier | DEVDROP",
     "metaDescription": "Connected LAN Device Explorer: Inspect local subnet nodes and uncover live unauthorized devices, smart TVs, and IoT hardware on your network.",
     "canonicalPath": "/tools/connected-devices",
     "limitations": [
@@ -608,7 +608,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Wi-Fi Multi-Stream Throughput Benchmark: Bandwidth, ping jitter & multi-stream TCP throughput test",
     "shortIntro": "Experience an interactive demonstration of wi-fi speed test featuring bandwidth, ping jitter & multi-stream tcp throughput test. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Wi-Fi Multi-Stream Throughput Benchmark — Bandwidth, ping jitter & multi-stream TCP throughput test | HACKVERSE",
+    "metaTitle": "Wi-Fi Multi-Stream Throughput Benchmark — Bandwidth, ping jitter & multi-stream TCP throughput test | DEVDROP",
     "metaDescription": "Wi-Fi Multi-Stream Throughput Benchmark: Benchmark live internet bandwidth, multi-stream downlink throughput, uplink capacity, and bufferbloat latency.",
     "canonicalPath": "/tools/wifi-speed-test",
     "limitations": [
@@ -660,7 +660,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Volumetric Network Stress Tester: DDoS surge, SYN-Flood & packet volume stress testing",
     "shortIntro": "Experience an interactive demonstration of cyber network attack engine featuring ddos surge, syn-flood & packet volume stress testing. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Volumetric Network Stress Tester — DDoS surge, SYN-Flood & packet volume stress testing | HACKVERSE",
+    "metaTitle": "Volumetric Network Stress Tester — DDoS surge, SYN-Flood & packet volume stress testing | DEVDROP",
     "metaDescription": "Volumetric Network Stress Tester: Simulate massive volumetric DDoS attacks, SYN flood packet surges, and firewall mitigation thresholds.",
     "canonicalPath": "/tools/network-attack",
     "limitations": [
@@ -715,7 +715,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Free Fire Account Security Auditor: UID server lookup, cosmetic injection & tier rating auditor",
     "shortIntro": "Experience an interactive demonstration of free fire account penetration engine featuring uid server lookup, cosmetic injection & tier rating auditor. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Free Fire Account Security Auditor — UID server lookup, cosmetic injection & tier rating auditor | HACKVERSE",
+    "metaTitle": "Free Fire Account Security Auditor — UID server lookup, cosmetic injection & tier rating auditor | DEVDROP",
     "metaDescription": "Free Fire Account Security Auditor: Simulate Free Fire MAX player UID verification, anti-cheat handshake bypass, and cosmetic bundle injection.",
     "canonicalPath": "/tools/free-fire-hacker-tool",
     "limitations": [
@@ -770,7 +770,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "BGMI Battlegrounds Profile Auditor: Battlegrounds ID telemetry & Unknown Cash (UC) engine",
     "shortIntro": "Experience an interactive demonstration of bgmi account penetration engine featuring battlegrounds id telemetry & unknown cash (uc) engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "BGMI Battlegrounds Profile Auditor — Battlegrounds ID telemetry & Unknown Cash (UC) engine | HACKVERSE",
+    "metaTitle": "BGMI Battlegrounds Profile Auditor — Battlegrounds ID telemetry & Unknown Cash (UC) engine | DEVDROP",
     "metaDescription": "BGMI Battlegrounds Profile Auditor: Simulate BGMI / PUBG Mobile account telemetry lookup, Conqueror tier verification, and UC inventory synchronization.",
     "canonicalPath": "/tools/bgmi-hacker-engine",
     "limitations": [
@@ -822,7 +822,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Unknown Cash (UC) Credit Allocator: Live Unknown Cash transfer animation & inventory sync",
     "shortIntro": "Experience an interactive demonstration of uc generator engine featuring live unknown cash transfer animation & inventory sync. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Unknown Cash (UC) Credit Allocator — Live Unknown Cash transfer animation & inventory sync | HACKVERSE",
+    "metaTitle": "Unknown Cash (UC) Credit Allocator — Live Unknown Cash transfer animation & inventory sync | DEVDROP",
     "metaDescription": "Unknown Cash (UC) Credit Allocator: Generate live Unknown Cash (UC) credit transfers with authentic sound effects and server synchronization logs.",
     "canonicalPath": "/tools/fake-uc-generator",
     "limitations": [
@@ -874,7 +874,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Diamond Air-Drop Resource Loader: Free Fire diamond crate air-drop visualizer & account loader",
     "shortIntro": "Experience an interactive demonstration of diamonds generator featuring free fire diamond crate air-drop visualizer & account loader. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Diamond Air-Drop Resource Loader — Free Fire diamond crate air-drop visualizer & account loader | HACKVERSE",
+    "metaTitle": "Diamond Air-Drop Resource Loader — Free Fire diamond crate air-drop visualizer & account loader | DEVDROP",
     "metaDescription": "Diamond Air-Drop Resource Loader: Simulate Free Fire diamond airdrops, top-up bonus multiplier calculations, and elite crate unlock animations.",
     "canonicalPath": "/tools/fake-diamonds-generator",
     "limitations": [
@@ -926,7 +926,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Conqueror ELO Rank Calculator: Grandmaster / Conqueror ELO ladder calculator & badge maker",
     "shortIntro": "Experience an interactive demonstration of rank booster engine featuring grandmaster / conqueror elo ladder calculator & badge maker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Conqueror ELO Rank Calculator — Grandmaster / Conqueror ELO ladder calculator & badge maker | HACKVERSE",
+    "metaTitle": "Conqueror ELO Rank Calculator — Grandmaster / Conqueror ELO ladder calculator & badge maker | DEVDROP",
     "metaDescription": "Conqueror ELO Rank Calculator: Simulate high-tier ranked matchmaking ELO gains, win streak multipliers, and instant Conqueror badge generation.",
     "canonicalPath": "/tools/rank-booster",
     "limitations": [
@@ -978,7 +978,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Rare Cosmetic Armory Loader: Glacier M416, Cobra MP40 & X-Suit cosmetic armory loader",
     "shortIntro": "Experience an interactive demonstration of rare skin unlocker featuring glacier m416, cobra mp40 & x-suit cosmetic armory loader. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Rare Cosmetic Armory Loader — Glacier M416, Cobra MP40 & X-Suit cosmetic armory loader | HACKVERSE",
+    "metaTitle": "Rare Cosmetic Armory Loader — Glacier M416, Cobra MP40 & X-Suit cosmetic armory loader | DEVDROP",
     "metaDescription": "Rare Cosmetic Armory Loader: Unlock and inspect live Level 7 Evo Guns, Glacier hit effects, and mythic character outfits in a virtual armory.",
     "canonicalPath": "/tools/skin-unlocker",
     "limitations": [
@@ -1030,7 +1030,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Gaming ID & Combat Telemetry Inspector: Esports UID KD ratio, headshot rate & tier stats inspector",
     "shortIntro": "Experience an interactive demonstration of gaming id lookup demo featuring esports uid kd ratio, headshot rate & tier stats inspector. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Gaming ID & Combat Telemetry Inspector — Esports UID KD ratio, headshot rate & tier stats inspector | HACKVERSE",
+    "metaTitle": "Gaming ID & Combat Telemetry Inspector — Esports UID KD ratio, headshot rate & tier stats inspector | DEVDROP",
     "metaDescription": "Gaming ID & Combat Telemetry Inspector: Analyze public player statistics, combat efficiency indexes, win ratios, and match history for any gaming UID.",
     "canonicalPath": "/tools/gaming-id-lookup",
     "limitations": [
@@ -1082,7 +1082,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Esports Tournament Champion Stat Card: Tournament champion combat card & PMCO / FFWS stats maker",
     "shortIntro": "Experience an interactive demonstration of pro player stats featuring tournament champion combat card & pmco / ffws stats maker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Esports Tournament Champion Stat Card — Tournament champion combat card & PMCO / FFWS stats maker | HACKVERSE",
+    "metaTitle": "Esports Tournament Champion Stat Card — Tournament champion combat card & PMCO / FFWS stats maker | DEVDROP",
     "metaDescription": "Esports Tournament Champion Stat Card: Generate customized esports athlete stat cards with custom tournament trophies, MVP badges, and clutch ratings.",
     "canonicalPath": "/tools/pro-player-stats",
     "limitations": [
@@ -1134,7 +1134,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Anti-Cheat Server Blacklist Auditor: Anti-cheat server blacklist audit & 10-year ban diagnostic",
     "shortIntro": "Experience an interactive demonstration of gaming ban checker demo featuring anti-cheat server blacklist audit & 10-year ban diagnostic. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Anti-Cheat Server Blacklist Auditor — Anti-cheat server blacklist audit & 10-year ban diagnostic | HACKVERSE",
+    "metaTitle": "Anti-Cheat Server Blacklist Auditor — Anti-cheat server blacklist audit & 10-year ban diagnostic | DEVDROP",
     "metaDescription": "Anti-Cheat Server Blacklist Auditor: Simulate querying server anti-cheat blacklists to audit suspicious reports, hardware ID bans, and account flags.",
     "canonicalPath": "/tools/gaming-ban-checker",
     "limitations": [
@@ -1186,7 +1186,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Esports Tournament Victory Predictor: AI team win probability, bracket engine & match odds",
     "shortIntro": "Experience an interactive demonstration of esports tournament predictor featuring ai team win probability, bracket engine & match odds. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Esports Tournament Victory Predictor — AI team win probability, bracket engine & match odds | HACKVERSE",
+    "metaTitle": "Esports Tournament Victory Predictor — AI team win probability, bracket engine & match odds | DEVDROP",
     "metaDescription": "Esports Tournament Victory Predictor: Calculate live tournament bracket outcomes, team win probabilities, and Grand Finals champion predictions.",
     "canonicalPath": "/tools/tournament-predictor",
     "limitations": [
@@ -1241,7 +1241,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Instagram Public Profile Auditor: Public social metadata scanner & credential hygiene inspector",
     "shortIntro": "Experience an interactive demonstration of instagram profile security auditor featuring public social metadata scanner & credential hygiene inspector. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Instagram Public Profile Auditor — Public social metadata scanner & credential hygiene inspector | HACKVERSE",
+    "metaTitle": "Instagram Public Profile Auditor — Public social metadata scanner & credential hygiene inspector | DEVDROP",
     "metaDescription": "Instagram Public Profile Auditor: Analyze public profile parameters, engagement metadata density, and credential resilience hygiene scores for any pub...",
     "canonicalPath": "/tools/instagram-hacker-engine",
     "limitations": [
@@ -1293,7 +1293,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Facebook Graph API Token Auditor: Graph API telemetry & token validation engine",
     "shortIntro": "Experience an interactive demonstration of facebook hacker engine featuring graph api telemetry & token validation engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Facebook Graph API Token Auditor — Graph API telemetry & token validation engine | HACKVERSE",
+    "metaTitle": "Facebook Graph API Token Auditor — Graph API telemetry & token validation engine | DEVDROP",
     "metaDescription": "Facebook Graph API Token Auditor: Simulate Graph API endpoint handshakes, access token validations, and public timeline privacy audits.",
     "canonicalPath": "/tools/facebook-hacker",
     "limitations": [
@@ -1345,7 +1345,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Snapchat Ephemeral Protocol Auditor: Snap score multiplier & ephemeral streak decryptor",
     "shortIntro": "Experience an interactive demonstration of snapchat hacker engine featuring snap score multiplier & ephemeral streak decryptor. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Snapchat Ephemeral Protocol Auditor — Snap score multiplier & ephemeral streak decryptor | HACKVERSE",
+    "metaTitle": "Snapchat Ephemeral Protocol Auditor — Snap score multiplier & ephemeral streak decryptor | DEVDROP",
     "metaDescription": "Snapchat Ephemeral Protocol Auditor: Simulate multiplying your Snap score into the millions, restoring lost streaks, and decrypting ephemeral cache data.",
     "canonicalPath": "/tools/snapchat-hacker",
     "limitations": [
@@ -1397,7 +1397,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "WhatsApp Pairing Protocol Inspector: End-to-end QR code pairing & chat backup decoder",
     "shortIntro": "Experience an interactive demonstration of whatsapp hacker tool featuring end-to-end qr code pairing & chat backup decoder. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "WhatsApp Pairing Protocol Inspector — End-to-end QR code pairing & chat backup decoder | HACKVERSE",
+    "metaTitle": "WhatsApp Pairing Protocol Inspector — End-to-end QR code pairing & chat backup decoder | DEVDROP",
     "metaDescription": "WhatsApp Pairing Protocol Inspector: Simulate WhatsApp Web QR pairing, cryptographic key verification, and encrypted cloud backup analysis.",
     "canonicalPath": "/tools/whatsapp-hacker",
     "limitations": [
@@ -1449,7 +1449,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "YouTube Studio Analytics Auditor: Creator studio monetization & analytics auditor",
     "shortIntro": "Experience an interactive demonstration of youtube channel hacker engine featuring creator studio monetization & analytics auditor. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "YouTube Studio Analytics Auditor — Creator studio monetization & analytics auditor | HACKVERSE",
+    "metaTitle": "YouTube Studio Analytics Auditor — Creator studio monetization & analytics auditor | DEVDROP",
     "metaDescription": "YouTube Studio Analytics Auditor: Simulate channel subscriber count surges, 4,000 watch hours verification, and live AdSense monetization approval.",
     "canonicalPath": "/tools/youtube-hacker",
     "limitations": [
@@ -1501,7 +1501,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Live Social Followers Ticker: Real-time viral subscriber surge visualizer & ticker",
     "shortIntro": "Experience an interactive demonstration of followers counter featuring real-time viral subscriber surge visualizer & ticker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Live Social Followers Ticker — Real-time viral subscriber surge visualizer & ticker | HACKVERSE",
+    "metaTitle": "Live Social Followers Ticker — Real-time viral subscriber surge visualizer & ticker | DEVDROP",
     "metaDescription": "Live Social Followers Ticker: Watch your follower count rapidly surge from a few hundred to over 500,000 with real-time animated tickers.",
     "canonicalPath": "/tools/followers-counter",
     "limitations": [
@@ -1553,7 +1553,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Verified Blue Badge Profile Card: Celebrity verified badge profile previewer & badge maker",
     "shortIntro": "Experience an interactive demonstration of blue tick generator featuring celebrity verified badge profile previewer & badge maker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Verified Blue Badge Profile Card — Celebrity verified badge profile previewer & badge maker | HACKVERSE",
+    "metaTitle": "Verified Blue Badge Profile Card — Celebrity verified badge profile previewer & badge maker | DEVDROP",
     "metaDescription": "Verified Blue Badge Profile Card: Preview any username with an official verified blue badge, custom bio, follower statistics, and high-res layout.",
     "canonicalPath": "/tools/blue-tick-generator",
     "limitations": [
@@ -1605,7 +1605,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Digital Identity Verification Inspector: Meta & X verified badge approval generator & badge maker",
     "shortIntro": "Experience an interactive demonstration of profile verification featuring meta & x verified badge approval generator & badge maker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Digital Identity Verification Inspector — Meta & X verified badge approval generator & badge maker | HACKVERSE",
+    "metaTitle": "Digital Identity Verification Inspector — Meta & X verified badge approval generator & badge maker | DEVDROP",
     "metaDescription": "Digital Identity Verification Inspector: Simulate submitting official identification documents and passing verification approval algorithms.",
     "canonicalPath": "/tools/profile-verification",
     "limitations": [
@@ -1657,7 +1657,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Social Media Breach Exposure Scanner: Cross-platform breach disclosure checker & privacy audit",
     "shortIntro": "Experience an interactive demonstration of social media security scanner featuring cross-platform breach disclosure checker & privacy audit. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Social Media Breach Exposure Scanner — Cross-platform breach disclosure checker & privacy audit | HACKVERSE",
+    "metaTitle": "Social Media Breach Exposure Scanner — Cross-platform breach disclosure checker & privacy audit | DEVDROP",
     "metaDescription": "Social Media Breach Exposure Scanner: Audit public username exposure across social networks, paste sites, and live breach databases.",
     "canonicalPath": "/tools/social-scanner",
     "limitations": [
@@ -1709,7 +1709,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "2FA Account Recovery Protocol: 2FA bypass & emergency code generator demonstration",
     "shortIntro": "Experience an interactive demonstration of account recovery engine featuring 2fa bypass & emergency code generator demonstration. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "2FA Account Recovery Protocol — 2FA bypass & emergency code generator demonstration | HACKVERSE",
+    "metaTitle": "2FA Account Recovery Protocol — 2FA bypass & emergency code generator demonstration | DEVDROP",
     "metaDescription": "2FA Account Recovery Protocol: Simulate account recovery workflows, emergency backup code generation, and SMS OTP resilience tests.",
     "canonicalPath": "/tools/account-recovery",
     "limitations": [
@@ -1765,7 +1765,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Satellite Telemetry Coordinate Triangulator: Orbital telemetry triangulation & global radar sweep visualizer",
     "shortIntro": "Experience an interactive demonstration of satellite location tracker featuring orbital telemetry triangulation & global radar sweep visualizer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Satellite Telemetry Coordinate Triangulator — Orbital telemetry triangulation & global radar sweep visualizer | HACKVERSE",
+    "metaTitle": "Satellite Telemetry Coordinate Triangulator — Orbital telemetry triangulation & global radar sweep visualizer | DEVDROP",
     "metaDescription": "Satellite Telemetry Coordinate Triangulator: Triangulate target coordinates using live orbital satellites, radio carrier frequency analysis, and real-time radar swe...",
     "canonicalPath": "/tools/phone-location-tool",
     "limitations": [
@@ -1817,7 +1817,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Mobile Kernel & Keystore Security Auditor: Hardware diagnostic scan & kernel memory integrity inspector",
     "shortIntro": "Experience an interactive demonstration of mobile security auditor featuring hardware diagnostic scan & kernel memory integrity inspector. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Mobile Kernel & Keystore Security Auditor — Hardware diagnostic scan & kernel memory integrity inspector | HACKVERSE",
+    "metaTitle": "Mobile Kernel & Keystore Security Auditor — Hardware diagnostic scan & kernel memory integrity inspector | DEVDROP",
     "metaDescription": "Mobile Kernel & Keystore Security Auditor: Perform deep live kernel memory inspection, sandbox isolation tests, and hardware keystore audits across popular mobile ha...",
     "canonicalPath": "/tools/mobile-hacker",
     "limitations": [
@@ -1874,7 +1874,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Smartphone Screen Lock Interface: Virtual smartphone chassis & biometric challenge interface",
     "shortIntro": "Experience an interactive demonstration of forgotten screen lock engine featuring virtual smartphone chassis & biometric challenge interface. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Smartphone Screen Lock Interface — Virtual smartphone chassis & biometric challenge interface | HACKVERSE",
+    "metaTitle": "Smartphone Screen Lock Interface — Virtual smartphone chassis & biometric challenge interface | DEVDROP",
     "metaDescription": "Smartphone Screen Lock Interface: Interactive virtual smartphone lockscreen featuring a 4-digit PIN keypad, in-display optical fingerprint scanner, and r...",
     "canonicalPath": "/tools/phone-unlock-engine",
     "limitations": [
@@ -1926,7 +1926,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Android Pattern Lock Diagnostic: 9-dot pattern unlock matrix & ADB fastboot bypass demo",
     "shortIntro": "Experience an interactive demonstration of android unlock engine featuring 9-dot pattern unlock matrix & adb fastboot bypass demo. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Android Pattern Lock Diagnostic — 9-dot pattern unlock matrix & ADB fastboot bypass demo | HACKVERSE",
+    "metaTitle": "Android Pattern Lock Diagnostic — 9-dot pattern unlock matrix & ADB fastboot bypass demo | DEVDROP",
     "metaDescription": "Android Pattern Lock Diagnostic: Draw custom patterns on an interactive 9-dot grid and simulate Fastboot ADB kernel memory bypass protocols.",
     "canonicalPath": "/tools/android-unlock",
     "limitations": [
@@ -1978,7 +1978,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "iPhone Secure Enclave Passcode Diagnostic: iOS passcode chassis & Face ID TrueDepth sweep diagnostic",
     "shortIntro": "Experience an interactive demonstration of iphone unlock engine featuring ios passcode chassis & face id truedepth sweep diagnostic. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "iPhone Secure Enclave Passcode Diagnostic — iOS passcode chassis & Face ID TrueDepth sweep diagnostic | HACKVERSE",
+    "metaTitle": "iPhone Secure Enclave Passcode Diagnostic — iOS passcode chassis & Face ID TrueDepth sweep diagnostic | DEVDROP",
     "metaDescription": "iPhone Secure Enclave Passcode Diagnostic: Experience an iOS styled lockscreen with glowing keypad buttons, haptic click sounds, and Face ID scanning diagnostic.",
     "canonicalPath": "/tools/iphone-unlock",
     "limitations": [
@@ -2030,7 +2030,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "In-Display Biometric Optical Scanner: In-display optical biometric sensor & dermal ridge scanner",
     "shortIntro": "Experience an interactive demonstration of fingerprint scanner featuring in-display optical biometric sensor & dermal ridge scanner. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "In-Display Biometric Optical Scanner — In-display optical biometric sensor & dermal ridge scanner | HACKVERSE",
+    "metaTitle": "In-Display Biometric Optical Scanner — In-display optical biometric sensor & dermal ridge scanner | DEVDROP",
     "metaDescription": "In-Display Biometric Optical Scanner: Touch and hold the glowing in-display biometric sensor to simulate sub-epidermal ridge scanning and authentication.",
     "canonicalPath": "/tools/fingerprint-scanner",
     "limitations": [
@@ -2082,7 +2082,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "3D TrueDepth Facial Geometry Scanner: 3D TrueDepth dot-matrix infrared facial geometry scanner",
     "shortIntro": "Experience an interactive demonstration of face id scanner featuring 3d truedepth dot-matrix infrared facial geometry scanner. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "3D TrueDepth Facial Geometry Scanner — 3D TrueDepth dot-matrix infrared facial geometry scanner | HACKVERSE",
+    "metaTitle": "3D TrueDepth Facial Geometry Scanner — 3D TrueDepth dot-matrix infrared facial geometry scanner | DEVDROP",
     "metaDescription": "3D TrueDepth Facial Geometry Scanner: Simulate firing 30,000 infrared VCSEL dots to map facial geometry, depth mesh contours, and anti-spoofing checks.",
     "canonicalPath": "/tools/face-id-scanner",
     "limitations": [
@@ -2134,7 +2134,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "NAND Flash Deep Data Recovery Utility: NAND flash deep sector carver & unallocated space scanner",
     "shortIntro": "Experience an interactive demonstration of phone data recovery engine featuring nand flash deep sector carver & unallocated space scanner. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "NAND Flash Deep Data Recovery Utility — NAND flash deep sector carver & unallocated space scanner | HACKVERSE",
+    "metaTitle": "NAND Flash Deep Data Recovery Utility — NAND flash deep sector carver & unallocated space scanner | DEVDROP",
     "metaDescription": "NAND Flash Deep Data Recovery Utility: Simulate carving raw NAND flash memory partitions to recover deleted databases, WhatsApp chats, and media files.",
     "canonicalPath": "/tools/phone-data-recovery",
     "limitations": [
@@ -2186,7 +2186,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Photo Cache & EXIF Reconstruction Utility: Live camera roll thumbnail uneraser & EXIF restorer",
     "shortIntro": "Experience an interactive demonstration of deleted photo recovery featuring live camera roll thumbnail uneraser & exif restorer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Photo Cache & EXIF Reconstruction Utility — Live camera roll thumbnail uneraser & EXIF restorer | HACKVERSE",
+    "metaTitle": "Photo Cache & EXIF Reconstruction Utility — Live camera roll thumbnail uneraser & EXIF restorer | DEVDROP",
     "metaDescription": "Photo Cache & EXIF Reconstruction Utility: Simulate scanning SD card storage and internal photo caches to uncover and restore deleted image thumbnails.",
     "canonicalPath": "/tools/photo-recovery",
     "limitations": [
@@ -2238,7 +2238,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "RF Bug & Spy Camera Lens Detector: RF bug scanner & infrared lens glare optical sensor",
     "shortIntro": "Experience an interactive demonstration of spy camera detector demo featuring rf bug scanner & infrared lens glare optical sensor. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "RF Bug & Spy Camera Lens Detector — RF bug scanner & infrared lens glare optical sensor | HACKVERSE",
+    "metaTitle": "RF Bug & Spy Camera Lens Detector — RF bug scanner & infrared lens glare optical sensor | DEVDROP",
     "metaDescription": "RF Bug & Spy Camera Lens Detector: Simulate scanning hotel rooms and changing spaces for hidden pinhole cameras, RF bugs, and infrared night vision glares.",
     "canonicalPath": "/tools/spy-camera-detector",
     "limitations": [
@@ -2290,7 +2290,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Mobile Malware & Threat Scanner: Malware heuristics & Trojan package scanner visualizer",
     "shortIntro": "Experience an interactive demonstration of phone virus scan engine featuring malware heuristics & trojan package scanner visualizer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Mobile Malware & Threat Scanner — Malware heuristics & Trojan package scanner visualizer | HACKVERSE",
+    "metaTitle": "Mobile Malware & Threat Scanner — Malware heuristics & Trojan package scanner visualizer | DEVDROP",
     "metaDescription": "Mobile Malware & Threat Scanner: Scan live mobile applications, APK permissions, and background processes for spyware, adware, and trojans.",
     "canonicalPath": "/tools/phone-virus-scan",
     "limitations": [
@@ -2342,7 +2342,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Global BGP Traceroute Visualizer: BGP autonomous system router hop & packet latency map",
     "shortIntro": "Experience an interactive demonstration of global ip traceroute visualizer featuring bgp autonomous system router hop & packet latency map. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Global BGP Traceroute Visualizer — BGP autonomous system router hop & packet latency map | HACKVERSE",
+    "metaTitle": "Global BGP Traceroute Visualizer — BGP autonomous system router hop & packet latency map | DEVDROP",
     "metaDescription": "Global BGP Traceroute Visualizer: Track synthetic network packets across global Tier-1 internet backbones, submarine fiber optic cables, and autonomous s...",
     "canonicalPath": "/tools/ip-trace",
     "limitations": [
@@ -2394,7 +2394,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Targeted Street Coordinate Locator: Hyper-targeted street-level GPS coordinate lock engine",
     "shortIntro": "Experience an interactive demonstration of exact location finder featuring hyper-targeted street-level gps coordinate lock engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Targeted Street Coordinate Locator — Hyper-targeted street-level GPS coordinate lock engine | HACKVERSE",
+    "metaTitle": "Targeted Street Coordinate Locator — Hyper-targeted street-level GPS coordinate lock engine | DEVDROP",
     "metaDescription": "Targeted Street Coordinate Locator: Simulate zooming from high orbit down to street-level coordinates with tactical crosshairs and satellite telemetry feeds.",
     "canonicalPath": "/tools/exact-location-finder",
     "limitations": [
@@ -2449,7 +2449,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Cyberpunk Underground Terminal CLI: Interactive command-line CLI with live security exploits",
     "shortIntro": "Experience an interactive demonstration of cyberpunk hacker terminal featuring interactive command-line cli with live security exploits. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Cyberpunk Underground Terminal CLI — Interactive command-line CLI with live security exploits | HACKVERSE",
+    "metaTitle": "Cyberpunk Underground Terminal CLI — Interactive command-line CLI with live security exploits | DEVDROP",
     "metaDescription": "Cyberpunk Underground Terminal CLI: Authentic retro CRT terminal interface supporting command-line tools like scan, decrypt, inject, telemetry, and access overri...",
     "canonicalPath": "/tools/fake-hacker-terminal",
     "limitations": [
@@ -2501,7 +2501,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Digital Footprint Exposure Analyzer: Public OSINT exposure & breach footprint audit engine",
     "shortIntro": "Experience an interactive demonstration of digital footprint education demo featuring public osint exposure & breach footprint audit engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Digital Footprint Exposure Analyzer — Public OSINT exposure & breach footprint audit engine | HACKVERSE",
+    "metaTitle": "Digital Footprint Exposure Analyzer — Public OSINT exposure & breach footprint audit engine | DEVDROP",
     "metaDescription": "Digital Footprint Exposure Analyzer: Inspect live public records, search engine caches, and online presence vectors to understand your privacy footprint.",
     "canonicalPath": "/tools/digital-footprint",
     "limitations": [
@@ -2553,8 +2553,8 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Recursive DNS Record Resolver: Real-time recursive DNS record query & MX/A/TXT records",
     "shortIntro": "Experience an interactive demonstration of dns lookup featuring real-time recursive dns record query & mx/a/txt records. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Recursive DNS Record Resolver — Real-time recursive DNS record query & MX/A/TXT records | HACKVERSE",
-    "metaDescription": "Recursive DNS Record Resolver: Query and inspect A, AAAA, MX, TXT, NS, and CNAME records with authoritative nameserver latency telemetry. Explore safe cyber simulations on HACKVERSE.",
+    "metaTitle": "Recursive DNS Record Resolver — Real-time recursive DNS record query & MX/A/TXT records | DEVDROP",
+    "metaDescription": "Recursive DNS Record Resolver: Query and inspect A, AAAA, MX, TXT, NS, and CNAME records with authoritative nameserver latency telemetry. Explore safe cyber simulations on DEVDROP.",
     "canonicalPath": "/tools/dns-lookup",
     "limitations": [
       "Educational & Entertainment Diagnostic: Operates purely in-memory as a demonstration of Recursive DNS Record Resolver.",
@@ -2605,7 +2605,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Domain WHOIS & Registrar Inspector: Live WHOIS registrar & expiration telemetry inspector",
     "shortIntro": "Experience an interactive demonstration of domain information lookup featuring live whois registrar & expiration telemetry inspector. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Domain WHOIS & Registrar Inspector — Live WHOIS registrar & expiration telemetry inspector | HACKVERSE",
+    "metaTitle": "Domain WHOIS & Registrar Inspector — Live WHOIS registrar & expiration telemetry inspector | DEVDROP",
     "metaDescription": "Domain WHOIS & Registrar Inspector: Audit domain registration details, registrar status, expiration timetables, and ICANN privacy protection.",
     "canonicalPath": "/tools/domain-lookup",
     "limitations": [
@@ -2657,7 +2657,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "HTTP Protocol Header & TLS Inspector: Client browser headers, TLS cipher & SSL analyzer",
     "shortIntro": "Experience an interactive demonstration of http header inspector featuring client browser headers, tls cipher & ssl analyzer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "HTTP Protocol Header & TLS Inspector — Client browser headers, TLS cipher & SSL analyzer | HACKVERSE",
+    "metaTitle": "HTTP Protocol Header & TLS Inspector — Client browser headers, TLS cipher & SSL analyzer | DEVDROP",
     "metaDescription": "HTTP Protocol Header & TLS Inspector: Analyze HTTP request headers, browser user-agent strings, TLS ciphers, and security flags (CSP, HSTS).",
     "canonicalPath": "/tools/http-inspector",
     "limitations": [
@@ -2712,7 +2712,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Password Cryptographic Entropy Analyzer: Shannon entropy bit-calculator & offline crack-time estimator",
     "shortIntro": "Experience an interactive demonstration of password strength checker featuring shannon entropy bit-calculator & offline crack-time estimator. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Password Cryptographic Entropy Analyzer — Shannon entropy bit-calculator & offline crack-time estimator | HACKVERSE",
+    "metaTitle": "Password Cryptographic Entropy Analyzer — Shannon entropy bit-calculator & offline crack-time estimator | DEVDROP",
     "metaDescription": "Password Cryptographic Entropy Analyzer: Calculate mathematical Shannon entropy, charset permutations, and estimated brute-force crack time against modern RTX 4090 cl...",
     "canonicalPath": "/tools/password-strength-checker",
     "limitations": [
@@ -2764,7 +2764,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Global Cyber Attack Warfare Map: Live Norse-style global cyber warfare map & threat streams",
     "shortIntro": "Experience an interactive demonstration of cyber attack visualizer featuring live norse-style global cyber warfare map & threat streams. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Global Cyber Attack Warfare Map — Live Norse-style global cyber warfare map & threat streams | HACKVERSE",
+    "metaTitle": "Global Cyber Attack Warfare Map — Live Norse-style global cyber warfare map & threat streams | DEVDROP",
     "metaDescription": "Global Cyber Attack Warfare Map: Watch glowing packet arcs fire between international nodes, simulating global DDoS attacks, botnet telemetry, and zero-day...",
     "canonicalPath": "/tools/cyber-attack-visualizer",
     "limitations": [
@@ -2816,7 +2816,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Cyber Defense Certification Challenge: Interactive 10-question cyber defense certification challenge",
     "shortIntro": "Experience an interactive demonstration of cybersecurity quiz featuring interactive 10-question cyber defense certification challenge. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Cyber Defense Certification Challenge — Interactive 10-question cyber defense certification challenge | HACKVERSE",
+    "metaTitle": "Cyber Defense Certification Challenge — Interactive 10-question cyber defense certification challenge | DEVDROP",
     "metaDescription": "Cyber Defense Certification Challenge: Test your cybersecurity knowledge across phishing detection, password hygiene, network security, and cryptography.",
     "canonicalPath": "/tools/cybersecurity-quiz",
     "limitations": [
@@ -2868,7 +2868,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "TCP Port & Firewall Vulnerability Scanner: TCP SYN/ACK open port vulnerability mapper & service probe",
     "shortIntro": "Experience an interactive demonstration of port scanner engine featuring tcp syn/ack open port vulnerability mapper & service probe. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "TCP Port & Firewall Vulnerability Scanner — TCP SYN/ACK open port vulnerability mapper & service probe | HACKVERSE",
+    "metaTitle": "TCP Port & Firewall Vulnerability Scanner — TCP SYN/ACK open port vulnerability mapper & service probe | DEVDROP",
     "metaDescription": "TCP Port & Firewall Vulnerability Scanner: Simulate probing standard TCP ports (21, 22, 25, 80, 443, 3306, 8080) to detect open services and firewall rules.",
     "canonicalPath": "/tools/port-scanner",
     "limitations": [
@@ -2920,7 +2920,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Bank Account Balance Statement Previewer: Custom account balance screenshot maker & statement viewer",
     "shortIntro": "Experience an interactive demonstration of bank balance generator featuring custom account balance screenshot maker & statement viewer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Bank Account Balance Statement Previewer — Custom account balance screenshot maker & statement viewer | HACKVERSE",
+    "metaTitle": "Bank Account Balance Statement Previewer — Custom account balance screenshot maker & statement viewer | DEVDROP",
     "metaDescription": "Bank Account Balance Statement Previewer: Generate customized bank account balance screens with your chosen bank name, account number, and balance in millions.",
     "canonicalPath": "/tools/bank-balance-generator",
     "limitations": [
@@ -2972,7 +2972,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "UPI Payment Transaction Receipt Generator: Realistic GPay / PhonePe / Paytm tick & audio chime",
     "shortIntro": "Experience an interactive demonstration of upi payment success screen featuring realistic gpay / phonepe / paytm tick & audio chime. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "UPI Payment Transaction Receipt Generator — Realistic GPay / PhonePe / Paytm tick & audio chime | HACKVERSE",
+    "metaTitle": "UPI Payment Transaction Receipt Generator — Realistic GPay / PhonePe / Paytm tick & audio chime | DEVDROP",
     "metaDescription": "UPI Payment Transaction Receipt Generator: Generate realistic UPI payment confirmation screens with authentic green checkmarks, transaction UTR numbers, and payme...",
     "canonicalPath": "/tools/fake-upi-success",
     "limitations": [
@@ -3024,7 +3024,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "High-Net-Worth Portfolio Tracker: High-net-worth portfolio asset visualizer & wealth tracker",
     "shortIntro": "Experience an interactive demonstration of millionaire engine featuring high-net-worth portfolio asset visualizer & wealth tracker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "High-Net-Worth Portfolio Tracker — High-net-worth portfolio asset visualizer & wealth tracker | HACKVERSE",
+    "metaTitle": "High-Net-Worth Portfolio Tracker — High-net-worth portfolio asset visualizer & wealth tracker | DEVDROP",
     "metaDescription": "High-Net-Worth Portfolio Tracker: Visualize a high-net-worth portfolio with stocks, luxury real estate, venture investments, and private jet asset breakdowns.",
     "canonicalPath": "/tools/millionaire-engine",
     "limitations": [
@@ -3076,7 +3076,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Crypto Investment Profit & ROI Calculator: 1000x Moonshot meme coin gains engine & ROI visualizer",
     "shortIntro": "Experience an interactive demonstration of crypto profit calculator featuring 1000x moonshot meme coin gains engine & roi visualizer. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Crypto Investment Profit & ROI Calculator — 1000x Moonshot meme coin gains engine & ROI visualizer | HACKVERSE",
+    "metaTitle": "Crypto Investment Profit & ROI Calculator — 1000x Moonshot meme coin gains engine & ROI visualizer | DEVDROP",
     "metaDescription": "Crypto Investment Profit & ROI Calculator: Simulate putting $100 into a 1000x crypto moonshot coin and watching your wallet explode to hundreds of thousands of doll...",
     "canonicalPath": "/tools/crypto-profit-calc",
     "limitations": [
@@ -3128,7 +3128,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "ASIC Bitcoin Mining Rig Monitor: Real-time blockchain hash rate & block reward rig engine",
     "shortIntro": "Experience an interactive demonstration of bitcoin mining engine featuring real-time blockchain hash rate & block reward rig engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "ASIC Bitcoin Mining Rig Monitor — Real-time blockchain hash rate & block reward rig engine | HACKVERSE",
+    "metaTitle": "ASIC Bitcoin Mining Rig Monitor — Real-time blockchain hash rate & block reward rig engine | DEVDROP",
     "metaDescription": "ASIC Bitcoin Mining Rig Monitor: Watch a high-performance ASIC mining rig calculate SHA-256 hashes, monitor GPU temperatures, and tick up mined Satoshis.",
     "canonicalPath": "/tools/bitcoin-mining-sim",
     "limitations": [
@@ -3180,7 +3180,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "ATM Cash Dispenser Protocol Interface: Jackpotting cash dispenser sequence & cassette counter",
     "shortIntro": "Experience an interactive demonstration of atm hacker animation featuring jackpotting cash dispenser sequence & cassette counter. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "ATM Cash Dispenser Protocol Interface — Jackpotting cash dispenser sequence & cassette counter | HACKVERSE",
+    "metaTitle": "ATM Cash Dispenser Protocol Interface — Jackpotting cash dispenser sequence & cassette counter | DEVDROP",
     "metaDescription": "ATM Cash Dispenser Protocol Interface: Simulate an ATM jackpotting cash dispensing sequence with spitting bills, solenoid sound effects, and cassette counters.",
     "canonicalPath": "/tools/atm-hacker",
     "limitations": [
@@ -3232,7 +3232,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Digital Payment Invoice & Receipt Generator: Custom transaction ID, merchant & timestamp slip maker",
     "shortIntro": "Experience an interactive demonstration of payment receipt maker featuring custom transaction id, merchant & timestamp slip maker. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Digital Payment Invoice & Receipt Generator — Custom transaction ID, merchant & timestamp slip maker | HACKVERSE",
+    "metaTitle": "Digital Payment Invoice & Receipt Generator — Custom transaction ID, merchant & timestamp slip maker | DEVDROP",
     "metaDescription": "Digital Payment Invoice & Receipt Generator: Create customizable digital payment receipts with custom merchant names, itemized line items, and transaction timestamps.",
     "canonicalPath": "/tools/payment-receipt-maker",
     "limitations": [
@@ -3284,7 +3284,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "High-Leverage Futures Trading Terminal: Candlestick chart, leverage 100x & PnL engine",
     "shortIntro": "Experience an interactive demonstration of virtual trading engine featuring candlestick chart, leverage 100x & pnl engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "High-Leverage Futures Trading Terminal — Candlestick chart, leverage 100x & PnL engine | HACKVERSE",
+    "metaTitle": "High-Leverage Futures Trading Terminal — Candlestick chart, leverage 100x & PnL engine | DEVDROP",
     "metaDescription": "High-Leverage Futures Trading Terminal: Simulate trading volatile cryptocurrency or stock markets with 100x leverage, live candlestick charts, and instant PnL gains.",
     "canonicalPath": "/tools/trading-engine",
     "limitations": [
@@ -3336,7 +3336,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Credit Card Luhn Checksum Validator: Luhn algorithm checksum & BIN lookup engine",
     "shortIntro": "Experience an interactive demonstration of credit card validator featuring luhn algorithm checksum & bin lookup engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Credit Card Luhn Checksum Validator — Luhn algorithm checksum & BIN lookup engine | HACKVERSE",
+    "metaTitle": "Credit Card Luhn Checksum Validator — Luhn algorithm checksum & BIN lookup engine | DEVDROP",
     "metaDescription": "Credit Card Luhn Checksum Validator: Validate test credit card numbers locally using the mathematical Luhn MOD 10 algorithm and Bank Identification Number (BIN) ...",
     "canonicalPath": "/tools/credit-card-validator",
     "limitations": [
@@ -3389,7 +3389,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "AI Neural Polygraph & Vocal Stress Analyzer: Galvanic skin response & vocal stress frequency polygraph",
     "shortIntro": "Experience an interactive demonstration of ai neural polygraph analyzer featuring galvanic skin response & vocal stress frequency polygraph. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "AI Neural Polygraph & Vocal Stress Analyzer — Galvanic skin response & vocal stress frequency polygraph | HACKVERSE",
+    "metaTitle": "AI Neural Polygraph & Vocal Stress Analyzer — Galvanic skin response & vocal stress frequency polygraph | DEVDROP",
     "metaDescription": "AI Neural Polygraph & Vocal Stress Analyzer: Analyze vocal stress, micro-hesitations, and cognitive dissonance through an animated real-time lie detector polygraph sweep.",
     "canonicalPath": "/tools/lie-detector",
     "limitations": [
@@ -3441,7 +3441,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Neural Brainwave Mind Reader: Interactive algorithmic psychic number & thought reader",
     "shortIntro": "Experience an interactive demonstration of mind reader featuring interactive algorithmic psychic number & thought reader. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Neural Brainwave Mind Reader — Interactive algorithmic psychic number & thought reader | HACKVERSE",
+    "metaTitle": "Neural Brainwave Mind Reader — Interactive algorithmic psychic number & thought reader | DEVDROP",
     "metaDescription": "Neural Brainwave Mind Reader: Think of any secret number or concept; watch the AI read your mouse movements, scroll cadence, and reveal your exact thought.",
     "canonicalPath": "/tools/mind-reader",
     "limitations": [
@@ -3493,7 +3493,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Cyber Oracle Future Predictor: Cyber oracle fortune teller & career prophecy terminal",
     "shortIntro": "Experience an interactive demonstration of future predictor featuring cyber oracle fortune teller & career prophecy terminal. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Cyber Oracle Future Predictor — Cyber oracle fortune teller & career prophecy terminal | HACKVERSE",
+    "metaTitle": "Cyber Oracle Future Predictor — Cyber oracle fortune teller & career prophecy terminal | DEVDROP",
     "metaDescription": "Cyber Oracle Future Predictor: Ask the underground cyber oracle any question about your career, wealth, or love life to receive witty, prophetic answers.",
     "canonicalPath": "/tools/future-predictor",
     "limitations": [
@@ -3545,7 +3545,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Biometric Love Compatibility Meter: Flames algorithm & biometric love percentage meter",
     "shortIntro": "Experience an interactive demonstration of crush love calculator featuring flames algorithm & biometric love percentage meter. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Biometric Love Compatibility Meter — Flames algorithm & biometric love percentage meter | HACKVERSE",
+    "metaTitle": "Biometric Love Compatibility Meter — Flames algorithm & biometric love percentage meter | DEVDROP",
     "metaDescription": "Biometric Love Compatibility Meter: Enter your name and your crush's name to calculate relationship compatibility, emotional resonance, and marriage odds.",
     "canonicalPath": "/tools/love-calculator",
     "limitations": [
@@ -3597,7 +3597,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Friendship Loyalty & Compatibility Index: BFF loyalty quotient & personality sync challenge",
     "shortIntro": "Experience an interactive demonstration of friendship compatibility test featuring bff loyalty quotient & personality sync challenge. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Friendship Loyalty & Compatibility Index — BFF loyalty quotient & personality sync challenge | HACKVERSE",
+    "metaTitle": "Friendship Loyalty & Compatibility Index — BFF loyalty quotient & personality sync challenge | DEVDROP",
     "metaDescription": "Friendship Loyalty & Compatibility Index: Test how strong your friendship really is with a live loyalty quotient, secret-keeping score, and shared humor index.",
     "canonicalPath": "/tools/friendship-test",
     "limitations": [
@@ -3649,7 +3649,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Vocal Frequency & Acoustic Analyzer: Audio frequency pitch & vocal deception waveform meter",
     "shortIntro": "Experience an interactive demonstration of voice analyzer featuring audio frequency pitch & vocal deception waveform meter. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Vocal Frequency & Acoustic Analyzer — Audio frequency pitch & vocal deception waveform meter | HACKVERSE",
+    "metaTitle": "Vocal Frequency & Acoustic Analyzer — Audio frequency pitch & vocal deception waveform meter | DEVDROP",
     "metaDescription": "Vocal Frequency & Acoustic Analyzer: Analyze vocal pitch frequencies, micro-stutters, and emotional cadence with an oscillating acoustic frequency visualizer.",
     "canonicalPath": "/tools/voice-analyzer",
     "limitations": [
@@ -3701,7 +3701,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Underground Hacker Callsign Creator: Cyberpunk alias, handle & underground coder callsign creator",
     "shortIntro": "Experience an interactive demonstration of hacker name generator featuring cyberpunk alias, handle & underground coder callsign creator. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Underground Hacker Callsign Creator — Cyberpunk alias, handle & underground coder callsign creator | HACKVERSE",
+    "metaTitle": "Underground Hacker Callsign Creator — Cyberpunk alias, handle & underground coder callsign creator | DEVDROP",
     "metaDescription": "Underground Hacker Callsign Creator: Generate elite cyberpunk codenames, hacker handles, and underground developer aliases based on your favorite keywords.",
     "canonicalPath": "/tools/hacker-name-generator",
     "limitations": [
@@ -3753,7 +3753,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "AI Cognitive Personality Scanner: AI biometric MBTI & dark triad trait analyzer engine",
     "shortIntro": "Experience an interactive demonstration of personality scanner featuring ai biometric mbti & dark triad trait analyzer engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "AI Cognitive Personality Scanner — AI biometric MBTI & dark triad trait analyzer engine | HACKVERSE",
+    "metaTitle": "AI Cognitive Personality Scanner — AI biometric MBTI & dark triad trait analyzer engine | DEVDROP",
     "metaDescription": "AI Cognitive Personality Scanner: Discover your live AI personality type, introversion rating, and underground cyber alignment archetype.",
     "canonicalPath": "/tools/personality-scanner",
     "limitations": [
@@ -3805,7 +3805,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "AI Savage Tech & Profile Roaster: Savage hacker AI roasts your username, code & bio",
     "shortIntro": "Experience an interactive demonstration of ai roast generator featuring savage hacker ai roasts your username, code & bio. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "AI Savage Tech & Profile Roaster — Savage hacker AI roasts your username, code & bio | HACKVERSE",
+    "metaTitle": "AI Savage Tech & Profile Roaster — Savage hacker AI roasts your username, code & bio | DEVDROP",
     "metaDescription": "AI Savage Tech & Profile Roaster: Let our unfiltered AI hacker roast your Instagram username, coding habits, or bio with merciless cyber humor.",
     "canonicalPath": "/tools/ai-roast",
     "limitations": [
@@ -3857,7 +3857,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Cryptographic Fortune Cookie & Oracle: Cryptographic fortune cookie & prophecy terminal",
     "shortIntro": "Experience an interactive demonstration of random fortune generator featuring cryptographic fortune cookie & prophecy terminal. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Cryptographic Fortune Cookie & Oracle — Cryptographic fortune cookie & prophecy terminal | HACKVERSE",
+    "metaTitle": "Cryptographic Fortune Cookie & Oracle — Cryptographic fortune cookie & prophecy terminal | DEVDROP",
     "metaDescription": "Cryptographic Fortune Cookie & Oracle: Crack open an encrypted digital fortune cookie to reveal daily cryptographic wisdom and hacker prophecies.",
     "canonicalPath": "/tools/fortune-generator",
     "limitations": [
@@ -3909,7 +3909,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Cyber Aptitude & Cognitive IQ Test: Pattern recognition & cyber genius aptitude tester",
     "shortIntro": "Experience an interactive demonstration of hacker iq test featuring pattern recognition & cyber genius aptitude tester. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Cyber Aptitude & Cognitive IQ Test — Pattern recognition & cyber genius aptitude tester | HACKVERSE",
+    "metaTitle": "Cyber Aptitude & Cognitive IQ Test — Pattern recognition & cyber genius aptitude tester | DEVDROP",
     "metaDescription": "Cyber Aptitude & Cognitive IQ Test: Test your logical deduction and pattern recognition to calculate a live 140+ Hacker IQ score and genius badge.",
     "canonicalPath": "/tools/iq-test-engine",
     "limitations": [
@@ -3961,7 +3961,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Critical System Security Threat Alert: Red warning sirens, flashing trojan alerts & alarms",
     "shortIntro": "Experience an interactive demonstration of virus infection screen featuring red warning sirens, flashing trojan alerts & alarms. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Critical System Security Threat Alert — Red warning sirens, flashing trojan alerts & alarms | HACKVERSE",
+    "metaTitle": "Critical System Security Threat Alert — Red warning sirens, flashing trojan alerts & alarms | DEVDROP",
     "metaDescription": "Critical System Security Threat Alert: Trigger live critical virus alerts with flashing red sirens, loud alarm beeps, and trojan infection warnings.",
     "canonicalPath": "/tools/virus-infection",
     "limitations": [
@@ -4013,7 +4013,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Encrypted Files Security Lockdown: WannaCry style encrypted file countdown & bitcoin ransom",
     "shortIntro": "Experience an interactive demonstration of ransomware screen featuring wannacry style encrypted file countdown & bitcoin ransom. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Encrypted Files Security Lockdown — WannaCry style encrypted file countdown & bitcoin ransom | HACKVERSE",
+    "metaTitle": "Encrypted Files Security Lockdown — WannaCry style encrypted file countdown & bitcoin ransom | DEVDROP",
     "metaDescription": "Encrypted Files Security Lockdown: Simulate an authentic WannaCry ransomware takeover with ticking 3-day destruction countdown, encrypted file paths, and bitcoin a...",
     "canonicalPath": "/tools/ransomware-screen",
     "limitations": [
@@ -4065,7 +4065,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Windows Blue Screen System Crash (BSOD): Windows 11 BSOD crash with QR code & memory dump",
     "shortIntro": "Experience an interactive demonstration of blue screen engine featuring windows 11 bsod crash with qr code & memory dump. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Windows Blue Screen System Crash (BSOD) — Windows 11 BSOD crash with QR code & memory dump | HACKVERSE",
+    "metaTitle": "Windows Blue Screen System Crash (BSOD) — Windows 11 BSOD crash with QR code & memory dump | DEVDROP",
     "metaDescription": "Windows Blue Screen System Crash (BSOD): Trigger a photorealistic fullscreen Windows 11 Blue Screen of Death with QR code, stop code KERNEL_SECURITY_CHECK_FAILURE, a...",
     "canonicalPath": "/tools/bsod-engine",
     "limitations": [
@@ -4117,7 +4117,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Matrix Green Digital Stream Rain: Fullscreen falling green digital rain with glyph controls",
     "shortIntro": "Experience an interactive demonstration of matrix code rain featuring fullscreen falling green digital rain with glyph controls. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Matrix Green Digital Stream Rain — Fullscreen falling green digital rain with glyph controls | HACKVERSE",
+    "metaTitle": "Matrix Green Digital Stream Rain — Fullscreen falling green digital rain with glyph controls | DEVDROP",
     "metaDescription": "Matrix Green Digital Stream Rain: Immerse your screen in the iconic glowing green Katakana digital rain from The Matrix with speed and density controls.",
     "canonicalPath": "/tools/matrix-rain",
     "limitations": [
@@ -4169,7 +4169,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Enterprise Firewall Intrusion Alert: Firewall compromised & unauthorized kernel override alert",
     "shortIntro": "Experience an interactive demonstration of system breach alert featuring firewall compromised & unauthorized kernel override alert. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Enterprise Firewall Intrusion Alert — Firewall compromised & unauthorized kernel override alert | HACKVERSE",
+    "metaTitle": "Enterprise Firewall Intrusion Alert — Firewall compromised & unauthorized kernel override alert | DEVDROP",
     "metaDescription": "Enterprise Firewall Intrusion Alert: Simulate a high-priority enterprise SOC security alert indicating unauthorized administrative access and compromised firewall.",
     "canonicalPath": "/tools/system-breach-alert",
     "limitations": [
@@ -4221,7 +4221,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Hexadecimal Data Decryption Visualizer: Hexadecimal matrix deciphering visualizer & hash solver",
     "shortIntro": "Experience an interactive demonstration of data decryption animation featuring hexadecimal matrix deciphering visualizer & hash solver. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Hexadecimal Data Decryption Visualizer — Hexadecimal matrix deciphering visualizer & hash solver | HACKVERSE",
+    "metaTitle": "Hexadecimal Data Decryption Visualizer — Hexadecimal matrix deciphering visualizer & hash solver | DEVDROP",
     "metaDescription": "Hexadecimal Data Decryption Visualizer: Watch encrypted hexadecimal ciphertext solve in real-time into plain English text like a high-budget Hollywood hacker film.",
     "canonicalPath": "/tools/data-decryption",
     "limitations": [
@@ -4273,7 +4273,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Firewall Defense & Packet Interceptor: Defend your server firewall against incoming packet waves",
     "shortIntro": "Experience an interactive demonstration of cyber defense challenge featuring defend your server firewall against incoming packet waves. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Firewall Defense & Packet Interceptor — Defend your server firewall against incoming packet waves | HACKVERSE",
+    "metaTitle": "Firewall Defense & Packet Interceptor — Defend your server firewall against incoming packet waves | DEVDROP",
     "metaDescription": "Firewall Defense & Packet Interceptor: An arcade-style defense challenge where you block incoming malicious IP vectors and maintain server uptime.",
     "canonicalPath": "/tools/cyber-defense",
     "limitations": [
@@ -4325,7 +4325,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Phishing Detection & Threat Audit: Can you spot real vs fraudulent email security challenge?",
     "shortIntro": "Experience an interactive demonstration of phishing awareness quiz featuring can you spot real vs fraudulent email security challenge?. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Phishing Detection & Threat Audit — Can you spot real vs fraudulent email security challenge? | HACKVERSE",
+    "metaTitle": "Phishing Detection & Threat Audit — Can you spot real vs fraudulent email security challenge? | DEVDROP",
     "metaDescription": "Phishing Detection & Threat Audit: Test your ability to spot deceptive email sender addresses, PayPal invoices, and urgent spoofed security alerts.",
     "canonicalPath": "/tools/phishing-quiz",
     "limitations": [
@@ -4377,7 +4377,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "DDoS Defense & Traffic Scrubbing Center: Cloudflare-style scrub center traffic filtering engine",
     "shortIntro": "Experience an interactive demonstration of ddos mitigation engine featuring cloudflare-style scrub center traffic filtering engine. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "DDoS Defense & Traffic Scrubbing Center — Cloudflare-style scrub center traffic filtering engine | HACKVERSE",
+    "metaTitle": "DDoS Defense & Traffic Scrubbing Center — Cloudflare-style scrub center traffic filtering engine | DEVDROP",
     "metaDescription": "DDoS Defense & Traffic Scrubbing Center: Simulate activating Anycast scrub centers and rate limiters to absorb a 500 Gbps volumetric traffic flood.",
     "canonicalPath": "/tools/ddos-defense",
     "limitations": [
@@ -4429,7 +4429,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Zero-Day Malware Sandbox Environment: Isolated virtual machine malware detonation environment",
     "shortIntro": "Experience an interactive demonstration of zero-day sandbox engine featuring isolated virtual machine malware detonation environment. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Zero-Day Malware Sandbox Environment — Isolated virtual machine malware detonation environment | HACKVERSE",
+    "metaTitle": "Zero-Day Malware Sandbox Environment — Isolated virtual machine malware detonation environment | DEVDROP",
     "metaDescription": "Zero-Day Malware Sandbox Environment: Detonate live zero-day samples inside an isolated virtual machine sandbox and inspect behavioral API hooks.",
     "canonicalPath": "/tools/firewall-sandbox",
     "limitations": [
@@ -4481,7 +4481,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Orbital Reconnaissance Satellite Telemetry: NRO / NASA orbital spy camera zoom-in diagnostic",
     "shortIntro": "Experience an interactive demonstration of satellite hacker tool featuring nro / nasa orbital spy camera zoom-in diagnostic. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Orbital Reconnaissance Satellite Telemetry — NRO / NASA orbital spy camera zoom-in diagnostic | HACKVERSE",
+    "metaTitle": "Orbital Reconnaissance Satellite Telemetry — NRO / NASA orbital spy camera zoom-in diagnostic | DEVDROP",
     "metaDescription": "Orbital Reconnaissance Satellite Telemetry: Simulate hacking into an orbital reconnaissance satellite and zooming high-resolution optics anywhere on Earth.",
     "canonicalPath": "/tools/satellite-hacker",
     "limitations": [
@@ -4533,7 +4533,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Secret Agent Intelligence Credential Card: Custom MI6 / CIA agent badge with photo & clearance level",
     "shortIntro": "Experience an interactive demonstration of secret agent id generator featuring custom mi6 / cia agent badge with photo & clearance level. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Secret Agent Intelligence Credential Card — Custom MI6 / CIA agent badge with photo & clearance level | HACKVERSE",
+    "metaTitle": "Secret Agent Intelligence Credential Card — Custom MI6 / CIA agent badge with photo & clearance level | DEVDROP",
     "metaDescription": "Secret Agent Intelligence Credential Card: Create an official-looking secret agent identity badge for MI6, CIA, or Interpol with your photo, codename, and top secret cl...",
     "canonicalPath": "/tools/secret-agent-id",
     "limitations": [
@@ -4585,7 +4585,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Hardware Self-Destruct Protocol: Mission Impossible 10-second countdown with siren & explosion",
     "shortIntro": "Experience an interactive demonstration of self-destruct screen featuring mission impossible 10-second countdown with siren & explosion. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Hardware Self-Destruct Protocol — Mission Impossible 10-second countdown with siren & explosion | HACKVERSE",
+    "metaTitle": "Hardware Self-Destruct Protocol — Mission Impossible 10-second countdown with siren & explosion | DEVDROP",
     "metaDescription": "Hardware Self-Destruct Protocol: Trigger a dramatic 10-second vocal countdown with flashing nuclear sirens, warning strobes, and harmless screen glitch explosion.",
     "canonicalPath": "/tools/self-destruct",
     "limitations": [
@@ -4637,7 +4637,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Root Superuser Mainframe Access Protocol: Granting root superuser privileges & NASA mainframe takeover",
     "shortIntro": "Experience an interactive demonstration of admin access tool featuring granting root superuser privileges & nasa mainframe takeover. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Root Superuser Mainframe Access Protocol — Granting root superuser privileges & NASA mainframe takeover | HACKVERSE",
+    "metaTitle": "Root Superuser Mainframe Access Protocol — Granting root superuser privileges & NASA mainframe takeover | DEVDROP",
     "metaDescription": "Root Superuser Mainframe Access Protocol: Simulate gaining root superuser privileges on a classified mainframe, displaying ACCESS GRANTED in giant glowing green letters.",
     "canonicalPath": "/tools/admin-access",
     "limitations": [
@@ -4689,7 +4689,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Tactical Night Vision Surveillance Lens: Phosphor green surveillance lens filter & thermal HUD",
     "shortIntro": "Experience an interactive demonstration of night vision camera featuring phosphor green surveillance lens filter & thermal hud. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Tactical Night Vision Surveillance Lens — Phosphor green surveillance lens filter & thermal HUD | HACKVERSE",
+    "metaTitle": "Tactical Night Vision Surveillance Lens — Phosphor green surveillance lens filter & thermal HUD | DEVDROP",
     "metaDescription": "Tactical Night Vision Surveillance Lens: Simulate military-grade Generation-3 phosphor green night vision and thermal heat signature tracking.",
     "canonicalPath": "/tools/night-vision",
     "limitations": [
@@ -4741,7 +4741,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Wiretap Radio Frequency Interceptor: Radio frequency eavesdropping & spectral audio scanner",
     "shortIntro": "Experience an interactive demonstration of wiretap audio interceptor featuring radio frequency eavesdropping & spectral audio scanner. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Wiretap Radio Frequency Interceptor — Radio frequency eavesdropping & spectral audio scanner | HACKVERSE",
+    "metaTitle": "Wiretap Radio Frequency Interceptor — Radio frequency eavesdropping & spectral audio scanner | DEVDROP",
     "metaDescription": "Wiretap Radio Frequency Interceptor: Simulate tuning into encrypted radio frequencies and intercepting static-filled secret transmission chatter.",
     "canonicalPath": "/tools/wiretap-engine",
     "limitations": [
@@ -4793,7 +4793,7 @@ export const TOOLS: ToolItem[] = [
     ],
     "h1": "Secret Agent Morse Code Cipher: Encode/decode military Morse transmissions with audio beeps",
     "shortIntro": "Experience an interactive demonstration of secret agent morse code cipher featuring encode/decode military morse transmissions with audio beeps. Designed for educational cybersecurity visualization, creative media, and entertainment.",
-    "metaTitle": "Secret Agent Morse Code Cipher — Encode/decode military Morse transmissions with audio beeps | HACKVERSE",
+    "metaTitle": "Secret Agent Morse Code Cipher — Encode/decode military Morse transmissions with audio beeps | DEVDROP",
     "metaDescription": "Secret Agent Morse Code Cipher: Translate secret agent messages into dots and dashes with real-time synthesized military Morse audio beeps.",
     "canonicalPath": "/tools/morse-code-cipher",
     "limitations": [

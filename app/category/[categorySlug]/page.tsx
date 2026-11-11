@@ -23,12 +23,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = CATEGORIES.find((c) => c.slug === params.categorySlug);
   if (!category) {
     return {
-      title: "Category Not Found | HACKVERSE",
+      title: "Category Not Found | DEVDROP",
       robots: { index: false, follow: false },
     };
   }
 
-  const canonicalUrl = `https://hackverse-sim.vercel.app/category/${category.slug}`;
+  const canonicalUrl = `https://devdrop.vercel.app/category/${category.slug}`;
 
   return {
     title: category.metaTitle,
@@ -51,15 +51,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: category.metaTitle,
       description: category.metaDescription,
       url: canonicalUrl,
-      siteName: "HACKVERSE",
+      siteName: "DEVDROP",
       locale: "en_US",
       type: "website",
       images: [
         {
-          url: "https://hackverse-sim.vercel.app/og-image.png",
+          url: "https://devdrop.vercel.app/og-image.png",
           width: 1200,
           height: 630,
-          alt: `${category.name} category hub on HACKVERSE`,
+          alt: `${category.name} category hub on DEVDROP`,
         },
       ],
     },
@@ -79,7 +79,7 @@ export default function CategoryPage({ params }: Props) {
   }
 
   const categoryTools = TOOLS.filter((t) => t.categorySlug === category.slug);
-  const canonicalUrl = `https://hackverse-sim.vercel.app/category/${category.slug}`;
+  const canonicalUrl = `https://devdrop.vercel.app/category/${category.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -90,13 +90,13 @@ export default function CategoryPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://hackverse-sim.vercel.app",
+        item: "https://devdrop.vercel.app",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Categories",
-        item: "https://hackverse-sim.vercel.app/tools",
+        item: "https://devdrop.vercel.app/tools",
       },
       {
         "@type": "ListItem",
@@ -120,7 +120,7 @@ export default function CategoryPage({ params }: Props) {
       itemListElement: categoryTools.map((tool, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
-        url: `https://hackverse-sim.vercel.app/tools/${tool.slug}`,
+        url: `https://devdrop.vercel.app/tools/${tool.slug}`,
         name: tool.name,
       })),
     },

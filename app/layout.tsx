@@ -18,10 +18,10 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://hackverse-sim.vercel.app"),
+  metadataBase: new URL("https://devdrop.vercel.app"),
   title: {
-    default: "HACKVERSE — Enter the Digital Underground | Cybersecurity Tools & Simulators",
-    template: "%s | HACKVERSE",
+    default: "DEVDROP — Enter the Digital Underground | Cybersecurity Tools & Simulators",
+    template: "%s | DEVDROP",
   },
   description:
     "Explore interactive cybersecurity tools, satellite radar telemetry visualizers, virtual smartphone diagnostics, password entropy analyzers, and hacker terminal consoles.",
@@ -34,9 +34,9 @@ export const metadata: Metadata = {
     "cybersecurity games",
     "terminal simulator",
   ],
-  authors: [{ name: "HACKVERSE Security Labs" }],
-  creator: "HACKVERSE",
-  publisher: "HACKVERSE Media",
+  authors: [{ name: "DEVDROP Security Labs" }],
+  creator: "DEVDROP",
+  publisher: "DEVDROP Media",
   formatDetection: {
     email: false,
     address: false,
@@ -45,15 +45,15 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://hackverse-sim.vercel.app",
-    siteName: "HACKVERSE",
-    title: "HACKVERSE — Enter the Digital Underground",
+    url: "https://devdrop.vercel.app",
+    siteName: "DEVDROP",
+    title: "DEVDROP — Enter the Digital Underground",
     description:
       "Explore interactive cybersecurity tools, orbital satellite tracking, and Hollywood hacker simulators.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "HACKVERSE — Cybersecurity & Hacker Simulator Platform",
+    title: "DEVDROP — Cybersecurity & Hacker Simulator Platform",
     description:
       "Interactive cybersecurity tools, satellite telemetry simulations, and cyberpunk visual effects.",
   },
@@ -100,13 +100,13 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              name: "HACKVERSE",
-              url: "https://hackverse-sim.vercel.app",
+              name: "DEVDROP",
+              url: "https://devdrop.vercel.app",
               description:
                 "Interactive cybersecurity tools and digital telemetry benchmarks.",
               potentialAction: {
                 "@type": "SearchAction",
-                target: "https://hackverse-sim.vercel.app/tools?q={search_term_string}",
+                target: "https://devdrop.vercel.app/tools?q={search_term_string}",
                 "query-input": "required name=search_term_string",
               },
             }),

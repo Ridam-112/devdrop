@@ -12,7 +12,7 @@ export const HackerTerminalSim: React.FC = () => {
   const [isMatrixMode, setIsMatrixMode] = useState(false);
   const [history, setHistory] = useState<string[]>([
     "===========================================================",
-    "         HACKVERSE UNDERGROUND TERMINAL v4.2.0             ",
+    "         DEVDROP UNDERGROUND TERMINAL v4.2.0             ",
     "===========================================================",
     "Type 'help' to inspect available system commands.",
     "Try 'matrix', 'scan', 'decrypt', or 'access-grant'.",
@@ -123,7 +123,7 @@ export const HackerTerminalSim: React.FC = () => {
     if (!raw) return;
 
     sound.playKeyClick();
-    const promptLine = `${alias}@hackverse:~$ ${raw}`;
+    const promptLine = `${alias}@devdrop:~$ ${raw}`;
     const parts = raw.split(" ");
     const cmd = parts[0].toLowerCase();
     const args = parts.slice(1);
@@ -195,7 +195,7 @@ export const HackerTerminalSim: React.FC = () => {
           {/* Active Command Input Line */}
           <form onSubmit={handleCommandSubmit} className="flex items-center gap-2 mt-2">
             <span className="text-cyber-cyan font-bold select-none whitespace-nowrap">
-              {alias}@hackverse:~$
+              {alias}@devdrop:~$
             </span>
             <input
               ref={inputRef}

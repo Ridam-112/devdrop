@@ -1,7 +1,7 @@
 {
-  "name": "hackverse-platform",
+  "name": "devdrop-platform",
   "version": "1.0.0",
-  "description": "HACKVERSE - Cyber Prank & Hacker Simulator Platform",
+  "description": "DEVDROP - Cyber Prank & Hacker Simulator Platform",
   "private": true,
   "scripts": {
     "dev": "next dev",

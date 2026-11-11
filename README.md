@@ -1,14 +1,14 @@
-# HACKVERSE — Cyber Prank & Hacker Simulator Platform
+# DEVDROP — Cyber Prank & Hacker Simulator Platform
 
 > **Tagline:** "Enter the Digital Underground."
 
-HACKVERSE is a production-quality, responsive entertainment and educational website featuring an expanded ecosystem of **87+ interactive cybersecurity-themed prank tools**, gaming simulations, social media audit generators, network diagnostic demos, and cyberpunk visual effects.
+DEVDROP is a production-quality, responsive entertainment and educational website featuring an expanded ecosystem of **87+ interactive cybersecurity-themed prank tools**, gaming simulations, social media audit generators, network diagnostic demos, and cyberpunk visual effects.
 
 ---
 
 ## 🛡️ Ethics & Compliance Guidelines
 
-- **Entertainment & Parody Only:** HACKVERSE provides purely educational, theatrical, and satirical simulations.
+- **Entertainment & Parody Only:** DEVDROP provides purely educational, theatrical, and satirical simulations.
 - **Zero Real Access:** The platform never claims that a simulated tool has hacked a phone, accessed an Instagram account, identified a person's live location, bypassed real device encryption, or generated paid gaming currencies.
 - **Zero Sensitive Data:** We never collect, request, or store passwords, OTPs, session cookies, or GPS coordinates.
 - **Client-Side Sandbox:** All simulation algorithms run in-memory inside the browser with zero external transmission.

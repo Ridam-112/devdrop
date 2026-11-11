@@ -3,8 +3,8 @@ import Link from "next/link";
 import { Shield } from "lucide-react";
 
 export const metadata = {
-  title: "Privacy Policy — HACKVERSE",
-  description: "Read HACKVERSE's comprehensive privacy policy regarding data collection, client-side processing, and advertising standards.",
+  title: "Privacy Policy — DEVDROP",
+  description: "Read DEVDROP's comprehensive privacy policy regarding data collection, client-side processing, and advertising standards.",
 };
 
 export default function PrivacyPage() {
@@ -25,14 +25,14 @@ export default function PrivacyPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-white font-mono">1. Introduction</h2>
         <p>
-          HACKVERSE (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) operates the entertainment website hackverse-sim.vercel.app. We are dedicated to maintaining the highest privacy standards. This Privacy Policy details how information is handled when you visit our website and use our interactive cyber prank and simulation tools.
+          DEVDROP (&quot;we&quot;, &quot;our&quot;, &quot;us&quot;) operates the entertainment website devdrop.vercel.app. We are dedicated to maintaining the highest privacy standards. This Privacy Policy details how information is handled when you visit our website and use our interactive cyber prank and simulation tools.
         </p>
       </section>
 
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-white font-mono">2. Strict Zero Sensitive Data Collection Policy</h2>
         <p>
-          Unlike fraudulent websites, HACKVERSE operates under a strict principle of non-collection for tool inputs:
+          Unlike fraudulent websites, DEVDROP operates under a strict principle of non-collection for tool inputs:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-slate-300">
           <li><strong>No Passwords or Credentials:</strong> We never prompt for, collect, process, or transmit real passwords, social media access tokens, OTP codes, or session cookies.</li>
@@ -51,7 +51,7 @@ export default function PrivacyPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-white font-mono">4. Advertising and Third-Party Cookies</h2>
         <p>
-          To maintain free access to our simulators, HACKVERSE may display ads served by compliant third-party advertising partners (such as Google AdSense). These third-party vendors may use cookies, web beacons, or similar technologies to serve advertisements based on your prior visits to this and other websites.
+          To maintain free access to our simulators, DEVDROP may display ads served by compliant third-party advertising partners (such as Google AdSense). These third-party vendors may use cookies, web beacons, or similar technologies to serve advertisements based on your prior visits to this and other websites.
         </p>
         <p>
           Users may opt out of personalized advertising by visiting Google&apos;s Ads Settings (<a href="https://adssettings.google.com" target="_blank" rel="noopener noreferrer" className="text-cyber-cyan hover:underline">adssettings.google.com</a>) or via the Network Advertising Initiative opt-out portal (<a href="https://optout.networkadvertising.org" target="_blank" rel="noopener noreferrer" className="text-cyber-cyan hover:underline">optout.networkadvertising.org</a>).
@@ -68,7 +68,7 @@ export default function PrivacyPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-white font-mono">6. Contact for Privacy Matters</h2>
         <p>
-          If you have questions regarding this Privacy Policy, please reach out to us via our <Link href="/contact" className="text-cyber-green hover:underline">Contact Page</Link> or email our privacy desk at <code>privacy@hackverse-sim.example.com</code>.
+          If you have questions regarding this Privacy Policy, please reach out to us via our <Link href="/contact" className="text-cyber-green hover:underline">Contact Page</Link> or email our privacy desk at <code>privacy@devdrop-sim.example.com</code>.
         </p>
       </section>
     </div>

@@ -40,7 +40,7 @@ export const Navbar: React.FC = () => {
           <div>
             <div className="flex items-center gap-1.5">
               <span className="text-lg font-black tracking-wider text-white group-hover:text-cyber-green transition-colors font-mono">
-                HACKVERSE
+                DEVDROP
               </span>
               <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
                 PRO

@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/private/"],
     },
-    sitemap: "https://hackverse-sim.vercel.app/sitemap.xml",
+    sitemap: "https://devdrop.vercel.app/sitemap.xml",
   };
 }
