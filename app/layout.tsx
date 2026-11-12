@@ -141,6 +141,14 @@ export default function RootLayout({
           data-cfasync="false"
         />
 
+        {/* Monetag Global Ad Script */}
+        <Script
+          src="https://quge5.com/88/tag.min.js"
+          strategy="afterInteractive"
+          data-zone="309157"
+          data-cfasync="false"
+        />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
