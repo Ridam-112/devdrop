@@ -2,83 +2,141 @@ import React from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import {
-  Terminal,
-  Search,
   Sparkles,
   Shield,
+  ShieldCheck,
   Cpu,
   ArrowRight,
   CheckCircle2,
+  Lock,
+  Zap,
+  Image as ImageIcon,
+  FileText,
+  Sliders,
+  QrCode,
+  Barcode,
+  Layers,
+  Gamepad2,
+  Flame,
+  HelpCircle
 } from "lucide-react";
 import { TOOLS, CATEGORIES } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 import { LiveSearchBar } from "@/components/LiveSearchBar";
+import { HomeQuickTools } from "@/components/HomeQuickTools";
 
 export const metadata: Metadata = {
-  title: "DEVDROP — Enter the Digital Underground | Cyber Simulator Platform",
+  title: "DEVDROP — 140+ Free Developer Tools, Everyday Utilities & HTML5 Games",
   description:
-    "Explore 80+ interactive cybersecurity tools, orbital satellite tracking radars, virtual smartphone diagnostics, and terminal command environments.",
+    "Free online image compressor, photo background remover, QR code generator, barcode maker, PDF converter, JSON formatter, EMI calculator, and 140+ everyday client-side utilities with 100% privacy.",
   alternates: {
-    canonical: "https://devdrop.vercel.app",
+    canonical: "https://devdrop.online",
   },
   openGraph: {
-    title: "DEVDROP — Enter the Digital Underground",
+    title: "DEVDROP — 140+ Free Developer Tools & Everyday Utilities",
     description:
-      "Explore 80+ interactive cybersecurity tools, orbital satellite tracking radars, and terminal command environments.",
-    url: "https://devdrop.vercel.app",
+      "100% private, client-side tools for image compression, background removal, QR codes, barcodes, PDFs, and 24+ open-source HTML5 games.",
+    url: "https://devdrop.online",
     type: "website",
+    images: [
+      {
+        url: "https://devdrop.online/logo.png",
+        width: 1024,
+        height: 1024,
+        alt: "DevDrop Logo",
+      },
+    ],
   },
 };
 
 export default function HomePage() {
-  const popularTools = TOOLS.filter((t) => t.isPopular);
-  const featuredTools = TOOLS.slice(0, 4);
+  // Curated spotlight of real everyday utilities
+  const coreUtilitySlugs = [
+    "photo-bg-remover",
+    "image-compressor",
+    "qr-code-generator",
+    "barcode-generator",
+    "pdf-maker",
+    "photo-to-pdf",
+    "json-formatter",
+    "word-counter",
+    "password-generator",
+    "loan-emi-calculator",
+    "age-calculator",
+    "base64-encoder-decoder",
+  ];
+
+  const featuredUtilities = TOOLS.filter((t) => coreUtilitySlugs.includes(t.slug));
+  const popularTools = TOOLS.filter((t) => t.isPopular && !coreUtilitySlugs.includes(t.slug)).slice(0, 6);
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
       {/* 1. HERO SECTION */}
-      <section className="relative overflow-hidden pt-12 pb-16 md:pt-20 md:pb-24 border-b border-cyber-borderSubtle">
-        {/* Cyberpunk backdrop ambient lighting */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[650px] h-[350px] bg-cyber-green/10 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[300px] bg-cyber-cyan/10 blur-[110px] rounded-full pointer-events-none" />
+      <section className="relative overflow-hidden pt-12 pb-14 md:pt-16 md:pb-20 border-b border-neutral-800">
+        {/* Ambient lighting */}
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-purple-500/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[300px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
-          {/* Underground Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyber-panel/80 border border-cyber-border text-xs font-mono text-cyber-green mb-6 shadow-neon-green/20 animate-in fade-in zoom-in duration-300">
-            <span className="w-2 h-2 rounded-full bg-cyber-green animate-ping" />
-            <span>CYBER TELEMETRY & SECURITY LAB v4.2</span>
+          {/* Trust Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-xs font-mono text-emerald-400 mb-6 shadow-lg shadow-emerald-500/10">
+            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="font-semibold">140+ FREE EVERYDAY TOOLS • 100% PRIVATE • ZERO LOGS</span>
           </div>
 
-          {/* Hero Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-tight text-white mb-6 font-mono">
-            Enter the <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyber-green via-cyber-cyan to-white">Digital Underground</span>.
-          </h1>
+          {/* Hero Headline with Brand Logo */}
+          <div className="flex flex-col items-center justify-center gap-4 mb-6">
+            <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-purple-500/40 shadow-2xl shadow-purple-500/30 p-1 bg-neutral-950">
+              <img src="/logo.png" alt="DevDrop Brand" className="w-full h-full object-cover rounded-xl" />
+            </div>
 
-          {/* Supporting Subtext */}
-          <p className="text-base sm:text-lg text-slate-300/90 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Explore interactive cybersecurity tools, orbital satellite tracking radars, virtual device security challenges, and terminal command environments.
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white font-mono max-w-4xl">
+              Everyday Tools & Utilities,{" "}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-emerald-400">
+                100% In Your Browser
+              </span>
+              .
+            </h1>
+          </div>
+
+          {/* Subtitle */}
+          <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-2xl mx-auto mb-8 leading-relaxed">
+            Compress images, remove photo backgrounds with AI, generate custom QR codes & barcodes, compile PDFs, format JSON, calculate loans, and play 24+ open-source HTML5 games.
           </p>
 
           {/* Prominent Live Search Engine */}
-          <LiveSearchBar className="max-w-xl mx-auto mb-8 text-left" />
+          <LiveSearchBar className="max-w-xl mx-auto mb-6 text-left" />
 
-          {/* Primary Action Buttons */}
-          <div className="flex flex-wrap items-center justify-center gap-4">
+          {/* Trust Highlights Row */}
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-neutral-400 mb-8 font-mono">
+            <span className="flex items-center gap-1.5 text-neutral-300">
+              <ShieldCheck className="w-4 h-4 text-emerald-400" /> 100% Client-Side Privacy
+            </span>
+            <span className="flex items-center gap-1.5 text-neutral-300">
+              <Zap className="w-4 h-4 text-cyan-400" /> Zero Upload Wait Time
+            </span>
+            <span className="flex items-center gap-1.5 text-neutral-300">
+              <Lock className="w-4 h-4 text-purple-400" /> No Account Required
+            </span>
+          </div>
+
+          {/* Quick Action Navigation */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyber-green text-black font-bold font-mono text-sm tracking-wider shadow-neon-green hover:bg-cyber-green/90 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold font-mono text-xs sm:text-sm tracking-wider shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]"
             >
               <Sparkles className="w-4 h-4" />
-              <span>EXPLORE ALL TOOLS</span>
+              <span>EXPLORE ALL 140+ TOOLS</span>
             </Link>
 
             <Link
-              href="/tools/hacker-terminal"
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-cyber-panel border border-cyber-borderSubtle text-slate-200 font-mono text-sm hover:text-white hover:border-cyber-cyan/50 hover:bg-cyber-card transition-all"
+              href="/games"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-purple-500/50 text-neutral-200 hover:text-white font-mono text-xs sm:text-sm transition-all"
             >
-              <Terminal className="w-4 h-4 text-cyber-cyan" />
-              <span>LAUNCH TERMINAL CLI</span>
+              <Gamepad2 className="w-4 h-4 text-purple-400" />
+              <span>PLAY HTML5 GAMES</span>
             </Link>
           </div>
         </div>
@@ -89,22 +147,123 @@ export default function HomePage() {
         <AdvertisementSlot slotId="home-top-banner" format="horizontal" />
       </div>
 
-      {/* 2. CATEGORIES GRID */}
+      {/* 2. INTERACTIVE QUICK-TOOLS COMPONENT */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <HomeQuickTools />
+      </section>
+
+      {/* 3. FEATURED REAL EVERYDAY UTILITIES */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="flex flex-wrap items-end justify-between gap-4 mb-8">
+          <div>
+            <div className="inline-flex items-center gap-1 text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-1">
+              <Sparkles className="w-3.5 h-3.5" /> High-Utility Suite
+            </div>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+              Featured Everyday & Developer Tools
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+              Real high-performance tools ready for work, design, study, and daily productivity.
+            </p>
+          </div>
+          <Link
+            href="/tools"
+            className="text-xs font-mono font-bold text-emerald-400 hover:underline flex items-center gap-1"
+          >
+            Browse all 140+ tools <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {featuredUtilities.map((tool) => (
+            <ToolCard key={tool.slug} tool={tool} featured={true} />
+          ))}
+        </div>
+      </section>
+
+      {/* 4. SECURITY & TRUST GUARANTEES */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="rounded-2xl bg-gradient-to-br from-neutral-900/90 via-neutral-900 to-neutral-950 border border-neutral-800 p-8 sm:p-12">
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400">
+              Verified Architecture
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+              Why Professionals & Students Trust DevDrop
+            </h2>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-2">
+              Every conversion, encryption, and document operation executes locally in your browser memory sandbox.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+            <div className="p-5 rounded-xl bg-neutral-950/80 border border-neutral-800">
+              <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-white mb-2">
+                1. 100% In-Browser Privacy
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Your photos, passwords, text notes, and receipts are never uploaded to remote cloud databases. Everything runs on your machine.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-neutral-950/80 border border-neutral-800">
+              <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-white mb-2">
+                2. Instant Zero-Latency Speed
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                No file upload queues or sluggish remote server processing. Conversions and calculations happen in milliseconds.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-neutral-950/80 border border-neutral-800">
+              <div className="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
+                <Lock className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-white mb-2">
+                3. Zero Paywalls or Sign-Ups
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                No credit cards, subscriptions, or accounts required. All 140+ tools are unconditionally free for personal and commercial use.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-xl bg-neutral-950/80 border border-neutral-800">
+              <div className="w-10 h-10 rounded-lg bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 mb-4">
+                <Gamepad2 className="w-5 h-5" />
+              </div>
+              <h3 className="text-sm font-bold text-white mb-2">
+                4. 24+ Open-Source Games
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Enjoy open-source HTML5 classics (2048, Cyber Snake, Space Defender, Tetris) directly in your browser with zero installs.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 5. CATEGORIES CATALOGUE */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="flex items-end justify-between mb-8">
           <div>
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green">
-              Security Catalogue
+            <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-400">
+              Explore Everything
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              Browse by Category
+              Browse All 12 Tool Categories
             </h2>
           </div>
           <Link
             href="/tools"
-            className="text-xs font-mono font-semibold text-cyber-cyan hover:underline flex items-center gap-1"
+            className="text-xs font-mono font-semibold text-cyan-400 hover:underline flex items-center gap-1"
           >
-            View all categories <ArrowRight className="w-3.5 h-3.5" />
+            All categories <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -113,71 +272,24 @@ export default function HomePage() {
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
-              className="group p-5 rounded-2xl bg-cyber-card/70 border border-cyber-borderSubtle hover:border-cyber-green/40 hover:bg-cyber-card transition-all duration-200 flex flex-col justify-between"
+              className="group p-5 rounded-2xl bg-neutral-900/80 border border-neutral-800 hover:border-emerald-500/40 hover:bg-neutral-900 transition-all duration-200 flex flex-col justify-between"
             >
               <div>
-                <div className="w-10 h-10 rounded-xl bg-cyber-panel border border-cyber-borderSubtle flex items-center justify-center text-cyber-green group-hover:text-cyber-cyan transition-colors mb-3">
-                  <Cpu className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-xl bg-neutral-950 border border-neutral-800 flex items-center justify-center text-emerald-400 group-hover:text-cyan-400 transition-colors mb-3">
+                  <Sliders className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-white group-hover:text-cyber-green transition-colors">
+                <h3 className="text-base font-bold text-white group-hover:text-emerald-400 transition-colors">
                   {cat.name}
                 </h3>
-                <p className="text-xs text-slate-300 mt-1.5 leading-relaxed">
+                <p className="text-xs text-neutral-400 mt-1.5 leading-relaxed line-clamp-2">
                   {cat.description}
                 </p>
               </div>
 
-              <span className="text-[11px] font-mono font-semibold text-cyber-cyan mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                Explore tools <ArrowRight className="w-3 h-3" />
+              <span className="text-[11px] font-mono font-semibold text-cyan-400 mt-4 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                Open category <ArrowRight className="w-3 h-3" />
               </span>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* 3. FEATURED TOOLS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="flex items-end justify-between mb-8">
-          <div>
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-cyan">
-              Hand-picked
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              Featured Security Tools
-            </h2>
-          </div>
-          <Link
-            href="/tools"
-            className="text-xs font-mono font-semibold text-cyber-green hover:underline flex items-center gap-1"
-          >
-            See full directory <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {featuredTools.map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} featured={true} />
-          ))}
-        </div>
-      </section>
-
-      {/* 4. POPULAR SIMULATORS */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="mb-8">
-          <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-purple">
-            High Engagement
-          </span>
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-            Trending Cyber Experiences
-          </h2>
-          <p className="text-xs text-slate-300 mt-1">
-            The most utilized interactive tools across our network.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {popularTools.slice(0, 6).map((tool) => (
-            <ToolCard key={tool.slug} tool={tool} />
           ))}
         </div>
       </section>
@@ -187,55 +299,71 @@ export default function HomePage() {
         <AdvertisementSlot slotId="home-middle-banner" format="banner" />
       </div>
 
-      {/* 5. HOW IT WORKS */}
+      {/* 6. POPULAR CYBER EXPERIENCES & SIMULATORS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="rounded-2xl bg-cyber-card/80 border border-cyber-borderSubtle p-8 sm:p-12">
-          <div className="text-center max-w-2xl mx-auto mb-10">
-            <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green">
-              Architecture & Transparency
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              How DEVDROP Tools Work
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-300 mt-2">
-              Every tool executes in your web browser. No external servers are breached, no data is stored, and personal privacy is strictly maintained.
-            </p>
+        <div className="mb-8">
+          <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
+            Interactive Diagnostics
+          </span>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
+            Cybersecurity & Terminal Experiences
+          </h2>
+          <p className="text-xs text-neutral-400 mt-1">
+            Popular diagnostic visualizers, hacker terminal consoles, and telecom portals.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {popularTools.map((tool) => (
+            <ToolCard key={tool.slug} tool={tool} />
+          ))}
+        </div>
+      </section>
+
+      {/* 7. FREQUENTLY ASKED QUESTIONS */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 sm:p-10 space-y-6">
+          <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
+            <HelpCircle className="w-4 h-4" /> Transparency & Answers
           </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+            Frequently Asked Questions
+          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-5 rounded-xl bg-cyber-dark/60 border border-cyber-borderSubtle">
-              <div className="w-10 h-10 rounded-lg bg-cyber-panel flex items-center justify-center text-cyber-green mb-4">
-                <CheckCircle2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-white mb-2 font-mono">
-                1. Safe Client-Side Execution
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Are my files or images uploaded to any server?
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Inputs like telephone numbers, handles, or test strings are processed locally in browser memory. Nothing is transmitted or saved.
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                No. All image compression, QR generation, PDF compilation, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never touch our servers.
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-cyber-dark/60 border border-cyber-borderSubtle">
-              <div className="w-10 h-10 rounded-lg bg-cyber-panel flex items-center justify-center text-cyber-cyan mb-4">
-                <Cpu className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-white mb-2 font-mono">
-                2. Real-Time Telemetry & Graphics
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Is DevDrop completely free for commercial projects?
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                High-performance animations, radar sweeps, and terminal interfaces recreate cinematic cybersecurity concepts accurately.
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Yes! Every tool, generator, and code formatter on DevDrop is 100% free with no registration, subscriptions, or hidden charges.
               </p>
             </div>
 
-            <div className="p-5 rounded-xl bg-cyber-dark/60 border border-cyber-borderSubtle">
-              <div className="w-10 h-10 rounded-lg bg-cyber-panel flex items-center justify-center text-cyber-purple mb-4">
-                <Shield className="w-5 h-5" />
-              </div>
-              <h3 className="text-sm font-bold text-white mb-2 font-mono">
-                3. Clear Compliance
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                How does the Photo Background Remover work?
               </h3>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                All legal disclaimers and privacy notices are detailed on our dedicated Disclaimer page to ensure clear transparency.
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                It combines the official Remove.bg AI model with local open-source rembg color-clustering algorithms to deliver fast, crystal-clear transparent PNG cutouts.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Do generated QR codes or barcodes expire?
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Never. DevDrop generates static standard QR codes and ISO Code 128 barcodes containing direct data that remain scannable forever without intermediary redirect links.
               </p>
             </div>
           </div>

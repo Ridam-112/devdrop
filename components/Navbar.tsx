@@ -35,8 +35,12 @@ export const Navbar: React.FC = () => {
           href="/"
           className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-cyber-green/50 rounded-lg p-1"
         >
-          <div className="w-10 h-10 rounded-xl bg-cyber-dark border border-cyber-border flex items-center justify-center text-cyber-green shadow-neon-green/30 group-hover:border-cyber-green transition-all duration-300">
-            <Terminal className="w-5 h-5 group-hover:rotate-6 transition-transform duration-300" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden bg-neutral-950 border border-purple-500/40 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:border-purple-400 group-hover:shadow-purple-500/40 transition-all duration-300">
+            <img 
+              src="/logo.png" 
+              alt="DevDrop Logo" 
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
           </div>
           <div>
             <div className="flex items-center gap-1.5">

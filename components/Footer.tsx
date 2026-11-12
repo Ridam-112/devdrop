@@ -11,8 +11,8 @@ export const Footer: React.FC = () => {
           {/* Col 1: Brand & Purpose */}
           <div className="md:col-span-1 space-y-4">
             <Link href="/" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-lg bg-cyber-card border border-cyber-border flex items-center justify-center text-cyber-green">
-                <Terminal className="w-4 h-4" />
+              <div className="w-8 h-8 rounded-lg overflow-hidden bg-neutral-950 border border-purple-500/40 flex items-center justify-center shadow-md">
+                <img src="/logo.png" alt="DevDrop" className="w-full h-full object-cover" />
               </div>
               <span className="text-base font-black font-mono tracking-wider text-white">
                 DEVDROP
