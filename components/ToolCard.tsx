@@ -165,8 +165,8 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
         </p>
 
         <div className="pt-4 border-t border-cyber-borderSubtle/60 flex items-center justify-between mt-auto">
-          <span className="text-xs font-mono text-cyber-muted">
-            Simulator • Free
+          <span className="text-xs font-mono text-emerald-400/90 font-medium">
+            Free • Client-Side
           </span>
           <Link
             href={`/tools/${tool.slug}`}

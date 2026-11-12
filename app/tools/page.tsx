@@ -3,17 +3,17 @@ import { Metadata } from "next";
 import ToolsClient from "@/components/ToolsClient";
 
 export const metadata: Metadata = {
-  title: "All Cyber Tools & Simulators — Complete Directory | DEVDROP",
+  title: "All Online Tools & Utilities Directory | DevDrop",
   description:
-    "Explore 87+ interactive cybersecurity simulators, gaming tools, network diagnostic monitors, and terminal command visualizers with instant search and filtering.",
+    "Explore 140+ interactive online utilities, developer tools, image editors, PDF makers, and diagnostic tools with instant search and filtering.",
   alternates: {
-    canonical: "https://devdrop.vercel.app/tools",
+    canonical: "https://devdrop.online/tools",
   },
   openGraph: {
-    title: "All Cyber Tools & Simulators | DEVDROP",
+    title: "All Online Tools & Utilities | DevDrop",
     description:
-      "Explore 87+ interactive cybersecurity simulators, gaming tools, network monitors, and terminal command visualizers.",
-    url: "https://devdrop.vercel.app/tools",
+      "Explore 140+ interactive online utilities, developer tools, image editors, and PDF makers.",
+    url: "https://devdrop.online/tools",
     type: "website",
   },
 };

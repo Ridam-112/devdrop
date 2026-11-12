@@ -25,7 +25,7 @@ export const Navbar: React.FC = () => {
       <div className="bg-cyber-dark/95 border-b border-cyber-borderSubtle/60 py-1 px-4 text-center">
         <p className="text-[11px] font-mono text-slate-400 flex items-center justify-center gap-2">
           <span className="w-1.5 h-1.5 rounded-full bg-cyber-green animate-pulse"></span>
-          <span>SYSTEM ONLINE • CYBERSECURITY & TELEMETRY LAB v4.2 • ALL ENGINES READY</span>
+          <span>SYSTEM ONLINE • 140+ FREE CLIENT-SIDE UTILITIES &amp; GAMES • ALL ENGINES READY</span>
         </p>
       </div>
 
@@ -48,11 +48,11 @@ export const Navbar: React.FC = () => {
                 DEVDROP
               </span>
               <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-                PRO
+                ONLINE
               </span>
             </div>
-            <p className="text-[10px] font-mono text-cyber-muted -mt-0.5 hidden sm:block">
-              Enter the Digital Underground
+            <p className="text-[10px] font-mono text-emerald-400/80 -mt-0.5 hidden sm:block">
+              Free Online Tools &amp; Utilities
             </p>
           </div>
         </Link>

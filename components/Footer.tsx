@@ -19,7 +19,7 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
-              Enter the Digital Underground. Advanced cybersecurity intelligence, hardware telemetry, and interactive diagnostic consoles.
+              The official #1 all-in-one free browser tool suite. 140+ everyday utilities, image compressors, PDF makers, QR generators, and open-source HTML5 games.
             </p>
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-cyber-panel border border-cyber-borderSubtle text-[11px] font-mono text-slate-300">
               <Shield className="w-3.5 h-3.5 text-cyber-green" />
