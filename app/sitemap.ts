@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { TOOLS, CATEGORIES } from "@/lib/data/tools";
+import { OPEN_SOURCE_GAMES } from "@/lib/data/games";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://devdrop.online";
@@ -18,6 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "daily",
       priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/games`,
+      lastModified: now,
+      changeFrequency: "daily",
+      priority: 0.95,
     },
     {
       url: `${baseUrl}/about`,
@@ -67,5 +74,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...toolRoutes];
+  // Dynamic open-source game routes
+  const gameRoutes: MetadataRoute.Sitemap = OPEN_SOURCE_GAMES.map((game) => ({
+    url: `${baseUrl}/games/${game.slug}`,
+    lastModified: now,
+    changeFrequency: "weekly",
+    priority: 0.9,
+  }));
+
+  return [...staticRoutes, ...categoryRoutes, ...toolRoutes, ...gameRoutes];
 }

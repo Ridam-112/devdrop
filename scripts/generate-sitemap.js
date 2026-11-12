@@ -4,19 +4,24 @@ if (!fs.existsSync('public')) {
   fs.mkdirSync('public');
 }
 
-const content = fs.readFileSync('lib/data/tools.ts', 'utf8');
+const toolsContent = fs.readFileSync('lib/data/tools.ts', 'utf8');
+const gamesContent = fs.readFileSync('lib/data/games.ts', 'utf8');
 
 // Extract categories
-const catMatch = content.match(/export const CATEGORIES: ToolCategory\[\] = (\[[\s\S]*?\]);/);
+const catMatch = toolsContent.match(/export const CATEGORIES: ToolCategory\[\] = (\[[\s\S]*?\]);/);
 // Extract tools
-const toolMatch = content.match(/export const TOOLS: ToolItem\[\] = (\[[\s\S]*?\]);/);
+const toolMatch = toolsContent.match(/export const TOOLS: ToolItem\[\] = (\[[\s\S]*?\]);/);
+// Extract games
+const gamesMatch = gamesContent.match(/export const OPEN_SOURCE_GAMES: OpenSourceGame\[\] = (\[[\s\S]*?\]);/);
 
 let categories = [];
 let tools = [];
+let games = [];
 
 try {
   categories = eval(catMatch[1]);
   tools = eval(toolMatch[1]);
+  games = eval(gamesMatch[1]);
 } catch (e) {
   console.error('Eval error:', e);
 }
@@ -27,6 +32,7 @@ const now = new Date().toISOString();
 const staticRoutes = [
   { path: '', priority: '1.0', changefreq: 'daily' },
   { path: '/tools', priority: '0.9', changefreq: 'daily' },
+  { path: '/games', priority: '0.95', changefreq: 'daily' },
   { path: '/about', priority: '0.6', changefreq: 'monthly' },
   { path: '/contact', priority: '0.5', changefreq: 'monthly' },
   { path: '/disclaimer', priority: '0.5', changefreq: 'monthly' },
@@ -64,11 +70,39 @@ tools.forEach(tool => {
   xml += '  </url>\n';
 });
 
+games.forEach(game => {
+  xml += '  <url>\n';
+  xml += `    <loc>${baseUrl}/games/${game.slug}</loc>\n`;
+  xml += `    <lastmod>${now}</lastmod>\n`;
+  xml += '    <changefreq>weekly</changefreq>\n';
+  xml += '    <priority>0.9</priority>\n';
+  xml += '  </url>\n';
+});
+
 xml += '</urlset>\n';
 
 fs.writeFileSync('public/sitemap.xml', xml, 'utf8');
 
 const robots = `User-agent: *
+Allow: /
+Disallow: /api/
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://devdrop.online/sitemap.xml
@@ -76,4 +110,5 @@ Sitemap: https://devdrop.online/sitemap.xml
 
 fs.writeFileSync('public/robots.txt', robots, 'utf8');
 
-console.log('Generated public/sitemap.xml with', staticRoutes.length + categories.length + tools.length, 'URLs!');
+const totalUrls = staticRoutes.length + categories.length + tools.length + games.length;
+console.log('Generated public/sitemap.xml with', totalUrls, 'URLs (including all games)!');

@@ -7,9 +7,18 @@
 
 ## 1. Executive Summary
 
-Under modern 2026 Generative Engine Optimization (GEO) standards, AI search engines prioritize pages with **high information gain, self-contained answer blocks in the top 30% of HTML, clear entity definition, and unobstructed crawler access**. DevDrop has been audited and enhanced to maximize citations across all major AI search surfaces.
+Under modern 2026 Generative Engine Optimization (GEO) standards, AI search engines prioritize pages with **high information gain, self-contained answer blocks in the top 30% of HTML, clear entity definition, and unobstructed crawler access**. DevDrop has been audited and enhanced to maximize citations across all major AI search surfaces for both cybersecurity developer tools and online open-source HTML5 browser games.
 
-## 2. AI Crawler Permissions Matrix
+## 2. Target Query Domination Strategy
+
+### Target Query: *"online open source html 5 game"*
+- **Primary Hub:** `https://devdrop.online/games`
+- **Individual Game Landers:** 12 dedicated static routes under `/games/[gameSlug]`
+- **Search Intent:** Informational + Transactional/Playable (Immediate in-browser execution)
+- **Information Gain Score:** High (Direct playable HTML5 Canvas games embedded + GitHub source code links + verified metadata from `bobeff/open-source-games`)
+- **Entity Verification:** `VideoGame` and `ItemList` Schema.org JSON-LD structured data with zero-price offers.
+
+## 3. AI Crawler Permissions Matrix
 
 | Crawler Token | Platform | Purpose | Access Status | Citability Impact |
 | :--- | :--- | :--- | :---: | :--- |
@@ -20,21 +29,11 @@ Under modern 2026 Generative Engine Optimization (GEO) standards, AI search engi
 | `PerplexityBot` | Perplexity | Perplexity AI Search | **Allowed** | Direct footnotes in Perplexity search results |
 | `Bingbot` | Microsoft | Copilot & Bing Index | **Allowed** | Copilot grounded answers |
 
-## 3. Direct Answer & Citability Architecture
+## 4. Direct Answer & Citability Architecture
 
 According to empirical GEO studies (SE Ranking / Ahrefs), **over 44% of AI citations are extracted from the first 30% of a document**.
 
-- **Front-Loaded Answer Blocks:** Every DevDrop tool page starts immediately with a declarative H1 and an informative 120–150 word diagnostic overview before interactive components or supplementary text.
-- **Structured Q&A Passages:** Every tool features 3+ technical FAQ pairs marked up with Schema.org `FAQPage` JSON-LD, providing answer engines with turnkey quotations.
-- **llms.txt Standard:** Published at `https://devdrop.online/llms.txt` enabling AI agents to map and understand the entire 87-tool index in markdown.
+- **Front-Loaded Answer Blocks:** Both the `/games` hub and all individual `/games/[slug]` pages lead with self-contained 130–160 word summaries explaining the game genre, open-source license, and browser compatibility.
+- **Structured Q&A Passages:** Technical FAQ modules marked with `FAQPage` schema provide quotation snippets for answer engines.
+- **llms.txt Standard:** Published at `https://devdrop.online/llms.txt` mapping all tools and games in clean Markdown.
 
-## 4. Entity Clarity & Schema Graph Verification
-
-- **WebApplication Schema:** Confirms the utility type, cost (`price: 0`), and operating system compatibility.
-- **BreadcrumbList:** Establishes categorical hierarchy in knowledge graphs.
-- **Brand Signals:** Consistent site entity name `DEVDROP` across all OpenGraph, Twitter, and Schema references.
-
-## 5. Continuous Monitoring Plan
-
-1. **Weekly Perplexity Prompt Sampling:** Query Perplexity with queries like "Best browser tools for packet analysis visualization" or "free wifi handshake diagnostic simulator online" to monitor citation appearance.
-2. **Search Console Search Appearance Tracking:** Filter for rich results and Merchant/Web App impressions in Google Search Console.

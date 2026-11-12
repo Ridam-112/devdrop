@@ -1,15 +1,35 @@
 # DevDrop (https://devdrop.online)
 
-> DevDrop is an open-access web utility and browser diagnostic platform featuring 87 interactive tools across cybersecurity visualization, network telemetry, developer utilities, and privacy diagnostics. All tools execute client-side in the browser with zero server data retention.
+> DevDrop is an open-access web utility, cybersecurity diagnostic, and open-source HTML5 browser games platform featuring 88 diagnostic tools and 12 curated open-source web games. All tools and games execute client-side in the browser with zero server tracking and zero software downloads.
 
 ## Platform Overview
 - Canonical Domain: https://devdrop.online
+- Games Directory: https://devdrop.online/games
+- Tools Directory: https://devdrop.online/tools
 - Sitemap: https://devdrop.online/sitemap.xml
 - Total Diagnostic Tools: 88
-- Architecture: Next.js 14, Client-Side HTML5 Canvas / Web APIs
+- Total Open Source Games: 12
+- Game Technologies: HTML5 Canvas, WebGL, WebAssembly, TypeScript, JavaScript
+- Primary Sources: GitHub (bobeff/open-source-games & verified open-source contributors)
 - Privacy Policy: No cookies, no server tracking, 100% in-browser processing
 
-## Tool Catalog by Category
+## Open Source HTML5 & Web Games Catalog
+Discover 100% free open-source games playable directly in modern browsers:
+
+- [Space Defender HTML5](https://devdrop.online/games/space-defender-html5) (Shooter): Battle relentless alien armadas, dodge particle plasma waves, and unleash charged laser salvos in this high-framerate open-source HTML5 canvas shooter. [Source: https://github.com/bobeff/open-source-games]
+- [Cyber Snake HTML5](https://devdrop.online/games/cyber-snake-html5) (Arcade): Navigate a glowing fiber-optic serpent through a dangerous cyber grid, consuming data packets and evading lethal firewall boundaries in this open-source classic. [Source: https://github.com/bobeff/open-source-games]
+- [2048 HTML5 Open Source](https://devdrop.online/games/2048-html5-open-source) (Puzzle): Slide numbered tiles on a 4x4 grid, merge identical numbers, and strategize your moves to reach the elusive 2048 tile in this timeless open-source HTML5 game. [Source: https://github.com/gabrielecirulli/2048]
+- [Neon Breakout HTML5](https://devdrop.online/games/neon-breakout-html5) (Arcade): Smash through laser-resistant brick fortresses with high-velocity energy spheres, collect multiball upgrades, and test your reflexes in this open-source classic. [Source: https://github.com/bobeff/open-source-games]
+- [MicropolisJS (SimCity HTML5)](https://devdrop.online/games/micropolis-js) (Simulation): Zone residential, commercial, and industrial districts, build power grids, manage municipal budgets, and avert disasters in this iconic open-source city simulator. [Source: https://github.com/graememcc/micropolisJS]
+- [Server Survival](https://devdrop.online/games/server-survival) (Strategy): Build robust cloud infrastructure, provision load balancers, scale database nodes, and defend your servers against viral traffic spikes and DDoS attacks. [Source: https://github.com/pshenok/server-survival]
+- [OpenPanzer HTML5](https://devdrop.online/games/openpanzer-html5) (Strategy): Command mechanized infantry, armor battalions, and air support across historical hexagonal battlegrounds in this open-source HTML5/JS tactical wargame. [Source: https://github.com/nicupavel/openpanzer]
+- [IsoCity](https://devdrop.online/games/isocity-nextjs) (Simulation): Construct flourishing isometric metropolises with roads, residential skyscrapers, industrial plants, and lush parks in this open-source TypeScript game. [Source: https://github.com/amilich/isometric-city]
+- [Athena Crisis](https://devdrop.online/games/athena-crisis) (Strategy): Command diverse squads across vibrant maps, capture enemy strongholds, and master tactical warfare in this acclaimed open-source turn-based strategy game. [Source: https://github.com/nkzw-tech/athena-crisis]
+- [OpenLara WebGL](https://devdrop.online/games/openlara-webgl) (Action): Experience the original 1996 Tomb Raider action-adventure running natively in modern web browsers at high framerates with WebGL acceleration. [Source: https://github.com/XProger/OpenLara]
+- [Hnefatafl (Viking Chess) Web](https://devdrop.online/games/hnefatafl-web) (Strategy): Command Viking attackers besieging a fortress or guide the King and his loyal defenders to escape through corner sanctuaries in this asymmetric board game. [Source: https://github.com/dcampbell24/hnefatafl]
+- [Dead Ascend](https://devdrop.online/games/dead-ascend-html5) (Puzzle): Solve intricate environmental puzzles, gather scavenged supplies, and outwit undead lurkers to ascend to safety in this open-source point-and-click adventure. [Source: https://github.com/larpon/DeadAscend]
+
+## Diagnostic Tools Catalog by Category
 
 ### Wi-Fi & Network Security
 802.11 beacon sniffers, WPA handshake crackers, signal radars, router admin gateways, and packet attack simulators.
