@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Play, RotateCcw, Volume2, VolumeX, Maximize2, Trophy, Shield, Zap, Sparkles } from "lucide-react";
 
 interface PlayableGameCanvasProps {
-  gameType: "space-defender" | "cyber-snake" | "2048" | "neon-breakout";
+  gameType: "space-defender" | "cyber-snake" | "2048" | "neon-breakout" | "clumsy-bird";
   gameName: string;
 }
 
@@ -550,6 +550,134 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
         window.removeEventListener("keydown", onKeyDown);
         window.removeEventListener("keyup", onKeyUp);
         canvas.removeEventListener("mousemove", onMouseMove);
+        cancelAnimationFrame(animationFrameId);
+      };
+    }
+
+    // -------------------------------------------------------------
+    // GAME 4: CLUMSY BIRD (Flappy Bird)
+    // -------------------------------------------------------------
+    if (gameType === "clumsy-bird") {
+      let bird = { x: 80, y: HEIGHT / 2, vy: 0, gravity: 0.38, jump: -7, r: 14 };
+      let pipes: { x: number; topH: number; bottomY: number; w: number; passed: boolean }[] = [];
+      const PIPE_WIDTH = 54;
+      const PIPE_GAP = 135;
+      let frameCount = 0;
+
+      const flap = () => {
+        if (!isPlaying) return;
+        bird.vy = bird.jump;
+      };
+
+      const onKeyDown = (e: KeyboardEvent) => {
+        if (e.code === "Space" || e.key === "ArrowUp" || e.key === "w") {
+          e.preventDefault();
+          flap();
+        }
+      };
+      const onMouseDown = () => flap();
+
+      window.addEventListener("keydown", onKeyDown);
+      canvas.addEventListener("mousedown", onMouseDown);
+      canvas.addEventListener("touchstart", flap);
+
+      const loop = () => {
+        if (!isPlaying || localGameOver) return;
+
+        frameCount++;
+        bird.vy += bird.gravity;
+        bird.y += bird.vy;
+
+        // Ground / Ceiling collision
+        if (bird.y + bird.r >= HEIGHT || bird.y - bird.r <= 0) {
+          localGameOver = true;
+          setGameOver(true);
+          setIsPlaying(false);
+          return;
+        }
+
+        // Spawn pipes
+        if (frameCount % 85 === 0) {
+          const topH = Math.floor(Math.random() * (HEIGHT - PIPE_GAP - 100)) + 40;
+          pipes.push({
+            x: WIDTH,
+            topH: topH,
+            bottomY: topH + PIPE_GAP,
+            w: PIPE_WIDTH,
+            passed: false,
+          });
+        }
+
+        // Clear screen
+        ctx.fillStyle = "#030816";
+        ctx.fillRect(0, 0, WIDTH, HEIGHT);
+
+        // Update & Render pipes
+        ctx.fillStyle = "#00ff66";
+        ctx.shadowColor = "#00ff66";
+        ctx.shadowBlur = 8;
+        pipes.forEach((p, idx) => {
+          p.x -= 3.2;
+
+          // Top pipe
+          ctx.fillRect(p.x, 0, p.w, p.topH);
+          // Bottom pipe
+          ctx.fillRect(p.x, p.bottomY, p.w, HEIGHT - p.bottomY);
+
+          // Score check
+          if (!p.passed && p.x + p.w < bird.x) {
+            p.passed = true;
+            localScore += 1;
+            setScore(localScore);
+            updateHighScore(localScore);
+          }
+
+          // Collision detection
+          if (
+            bird.x + bird.r > p.x &&
+            bird.x - bird.r < p.x + p.w &&
+            (bird.y - bird.r < p.topH || bird.y + bird.r > p.bottomY)
+          ) {
+            localGameOver = true;
+            setGameOver(true);
+            setIsPlaying(false);
+          }
+
+          if (p.x + p.w < -10) pipes.splice(idx, 1);
+        });
+        ctx.shadowBlur = 0;
+
+        // Render Bird (Neon cyber orb)
+        ctx.fillStyle = "#00f0ff";
+        ctx.shadowColor = "#00f0ff";
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Eye
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.arc(bird.x + 6, bird.y - 3, 3.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // HUD
+        ctx.fillStyle = "#ffffff";
+        ctx.font = "14px 'JetBrains Mono', monospace";
+        ctx.fillText(`PIPES CLEARED: ${localScore}`, 16, 28);
+
+        animationFrameId = requestAnimationFrame(loop);
+      };
+
+      if (isPlaying) {
+        animationFrameId = requestAnimationFrame(loop);
+      }
+
+      return () => {
+        window.removeEventListener("keydown", onKeyDown);
+        canvas.removeEventListener("mousedown", onMouseDown);
+        canvas.removeEventListener("touchstart", flap);
         cancelAnimationFrame(animationFrameId);
       };
     }

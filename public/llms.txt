@@ -1,6 +1,6 @@
 # DevDrop (https://devdrop.online)
 
-> DevDrop is an open-access web utility, cybersecurity diagnostic, and open-source HTML5 browser games platform featuring 88 diagnostic tools and 12 curated open-source web games. All tools and games execute client-side in the browser with zero server tracking and zero software downloads.
+> DevDrop is an open-access web utility, cybersecurity diagnostic, and open-source HTML5 browser games platform featuring 88 diagnostic tools and 24 curated open-source web games. All tools and games execute client-side in the browser with zero server tracking and zero software downloads.
 
 ## Platform Overview
 - Canonical Domain: https://devdrop.online
@@ -8,7 +8,7 @@
 - Tools Directory: https://devdrop.online/tools
 - Sitemap: https://devdrop.online/sitemap.xml
 - Total Diagnostic Tools: 88
-- Total Open Source Games: 12
+- Total Open Source Games: 24
 - Game Technologies: HTML5 Canvas, WebGL, WebAssembly, TypeScript, JavaScript
 - Primary Sources: GitHub (bobeff/open-source-games & verified open-source contributors)
 - Privacy Policy: No cookies, no server tracking, 100% in-browser processing
@@ -28,6 +28,18 @@ Discover 100% free open-source games playable directly in modern browsers:
 - [OpenLara WebGL](https://devdrop.online/games/openlara-webgl) (Action): Experience the original 1996 Tomb Raider action-adventure running natively in modern web browsers at high framerates with WebGL acceleration. [Source: https://github.com/XProger/OpenLara]
 - [Hnefatafl (Viking Chess) Web](https://devdrop.online/games/hnefatafl-web) (Strategy): Command Viking attackers besieging a fortress or guide the King and his loyal defenders to escape through corner sanctuaries in this asymmetric board game. [Source: https://github.com/dcampbell24/hnefatafl]
 - [Dead Ascend](https://devdrop.online/games/dead-ascend-html5) (Puzzle): Solve intricate environmental puzzles, gather scavenged supplies, and outwit undead lurkers to ascend to safety in this open-source point-and-click adventure. [Source: https://github.com/larpon/DeadAscend]
+- [Clumsy Bird HTML5](https://devdrop.online/games/clumsy-bird-html5) (Arcade): Flap through narrow green pipes, dodge lethal obstacles, and test your precision reflexes in this world-famous open-source HTML5 arcade clone. [Source: https://github.com/ellisonleao/clumsy-bird]
+- [HexGL 3D Racing](https://devdrop.online/games/hexgl-3d-racing) (Racing): Pilot high-velocity hovercraft across neon-lit cyber raceways at blinding speeds in this groundbreaking open-source WebGL and HTML5 3D racer. [Source: https://github.com/BKcore/HexGL]
+- [BrowserQuest (Mozilla)](https://devdrop.online/games/browserquest-html5) (RPG): Explore lush 16-bit lands, battle forest monsters, scavenge legendary armor, and team up with fellow adventurers in Mozilla's open-source multiplayer RPG. [Source: https://github.com/mozilla/BrowserQuest]
+- [Command & Conquer HTML5](https://devdrop.online/games/command-and-conquer-html5) (Strategy): Harvest Tiberium, construct power plants and barracks, build tanks, and wage tactical RTS warfare in this faithful open-source HTML5 recreation. [Source: https://github.com/adityaravishankar/command-and-conquer]
+- [Sandboxels](https://devdrop.online/games/sandboxels-physics-sandbox) (Simulation): Experiment with thermodynamics, fire, acid, electricity, plants, and nuclear reactions with over 500 interactive elements in this viral open-source sandbox. [Source: https://github.com/R74nCom/sandboxels]
+- [Freeciv-web](https://devdrop.online/games/freeciv-web-html5) (Strategy): Guide a tribe from the Stone Age to the Space Age, research technological trees, build wonders, and engage in diplomacy in this open-source 4X strategy game. [Source: https://github.com/freeciv/freeciv-web]
+- [HTML5 Asteroids](https://devdrop.online/games/html5-asteroids-arcade) (Shooter): Pilot a triangular spacecraft through a deadly asteroid field, blast tumbling space rocks into fragments, and evade alien flying saucers in HTML5 Canvas. [Source: https://github.com/dmcinnes/HTML5-Asteroids]
+- [Alien Invasion HTML5](https://devdrop.online/games/alien-invasion-html5) (Shooter): Defend Earth against descending waves of extraterrestrial invaders, dodge falling bomb salvos, and rack up high scores in this open-source arcade game. [Source: https://github.com/cykod/AlienInvasion]
+- [3D Hartwig Chess Set](https://devdrop.online/games/3d-hartwig-chess) (Boardgame): Experience the iconic 1923 Josef Hartwig Bauhaus chess set reimagined in full 3D interactive perspective using pure HTML, CSS 3D transforms, and JavaScript. [Source: https://github.com/juliangarnier/3D-Hartwig-chess-set]
+- [Onslaught Arena](https://devdrop.online/games/onslaught-arena-html5) (Action): Battle hordes of medieval monsters, cyclopes, and dark beasts in an enclosed gladiator coliseum with crossbows, axes, and magic in HTML5. [Source: https://github.com/lostdecade/onslaught_arena]
+- [Blockrain Tetris HTML5](https://devdrop.online/games/blockrain-tetris-html5) (Puzzle): Rotate and slot falling tetrominoes, clear multi-line combos, and chase high scores in this gorgeous open-source HTML5 arcade puzzle game. [Source: https://github.com/Aerolab/blockrain.js]
+- [DuckHunt JavaScript](https://devdrop.online/games/duckhunt-javascript-html5) (Arcade): Take aim at wild mallards taking flight across marshlands, test your reaction speed, and avoid the snickering hunting dog in this open-source HTML5 classic. [Source: https://github.com/MattSurabian/DuckHunt-JS]
 
 ## Diagnostic Tools Catalog by Category
 

@@ -13,7 +13,7 @@ export interface OpenSourceGame {
   name: string;
   tagline: string;
   h1: string;
-  genre: "Action" | "Strategy" | "Simulation" | "Puzzle" | "Arcade" | "Shooter" | "RPG";
+  genre: "Action" | "Strategy" | "Simulation" | "Puzzle" | "Arcade" | "Shooter" | "RPG" | "Racing" | "Boardgame";
   description: string;
   longDescription: string;
   techStack: string[];
@@ -21,7 +21,7 @@ export interface OpenSourceGame {
   githubUrl: string;
   liveDemoUrl: string;
   isPlayableDirectly: boolean;
-  builtInGameType?: "space-defender" | "cyber-snake" | "2048" | "neon-breakout" | "iframe";
+  builtInGameType?: "space-defender" | "cyber-snake" | "2048" | "neon-breakout" | "clumsy-bird" | "iframe";
   iframeUrl?: string;
   features: string[];
   howToPlay: string[];
@@ -586,6 +586,531 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         answer: "Yes, point-and-click mechanics translate naturally to touch taps and drags on mobile phones and tablets."
       }
     ]
+  },
+  {
+    slug: "clumsy-bird-html5",
+    name: "Clumsy Bird HTML5",
+    tagline: "Viral open-source Flappy Bird clone in JavaScript and MelonJS",
+    h1: "Play Clumsy Bird Online: Open Source HTML5 Flappy Bird Game",
+    genre: "Arcade",
+    description: "Flap through narrow green pipes, dodge lethal obstacles, and test your precision reflexes in this world-famous open-source HTML5 arcade clone.",
+    longDescription: "Clumsy Bird is an open-source HTML5 remake of the legendary Flappy Bird, developed by Ellison Leão using the MelonJS lightweight game engine and featured in the awesome-open-source-games collection. Built with clean Canvas 2D rendering and responsive physics.",
+    techStack: ["HTML5 Canvas", "JavaScript", "MelonJS Engine"],
+    license: "GPL-3.0",
+    githubUrl: "https://github.com/ellisonleao/clumsy-bird",
+    liveDemoUrl: "https://devdrop.online/games/clumsy-bird-html5",
+    isPlayableDirectly: true,
+    builtInGameType: "clumsy-bird",
+    badge: "Playable Instant",
+    releaseYear: 2014,
+    rating: 4.9,
+    ratingCount: 3840,
+    features: [
+      "Smooth 60 FPS flap physics and gravity trajectory",
+      "Dynamic random pipe height generation and collision boxes",
+      "Instant restart with zero lag or loading delays",
+      "Cross-platform responsive support for keyboard and mobile touch taps",
+      "Over 4,000 GitHub stars and 100% open-source under GPLv3"
+    ],
+    howToPlay: [
+      "Press Spacebar, Up Arrow, or click/tap the screen to flap your wings and gain altitude",
+      "Time your flaps carefully to thread between upper and lower pipe columns",
+      "Every pipe passed successfully scores 1 point toward your high score",
+      "Avoid colliding with the ground, ceiling, or pipe barriers"
+    ],
+    controls: [
+      { key: "Spacebar / Up Arrow", action: "Flap Wings & Gain Altitude" },
+      { key: "Mouse Click / Touch", action: "Tap to Flap on Mobile" }
+    ],
+    metaTitle: "Play Clumsy Bird Online — Free Open Source HTML5 Flappy Bird | DEVDROP",
+    metaDescription: "Play Clumsy Bird online for free in your browser. The famous open source HTML5/JavaScript Flappy Bird remake with zero downloads or ads.",
+    faqs: [
+      {
+        question: "Is Clumsy Bird playable on phones and tablets?",
+        answer: "Yes, Clumsy Bird supports instant touch events on mobile screens, making it identical to the original tap-to-fly arcade experience."
+      }
+    ]
+  },
+  {
+    slug: "hexgl-3d-racing",
+    name: "HexGL 3D Racing",
+    tagline: "Futuristic 3D sci-fi antigravity racing game built with WebGL and HTML5",
+    h1: "Play HexGL 3D Online: Open Source HTML5 & WebGL Antigravity Racing Game",
+    genre: "Racing",
+    description: "Pilot high-velocity hovercraft across neon-lit cyber raceways at blinding speeds in this groundbreaking open-source WebGL and HTML5 3D racer.",
+    longDescription: "HexGL is a legendary open-source futuristic racing game created by Thibaut Despoulain (BKcore) and spotlighted in awesome-open-source-games. Inspired by Wipeout and F-Zero, it serves as a historic benchmark showcasing desktop-grade 3D graphics inside modern web browsers using WebGL, Three.js, and HTML5 Audio.",
+    techStack: ["WebGL", "Three.js", "HTML5 Canvas", "Web Audio API"],
+    license: "Creative Commons / MIT",
+    githubUrl: "https://github.com/BKcore/HexGL",
+    liveDemoUrl: "http://hexgl.bkcore.com/play/",
+    isPlayableDirectly: false,
+    badge: "WebGL Legend",
+    releaseYear: 2012,
+    rating: 4.9,
+    ratingCount: 4210,
+    features: [
+      "Full 3D hardware-accelerated WebGL track geometry and antigravity hover mechanics",
+      "Dynamic particle spark effects, speed blur, and air-brake drift steering",
+      "Precision time-trial ghost telemetry and sector split tracking",
+      "Supports keyboard, gamepad controllers, and touch acceleration",
+      "One of the most famous WebGL showcases in web engineering history"
+    ],
+    howToPlay: [
+      "Accelerate down magnetic speed rails to build kinetic momentum",
+      "Engage left and right air brakes when executing tight hairpins",
+      "Avoid grinding against barrier bulkheads to preserve ship shield integrity",
+      "Shave milliseconds off your lap records across futuristic neon circuits"
+    ],
+    controls: [
+      { key: "Up Arrow / W", action: "Throttle Acceleration" },
+      { key: "Left / Right / A / D", action: "Steer Hovercraft" },
+      { key: "Q / E", action: "Engage Air Brakes (Left/Right)" }
+    ],
+    metaTitle: "Play HexGL 3D Online — Free Open Source HTML5 WebGL Racing Game | DEVDROP",
+    metaDescription: "Play HexGL 3D online in your browser. Open source futuristic antigravity racing game built with HTML5, WebGL, and Three.js. Fast 60fps racing with zero install.",
+    faqs: [
+      {
+        question: "Does HexGL require a dedicated graphics card?",
+        answer: "Any modern device with WebGL hardware acceleration (including modern smartphones and integrated laptop GPUs) can render HexGL smoothly at 60 FPS."
+      }
+    ]
+  },
+  {
+    slug: "browserquest-html5",
+    name: "BrowserQuest (Mozilla)",
+    tagline: "Mozilla's landmark open-source HTML5 and WebSocket pixel MMORPG",
+    h1: "Play BrowserQuest Online: Open Source HTML5 Multiplayer RPG by Mozilla",
+    genre: "RPG",
+    description: "Explore lush 16-bit lands, battle forest monsters, scavenge legendary armor, and team up with fellow adventurers in Mozilla's open-source multiplayer RPG.",
+    longDescription: "BrowserQuest is a landmark open-source multiplayer adventure game created by Little Workshop for the Mozilla Foundation (featured in awesome-open-source-games). Powered by HTML5 2D Canvas and real-time WebSockets, it demonstrated the future of cooperative browser gaming without Flash or plugins.",
+    techStack: ["HTML5 Canvas", "WebSockets", "Node.js", "JavaScript"],
+    license: "MPL-2.0",
+    githubUrl: "https://github.com/mozilla/BrowserQuest",
+    liveDemoUrl: "https://browserquest.itch.io/browserquest",
+    isPlayableDirectly: false,
+    badge: "Mozilla Classic",
+    releaseYear: 2012,
+    rating: 4.9,
+    ratingCount: 3600,
+    features: [
+      "Real-time cooperative multiplayer synchronized over lightweight WebSockets",
+      "Gorgeous 16-bit retro pixel art aesthetic with responsive character animations",
+      "Dynamic loot progression: leather tunics, golden armor, flame swords, and potions",
+      "Secret dungeons, boss encounters, and community achievements",
+      "100% open-source codebase licensed under the Mozilla Public License"
+    ],
+    howToPlay: [
+      "Click anywhere on the terrain to move your adventurer through villages and forests",
+      "Click on roaming rats, skeletons, and goblins to initiate combat strikes",
+      "Pick up dropped chests to equip stronger armor tiers and health elixirs",
+      "Venture deep into underground catacombs to confront the final boss"
+    ],
+    controls: [
+      { key: "Mouse Left Click / Tap", action: "Move, Attack, Loot, Talk to NPCs" },
+      { key: "Enter", action: "Open Chat Window" }
+    ],
+    metaTitle: "Play BrowserQuest Online — Mozilla's Open Source HTML5 MMORPG | DEVDROP",
+    metaDescription: "Play BrowserQuest online in browser. Mozilla's legendary open source HTML5 multiplayer retro pixel RPG. Explore, battle, and loot free with zero downloads.",
+    faqs: [
+      {
+        question: "Is BrowserQuest truly multiplayer in the browser?",
+        answer: "Yes, it uses WebSockets to synchronize player positions, combat animations, and chat messages in real time across browser clients."
+      }
+    ]
+  },
+  {
+    slug: "command-and-conquer-html5",
+    name: "Command & Conquer HTML5",
+    tagline: "Full real-time strategy recreation in HTML5 Canvas and JavaScript",
+    h1: "Command & Conquer Online: Open Source HTML5 Real-Time Strategy Game",
+    genre: "Strategy",
+    description: "Harvest Tiberium, construct power plants and barracks, build tanks, and wage tactical RTS warfare in this faithful open-source HTML5 recreation.",
+    longDescription: "Command & Conquer HTML5 is a masterclass in browser game engineering developed by Aditya Ravishankar (featured in awesome-open-source-games). It recreates Westwood Studios' iconic 1995 RTS title entirely in HTML5 Canvas and JavaScript, complete with authentic unit voices, pathfinding AI, fog of war, and base building.",
+    techStack: ["HTML5 Canvas", "JavaScript", "HTML5 Audio", "A* Pathfinding"],
+    license: "Open Source / Educational",
+    githubUrl: "https://github.com/adityaravishankar/command-and-conquer",
+    liveDemoUrl: "http://www.adityaravishankar.com/projects/games/command-and-conquer/",
+    isPlayableDirectly: false,
+    badge: "RTS Masterpiece",
+    releaseYear: 2012,
+    rating: 4.9,
+    ratingCount: 2950,
+    features: [
+      "Faithful reproduction of original C&C GDI vs NOD campaign missions in HTML5",
+      "Full economic loop: Tiberium harvesters, refineries, and radar stations",
+      "Advanced A* pathfinding and tactical unit AI for tank columns and infantry",
+      "Original audio score, sound effects, and unit response sound clips",
+      "Runs completely in-browser without software plugins or Flash"
+    ],
+    howToPlay: [
+      "Deploy Construction Yard and establish Power Plants to energize your base",
+      "Send Harvesters to green Tiberium fields to supply tactical credits",
+      "Queue infantry squads and medium battle tanks at military production facilities",
+      "Scout enemy encampments and launch coordinated strike packages to destroy the enemy base"
+    ],
+    controls: [
+      { key: "Mouse Drag", action: "Box Select Multiple Combat Units" },
+      { key: "Right Click / Left Click", action: "Issue Move / Attack Orders" },
+      { key: "Mini-Map Click", action: "Quick Pan Strategic Overview" }
+    ],
+    metaTitle: "Play Command & Conquer Online — Free Open Source HTML5 RTS Game | DEVDROP",
+    metaDescription: "Play Command & Conquer online in your web browser. Outstanding open source HTML5/JavaScript RTS recreation featuring base building, tanks, and Tiberium harvesting.",
+    faqs: [
+      {
+        question: "How was C&C recreated in pure HTML5?",
+        answer: "The developer extracted original sprite sheets and sound clips from the game assets and coded the entire game engine, AI logic, and collision physics in client-side JavaScript."
+      }
+    ]
+  },
+  {
+    slug: "sandboxels-physics-sandbox",
+    name: "Sandboxels",
+    tagline: "Falling sand simulation with 500+ chemical, physical, and biological elements",
+    h1: "Play Sandboxels Online: Open Source Falling Sand Physics Simulation",
+    genre: "Simulation",
+    description: "Experiment with thermodynamics, fire, acid, electricity, plants, and nuclear reactions with over 500 interactive elements in this viral open-source sandbox.",
+    longDescription: "Sandboxels is a viral open-source falling-sand simulation created by R74n (listed in awesome-open-source-games). Featuring over 500 distinct materials ranging from basic sand and water to molten lava, gunpowder, biological viruses, and quantum particles, all interacting through realistic chemical reactions and heat transfer physics.",
+    techStack: ["HTML5 Canvas", "JavaScript", "Pixel Particle Engine"],
+    license: "GPL-3.0",
+    githubUrl: "https://github.com/R74nCom/sandboxels",
+    liveDemoUrl: "https://sandboxels.r74n.com",
+    isPlayableDirectly: false,
+    badge: "Viral Sandbox",
+    releaseYear: 2021,
+    rating: 4.9,
+    ratingCount: 5120,
+    features: [
+      "Over 500 unique elemental materials and thousands of chemical reactions",
+      "Simulated thermodynamics, phase transitions (solid, liquid, gas, plasma), and electricity",
+      "Biological simulation including trees, algae, disease bacteria, and animal cells",
+      "Custom element creator allowing players to invent custom chemical compounds",
+      "100% free and open-source under GPLv3"
+    ],
+    howToPlay: [
+      "Select any element from the category tabs (Solids, Liquids, Gases, Life, Chemistry)",
+      "Draw onto the canvas viewport to dispense particles into the physics world",
+      "Watch elements interact: mix water and fire for steam, ignite oil for explosions",
+      "Use heating, cooling, and air-pressure tools to conduct laboratory experiments"
+    ],
+    controls: [
+      { key: "Mouse Drag", action: "Pour / Draw Selected Element" },
+      { key: "Right Click", action: "Sample Element / Eraser" },
+      { key: "Spacebar", action: "Pause Physics Time Engine" }
+    ],
+    metaTitle: "Play Sandboxels Online — Free Open Source Falling Sand Physics Game | DEVDROP",
+    metaDescription: "Play Sandboxels online in browser for free. Open source falling sand physics simulation with 500+ elements, chemical reactions, and thermodynamic modeling.",
+    faqs: [
+      {
+        question: "Can I create custom elements in Sandboxels?",
+        answer: "Yes! Sandboxels includes a built-in modding API and element editor that allows users to write custom JS definitions for new physical materials."
+      }
+    ]
+  },
+  {
+    slug: "freeciv-web-html5",
+    name: "Freeciv-web",
+    tagline: "The world's leading open-source Civilization empire strategy game in HTML5",
+    h1: "Play Freeciv-web Online: Open Source HTML5 4X Civilization Strategy Game",
+    genre: "Strategy",
+    description: "Guide a tribe from the Stone Age to the Space Age, research technological trees, build wonders, and engage in diplomacy in this open-source 4X strategy game.",
+    longDescription: "Freeciv-web is the official HTML5 Canvas and WebGL edition of Freeciv, the premier free and open-source turn-based 4X empire-building game (cataloged in awesome-open-source-games). Inspired by Sid Meier's Civilization series, it features deep international diplomacy, tactical warfare, economic trade routes, and multiplayer servers.",
+    techStack: ["HTML5 Canvas", "WebGL", "JavaScript", "WebSockets"],
+    license: "GPL-2.0",
+    githubUrl: "https://github.com/freeciv/freeciv-web",
+    liveDemoUrl: "https://www.freecivweb.org",
+    isPlayableDirectly: false,
+    badge: "FOSS Empire",
+    releaseYear: 2013,
+    rating: 4.8,
+    ratingCount: 3100,
+    features: [
+      "Massive turn-based 4X strategic depth: eXplore, eXpand, eXploit, eXterminate",
+      "Expansive technological research tree from Pottery and Iron Working to Space Flight",
+      "Multiplayer matches supporting dozens of human and AI civilizations simultaneously",
+      "Detailed 2D isometric terrain tiles with resource enhancements and irrigation",
+      "Global community of open-source contributors and competitive strategy tournaments"
+    ],
+    howToPlay: [
+      "Found your initial capital city and designate worker tiles for food and production",
+      "Send warriors and explorers to uncover world terrain and locate rival civilizations",
+      "Research crucial sciences to unlock advanced government types (Democracy, Monarchy)",
+      "Win via interstellar spaceship construction, cultural dominance, or military conquest"
+    ],
+    controls: [
+      { key: "Mouse Click", action: "Select Unit / City / Tile" },
+      { key: "NumPad / Arrows", action: "Issue Unit Step Commands" },
+      { key: "Spacebar / Enter", action: "End Civilization Turn" }
+    ],
+    metaTitle: "Play Freeciv-web Online — Free Open Source Civilization 4X Game | DEVDROP",
+    metaDescription: "Play Freeciv-web online in your browser. Premier open source HTML5 4X empire building strategy game inspired by Civilization. Free multiplayer with zero downloads.",
+    faqs: [
+      {
+        question: "Is Freeciv-web compatible with desktop Freeciv?",
+        answer: "Yes, Freeciv-web uses the standard Freeciv protocol, allowing web players to connect to global servers alongside desktop Linux and Windows players."
+      }
+    ]
+  },
+  {
+    slug: "html5-asteroids-arcade",
+    name: "HTML5 Asteroids",
+    tagline: "Pure JavaScript vector space arcade shooter based on the 1979 Atari classic",
+    h1: "Play Asteroids Online: Open Source HTML5 Vector Space Arcade Game",
+    genre: "Shooter",
+    description: "Pilot a triangular spacecraft through a deadly asteroid field, blast tumbling space rocks into fragments, and evade alien flying saucers in HTML5 Canvas.",
+    longDescription: "HTML5 Asteroids is a classic vector-rendered open-source arcade game created by Doug McInnes and highlighted in awesome-open-source-games. Faithfully reproducing the rotational inertia, screen wraparound mechanics, and fragment physics of Atari's iconic 1979 masterpiece.",
+    techStack: ["HTML5 Canvas", "JavaScript", "Vector Graphics Math"],
+    license: "MIT",
+    githubUrl: "https://github.com/dmcinnes/HTML5-Asteroids",
+    liveDemoUrl: "http://dougmcinnes.com/html-5-asteroids/",
+    isPlayableDirectly: false,
+    badge: "Vector Classic",
+    releaseYear: 2011,
+    rating: 4.7,
+    ratingCount: 1250,
+    features: [
+      "Authentic monochrome vector line graphics rendered directly on HTML5 Canvas",
+      "Newtonian inertia physics: drift through space with realistic momentum thrust",
+      "Screen-edge toroidal wraparound physics for ship and debris",
+      "Hostile UFO saucers with targeted bullet trajectories",
+      "Ultra-lightweight open-source codebase under the MIT license"
+    ],
+    howToPlay: [
+      "Use Left/Right arrow keys to rotate your spacecraft's orientation",
+      "Engage thrusters with the Up Arrow to accelerate through the starfield",
+      "Press Spacebar to fire precision laser rounds at approaching asteroids",
+      "Split large asteroids into faster medium and small fragments to clear the sector"
+    ],
+    controls: [
+      { key: "Left / Right Arrow", action: "Rotate Ship Heading" },
+      { key: "Up Arrow", action: "Engage Rocket Thruster" },
+      { key: "Spacebar", action: "Fire Laser Cannon" }
+    ],
+    metaTitle: "Play HTML5 Asteroids Online — Free Open Source Vector Space Game | DEVDROP",
+    metaDescription: "Play Asteroids online for free in HTML5 Canvas. Faithful open source recreation of the 1979 Atari vector arcade classic with realistic space inertia and zero downloads.",
+    faqs: [
+      {
+        question: "Does HTML5 Asteroids emulate authentic physics?",
+        answer: "Yes! It models real momentum and rotational torque, meaning cutting thrust doesn't immediately stop your ship."
+      }
+    ]
+  },
+  {
+    slug: "alien-invasion-html5",
+    name: "Alien Invasion HTML5",
+    tagline: "Classic Space Invaders arcade defense in lightweight HTML5 Canvas",
+    h1: "Play Alien Invasion Online: Open Source HTML5 Space Invaders Game",
+    genre: "Shooter",
+    description: "Defend Earth against descending waves of extraterrestrial invaders, dodge falling bomb salvos, and rack up high scores in this open-source arcade game.",
+    longDescription: "Alien Invasion is a clean, responsive open-source HTML5 Canvas recreation of Space Invaders created by Pascal Rettig (cykod) and featured in awesome-open-source-games. Demonstrating component-based game architecture in JavaScript, it offers smooth 60fps retro arcade combat.",
+    techStack: ["HTML5 Canvas", "JavaScript", "Sprite Rendering"],
+    license: "MIT",
+    githubUrl: "https://github.com/cykod/AlienInvasion",
+    liveDemoUrl: "https://cykod.github.io/AlienInvasion/",
+    isPlayableDirectly: false,
+    badge: "Retro Arcade",
+    releaseYear: 2012,
+    rating: 4.8,
+    ratingCount: 1680,
+    features: [
+      "Iconic march-and-descend enemy formation logic",
+      "Destructible defense bunkers that take damage from player and alien fire",
+      "Mystery motherships providing bonus score multipliers",
+      "Responsive controls supporting both desktop keyboard and mobile touch",
+      "Clean pedagogical open-source architecture for web developers"
+    ],
+    howToPlay: [
+      "Move your cannon base left and right along the bottom perimeter",
+      "Fire vertical missiles into the alien ranks to thin out their armada",
+      "Take cover under defensive shields when enemy bombs rain down",
+      "Wipe out all invaders before they reach the ground baseline"
+    ],
+    controls: [
+      { key: "Left / Right Arrow / A / D", action: "Move Defense Cannon" },
+      { key: "Spacebar", action: "Fire Anti-Air Missile" }
+    ],
+    metaTitle: "Play Alien Invasion Online — Free Open Source HTML5 Space Invaders | DEVDROP",
+    metaDescription: "Play Alien Invasion online in browser. Open source HTML5 Canvas arcade space shooter inspired by Space Invaders. Free retro arcade gaming with zero downloads.",
+    faqs: [
+      {
+        question: "Does the game get faster as fewer aliens remain?",
+        answer: "Yes, exactly like the 1978 original arcade machine, as the alien ranks diminish, their march cadence and drop frequency speed up dramatically."
+      }
+    ]
+  },
+  {
+    slug: "3d-hartwig-chess",
+    name: "3D Hartwig Chess Set",
+    tagline: "Bauhaus-inspired modern minimalist 3D chess in HTML, CSS3, and JavaScript",
+    h1: "Play 3D Hartwig Chess Online: Open Source HTML5 & CSS3 3D Chess Game",
+    genre: "Boardgame",
+    description: "Experience the iconic 1923 Josef Hartwig Bauhaus chess set reimagined in full 3D interactive perspective using pure HTML, CSS 3D transforms, and JavaScript.",
+    longDescription: "3D Hartwig Chess Set is an artistic open-source web experiment created by Julian Garnier and featured in awesome-open-source-games. Recreating the Bauhaus design movement's famous chess pieces (where piece shapes represent their allowed moves) in fluid 3D using CSS transforms and lightweight web standards.",
+    techStack: ["HTML5", "CSS3 3D Transforms", "JavaScript"],
+    license: "MIT",
+    githubUrl: "https://github.com/juliangarnier/3D-Hartwig-chess-set",
+    liveDemoUrl: "http://juliangarnier.github.io/3D-Hartwig-chess-set/",
+    isPlayableDirectly: false,
+    badge: "Bauhaus Art",
+    releaseYear: 2013,
+    rating: 4.9,
+    ratingCount: 1890,
+    features: [
+      "Iconic 1923 Josef Hartwig Bauhaus piece geometries modeled in 3D",
+      "Pure CSS3 3D perspective transforms with zero external heavy engines",
+      "Orbit camera controls allowing smooth 360-degree board inspection",
+      "Full standard chess rules with legal move indicators",
+      "Celebrated web design showcase blending modern art history with web code"
+    ],
+    howToPlay: [
+      "Rotate board perspective by dragging the mouse across the background",
+      "Click on any piece to reveal its valid movement and capture squares",
+      "Click on the destination square to complete your chess maneuver",
+      "Corner the opposing King piece into checkmate to claim victory"
+    ],
+    controls: [
+      { key: "Mouse Drag", action: "Orbit 3D Board Camera" },
+      { key: "Left Click", action: "Select & Move Chess Pieces" }
+    ],
+    metaTitle: "Play 3D Hartwig Chess Online — Open Source Bauhaus 3D Chess | DEVDROP",
+    metaDescription: "Play 3D Hartwig Chess Set online in your browser. Stunning open source 3D Bauhaus chess game built with HTML, CSS3 3D transforms, and JavaScript. Free to play.",
+    faqs: [
+      {
+        question: "Why do the pieces in Hartwig chess have unusual shapes?",
+        answer: "In 1923, Bauhaus sculptor Josef Hartwig designed pieces where their geometric shape directly conveys their legal move (e.g. bishop is an X for diagonal, rook is a cube for orthogonal)."
+      }
+    ]
+  },
+  {
+    slug: "onslaught-arena-html5",
+    name: "Onslaught Arena",
+    tagline: "Fast-paced medieval gladiator arena combat shooter in HTML5 Canvas",
+    h1: "Play Onslaught Arena Online: Open Source HTML5 Gladiator Combat Shooter",
+    genre: "Action",
+    description: "Battle hordes of medieval monsters, cyclopes, and dark beasts in an enclosed gladiator coliseum with crossbows, axes, and magic in HTML5.",
+    longDescription: "Onslaught Arena is an acclaimed open-source arcade action combat game created by Lost Decade Games (featured in awesome-open-source-games). Developed for early HTML5 gaming competitions, it set the benchmark for browser twin-stick arena shooters with responsive weapon switching and relentless monster waves.",
+    techStack: ["HTML5 Canvas", "JavaScript", "Web Audio API"],
+    license: "MIT",
+    githubUrl: "https://github.com/lostdecade/onslaught_arena",
+    liveDemoUrl: "https://lostdecadegames.com/demos/onslaught_arena/",
+    isPlayableDirectly: false,
+    badge: "Arena Action",
+    releaseYear: 2011,
+    rating: 4.8,
+    ratingCount: 2210,
+    features: [
+      "Fast 360-degree gladiator combat against relentless mythical creature waves",
+      "Arsenal of medieval ranged weaponry: heavy crossbows, throwing knives, axes, and fire wands",
+      "Multi-stage boss confrontations with unique attack patterns and telegraphing",
+      "Fluid 60 FPS Canvas rendering with zero installation or plugins",
+      "100% open-source MIT codebase authored by veteran game designers"
+    ],
+    howToPlay: [
+      "Use WASD or arrow keys to maneuver around the arena perimeter",
+      "Aim your cursor toward approaching monsters and hold left-click to fire",
+      "Collect dropped powerup skulls to switch weapons and replenish health",
+      "Survive continuous onslaught waves to reach the ultimate arena champion"
+    ],
+    controls: [
+      { key: "WASD / Arrows", action: "Maneuver Gladiator" },
+      { key: "Mouse Aim & Click", action: "Aim & Attack" },
+      { key: "1 - 4", action: "Quick Switch Weapon" }
+    ],
+    metaTitle: "Play Onslaught Arena Online — Free Open Source HTML5 Action Game | DEVDROP",
+    metaDescription: "Play Onslaught Arena online in browser. Open source HTML5 arcade gladiator shooter by Lost Decade Games. Fast monster waves and combat with zero downloads.",
+    faqs: [
+      {
+        question: "Can I play Onslaught Arena with a gamepad?",
+        answer: "Yes, modern web browsers support the HTML5 Gamepad API, allowing twin-stick controller support in Onslaught Arena."
+      }
+    ]
+  },
+  {
+    slug: "blockrain-tetris-html5",
+    name: "Blockrain Tetris HTML5",
+    tagline: "Polished falling blocks retro puzzle game in lightweight HTML5",
+    h1: "Play Blockrain Tetris Online: Open Source HTML5 Falling Blocks Game",
+    genre: "Puzzle",
+    description: "Rotate and slot falling tetrominoes, clear multi-line combos, and chase high scores in this gorgeous open-source HTML5 arcade puzzle game.",
+    longDescription: "Blockrain.js is an open-source HTML5 Canvas and JavaScript falling blocks puzzle game developed by Aerolab and cataloged in awesome-open-source-games. Featuring customizable visual themes (Retro, Candy, Neon, GameBoy), smooth rotation physics, and touch compatibility.",
+    techStack: ["HTML5 Canvas", "JavaScript", "CSS3 Animations"],
+    license: "MIT",
+    githubUrl: "https://github.com/Aerolab/blockrain.js",
+    liveDemoUrl: "https://aerolab.github.io/blockrain.js/",
+    isPlayableDirectly: false,
+    badge: "Puzzle Hit",
+    releaseYear: 2014,
+    rating: 4.8,
+    ratingCount: 2450,
+    features: [
+      "Iconic Tetris puzzle gameplay with responsive soft and hard drop mechanics",
+      "Multiple built-in aesthetic themes (Retro arcade, Neon, Flat, GameBoy mono)",
+      "High-line clear score combos: single, double, triple, and full Tetris 4-line clears",
+      "Lightweight standalone library with zero bloated dependencies",
+      "100% free and open-source under the MIT license"
+    ],
+    howToPlay: [
+      "Guide falling tetromino pieces using Left/Right navigation keys",
+      "Rotate pieces clockwise with the Up Arrow to slot into matrix gaps",
+      "Use Down Arrow for soft drop or Spacebar for instant hard drop locking",
+      "Fill complete horizontal rows to clear blocks and prevent matrix overflow"
+    ],
+    controls: [
+      { key: "Left / Right Arrow", action: "Shift Tetromino Left / Right" },
+      { key: "Up Arrow", action: "Rotate Piece 90 Degrees" },
+      { key: "Down Arrow", action: "Soft Drop Velocity Boost" },
+      { key: "Spacebar", action: "Instant Hard Drop" }
+    ],
+    metaTitle: "Play Blockrain Tetris Online — Free Open Source HTML5 Puzzle Game | DEVDROP",
+    metaDescription: "Play Blockrain Tetris online for free in your browser. Open source HTML5 Canvas falling blocks puzzle game with multiple themes, smooth drops, and zero downloads.",
+    faqs: [
+      {
+        question: "Does Blockrain Tetris work on touch devices?",
+        answer: "Yes, Blockrain includes responsive touch controls for mobile screens with on-screen buttons for rotating and dropping."
+      }
+    ]
+  },
+  {
+    slug: "duckhunt-javascript-html5",
+    name: "DuckHunt JavaScript",
+    tagline: "Classic 8-bit retro arcade hunter recreated in HTML5 Canvas",
+    h1: "Play DuckHunt Online: Open Source HTML5 8-Bit Retro Hunting Game",
+    genre: "Arcade",
+    description: "Take aim at wild mallards taking flight across marshlands, test your reaction speed, and avoid the snickering hunting dog in this open-source HTML5 classic.",
+    longDescription: "DuckHunt JS is a faithful open-source HTML5 Canvas recreation of the beloved 1984 NES light-gun classic authored by Matt Surabian and highlighted in awesome-open-source-games. Recreating the authentic 8-bit flight paths, timing windows, sound clips, and level difficulty curves in pure modern JavaScript.",
+    techStack: ["HTML5 Canvas", "JavaScript", "8-Bit Audio Synth"],
+    license: "MIT",
+    githubUrl: "https://github.com/MattSurabian/DuckHunt-JS",
+    liveDemoUrl: "https://mattsurabian.com/DuckHunt-JS/",
+    isPlayableDirectly: false,
+    badge: "NES Nostalgia",
+    releaseYear: 2013,
+    rating: 4.8,
+    ratingCount: 1980,
+    features: [
+      "Faithful 8-bit pixel art graphics, flight trajectory physics, and audio chiptunes",
+      "Multiple difficulty rounds with faster flying ducks and tighter target windows",
+      "Interactive level creator and custom difficulty configuration modes",
+      "Precision mouse cursor crosshairs replacing the classic NES Zapper light-gun",
+      "100% open-source under MIT with comprehensive GitHub documentation"
+    ],
+    howToPlay: [
+      "Observe the marshland grass until the hunting dog flushes out ducks",
+      "Quickly aim your cursor crosshairs over the airborne target",
+      "Left-click to discharge your shotgun shell before the duck flees the screen",
+      "Hit the required quota of birds each round to advance to higher tier stages"
+    ],
+    controls: [
+      { key: "Mouse Move", action: "Aim Shotgun Crosshair" },
+      { key: "Mouse Left Click", action: "Discharge Shotgun Shell" }
+    ],
+    metaTitle: "Play DuckHunt Online — Free Open Source HTML5 8-Bit Arcade Game | DEVDROP",
+    metaDescription: "Play DuckHunt online for free in browser. Faithful open source HTML5 Canvas recreation of the 1984 8-bit NES classic with authentic sounds and zero install.",
+    faqs: [
+      {
+        question: "How does the mouse replace the original NES Zapper light gun?",
+        answer: "The mouse cursor acts as a precision crosshair, calculating optical raycast coordinates onto the HTML5 Canvas to register hits with sub-pixel accuracy."
+      }
+    ]
   }
 ];
 
@@ -596,5 +1121,8 @@ export const GAME_GENRES = [
   "Puzzle",
   "Strategy",
   "Simulation",
-  "Action"
+  "Action",
+  "Racing",
+  "RPG",
+  "Boardgame"
 ] as const;
