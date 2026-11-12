@@ -27,26 +27,54 @@ import { LiveSearchBar } from "@/components/LiveSearchBar";
 import { HomeQuickTools } from "@/components/HomeQuickTools";
 
 export const metadata: Metadata = {
-  title: "DEVDROP — 140+ Free Developer Tools, Everyday Utilities & HTML5 Games",
+  title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite | DevDrop Online",
   description:
-    "Free online image compressor, photo background remover, QR code generator, barcode maker, PDF converter, JSON formatter, EMI calculator, and 140+ everyday client-side utilities with 100% privacy.",
+    "Official DevDrop (devdrop.online) platform: 140+ free client-side developer tools, peer-to-peer file drop utilities, image compressor, background remover, QR code generator, PDF maker, and 24+ open-source HTML5 games. 100% private, zero logs.",
+  keywords: [
+    "DevDrop",
+    "devdrop",
+    "dev drop",
+    "devdrop online",
+    "devdrop.online",
+    "devdrop.in",
+    "devdrop tools",
+    "devdrop file transfer",
+    "devdrop peer to peer",
+    "devdrop alternative",
+    "official devdrop",
+    "free developer tools",
+    "online utilities",
+    "client-side privacy",
+    "image compressor",
+    "photo background remover",
+    "qr code generator",
+    "open source html5 games",
+  ],
   alternates: {
     canonical: "https://devdrop.online",
   },
   openGraph: {
-    title: "DEVDROP — 140+ Free Developer Tools & Everyday Utilities",
+    title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite",
     description:
-      "100% private, client-side tools for image compression, background removal, QR codes, barcodes, PDFs, and 24+ open-source HTML5 games.",
+      "100% private, client-side tools for file transfer, image compression, background removal, QR codes, PDFs, developer decoders, and 24+ open-source HTML5 games.",
     url: "https://devdrop.online",
+    siteName: "DevDrop",
     type: "website",
     images: [
       {
         url: "https://devdrop.online/logo.png",
         width: 1024,
         height: 1024,
-        alt: "DevDrop Logo",
+        alt: "DevDrop Official Logo",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "DevDrop — Official #1 All-in-One Online Web Tools",
+    description:
+      "140+ free everyday web utilities, developer tools, and browser games running 100% client-side with zero logs.",
+    images: ["https://devdrop.online/logo.png"],
   },
 };
 
@@ -320,7 +348,43 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 7. FREQUENTLY ASKED QUESTIONS */}
+      {/* 7. DEVDROP ECOSYSTEM COMPARISON (devdrop.online vs devdrop.in) */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 sm:p-10 space-y-6">
+          <div className="flex items-center gap-2 text-purple-400 text-xs font-mono font-bold uppercase tracking-wider">
+            <Sparkles className="w-4 h-4" /> The Official Platform Ecosystem
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+            Why Choose DevDrop (devdrop.online)?
+          </h2>
+          <p className="text-sm text-neutral-300 leading-relaxed max-w-4xl">
+            When users look for <strong>DevDrop</strong> on the web, they need speed, privacy, and versatile tools that run directly in the browser. While single-purpose WebRTC links like <code className="text-purple-300 bg-purple-950/60 px-1.5 py-0.5 rounded text-xs font-mono">devdrop.in</code> offer basic phone-to-computer text and file transfers, <strong>DevDrop Online (devdrop.online)</strong> is the comprehensive all-in-one digital workspace engineered for modern creators, developers, and everyday computer users.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
+              <span className="text-emerald-400 font-bold text-sm font-mono block">140+ Browser Utilities</span>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                From image compression, background removal, and PDF makers to JSON formatters, JWT decoders, Pomodoro timers, and password generators — everything runs 100% client-side with zero data storage.
+              </p>
+            </div>
+            <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
+              <span className="text-cyan-400 font-bold text-sm font-mono block">Device-to-Device QR Linking</span>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Instant QR code generator and ISO barcode maker allow seamless sharing of Wi-Fi credentials, URLs, contact vCards, and clipboard text between your phone and laptop with no software installation.
+              </p>
+            </div>
+            <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
+              <span className="text-purple-400 font-bold text-sm font-mono block">24+ Open Source HTML5 Games</span>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Take a quick productivity break with classic open-source games including 2048, SimCity (Micropolis), Space Defender, Cyber Snake, and Command & Conquer directly in your browser tab.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 8. FREQUENTLY ASKED QUESTIONS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 sm:p-10 space-y-6">
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
@@ -333,16 +397,34 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-white">
-                Are my files or images uploaded to any server?
+                What is DevDrop (devdrop.online)?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                No. All image compression, QR generation, PDF compilation, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never touch our servers.
+                DevDrop (https://devdrop.online) is the official #1 free online suite providing over 140 client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
               </p>
             </div>
 
             <div className="space-y-2">
               <h3 className="text-sm font-bold text-white">
-                Is DevDrop completely free for commercial projects?
+                How does DevDrop compare to devdrop.in?
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                While <span className="text-neutral-300 font-mono">devdrop.in</span> is an isolated single-function tool for transferring files between a phone and computer, <strong>DevDrop Online (devdrop.online)</strong> is a complete web utility powerhouse. DevDrop gives you file tools (PDF makers, photo-to-PDF, image compressors, background removers), QR code transfer tools, 140+ developer utilities, and 24+ games — all with 100% client-side privacy.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Are my files or images uploaded to any server?
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                No. All image compression, QR generation, PDF compilation, formatting, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never leave your device.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Is DevDrop completely free for commercial and personal projects?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
                 Yes! Every tool, generator, and code formatter on DevDrop is 100% free with no registration, subscriptions, or hidden charges.
@@ -354,7 +436,7 @@ export default function HomePage() {
                 How does the Photo Background Remover work?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                It combines the official Remove.bg AI model with local open-source rembg color-clustering algorithms to deliver fast, crystal-clear transparent PNG cutouts.
+                It combines the official Remove.bg AI model with local open-source rembg color-clustering algorithms to deliver fast, crystal-clear transparent PNG cutouts right from your browser.
               </p>
             </div>
 
@@ -368,6 +450,51 @@ export default function HomePage() {
             </div>
           </div>
         </div>
+
+        {/* FAQ Schema for Google Search Rich Snippets */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "What is DevDrop (devdrop.online)?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "DevDrop (https://devdrop.online) is the official #1 free online suite providing over 140 client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games with zero server tracking."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "How does DevDrop compare to devdrop.in?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "While devdrop.in is an isolated single-function tool for transferring files between a phone and computer, DevDrop Online (devdrop.online) is a complete web utility powerhouse featuring file tools, image compressors, PDF makers, QR generators, 140+ developer utilities, and 24+ games."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Are files or images uploaded to any server on DevDrop?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "No. All image compression, QR generation, PDF compilation, formatting, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never leave your device."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Is DevDrop completely free?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes, every tool on DevDrop is 100% free with no registration, subscriptions, or paywalls."
+                  }
+                }
+              ]
+            })
+          }}
+        />
       </section>
     </div>
   );
