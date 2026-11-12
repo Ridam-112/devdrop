@@ -32,24 +32,51 @@ export const AdsterraIframeBanner: React.FC<AdsterraIframeProps> = ({
     el.innerHTML = "";
 
     try {
-      const confScript = document.createElement("script");
-      confScript.type = "text/javascript";
-      confScript.innerHTML = `
-        atOptions = {
-          'key' : '${adKey}',
-          'format' : 'iframe',
-          'height' : ${height},
-          'width' : ${width},
-          'params' : {}
-        };
-      `;
+      const iframe = document.createElement("iframe");
+      iframe.width = `${width}`;
+      iframe.height = `${height}`;
+      iframe.style.border = "none";
+      iframe.style.overflow = "hidden";
+      iframe.scrolling = "no";
+      iframe.title = "Sponsored Advertisement";
 
-      const adScript = document.createElement("script");
-      adScript.type = "text/javascript";
-      adScript.src = `https://bauval.org/22/${adKey}`;
+      el.appendChild(iframe);
 
-      el.appendChild(confScript);
-      el.appendChild(adScript);
+      const doc = iframe.contentDocument || iframe.contentWindow?.document;
+      if (doc) {
+        doc.open();
+        doc.write(`
+          <!DOCTYPE html>
+          <html>
+            <head>
+              <base target="_blank">
+              <style>
+                body {
+                  margin: 0;
+                  padding: 0;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  background: transparent;
+                }
+              </style>
+            </head>
+            <body>
+              <script type="text/javascript">
+                atOptions = {
+                  'key' : '${adKey}',
+                  'format' : 'iframe',
+                  'height' : ${height},
+                  'width' : ${width},
+                  'params' : {}
+                };
+              </script>
+              <script type="text/javascript" src="https://bauval.org/22/${adKey}"></script>
+            </body>
+          </html>
+        `);
+        doc.close();
+      }
     } catch (err) {
       console.warn(`Adsterra banner (${width}x${height}) init note:`, err);
     }
@@ -119,16 +146,17 @@ export const AdsterraNativeBanner: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const existing = document.querySelector(
-      'script[src="https://bauval.org/21/e3fd0062bd8745fa6fca6aa87545b640"]'
-    );
-    if (!existing) {
-      const script = document.createElement("script");
-      script.async = true;
-      script.setAttribute("data-cfasync", "false");
-      script.src = "https://bauval.org/21/e3fd0062bd8745fa6fca6aa87545b640";
-      document.body.appendChild(script);
-    }
+    const script = document.createElement("script");
+    script.async = true;
+    script.setAttribute("data-cfasync", "false");
+    script.src = "https://bauval.org/21/e3fd0062bd8745fa6fca6aa87545b640";
+    document.body.appendChild(script);
+
+    return () => {
+      try {
+        script.remove();
+      } catch (_) {}
+    };
   }, []);
 
   return (
