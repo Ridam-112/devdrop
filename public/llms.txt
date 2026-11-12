@@ -1,13 +1,13 @@
 # DevDrop (https://devdrop.online)
 
-> DevDrop is an open-access web utility, cybersecurity diagnostic, and open-source HTML5 browser games platform featuring 88 diagnostic tools and 24 curated open-source web games. All tools and games execute client-side in the browser with zero server tracking and zero software downloads.
+> DevDrop is an open-access web utility, cybersecurity diagnostic, and open-source HTML5 browser games platform featuring 141 diagnostic tools and 24 curated open-source web games. All tools and games execute client-side in the browser with zero server tracking and zero software downloads.
 
 ## Platform Overview
 - Canonical Domain: https://devdrop.online
 - Games Directory: https://devdrop.online/games
 - Tools Directory: https://devdrop.online/tools
 - Sitemap: https://devdrop.online/sitemap.xml
-- Total Diagnostic Tools: 88
+- Total Diagnostic Tools: 141
 - Total Open Source Games: 24
 - Game Technologies: HTML5 Canvas, WebGL, WebAssembly, TypeScript, JavaScript
 - Primary Sources: GitHub (bobeff/open-source-games & verified open-source contributors)
@@ -166,4 +166,69 @@ Official MI6/CIA secret agent ID cards, 10-second self-destruct timers, orbital 
 - [Tactical Night Vision Surveillance Lens](https://devdrop.online/tools/night-vision): Simulate military-grade Generation-3 phosphor green night vision and thermal heat signature tracking.
 - [Wiretap Radio Frequency Interceptor](https://devdrop.online/tools/wiretap-engine): Simulate tuning into encrypted radio frequencies and intercepting static-filled secret transmission chatter.
 - [Secret Agent Morse Code Cipher](https://devdrop.online/tools/morse-code-cipher): Translate secret agent messages into dots and dashes with real-time synthesized military Morse audio beeps.
+
+### Image & Photo Utilities
+High-performance client-side image compressors, automatic background removers, aspect ratio calculators, and color pickers.
+
+- [Image Size Compressor](https://devdrop.online/tools/image-compressor): Compress and optimize images client-side. Shrink file sizes dramatically while maintaining crisp visual quality.
+- [Photo Background Remover](https://devdrop.online/tools/photo-bg-remover): Automatic photo background remover that creates transparent PNG cutouts directly in the browser.
+- [Image Eyedropper & Hex Color Picker](https://devdrop.online/tools/image-color-picker): Free online image eyedropper & hex color picker with instant results and client-side processing.
+- [Favicon 16x16 & 32x32 PNG Generator](https://devdrop.online/tools/favicon-generator): Free online favicon 16x16 & 32x32 png generator with instant results and client-side processing.
+
+### PDF & Document Tools
+Client-side PDF makers, photo to PDF album compilers, and formatted document generators.
+
+- [PDF Maker & Document Generator](https://devdrop.online/tools/pdf-maker): Write and generate formatted vector PDF documents from notes, reports, and outlines.
+- [Photo to PDF Multi-Page Converter](https://devdrop.online/tools/photo-to-pdf): Combine multiple photos, receipts, and scans into a single multi-page PDF document.
+
+### Productivity & Web Utilities
+QR generators, barcodes, JSON beautifiers, Base64 codecs, UUID generators, EMI calculators, and password tools.
+
+- [QR Code Generator & Customizer](https://devdrop.online/tools/qr-code-generator): Generate customized, high-resolution QR codes for websites, Wi-Fi networks, text, and contacts.
+- [Barcode Generator (Code 128)](https://devdrop.online/tools/barcode-generator): Create standard Code 128 barcodes for shipping labels, inventory management, and asset tracking.
+- [Word & Character Counter](https://devdrop.online/tools/word-counter): Count words, characters, sentences, paragraphs, and estimated reading time in real-time.
+- [Text Case Converter](https://devdrop.online/tools/case-converter): Transform text into uppercase, lowercase, title case, camelCase, snake_case, and kebab-case.
+- [JSON Formatter & Validator](https://devdrop.online/tools/json-formatter): Format, validate, beautify, and minify JSON data with real-time error detection.
+- [Base64 Encoder & Decoder](https://devdrop.online/tools/base64-encoder-decoder): Encode text into Base64 format or decode Base64 strings back to plain text.
+- [Secure Password Generator](https://devdrop.online/tools/password-generator): Generate cryptographically strong, random passwords with customizable length and symbols.
+- [Exact Age & Birthday Calculator](https://devdrop.online/tools/age-calculator): Calculate exact chronological age in years, months, days, and total days lived.
+- [BMI Body Mass Index Calculator](https://devdrop.online/tools/bmi-calculator): Calculate your Body Mass Index (BMI) and discover your healthy weight category.
+- [Loan EMI & Interest Calculator](https://devdrop.online/tools/loan-emi-calculator): Calculate monthly EMI payments, total interest payable, and overall loan costs.
+- [Hash Generator (SHA-256, SHA-1, SHA-512)](https://devdrop.online/tools/hash-generator): Generate SHA-256, SHA-1, and SHA-512 cryptographic hashes using native Web Crypto.
+- [UUID v4 Unique ID Generator](https://devdrop.online/tools/uuid-generator): Generate cryptographically secure Version-4 UUIDs (GUIDs) for databases and APIs.
+- [Metric & Imperial Unit Converter](https://devdrop.online/tools/unit-converter): Convert between metric and imperial units for length, weight, and digital storage.
+- [URL Encoder & Decoder](https://devdrop.online/tools/url-encoder-decoder): Encode query strings and links into percent-encoded URLs or decode them back to text.
+- [SEO URL Slug Generator](https://devdrop.online/tools/slug-generator): Transform article headlines and product titles into clean, lowercase SEO URL slugs.
+- [Binary to Text & Text to Binary Converter](https://devdrop.online/tools/binary-text-converter): Convert English text to 8-bit binary code or decode binary sequences to readable text.
+- [JWT Token Decoder & Inspector](https://devdrop.online/tools/jwt-decoder): Decode and inspect JSON Web Tokens (JWT) safely without sending tokens over the internet.
+- [CSS Gradient Generator](https://devdrop.online/tools/css-gradient-generator): Create modern linear CSS gradients with live preview and instant CSS code generation.
+- [Lorem Ipsum Dummy Text Generator](https://devdrop.online/tools/lorem-ipsum-generator): Free online lorem ipsum dummy text generator with instant results and client-side processing.
+- [Markdown to HTML Live Previewer](https://devdrop.online/tools/markdown-previewer): Free online markdown to html live previewer with instant results and client-side processing.
+- [HEX to RGB & HSL Color Converter](https://devdrop.online/tools/color-hex-converter): Free online hex to rgb & hsl color converter with instant results and client-side processing.
+- [Percentage & Discount Calculator](https://devdrop.online/tools/percentage-calculator): Free online percentage & discount calculator with instant results and client-side processing.
+- [Days Between Dates Duration Calculator](https://devdrop.online/tools/days-between-dates): Free online days between dates duration calculator with instant results and client-side processing.
+- [Unix Epoch Timestamp to Date Converter](https://devdrop.online/tools/unix-timestamp-converter): Free online unix epoch timestamp to date converter with instant results and client-side processing.
+- [Aspect Ratio (16:9, 4:3, 21:9) Calculator](https://devdrop.online/tools/aspect-ratio-calculator): Free online aspect ratio (16:9, 4:3, 21:9) calculator with instant results and client-side processing.
+- [HTML Entities Encoder & Decoder](https://devdrop.online/tools/html-entity-encoder): Free online html entities encoder & decoder with instant results and client-side processing.
+- [CSV to JSON Data Converter](https://devdrop.online/tools/csv-to-json-converter): Free online csv to json data converter with instant results and client-side processing.
+- [JSON to CSV Spreadsheet Converter](https://devdrop.online/tools/json-to-csv-converter): Free online json to csv spreadsheet converter with instant results and client-side processing.
+- [Memorable Diceware Passphrase Generator](https://devdrop.online/tools/strong-passphrase-generator): Free online memorable diceware passphrase generator with instant results and client-side processing.
+- [Restaurant Tip & Bill Split Calculator](https://devdrop.online/tools/tip-calculator): Free online restaurant tip & bill split calculator with instant results and client-side processing.
+- [Sale Price & Savings Discount Calculator](https://devdrop.online/tools/discount-sale-calculator): Free online sale price & savings discount calculator with instant results and client-side processing.
+- [Screen Resolution & DPI Checker](https://devdrop.online/tools/screen-resolution-detector): Free online screen resolution & dpi checker with instant results and client-side processing.
+- [Browser User-Agent & Device Checker](https://devdrop.online/tools/user-agent-parser): Free online browser user-agent & device checker with instant results and client-side processing.
+- [Roman Numeral to Number Converter](https://devdrop.online/tools/roman-numeral-converter): Free online roman numeral to number converter with instant results and client-side processing.
+- [Random Number Generator & Dice Roller](https://devdrop.online/tools/random-number-picker): Free online random number generator & dice roller with instant results and client-side processing.
+- [Random Option & Decision Picker](https://devdrop.online/tools/random-choice-picker): Free online random option & decision picker with instant results and client-side processing.
+- [Hexadecimal to ASCII Text Converter](https://devdrop.online/tools/hex-to-ascii-converter): Free online hexadecimal to ascii text converter with instant results and client-side processing.
+- [High-Precision Digital Stopwatch & Lap Timer](https://devdrop.online/tools/digital-stopwatch-timer): Free online high-precision digital stopwatch & lap timer with instant results and client-side processing.
+- [Pomodoro 25/5 Productivity Focus Timer](https://devdrop.online/tools/pomodoro-focus-timer): Free online pomodoro 25/5 productivity focus timer with instant results and client-side processing.
+- [Global Timezone World Clock & Meeting Planner](https://devdrop.online/tools/world-clock-meeting-planner): Free online global timezone world clock & meeting planner with instant results and client-side processing.
+- [Text Diff & Comparison Checker](https://devdrop.online/tools/text-diff-checker): Free online text diff & comparison checker with instant results and client-side processing.
+- [Duplicate Line Remover & List Sorter](https://devdrop.online/tools/remove-duplicate-lines): Free online duplicate line remover & list sorter with instant results and client-side processing.
+- [SQL Query Beautifier & Formatter](https://devdrop.online/tools/sql-formatter): Free online sql query beautifier & formatter with instant results and client-side processing.
+- [RegEx Regular Expression Tester & Matcher](https://devdrop.online/tools/regex-tester): Free online regex regular expression tester & matcher with instant results and client-side processing.
+- [Morse Code Audio & Text Translator](https://devdrop.online/tools/morse-code-translator): Free online morse code audio & text translator with instant results and client-side processing.
+- [Markdown Table Generator](https://devdrop.online/tools/markdown-table-generator): Design and format GitHub-flavored Markdown tables with visual rows and columns.
+- [HTML to Markdown Converter](https://devdrop.online/tools/html-to-markdown-converter): Convert raw HTML markup into clean, readable Markdown syntax.
 

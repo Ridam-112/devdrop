@@ -40,6 +40,15 @@ import { VirusSimulatorEngine } from "@/components/tools/VirusSimulatorEngine";
 import { SpySecretAgentEngine } from "@/components/tools/SpySecretAgentEngine";
 import { IntelDnsEngine } from "@/components/tools/IntelDnsEngine";
 
+// Everyday & Developer Tool Suites
+import PhotoBgRemoverTool from "@/components/tools/PhotoBgRemoverTool";
+import ImageCompressorTool from "@/components/tools/ImageCompressorTool";
+import QrCodeGeneratorTool from "@/components/tools/QrCodeGeneratorTool";
+import BarcodeGeneratorTool from "@/components/tools/BarcodeGeneratorTool";
+import PdfMakerTool from "@/components/tools/PdfMakerTool";
+import PhotoToPdfTool from "@/components/tools/PhotoToPdfTool";
+import UtilityToolEngine from "@/components/tools/UtilityToolEngine";
+
 interface Props {
   params: {
     toolSlug: string;
@@ -222,8 +231,45 @@ export default function ToolDetailPage({ params }: Props) {
       case "sim-recharge-engine":
       case "mobile-recharge":
         return <MobileRechargeSim />;
+      case "image-compressor":
+      case "image-size-compressor":
+      case "photo-compressor":
+      case "compress-image":
+        return <ImageCompressorTool />;
+      case "photo-bg-remover":
+      case "image-background-remover":
+      case "remove-bg":
+        return <PhotoBgRemoverTool />;
+      case "qr-code-generator":
+      case "qr-maker":
+      case "custom-qr-code":
+        return <QrCodeGeneratorTool />;
+      case "barcode-generator":
+      case "barcode-maker":
+      case "code128-generator":
+        return <BarcodeGeneratorTool />;
+      case "pdf-maker":
+      case "text-to-pdf":
+      case "notes-to-pdf":
+        return <PdfMakerTool />;
+      case "photo-to-pdf":
+      case "images-to-pdf":
+      case "jpg-to-pdf":
+        return <PhotoToPdfTool />;
       default:
         switch (tool.categorySlug) {
+          case "image-media":
+            if (tool.slug === "image-compressor") return <ImageCompressorTool />;
+            if (tool.slug === "photo-bg-remover") return <PhotoBgRemoverTool />;
+            return <UtilityToolEngine toolSlug={tool.slug} />;
+          case "pdf-document":
+            if (tool.slug === "photo-to-pdf") return <PhotoToPdfTool />;
+            if (tool.slug === "pdf-maker") return <PdfMakerTool />;
+            return <UtilityToolEngine toolSlug={tool.slug} />;
+          case "developer-utils":
+            if (tool.slug === "qr-code-generator") return <QrCodeGeneratorTool />;
+            if (tool.slug === "barcode-generator") return <BarcodeGeneratorTool />;
+            return <UtilityToolEngine toolSlug={tool.slug} />;
           case "wifi-network":
             return <WifiSimulatorEngine toolSlug={tool.slug} />;
           case "gaming-sims":
@@ -243,7 +289,7 @@ export default function ToolDetailPage({ params }: Props) {
           case "ip-intelligence":
             return <IntelDnsEngine toolSlug={tool.slug} />;
           default:
-            return <WifiSimulatorEngine toolSlug={tool.slug} />;
+            return <UtilityToolEngine toolSlug={tool.slug} />;
         }
     }
   };

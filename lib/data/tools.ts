@@ -260,13 +260,80 @@ export const CATEGORIES: ToolCategory[] = [
         "answer": "It translates standard alphanumeric characters into International Morse Code and synthesizes calibrated 800 Hz audio dits and dahs using the browser's native Web Audio API."
       }
     ]
+  },
+  {
+    "slug": "image-media",
+    "name": "Image & Photo Utilities",
+    "h1": "Free Online Image & Photo Processing Tools",
+    "metaTitle": "Free Image Compressor, Background Remover & Photo Tools | DEVDROP",
+    "metaDescription": "Compress image file sizes, remove photo backgrounds automatically, convert formats, and optimize graphics 100% in your browser.",
+    "description": "High-performance client-side image compressors, automatic background removers, aspect ratio calculators, and color pickers.",
+    "longDescription": "Optimize and edit your images with lightning speed and 100% privacy. DevDrop's Image & Photo suite processes all PNG, JPG, and WebP files locally inside your browser—no uploads, no quality loss, and zero server storage.",
+    "iconName": "Image",
+    "faqs": [
+      {
+        "question": "Are my photos uploaded to any server?",
+        "answer": "No. All image compression, background removal, and editing algorithms execute 100% locally on your computer or mobile phone using HTML5 Canvas and client-side processing."
+      },
+      {
+        "question": "Is there a limit on how many images I can process?",
+        "answer": "There are no usage caps or daily quotas. You can compress and edit as many images as you need for free."
+      },
+      {
+        "question": "Which image formats are supported?",
+        "answer": "DevDrop supports JPEG, JPG, PNG, WebP, SVG, and modern web graphic formats."
+      }
+    ]
+  },
+  {
+    "slug": "pdf-document",
+    "name": "PDF & Document Tools",
+    "h1": "Free Online PDF Creator, Image to PDF & Document Tools",
+    "metaTitle": "Online PDF Maker & Photo to PDF Converters | DEVDROP",
+    "metaDescription": "Create clean PDF documents from notes, merge multiple photos into multi-page PDFs, and format printable files without server uploads.",
+    "description": "Client-side PDF makers, photo to PDF album compilers, and formatted document generators.",
+    "longDescription": "Generate professional PDFs on the fly. Whether compiling receipts into a multi-page expense report or creating a clean vector document from text notes, our PDF engine generates publication-grade PDFs entirely in-browser.",
+    "iconName": "FileText",
+    "faqs": [
+      {
+        "question": "Can I convert photos into a single PDF file?",
+        "answer": "Yes. Our Photo to PDF tool allows you to upload multiple images, reorder pages, adjust margins, and compile them into a unified PDF."
+      },
+      {
+        "question": "Are my confidential documents safe?",
+        "answer": "Yes. Files are compiled in browser memory using jsPDF without transmitting any data over the internet."
+      }
+    ]
+  },
+  {
+    "slug": "developer-utils",
+    "name": "Productivity & Web Utilities",
+    "h1": "Essential Everyday Developer, Finance & Web Utilities",
+    "metaTitle": "Everyday Online Developer Tools, Calculators & Converters | DEVDROP",
+    "metaDescription": "Instant QR code generator, barcode maker, JSON formatter, Base64 encoder, password generator, EMI and age calculators.",
+    "description": "QR generators, barcodes, JSON beautifiers, Base64 codecs, UUID generators, EMI calculators, and password tools.",
+    "longDescription": "A comprehensive developer and everyday toolbox designed for productivity. Generate scannable QR codes, thermal barcodes, calculate loan EMIs, format messy JSON, generate cryptographically secure passwords, and convert units instantly.",
+    "iconName": "Sliders",
+    "faqs": [
+      {
+        "question": "Are these developer utilities free to use for commercial projects?",
+        "answer": "Yes. All tools, generators, and code formatters are 100% free and unrestricted for personal, educational, and commercial workflows."
+      },
+      {
+        "question": "Do these tools require signing up or creating an account?",
+        "answer": "No registration, subscription, or software installation is required. Every tool is immediately accessible in your browser."
+      }
+    ]
   }
 ];
 
 export const TOOLS: ToolItem[] = [
   {
     "slug": "mobile-recharge-portal",
-    "aliases": ["sim-recharge-engine", "mobile-recharge"],
+    "aliases": [
+      "sim-recharge-engine",
+      "mobile-recharge"
+    ],
     "name": "Mobile Recharge Gateway & Plan Explorer",
     "h1": "Mobile Recharge Gateway: Real-Time Prepaid Telecom Plans & HLR Billing Portal",
     "tagline": "Instant 5G/4G prepaid recharge plans for Jio, Airtel, Vi, and BSNL",
@@ -309,7 +376,11 @@ export const TOOLS: ToolItem[] = [
         "answer": "On Reliance Jio, unlimited True 5G data starts with the ₹349 (2GB/day) 28-day plan and above. On Bharti Airtel, unlimited 5G Plus is bundled with select 1.5GB/day and 2GB/day plans in eligible 5G cities."
       }
     ],
-    "relatedSlugs": ["phone-location-prank", "mobile-hacker", "ip-trace"],
+    "relatedSlugs": [
+      "phone-location-prank",
+      "mobile-hacker",
+      "ip-trace"
+    ],
     "metaTitle": "Mobile Recharge Gateway — 2026 Prepaid Plans for Jio, Airtel, Vi & BSNL | DEVDROP",
     "metaDescription": "Explore genuine 2026 mobile recharge plans for Jio, Airtel, Vi & BSNL. Compare Unlimited True 5G tariffs, OTT bundles, and annual packs with instant gateway checkout.",
     "canonicalPath": "/tools/mobile-recharge-portal"
@@ -4865,5 +4936,2393 @@ export const TOOLS: ToolItem[] = [
         "answer": "Not at all. The self-destruct timer plays synthesized sound effects and triggers a brief visual screen glitch without affecting your computer or phone."
       }
     ]
+  },
+  {
+    "slug": "image-compressor",
+    "aliases": [
+      "image-size-compressor",
+      "photo-compressor",
+      "compress-image"
+    ],
+    "name": "Image Size Compressor",
+    "h1": "Online Image Size Compressor: Reduce JPG, PNG & WebP File Size Without Losing Quality",
+    "tagline": "Reduce image file size up to 90% with instant in-browser compression",
+    "categorySlug": "image-media",
+    "iconName": "FileImage",
+    "badge": "Popular 2026",
+    "isPopular": true,
+    "shortIntro": "Compress JPEG, PNG, and WebP images directly in your browser with real-time before-and-after preview, quality sliders, and instant download. 100% private with zero server upload.",
+    "description": "Compress and optimize images client-side. Shrink file sizes dramatically while maintaining crisp visual quality.",
+    "longDescription": "The DevDrop Image Size Compressor lets you dramatically reduce image file sizes without sacrificing visual clarity. Using advanced HTML5 canvas downsampling and WebP encoding, you can shrink multi-megabyte camera photos into lightweight web-ready files in milliseconds. Preview side-by-side comparisons and download your optimized files instantly.",
+    "features": [
+      "Compress JPEG, PNG, and WebP images up to 90% smaller",
+      "Side-by-side interactive before-and-after visual preview",
+      "Custom quality slider and resolution downscaling controls",
+      "100% private in-browser compression—no images uploaded to servers"
+    ],
+    "limitations": [
+      "Client-Side Processing: Processing speed depends on your local device CPU and browser memory.",
+      "Zero Server Storage: Images are discarded immediately upon closing or refreshing the tab."
+    ],
+    "disclaimer": "All compression routines run locally inside your browser sandbox. Your images are never transmitted or stored.",
+    "howItWorks": [
+      "Drag and drop or select any image (PNG, JPG, WebP) from your device",
+      "Adjust the compression quality slider and choose your preferred output format",
+      "Compare the file size reduction and image clarity in the side-by-side preview",
+      "Click Download to save your lightweight optimized image instantly"
+    ],
+    "faqs": [
+      {
+        "question": "Does compressing images reduce their visual quality?",
+        "answer": "Our intelligent compression algorithm discards invisible metadata and optimizes color palettes so photos remain sharp and clear to the human eye while shrinking file size by up to 90%."
+      },
+      {
+        "question": "Is there a limit on image dimensions or file size?",
+        "answer": "Because processing happens directly on your device, there are no arbitrary server upload limits. You can compress high-resolution DSLR photos effortlessly."
+      },
+      {
+        "question": "Which output format yields the highest file size reduction?",
+        "answer": "WebP generally provides the best compression ratio, typically saving 25% to 35% more space than standard JPEG at equivalent visual quality."
+      }
+    ],
+    "relatedSlugs": [
+      "photo-bg-remover",
+      "photo-to-pdf",
+      "image-color-picker",
+      "favicon-generator"
+    ],
+    "metaTitle": "Image Size Compressor — Free Online JPG, PNG & WebP Optimizer | DEVDROP",
+    "metaDescription": "Compress image file sizes online for free. Reduce PNG, JPG, and WebP file sizes up to 90% with zero quality loss and 100% privacy.",
+    "canonicalPath": "/tools/image-compressor"
+  },
+  {
+    "slug": "photo-bg-remover",
+    "aliases": [
+      "image-background-remover",
+      "remove-bg",
+      "transparent-background"
+    ],
+    "name": "Photo Background Remover",
+    "h1": "Photo Background Remover: Instant AI-Powered Transparent Cutouts",
+    "tagline": "Erase photo backgrounds automatically in-browser with zero upload",
+    "categorySlug": "image-media",
+    "iconName": "Scissors",
+    "badge": "Trending",
+    "isPopular": true,
+    "shortIntro": "Remove photo backgrounds automatically inspired by rembg open-source models. Create transparent PNG cutouts, product photos, profile pictures, and replace backgrounds with solid colors or chroma green.",
+    "description": "Automatic photo background remover that creates transparent PNG cutouts directly in the browser.",
+    "longDescription": "Inspired by cutting-edge open-source background removal models like danielgatis/rembg, the DevDrop Photo Background Remover automatically detects foreground subjects and isolates them from distracting backgrounds. Adjust edge tolerance, feather borders, swap backdrops (transparent, white studio, dark cyberpunk, or chroma green), and download crisp PNG cutouts.",
+    "features": [
+      "Automatic background removal for portraits, objects, and product photos",
+      "Tolerance threshold and edge feathering sliders for pixel-perfect cutouts",
+      "Instant background replacer: transparent checkerboard, pure white, dark, or green screen",
+      "1-click high-resolution PNG download with preserved alpha transparency"
+    ],
+    "limitations": [
+      "Client-side algorithm performs best on photos with distinct lighting contrast between foreground and background.",
+      "Complex fine hair or semi-transparent glass may require fine-tuning tolerance sliders."
+    ],
+    "disclaimer": "Operates 100% client-side in browser memory. No photos are uploaded or analyzed by third-party tracking APIs.",
+    "howItWorks": [
+      "Upload or drop any portrait or product photo",
+      "The tool analyzes color clustering and isolates the subject automatically",
+      "Fine-tune the tolerance or feather slider for softer edges",
+      "Select a background fill or keep it transparent, then click Download PNG"
+    ],
+    "faqs": [
+      {
+        "question": "How does this compare to Python's rembg tool?",
+        "answer": "It applies client-side foreground-background edge segmentation inspired by rembg concepts directly in modern WebAssembly/Canvas environments without requiring Python or server backends."
+      },
+      {
+        "question": "Can I replace the background with a white backdrop for eCommerce?",
+        "answer": "Yes. Simply switch the backdrop selector to 'Pure White' to generate Amazon and Shopify-ready product photos instantly."
+      }
+    ],
+    "relatedSlugs": [
+      "image-compressor",
+      "photo-to-pdf",
+      "image-color-picker"
+    ],
+    "metaTitle": "Photo Background Remover — Free Instant Transparent PNG Cutouts | DEVDROP",
+    "metaDescription": "Remove photo backgrounds automatically online for free. Create transparent PNGs and eCommerce product shots with zero server upload.",
+    "canonicalPath": "/tools/photo-bg-remover"
+  },
+  {
+    "slug": "qr-code-generator",
+    "aliases": [
+      "qr-maker",
+      "free-qr-generator",
+      "custom-qr-code"
+    ],
+    "name": "QR Code Generator & Customizer",
+    "h1": "Free QR Code Generator: Create Custom Scannable QR Codes for URLs, Wi-Fi & Text",
+    "tagline": "Generate HD vector QR codes with custom colors and instant download",
+    "categorySlug": "developer-utils",
+    "iconName": "QrCode",
+    "badge": "Essential",
+    "isPopular": true,
+    "shortIntro": "Generate customized high-resolution QR codes for websites, Wi-Fi auto-connect, text notes, emails, and phone numbers. Customize foreground and background colors, error correction, and download as PNG or SVG.",
+    "description": "Generate customized, high-resolution QR codes for websites, Wi-Fi networks, text, and contacts.",
+    "longDescription": "The DevDrop QR Code Generator creates scannable, high-resolution QR codes ready for menus, business cards, flyers, and digital packaging. Choose from multiple payloads including Website URLs, Wi-Fi network credentials (WPA/WPA2/WPA3), contact emails, and phone dials. Customize brand colors, tweak Reed-Solomon error correction levels, and export in crisp PNG or scalable SVG vector formats.",
+    "features": [
+      "Supports Website URLs, Wi-Fi credentials, plain text, emails, and phone numbers",
+      "Custom dot colors, background themes, and size scaling up to 800px HD",
+      "Adjustable Reed-Solomon error correction levels (L, M, Q, H)",
+      "Instant export to PNG, SVG vector, or direct clipboard copy"
+    ],
+    "limitations": [
+      "Static QR codes: Destination URLs cannot be redirected after printing. Test scan before mass production."
+    ],
+    "disclaimer": "Generated QR codes do not expire and contain zero tracking redirects.",
+    "howItWorks": [
+      "Select your QR code type (URL, Plain Text, Wi-Fi, Email, Phone)",
+      "Enter your destination link or credentials",
+      "Customize brand colors and error recovery percentage",
+      "Test scan with your phone camera and download PNG or SVG"
+    ],
+    "faqs": [
+      {
+        "question": "Do these QR codes ever expire?",
+        "answer": "No. The QR codes generated by DevDrop are standard static codes containing the direct encoded data. They never expire and do not route through intermediary redirect servers."
+      },
+      {
+        "question": "Which error correction level should I choose?",
+        "answer": "For standard digital screens, Level M (15%) is ideal. If you plan to print the code on merchandise, outdoor banners, or add a logo overlay, choose Level H (30%) for maximum durability."
+      }
+    ],
+    "relatedSlugs": [
+      "barcode-generator",
+      "url-encoder-decoder",
+      "slug-generator"
+    ],
+    "metaTitle": "Free QR Code Generator — Custom Scannable QR Codes (PNG/SVG) | DEVDROP",
+    "metaDescription": "Create free custom QR codes online for URLs, Wi-Fi networks, text, and phone numbers. Customize colors and download in high-res PNG or SVG.",
+    "canonicalPath": "/tools/qr-code-generator"
+  },
+  {
+    "slug": "barcode-generator",
+    "aliases": [
+      "barcode-maker",
+      "code128-generator",
+      "sku-barcode-generator"
+    ],
+    "name": "Barcode Generator (Code 128)",
+    "h1": "Free Online Barcode Generator: Create Scannable Code 128 Labels for Inventory & Retail",
+    "tagline": "Generate standard Code 128 barcodes for retail, shipping, and inventory",
+    "categorySlug": "developer-utils",
+    "iconName": "Barcode",
+    "badge": "Productivity",
+    "isPopular": true,
+    "shortIntro": "Generate 100% compliant Code 128 barcodes for SKU inventory management, shipping labels, asset tags, and retail scanners. Customize height, thickness, colors, and print directly.",
+    "description": "Create standard Code 128 barcodes for shipping labels, inventory management, and asset tracking.",
+    "longDescription": "DevDrop Barcode Generator produces crisp, optically compliant Code 128-B barcodes recognized by all industrial 1D laser scanners and mobile optical readers. Customize bar width, bar height, human-readable text labels, and color palettes. Download printable PNG labels or trigger direct thermal printing in one click.",
+    "features": [
+      "Standard Code 128-B algorithmic encoding supporting alphanumeric text and symbols",
+      "Customizable bar height, line thickness, and human-readable text toggles",
+      "Adjustable high-contrast color themes for thermal label printers",
+      "1-click PNG image download and direct print dialog trigger"
+    ],
+    "limitations": [
+      "Code 128-B encodes standard ASCII characters (0-9, A-Z, a-z, symbols). For 2D matrices, use our QR Code Generator."
+    ],
+    "disclaimer": "Barcodes are compiled client-side in HTML5 canvas. Always test-scan printed labels before commercial deployment.",
+    "howItWorks": [
+      "Enter your SKU, product code, or serial number",
+      "Adjust bar height and thickness to match your label sheet dimensions",
+      "Choose whether to display the human-readable text below the bars",
+      "Download high-res PNG or print directly to your thermal barcode printer"
+    ],
+    "faqs": [
+      {
+        "question": "Can these barcodes be scanned by standard supermarket laser scanners?",
+        "answer": "Yes. Code 128 is an internationally recognized ISO/IEC standard supported by virtually all 1D barcode scanners, POS systems, and mobile inventory apps."
+      },
+      {
+        "question": "What characters can I include in Code 128?",
+        "answer": "Code 128-B supports all standard keyboard characters including numbers (0-9), uppercase (A-Z), lowercase (a-z), and punctuation symbols."
+      }
+    ],
+    "relatedSlugs": [
+      "qr-code-generator",
+      "uuid-generator",
+      "hash-generator"
+    ],
+    "metaTitle": "Barcode Generator Online — Free Code 128 Barcodes for SKU & Labels | DEVDROP",
+    "metaDescription": "Generate scannable Code 128 barcodes online for inventory, SKU numbers, shipping labels, and retail packaging. Free PNG download and direct print.",
+    "canonicalPath": "/tools/barcode-generator"
+  },
+  {
+    "slug": "pdf-maker",
+    "aliases": [
+      "text-to-pdf",
+      "create-pdf-online",
+      "notes-to-pdf"
+    ],
+    "name": "PDF Maker & Document Generator",
+    "h1": "Free Online PDF Maker: Convert Text, Notes & Markdown into Formatted PDFs",
+    "tagline": "Create publication-grade vector PDFs directly from text notes and reports",
+    "categorySlug": "pdf-document",
+    "iconName": "FileText",
+    "badge": "New 2026",
+    "isPopular": true,
+    "shortIntro": "Write, edit, and compile clean PDF documents from text, notes, and outlines. Configure typography, page sizes (A4/Letter), margins, headers, and automated page numbering with 100% privacy.",
+    "description": "Write and generate formatted vector PDF documents from notes, reports, and outlines.",
+    "longDescription": "The DevDrop PDF Maker provides a lightweight, distraction-free document editor that compiles directly into standard Adobe-compatible vector PDFs. Customize font families (Helvetica, Times, Courier), font sizes, line spacing, margins, orientation (Portrait/Landscape), and automated page headers/footers with zero data transmitted over the web.",
+    "features": [
+      "Clean vector PDF compilation using client-side jsPDF technology",
+      "Customizable typography: Helvetica, Times New Roman, and Courier",
+      "Multi-page auto text-wrapping and intelligent page break calculations",
+      "Automated page numbers ('Page X of Y') and document author metadata"
+    ],
+    "limitations": [
+      "Client-side compilation processes standard ASCII and Latin typography without requiring server font downloads."
+    ],
+    "disclaimer": "All PDF document generation runs in browser memory. Your confidential writings never touch a server.",
+    "howItWorks": [
+      "Type or paste your document text, notes, or contract outline into the editor",
+      "Select page layout (A4 or US Letter) and typography preferences",
+      "Click Preview to inspect the document layout in a new tab",
+      "Click Generate & Download PDF to save the vectorized PDF file"
+    ],
+    "faqs": [
+      {
+        "question": "Can I use this PDF maker for confidential legal or business notes?",
+        "answer": "Yes! Because DevDrop generates the PDF entirely in your browser's local sandbox, your text is never transmitted over the internet or logged on any server."
+      },
+      {
+        "question": "Does the PDF support multiple pages automatically?",
+        "answer": "Yes. Our intelligent text measurement splits long texts across multiple pages with automated margins and page counters."
+      }
+    ],
+    "relatedSlugs": [
+      "photo-to-pdf",
+      "word-counter",
+      "markdown-previewer"
+    ],
+    "metaTitle": "PDF Maker Online — Free Text & Notes to PDF Converter | DEVDROP",
+    "metaDescription": "Create clean, formatted PDF documents from text notes and reports online for free. Custom typography, A4 layout, and instant download.",
+    "canonicalPath": "/tools/pdf-maker"
+  },
+  {
+    "slug": "photo-to-pdf",
+    "aliases": [
+      "images-to-pdf",
+      "jpg-to-pdf",
+      "convert-photo-to-pdf"
+    ],
+    "name": "Photo to PDF Multi-Page Converter",
+    "h1": "Photo to PDF Converter: Merge Multiple Images into a Single PDF Document",
+    "tagline": "Combine JPG, PNG, and WebP photos into one consolidated PDF file",
+    "categorySlug": "pdf-document",
+    "iconName": "Images",
+    "badge": "Trending",
+    "isPopular": true,
+    "shortIntro": "Combine multiple photos, scanned receipts, documents, and camera shots into a single consolidated PDF document. Reorder pages, adjust margins, and export in seconds.",
+    "description": "Combine multiple photos, receipts, and scans into a single multi-page PDF document.",
+    "longDescription": "Convert multiple JPG, PNG, or WebP images into a single professional PDF document. Ideal for compiling receipts for expense reports, submitting multi-page homework assignments, organizing photo albums, or creating digital product catalogs. Reorder pages with intuitive up/down controls, configure page margins, and download your consolidated PDF instantly.",
+    "features": [
+      "Upload and compile unlimited photos into a single unified PDF",
+      "Drag-and-drop or click to reorder page sequences effortlessly",
+      "Page sizing options: Standard A4 or exact image dimension matching",
+      "Adjustable page margins (borderless edge-to-edge or clean framed margin)"
+    ],
+    "limitations": [
+      "Large quantities of 4K photos may consume device memory; compress images first if uploading dozens of files."
+    ],
+    "disclaimer": "No photos are uploaded to any server. Compilation runs entirely inside your browser.",
+    "howItWorks": [
+      "Select or drop multiple photos (PNG, JPG, WebP) into the upload area",
+      "Rearrange image order using the Up and Down arrow buttons",
+      "Choose your preferred page format (Standard A4 or Exact Fit) and margin width",
+      "Click Convert to PDF to generate and download your multi-page document"
+    ],
+    "faqs": [
+      {
+        "question": "How many photos can I combine into one PDF?",
+        "answer": "There are no hard limits. You can combine dozens of photos depending on your device's browser memory capacity."
+      },
+      {
+        "question": "Will my images lose quality during the PDF conversion?",
+        "answer": "Images are embedded at their native resolution with high-fidelity rendering, keeping text on receipts and documents crisp and legible."
+      }
+    ],
+    "relatedSlugs": [
+      "pdf-maker",
+      "image-compressor",
+      "photo-bg-remover"
+    ],
+    "metaTitle": "Photo to PDF Converter — Combine Multiple Images into PDF Free | DEVDROP",
+    "metaDescription": "Convert and merge photos into a single multi-page PDF online for free. Support for JPG, PNG, WebP with custom page order and margins.",
+    "canonicalPath": "/tools/photo-to-pdf"
+  },
+  {
+    "slug": "word-counter",
+    "aliases": [
+      "character-counter",
+      "word-count-tool",
+      "text-analyzer"
+    ],
+    "name": "Word & Character Counter",
+    "h1": "Online Word Counter: Real-Time Character, Sentence & Reading Time Analyzer",
+    "tagline": "Instant word count, characters, sentences, paragraphs, and reading speed",
+    "categorySlug": "developer-utils",
+    "iconName": "Type",
+    "badge": "Essential",
+    "isPopular": true,
+    "shortIntro": "Analyze text length in real time. Count words, characters (with and without spaces), sentences, paragraphs, estimated reading time, and speaking duration.",
+    "description": "Count words, characters, sentences, paragraphs, and estimated reading time in real-time.",
+    "longDescription": "The DevDrop Word & Character Counter provides real-time text metrics for copywriters, students, developers, and SEO specialists. As you type or paste content, calculate total words, character count with and without spaces, sentences, paragraphs, and estimated reading time.",
+    "features": [
+      "Real-time word, character, sentence, and paragraph counting",
+      "Character count excluding spaces for Twitter/X and social media limits",
+      "Estimated reading time based on standard 200 wpm rate",
+      "1-click copy text button with clean responsive UI"
+    ],
+    "limitations": [
+      "Processes text in browser memory without sending content to remote servers."
+    ],
+    "disclaimer": "Your typed or pasted text is processed locally and never stored.",
+    "howItWorks": [
+      "Type or paste text into the box to see immediate live counts."
+    ],
+    "faqs": [
+      {
+        "question": "What is the average reading speed used?",
+        "answer": "Reading time is calculated using the industry standard of 200 words per minute."
+      }
+    ],
+    "relatedSlugs": [
+      "case-converter",
+      "slug-generator",
+      "markdown-previewer"
+    ],
+    "metaTitle": "Word Counter Online — Free Character, Sentence & Reading Time Count | DEVDROP",
+    "metaDescription": "Count words and characters online for free. Real-time character count with/without spaces, sentences, paragraphs, and reading time.",
+    "canonicalPath": "/tools/word-counter"
+  },
+  {
+    "slug": "case-converter",
+    "aliases": [
+      "text-case-converter",
+      "uppercase-lowercase",
+      "camelcase-converter"
+    ],
+    "name": "Text Case Converter",
+    "h1": "Text Case Converter: UPPERCASE, lowercase, Title Case, camelCase & snake_case",
+    "tagline": "Transform text between uppercase, lowercase, title, camel, snake, and kebab case",
+    "categorySlug": "developer-utils",
+    "iconName": "Type",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Convert text instantly between UPPERCASE, lowercase, Title Case, camelCase, snake_case, kebab-case, and PascalCase with 1-click clipboard copy.",
+    "description": "Transform text into uppercase, lowercase, title case, camelCase, snake_case, and kebab-case.",
+    "longDescription": "Easily convert strings into any programming or formatting case. Whether preparing code variables in camelCase, database column names in snake_case, or article headlines in Title Case, this tool formats text instantly.",
+    "features": [
+      "Supports 7 major casing styles: UPPER, lower, Title, camel, snake, kebab, Pascal",
+      "1-click individual copy buttons for each converted format",
+      "Preserves numbers and alphanumeric identifiers"
+    ],
+    "limitations": [
+      "Special unicode glyphs are converted according to standard ECMAScript casing tables."
+    ],
+    "disclaimer": "Runs entirely in browser memory.",
+    "howItWorks": [
+      "Enter text and copy the required case format instantly."
+    ],
+    "faqs": [
+      {
+        "question": "What is the difference between camelCase and PascalCase?",
+        "answer": "camelCase starts with a lowercase letter (e.g. myVariable), whereas PascalCase starts with an uppercase letter (e.g. MyVariable)."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "slug-generator",
+      "json-formatter"
+    ],
+    "metaTitle": "Text Case Converter — UPPERCASE, lowercase, camelCase, snake_case | DEVDROP",
+    "metaDescription": "Convert text between UPPERCASE, lowercase, Title Case, camelCase, snake_case, and kebab-case online for free with instant copy.",
+    "canonicalPath": "/tools/case-converter"
+  },
+  {
+    "slug": "json-formatter",
+    "aliases": [
+      "json-validator",
+      "json-beautifier",
+      "json-minifier"
+    ],
+    "name": "JSON Formatter & Validator",
+    "h1": "Online JSON Formatter: Beautify, Minify & Validate JSON Syntax with Syntax Highlighting",
+    "tagline": "Beautify messy JSON data, validate syntax errors, or minify for production",
+    "categorySlug": "developer-utils",
+    "iconName": "FileJson",
+    "badge": "Developer",
+    "isPopular": true,
+    "shortIntro": "Format, beautify, and validate JSON data in real time. Detect syntax errors, minify JSON payloads, and copy formatted code with clean 2-space indentation.",
+    "description": "Format, validate, beautify, and minify JSON data with real-time error detection.",
+    "longDescription": "A fast, privacy-focused JSON formatter and validator for web developers and API engineers. Paste unformatted or nested API responses to beautify them with clean indentation, inspect syntax errors with precise line explanations, or minify data for lightweight network transfers.",
+    "features": [
+      "Automatic real-time JSON syntax validation and parsing",
+      "Clean 2-space indentation and bracket formatting",
+      "1-click JSON minifier to strip whitespace for production payloads",
+      "Instant copy formatted JSON to clipboard"
+    ],
+    "limitations": [
+      "Validates RFC 8259 compliant JSON strings."
+    ],
+    "disclaimer": "Your sensitive API payloads and database dumps never leave your browser.",
+    "howItWorks": [
+      "Paste raw JSON on the left to see instant validated and formatted code on the right."
+    ],
+    "faqs": [
+      {
+        "question": "Is my JSON payload uploaded anywhere?",
+        "answer": "No. JSON parsing is executed natively via window.JSON.parse inside your browser."
+      }
+    ],
+    "relatedSlugs": [
+      "base64-encoder-decoder",
+      "jwt-decoder",
+      "csv-to-json-converter"
+    ],
+    "metaTitle": "JSON Formatter & Validator — Beautify & Minify JSON Online | DEVDROP",
+    "metaDescription": "Format, validate, and beautify JSON data online for free. Real-time syntax error checking, 2-space indentation, and minifier.",
+    "canonicalPath": "/tools/json-formatter"
+  },
+  {
+    "slug": "base64-encoder-decoder",
+    "aliases": [
+      "base64-codec",
+      "base64-decode",
+      "base64-encode"
+    ],
+    "name": "Base64 Encoder & Decoder",
+    "h1": "Base64 Encoder & Decoder: Convert Plain Text to Base64 & Decode Data Strings",
+    "tagline": "Encode plain text to Base64 or decode Base64 strings back to text instantly",
+    "categorySlug": "developer-utils",
+    "iconName": "Binary",
+    "badge": "Developer",
+    "isPopular": true,
+    "shortIntro": "Encode UTF-8 text into standard Base64 format or decode Base64 strings back into readable plain text. Client-side, fast, and secure.",
+    "description": "Encode text into Base64 format or decode Base64 strings back to plain text.",
+    "longDescription": "Encode text into Base64 binary-to-text representation or decode Base64 strings into readable text. Essential for debugging basic HTTP authentication headers, data URLs, API payloads, and encoded tokens.",
+    "features": [
+      "Bidirectional encoding and decoding toggles",
+      "Full UTF-8 unicode character support",
+      "Instant error reporting for malformed Base64 inputs"
+    ],
+    "limitations": [
+      "Processes text and string payloads in browser memory."
+    ],
+    "disclaimer": "No data is transmitted over the internet.",
+    "howItWorks": [
+      "Choose Encode or Decode, paste your content, and view the converted output."
+    ],
+    "faqs": [
+      {
+        "question": "Is Base64 an encryption algorithm?",
+        "answer": "No. Base64 is an encoding scheme designed to represent binary data in ASCII string format; it provides no cryptographic confidentiality."
+      }
+    ],
+    "relatedSlugs": [
+      "json-formatter",
+      "jwt-decoder",
+      "url-encoder-decoder"
+    ],
+    "metaTitle": "Base64 Encoder & Decoder Online — Free Text to Base64 Tool | DEVDROP",
+    "metaDescription": "Encode and decode Base64 strings online for free. Convert plain UTF-8 text to Base64 or decode Base64 back to text with instant copy.",
+    "canonicalPath": "/tools/base64-encoder-decoder"
+  },
+  {
+    "slug": "password-generator",
+    "aliases": [
+      "secure-password-generator",
+      "random-password",
+      "strong-password-maker"
+    ],
+    "name": "Secure Password Generator",
+    "h1": "Secure Password Generator: Create Strong, Uncrackable Random Passwords",
+    "tagline": "Generate cryptographically secure random passwords with customizable length and entropy",
+    "categorySlug": "developer-utils",
+    "iconName": "Key",
+    "badge": "Security",
+    "isPopular": true,
+    "shortIntro": "Generate cryptographically strong, random passwords using the browser's native Web Crypto API. Customize length, uppercase, numbers, and symbols to protect accounts.",
+    "description": "Generate cryptographically strong, random passwords with customizable length and symbols.",
+    "longDescription": "Protect your online accounts from brute-force and dictionary attacks with high-entropy random passwords. Generated using your browser's window.crypto pseudo-random number generator, these passwords never leave your device.",
+    "features": [
+      "Hardware-level random entropy via Web Crypto API",
+      "Customizable length from 8 to 64 characters",
+      "Toggles for uppercase, lowercase, numbers, and symbols",
+      "1-click instant clipboard copy with zero server logging"
+    ],
+    "limitations": [
+      "Generated passwords are not stored anywhere; be sure to save them in your password manager."
+    ],
+    "disclaimer": "Passwords are generated locally on your computer and never transmitted.",
+    "howItWorks": [
+      "Select desired character sets and length, then click Copy to use your password."
+    ],
+    "faqs": [
+      {
+        "question": "What makes a password strong?",
+        "answer": "A strong password has at least 16 characters and includes a blend of uppercase letters, lowercase letters, numbers, and symbols with high random entropy."
+      }
+    ],
+    "relatedSlugs": [
+      "strong-passphrase-generator",
+      "hash-generator",
+      "uuid-generator"
+    ],
+    "metaTitle": "Secure Password Generator — Create Strong Random Passwords | DEVDROP",
+    "metaDescription": "Generate strong, uncrackable random passwords online for free. Customizable length, symbols, numbers, and 100% private Web Crypto generation.",
+    "canonicalPath": "/tools/password-generator"
+  },
+  {
+    "slug": "age-calculator",
+    "aliases": [
+      "chronological-age-calculator",
+      "exact-age-checker",
+      "birthday-calculator"
+    ],
+    "name": "Exact Age & Birthday Calculator",
+    "h1": "Exact Age Calculator: Calculate Age in Years, Months, Days & Total Days Lived",
+    "tagline": "Find your exact chronological age in years, months, days, and total days lived",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Everyday",
+    "isPopular": true,
+    "shortIntro": "Calculate your exact age down to the day. Enter your birth date to see your age in years, months, days, total days lived, and countdown to your next birthday.",
+    "description": "Calculate exact chronological age in years, months, days, and total days lived.",
+    "longDescription": "The DevDrop Exact Age Calculator computes your chronological age with calendar precision. Accounting for leap years and month lengths, view your age broken down into years, months, days, and cumulative days lived.",
+    "features": [
+      "Precise calculation accounting for leap years and variable month lengths",
+      "Displays years, months, days, and total days lived",
+      "Instant calendar date picker with zero page reload"
+    ],
+    "limitations": [
+      "Calculates based on the user device's local system clock."
+    ],
+    "disclaimer": "Birth dates are processed locally and never recorded.",
+    "howItWorks": [
+      "Select your birth date in the calendar input to see your exact age breakdown immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Does the calculator account for leap years?",
+        "answer": "Yes. All leap year February 29th dates are calculated accurately according to Gregorian calendar rules."
+      }
+    ],
+    "relatedSlugs": [
+      "days-between-dates",
+      "bmi-calculator",
+      "loan-emi-calculator"
+    ],
+    "metaTitle": "Exact Age Calculator — Calculate Age in Years, Months & Days | DEVDROP",
+    "metaDescription": "Calculate your exact age in years, months, and days online for free. Find out total days lived and your next birthday countdown.",
+    "canonicalPath": "/tools/age-calculator"
+  },
+  {
+    "slug": "bmi-calculator",
+    "aliases": [
+      "body-mass-index",
+      "bmi-checker",
+      "healthy-weight-calculator"
+    ],
+    "name": "BMI Body Mass Index Calculator",
+    "h1": "BMI Calculator: Calculate Body Mass Index & Healthy Weight Category",
+    "tagline": "Calculate your Body Mass Index (BMI) and health category based on WHO standards",
+    "categorySlug": "developer-utils",
+    "iconName": "Sliders",
+    "badge": "Health",
+    "isPopular": false,
+    "shortIntro": "Calculate your Body Mass Index (BMI) from your height and weight. Discover your weight category (Underweight, Normal, Overweight, Obese) based on WHO health standards.",
+    "description": "Calculate your Body Mass Index (BMI) and discover your healthy weight category.",
+    "longDescription": "Check your Body Mass Index (BMI) quickly using standard World Health Organization criteria. Adjust the interactive height and weight sliders to instantly see your calculated BMI score and weight status category.",
+    "features": [
+      "Interactive real-time height and weight sliders",
+      "WHO weight categorization (Underweight, Normal, Overweight, Obese)",
+      "Instant color-coded health indicators"
+    ],
+    "limitations": [
+      "BMI is a general screening metric and does not distinguish between muscle mass and fat."
+    ],
+    "disclaimer": "This tool is for educational and informational reference only, not medical diagnosis.",
+    "howItWorks": [
+      "Slide your weight in kilograms and height in centimeters to view your BMI score."
+    ],
+    "faqs": [
+      {
+        "question": "What is considered a normal BMI range?",
+        "answer": "According to the World Health Organization, a normal healthy BMI ranges between 18.5 and 24.9."
+      }
+    ],
+    "relatedSlugs": [
+      "age-calculator",
+      "percentage-calculator",
+      "unit-converter"
+    ],
+    "metaTitle": "BMI Calculator — Free Body Mass Index & Weight Category Checker | DEVDROP",
+    "metaDescription": "Calculate your Body Mass Index (BMI) online for free. Interactive height and weight sliders with WHO health status indicators.",
+    "canonicalPath": "/tools/bmi-calculator"
+  },
+  {
+    "slug": "loan-emi-calculator",
+    "aliases": [
+      "emi-calculator",
+      "home-loan-emi",
+      "car-loan-emi-calculator"
+    ],
+    "name": "Loan EMI & Interest Calculator",
+    "h1": "Loan EMI Calculator: Calculate Monthly Payment, Total Interest & Loan Cost",
+    "tagline": "Calculate monthly EMI payments, total interest, and total payable for any loan",
+    "categorySlug": "developer-utils",
+    "iconName": "Calculator",
+    "badge": "Finance",
+    "isPopular": true,
+    "shortIntro": "Calculate your monthly Equated Monthly Installment (EMI) for home loans, car loans, and personal loans. View total interest payable and overall loan cost in seconds.",
+    "description": "Calculate monthly EMI payments, total interest payable, and overall loan costs.",
+    "longDescription": "Plan your finances accurately before taking out a home, auto, education, or personal loan. Input your principal amount, annual interest rate, and tenure to compute your exact monthly EMI payment, total interest accumulated, and final repayment total.",
+    "features": [
+      "Standard compound interest EMI amortization formula",
+      "Instant breakdown of Monthly EMI, Total Interest, and Total Repayment",
+      "Flexible principal, interest rate, and tenure inputs"
+    ],
+    "limitations": [
+      "Calculations exclude bank processing fees, stamp duty, or insurance charges."
+    ],
+    "disclaimer": "Provides financial estimates based on standard mathematical formulas.",
+    "howItWorks": [
+      "Enter loan principal, annual interest rate (%), and tenure in years to see your monthly EMI."
+    ],
+    "faqs": [
+      {
+        "question": "What formula is used to calculate EMI?",
+        "answer": "EMI is calculated using: P x R x (1+R)^N / [(1+R)^N - 1], where P is principal, R is monthly interest rate, and N is the number of monthly installments."
+      }
+    ],
+    "relatedSlugs": [
+      "discount-sale-calculator",
+      "percentage-calculator",
+      "tip-calculator"
+    ],
+    "metaTitle": "Loan EMI Calculator — Calculate Monthly EMI & Total Interest | DEVDROP",
+    "metaDescription": "Calculate monthly loan EMI payments online for free. Compute total interest and repayment for home loans, car loans, and personal loans.",
+    "canonicalPath": "/tools/loan-emi-calculator"
+  },
+  {
+    "slug": "hash-generator",
+    "aliases": [
+      "sha256-generator",
+      "sha1-hash",
+      "sha512-hasher"
+    ],
+    "name": "Hash Generator (SHA-256, SHA-1, SHA-512)",
+    "h1": "Online Hash Generator: Generate SHA-256, SHA-1 & SHA-512 Cryptographic Hashes",
+    "tagline": "Compute one-way cryptographic hashes directly in-browser using Web Crypto",
+    "categorySlug": "developer-utils",
+    "iconName": "Hash",
+    "badge": "Developer",
+    "isPopular": false,
+    "shortIntro": "Generate secure cryptographic hashes for text and passwords using SHA-256, SHA-1, and SHA-512. Fast, private, and powered by browser-native Web Crypto.",
+    "description": "Generate SHA-256, SHA-1, and SHA-512 cryptographic hashes using native Web Crypto.",
+    "longDescription": "Compute cryptographic digests and checksums for verification, integrity checking, and API signatures. Using the browser's built-in crypto.subtle engine, generate SHA-256, SHA-1, and SHA-512 hex hashes instantly without transmitting plain text over the network.",
+    "features": [
+      "Hardware-accelerated native Web Crypto API hashing",
+      "Simultaneous generation of SHA-256, SHA-1, and SHA-512 hashes",
+      "1-click copy buttons for individual hash digests"
+    ],
+    "limitations": [
+      "Hashes are one-way mathematical functions and cannot be reversed."
+    ],
+    "disclaimer": "All hashing takes place locally on your client machine.",
+    "howItWorks": [
+      "Type or paste any text to see real-time SHA-256, SHA-1, and SHA-512 digests."
+    ],
+    "faqs": [
+      {
+        "question": "Is SHA-256 secure?",
+        "answer": "Yes. SHA-256 is an industry-standard cryptographic hash algorithm with 256-bit security, widely used in SSL certificates, Bitcoin, and data integrity verification."
+      }
+    ],
+    "relatedSlugs": [
+      "uuid-generator",
+      "password-generator",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Hash Generator Online — Free SHA-256, SHA-1 & SHA-512 Hashes | DEVDROP",
+    "metaDescription": "Generate cryptographic hashes online for free. Compute SHA-256, SHA-1, and SHA-512 digests instantly with 100% private in-browser Web Crypto.",
+    "canonicalPath": "/tools/hash-generator"
+  },
+  {
+    "slug": "uuid-generator",
+    "aliases": [
+      "guid-generator",
+      "uuid-v4",
+      "unique-id-generator"
+    ],
+    "name": "UUID v4 Unique ID Generator",
+    "h1": "UUID Generator: Generate Cryptographically Secure Version-4 UUIDs & GUIDs",
+    "tagline": "Generate random Version 4 UUIDs (Universally Unique Identifiers) instantly",
+    "categorySlug": "developer-utils",
+    "iconName": "Key",
+    "badge": "Developer",
+    "isPopular": false,
+    "shortIntro": "Generate cryptographically secure Version-4 UUIDs and GUIDs for database primary keys, API tokens, and software engineering. Copy individual UUIDs or regenerate a batch.",
+    "description": "Generate cryptographically secure Version-4 UUIDs (GUIDs) for databases and APIs.",
+    "longDescription": "Create random, collision-resistant Universally Unique Identifiers (UUID v4) conforming to RFC 4122. Ideal for mock data generation, database primary keys, session tokens, and distributed tracking identifiers.",
+    "features": [
+      "Generates RFC 4122 compliant UUID Version 4 identifiers",
+      "Batch generation with 1-click clipboard copy",
+      "Randomized using crypto.randomUUID engine"
+    ],
+    "limitations": [
+      "UUIDs generated are Version 4 (random) format."
+    ],
+    "disclaimer": "UUIDs are generated locally in browser memory.",
+    "howItWorks": [
+      "View active generated UUIDs or click Regenerate to spawn a fresh batch."
+    ],
+    "faqs": [
+      {
+        "question": "Can two UUID v4 values ever collide?",
+        "answer": "The probability of generating duplicate UUID v4 identifiers is virtually zero (1 in 2^122), making them safe for globally unique keys."
+      }
+    ],
+    "relatedSlugs": [
+      "hash-generator",
+      "password-generator",
+      "barcode-generator"
+    ],
+    "metaTitle": "UUID Generator — Free RFC 4122 Version 4 UUID & GUID Generator | DEVDROP",
+    "metaDescription": "Generate Version-4 UUIDs and GUIDs online for free. Cryptographically random RFC 4122 identifiers for database primary keys and API tokens.",
+    "canonicalPath": "/tools/uuid-generator"
+  },
+  {
+    "slug": "unit-converter",
+    "aliases": [
+      "metric-converter",
+      "measurement-converter",
+      "data-unit-converter"
+    ],
+    "name": "Metric & Imperial Unit Converter",
+    "h1": "Unit Converter: Convert Length, Weight, Temperature & Data Storage Units",
+    "tagline": "Convert between metric and imperial measurements for length, weight, and digital storage",
+    "categorySlug": "developer-utils",
+    "iconName": "ArrowRightLeft",
+    "badge": "Everyday",
+    "isPopular": false,
+    "shortIntro": "Convert effortlessly between metric and imperial measurement systems. Switch between meters, feet, kilometers, miles, kilograms, pounds, and digital byte units (MB, GB, TB).",
+    "description": "Convert between metric and imperial units for length, weight, and digital storage.",
+    "longDescription": "A versatile unit converter supporting key metric and imperial measurements. Accurately translate kilometers to miles, meters to feet, kilograms to pounds, and digital storage units (bytes, megabytes, gigabytes, terabytes) with real-time conversion precision.",
+    "features": [
+      "Categories for Length, Weight, and Digital Data Storage",
+      "Instant bidirectional calculations with high floating-point precision",
+      "Clean dropdown selectors for source and destination units"
+    ],
+    "limitations": [
+      "Converts standard international standard metric and imperial units."
+    ],
+    "disclaimer": "All calculations run locally on your device.",
+    "howItWorks": [
+      "Choose category, enter your value, and select your source and destination units."
+    ],
+    "faqs": [
+      {
+        "question": "How many feet are in a meter?",
+        "answer": "1 meter is equal to approximately 3.28084 feet."
+      }
+    ],
+    "relatedSlugs": [
+      "percentage-calculator",
+      "bmi-calculator",
+      "aspect-ratio-calculator"
+    ],
+    "metaTitle": "Unit Converter Online — Convert Length, Weight & Data Storage | DEVDROP",
+    "metaDescription": "Convert metric and imperial units online for free. Instant conversion between meters, feet, miles, kilograms, pounds, MB, and GB.",
+    "canonicalPath": "/tools/unit-converter"
+  },
+  {
+    "slug": "url-encoder-decoder",
+    "aliases": [
+      "percent-encoding",
+      "url-decode",
+      "encode-uri"
+    ],
+    "name": "URL Encoder & Decoder",
+    "h1": "URL Encoder & Decoder: Percent-Encode & Decode Query Strings & Links",
+    "tagline": "Encode special characters into percent-encoded URL formats or decode query strings",
+    "categorySlug": "developer-utils",
+    "iconName": "FileCode",
+    "badge": "Developer",
+    "isPopular": false,
+    "shortIntro": "Encode special characters into percent-encoded URL strings (%20, %2F, etc.) or decode encoded URLs and query parameters back into readable plain text.",
+    "description": "Encode query strings and links into percent-encoded URLs or decode them back to text.",
+    "longDescription": "Format URLs properly for HTTP requests and API endpoints. Convert spaces, ampersands, slashes, and non-ASCII symbols into safe percent-encoded values or decode encoded redirect links back to clean human-readable text.",
+    "features": [
+      "Fast encode and decode mode toggles",
+      "Full RFC 3986 URI component compliance",
+      "1-click copy button for converted output"
+    ],
+    "limitations": [
+      "Processes standard URI component character mappings."
+    ],
+    "disclaimer": "URLs and query parameters are processed strictly in browser memory.",
+    "howItWorks": [
+      "Select Encode or Decode, paste your URL, and copy the result."
+    ],
+    "faqs": [
+      {
+        "question": "Why do URLs need to be encoded?",
+        "answer": "URLs can only be sent over the Internet using the standard ASCII character set; unsafe characters like spaces must be replaced with a '%' followed by two hexadecimal digits."
+      }
+    ],
+    "relatedSlugs": [
+      "slug-generator",
+      "base64-encoder-decoder",
+      "qr-code-generator"
+    ],
+    "metaTitle": "URL Encoder & Decoder — Free Online Percent Encoding Tool | DEVDROP",
+    "metaDescription": "Encode and decode URLs and query strings online for free. Convert special characters to percent encoding (%20) or decode URLs with instant copy.",
+    "canonicalPath": "/tools/url-encoder-decoder"
+  },
+  {
+    "slug": "slug-generator",
+    "aliases": [
+      "url-slug-generator",
+      "seo-slug-maker",
+      "clean-url-generator"
+    ],
+    "name": "SEO URL Slug Generator",
+    "h1": "SEO URL Slug Generator: Convert Titles into Clean, Search-Friendly URL Slugs",
+    "tagline": "Transform article titles and headlines into lowercase, hyphen-separated SEO URL slugs",
+    "categorySlug": "developer-utils",
+    "iconName": "Terminal",
+    "badge": "SEO",
+    "isPopular": false,
+    "shortIntro": "Convert blog titles, product names, and headlines into clean, lowercase, hyphen-separated SEO URL slugs. Strips special characters and punctuation automatically.",
+    "description": "Transform article headlines and product titles into clean, lowercase SEO URL slugs.",
+    "longDescription": "Clean, human-readable URLs are critical for search engine rankings and user trust. The DevDrop SEO URL Slug Generator converts titles into lowercase, hyphenated slugs, removing accents, punctuation, and invalid URL characters automatically.",
+    "features": [
+      "Strips emojis, special punctuation, and invalid characters",
+      "Converts spaces and underscores into clean single hyphens",
+      "Lowercases all letters for standard web URL compliance"
+    ],
+    "limitations": [
+      "Optimized for Latin and alphanumeric article headlines."
+    ],
+    "disclaimer": "Operates 100% locally in browser memory.",
+    "howItWorks": [
+      "Type or paste your headline to see an instant clean URL slug."
+    ],
+    "faqs": [
+      {
+        "question": "What makes a good SEO URL slug?",
+        "answer": "A good SEO slug is short, lowercase, hyphen-separated, and contains your target keywords without filler words or special characters."
+      }
+    ],
+    "relatedSlugs": [
+      "url-encoder-decoder",
+      "case-converter",
+      "word-counter"
+    ],
+    "metaTitle": "SEO URL Slug Generator — Convert Titles into Clean URLs | DEVDROP",
+    "metaDescription": "Generate clean, SEO-friendly URL slugs from article titles and headlines online for free. Automatic lowercase and hyphen formatting with instant copy.",
+    "canonicalPath": "/tools/slug-generator"
+  },
+  {
+    "slug": "binary-text-converter",
+    "aliases": [
+      "binary-to-text",
+      "text-to-binary",
+      "ascii-binary-converter"
+    ],
+    "name": "Binary to Text & Text to Binary Converter",
+    "h1": "Binary to Text Converter: Convert English to 8-Bit Binary & Binary to Text",
+    "tagline": "Translate English text into 8-bit binary code (0s and 1s) or decode binary into words",
+    "categorySlug": "developer-utils",
+    "iconName": "Binary",
+    "badge": "Developer",
+    "isPopular": false,
+    "shortIntro": "Convert text into 8-bit binary code (0s and 1s) or decode binary sequences back into English text. Great for computer science students and binary data inspection.",
+    "description": "Convert English text to 8-bit binary code or decode binary sequences to readable text.",
+    "longDescription": "Translate text characters into their binary byte representation (e.g. 01000100 01100101) or decode raw binary code back into readable ASCII text. Understand how computers store characters at the lowest machine level.",
+    "features": [
+      "Bidirectional Text to Binary and Binary to Text modes",
+      "Standard 8-bit space-separated byte notation",
+      "1-click copy result to clipboard"
+    ],
+    "limitations": [
+      "Translates standard ASCII and Latin character code points."
+    ],
+    "disclaimer": "Runs entirely in browser memory.",
+    "howItWorks": [
+      "Choose mode, enter text or binary strings, and copy the converted output."
+    ],
+    "faqs": [
+      {
+        "question": "What is 8-bit binary?",
+        "answer": "In computer systems, each standard character is represented by 8 bits (1 byte) of binary numbers consisting of 0s and 1s."
+      }
+    ],
+    "relatedSlugs": [
+      "base64-encoder-decoder",
+      "hash-generator",
+      "hex-to-ascii-converter"
+    ],
+    "metaTitle": "Binary to Text Converter — Convert English to Binary Code & Back | DEVDROP",
+    "metaDescription": "Convert text to binary code (0s and 1s) and decode binary back to English text online for free. Standard 8-bit space-separated notation.",
+    "canonicalPath": "/tools/binary-text-converter"
+  },
+  {
+    "slug": "jwt-decoder",
+    "aliases": [
+      "jwt-token-inspector",
+      "decode-jwt",
+      "json-web-token-decoder"
+    ],
+    "name": "JWT Token Decoder & Inspector",
+    "h1": "JWT Decoder: Decode & Inspect JSON Web Tokens (Header & Payload) Client-Side",
+    "tagline": "Decode JSON Web Tokens (JWT) client-side without sending tokens to any server",
+    "categorySlug": "developer-utils",
+    "iconName": "Key",
+    "badge": "Security",
+    "isPopular": true,
+    "shortIntro": "Decode and inspect JSON Web Tokens (JWT) safely. View token header algorithms, expiration timestamps, user IDs, and claims 100% locally with zero server transmission.",
+    "description": "Decode and inspect JSON Web Tokens (JWT) safely without sending tokens over the internet.",
+    "longDescription": "Inspect the contents of JSON Web Tokens without compromising security. The DevDrop JWT Decoder splits the token into its header, payload, and signature components and decodes the JSON payload locally in your browser so confidential credentials and auth tokens are never leaked.",
+    "features": [
+      "100% client-side decoding—your secret tokens are never sent over the web",
+      "Color-coded formatted JSON view of header and payload claims",
+      "Detects token expiration and role claims automatically"
+    ],
+    "limitations": [
+      "Decodes and inspects token payload; does not perform cryptographic signature validation against remote secret keys."
+    ],
+    "disclaimer": "Zero tokens are transmitted or logged. Verification occurs strictly in local memory.",
+    "howItWorks": [
+      "Paste your Bearer JWT token into the text field to inspect decoded claims immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is it safe to paste production JWT tokens here?",
+        "answer": "Yes! Unlike other online decoders that log tokens on their backend servers, DevDrop executes Base64URL decoding directly in your browser's JavaScript sandbox."
+      }
+    ],
+    "relatedSlugs": [
+      "base64-encoder-decoder",
+      "json-formatter",
+      "hash-generator"
+    ],
+    "metaTitle": "JWT Decoder Online — Decode & Inspect JSON Web Tokens Safely | DEVDROP",
+    "metaDescription": "Decode JSON Web Tokens (JWT) online safely for free. Inspect token headers, expiration dates, and payload claims with 100% private client-side decoding.",
+    "canonicalPath": "/tools/jwt-decoder"
+  },
+  {
+    "slug": "css-gradient-generator",
+    "aliases": [
+      "gradient-maker",
+      "linear-gradient-css",
+      "color-gradient-generator"
+    ],
+    "name": "CSS Gradient Generator",
+    "h1": "CSS Gradient Generator: Create Beautiful Linear Gradients & Copy CSS Code",
+    "tagline": "Design smooth color gradients with live visual preview and 1-click CSS code export",
+    "categorySlug": "developer-utils",
+    "iconName": "Sparkles",
+    "badge": "Design",
+    "isPopular": false,
+    "shortIntro": "Design modern linear CSS gradients with color pickers, custom angle rotation, and instant CSS background code generation. Ready for frontend web design.",
+    "description": "Create modern linear CSS gradients with live preview and instant CSS code generation.",
+    "longDescription": "Generate eye-catching background gradients for modern web applications and UI designs. Pick starting and ending colors, adjust rotation angles from 0 to 360 degrees, preview the gradient live, and copy production-ready CSS with a single click.",
+    "features": [
+      "Dual color picker inputs with live preview canvas",
+      "0° to 360° angle rotation slider",
+      "1-click copy production-ready CSS background code"
+    ],
+    "limitations": [
+      "Generates standard linear-gradient CSS properties compatible with all modern browsers."
+    ],
+    "disclaimer": "Operates client-side.",
+    "howItWorks": [
+      "Select your colors, drag the angle slider, and click Copy CSS."
+    ],
+    "faqs": [
+      {
+        "question": "Is the generated CSS compatible with all browsers?",
+        "answer": "Yes. Standard linear-gradient syntax is supported across Chrome, Safari, Firefox, Edge, iOS, and Android."
+      }
+    ],
+    "relatedSlugs": [
+      "image-color-picker",
+      "favicon-generator",
+      "slug-generator"
+    ],
+    "metaTitle": "CSS Gradient Generator — Create Beautiful Linear Gradients | DEVDROP",
+    "metaDescription": "Create beautiful linear CSS gradients online for free. Interactive color pickers, angle rotation slider, and 1-click production-ready CSS code.",
+    "canonicalPath": "/tools/css-gradient-generator"
+  },
+  {
+    "slug": "lorem-ipsum-generator",
+    "name": "Lorem Ipsum Dummy Text Generator",
+    "h1": "Lorem Ipsum Dummy Text Generator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side lorem ipsum dummy text generator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileText",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience lorem ipsum dummy text generator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online lorem ipsum dummy text generator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Lorem Ipsum Dummy Text Generator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side lorem ipsum dummy text generator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Lorem Ipsum Dummy Text Generator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Lorem Ipsum Dummy Text Generator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Lorem Ipsum Dummy Text Generator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/lorem-ipsum-generator"
+  },
+  {
+    "slug": "markdown-previewer",
+    "name": "Markdown to HTML Live Previewer",
+    "h1": "Markdown to HTML Live Previewer: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side markdown to html live previewer with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileCode",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience markdown to html live previewer running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online markdown to html live previewer with instant results and client-side processing.",
+    "longDescription": "The DevDrop Markdown to HTML Live Previewer provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side markdown to html live previewer engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Markdown to HTML Live Previewer free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Markdown to HTML Live Previewer — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Markdown to HTML Live Previewer online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/markdown-previewer"
+  },
+  {
+    "slug": "color-hex-converter",
+    "name": "HEX to RGB & HSL Color Converter",
+    "h1": "HEX to RGB & HSL Color Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side hex to rgb & hsl color converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Palette",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience hex to rgb & hsl color converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online hex to rgb & hsl color converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop HEX to RGB & HSL Color Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side hex to rgb & hsl color converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this HEX to RGB & HSL Color Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "HEX to RGB & HSL Color Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use HEX to RGB & HSL Color Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/color-hex-converter"
+  },
+  {
+    "slug": "percentage-calculator",
+    "name": "Percentage & Discount Calculator",
+    "h1": "Percentage & Discount Calculator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side percentage & discount calculator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Calculator",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience percentage & discount calculator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online percentage & discount calculator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Percentage & Discount Calculator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side percentage & discount calculator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Percentage & Discount Calculator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Percentage & Discount Calculator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Percentage & Discount Calculator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/percentage-calculator"
+  },
+  {
+    "slug": "days-between-dates",
+    "name": "Days Between Dates Duration Calculator",
+    "h1": "Days Between Dates Duration Calculator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side days between dates duration calculator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience days between dates duration calculator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online days between dates duration calculator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Days Between Dates Duration Calculator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side days between dates duration calculator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Days Between Dates Duration Calculator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Days Between Dates Duration Calculator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Days Between Dates Duration Calculator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/days-between-dates"
+  },
+  {
+    "slug": "unix-timestamp-converter",
+    "name": "Unix Epoch Timestamp to Date Converter",
+    "h1": "Unix Epoch Timestamp to Date Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side unix epoch timestamp to date converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience unix epoch timestamp to date converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online unix epoch timestamp to date converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop Unix Epoch Timestamp to Date Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side unix epoch timestamp to date converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Unix Epoch Timestamp to Date Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Unix Epoch Timestamp to Date Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Unix Epoch Timestamp to Date Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/unix-timestamp-converter"
+  },
+  {
+    "slug": "aspect-ratio-calculator",
+    "name": "Aspect Ratio (16:9, 4:3, 21:9) Calculator",
+    "h1": "Aspect Ratio (16:9, 4:3, 21:9) Calculator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side aspect ratio (16:9, 4:3, 21:9) calculator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Maximize2",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience aspect ratio (16:9, 4:3, 21:9) calculator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online aspect ratio (16:9, 4:3, 21:9) calculator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Aspect Ratio (16:9, 4:3, 21:9) Calculator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side aspect ratio (16:9, 4:3, 21:9) calculator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Aspect Ratio (16:9, 4:3, 21:9) Calculator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Aspect Ratio (16:9, 4:3, 21:9) Calculator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Aspect Ratio (16:9, 4:3, 21:9) Calculator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/aspect-ratio-calculator"
+  },
+  {
+    "slug": "html-entity-encoder",
+    "name": "HTML Entities Encoder & Decoder",
+    "h1": "HTML Entities Encoder & Decoder: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side html entities encoder & decoder with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileCode",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience html entities encoder & decoder running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online html entities encoder & decoder with instant results and client-side processing.",
+    "longDescription": "The DevDrop HTML Entities Encoder & Decoder provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side html entities encoder & decoder engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this HTML Entities Encoder & Decoder free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "HTML Entities Encoder & Decoder — Free Online Tool | DEVDROP",
+    "metaDescription": "Use HTML Entities Encoder & Decoder online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/html-entity-encoder"
+  },
+  {
+    "slug": "csv-to-json-converter",
+    "name": "CSV to JSON Data Converter",
+    "h1": "CSV to JSON Data Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side csv to json data converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileJson",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience csv to json data converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online csv to json data converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop CSV to JSON Data Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side csv to json data converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this CSV to JSON Data Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "CSV to JSON Data Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use CSV to JSON Data Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/csv-to-json-converter"
+  },
+  {
+    "slug": "json-to-csv-converter",
+    "name": "JSON to CSV Spreadsheet Converter",
+    "h1": "JSON to CSV Spreadsheet Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side json to csv spreadsheet converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileText",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience json to csv spreadsheet converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online json to csv spreadsheet converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop JSON to CSV Spreadsheet Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side json to csv spreadsheet converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this JSON to CSV Spreadsheet Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "JSON to CSV Spreadsheet Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use JSON to CSV Spreadsheet Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/json-to-csv-converter"
+  },
+  {
+    "slug": "strong-passphrase-generator",
+    "name": "Memorable Diceware Passphrase Generator",
+    "h1": "Memorable Diceware Passphrase Generator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side memorable diceware passphrase generator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Key",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience memorable diceware passphrase generator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online memorable diceware passphrase generator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Memorable Diceware Passphrase Generator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side memorable diceware passphrase generator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Memorable Diceware Passphrase Generator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Memorable Diceware Passphrase Generator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Memorable Diceware Passphrase Generator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/strong-passphrase-generator"
+  },
+  {
+    "slug": "tip-calculator",
+    "name": "Restaurant Tip & Bill Split Calculator",
+    "h1": "Restaurant Tip & Bill Split Calculator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side restaurant tip & bill split calculator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Calculator",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience restaurant tip & bill split calculator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online restaurant tip & bill split calculator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Restaurant Tip & Bill Split Calculator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side restaurant tip & bill split calculator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Restaurant Tip & Bill Split Calculator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Restaurant Tip & Bill Split Calculator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Restaurant Tip & Bill Split Calculator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/tip-calculator"
+  },
+  {
+    "slug": "discount-sale-calculator",
+    "name": "Sale Price & Savings Discount Calculator",
+    "h1": "Sale Price & Savings Discount Calculator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side sale price & savings discount calculator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Calculator",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience sale price & savings discount calculator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online sale price & savings discount calculator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Sale Price & Savings Discount Calculator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side sale price & savings discount calculator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Sale Price & Savings Discount Calculator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Sale Price & Savings Discount Calculator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Sale Price & Savings Discount Calculator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/discount-sale-calculator"
+  },
+  {
+    "slug": "screen-resolution-detector",
+    "name": "Screen Resolution & DPI Checker",
+    "h1": "Screen Resolution & DPI Checker: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side screen resolution & dpi checker with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Monitor",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience screen resolution & dpi checker running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online screen resolution & dpi checker with instant results and client-side processing.",
+    "longDescription": "The DevDrop Screen Resolution & DPI Checker provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side screen resolution & dpi checker engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Screen Resolution & DPI Checker free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Screen Resolution & DPI Checker — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Screen Resolution & DPI Checker online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/screen-resolution-detector"
+  },
+  {
+    "slug": "user-agent-parser",
+    "name": "Browser User-Agent & Device Checker",
+    "h1": "Browser User-Agent & Device Checker: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side browser user-agent & device checker with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Cpu",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience browser user-agent & device checker running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online browser user-agent & device checker with instant results and client-side processing.",
+    "longDescription": "The DevDrop Browser User-Agent & Device Checker provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side browser user-agent & device checker engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Browser User-Agent & Device Checker free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Browser User-Agent & Device Checker — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Browser User-Agent & Device Checker online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/user-agent-parser"
+  },
+  {
+    "slug": "roman-numeral-converter",
+    "name": "Roman Numeral to Number Converter",
+    "h1": "Roman Numeral to Number Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side roman numeral to number converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Hash",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience roman numeral to number converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online roman numeral to number converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop Roman Numeral to Number Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side roman numeral to number converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Roman Numeral to Number Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Roman Numeral to Number Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Roman Numeral to Number Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/roman-numeral-converter"
+  },
+  {
+    "slug": "random-number-picker",
+    "name": "Random Number Generator & Dice Roller",
+    "h1": "Random Number Generator & Dice Roller: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side random number generator & dice roller with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Sparkles",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience random number generator & dice roller running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online random number generator & dice roller with instant results and client-side processing.",
+    "longDescription": "The DevDrop Random Number Generator & Dice Roller provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side random number generator & dice roller engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Random Number Generator & Dice Roller free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Random Number Generator & Dice Roller — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Random Number Generator & Dice Roller online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/random-number-picker"
+  },
+  {
+    "slug": "random-choice-picker",
+    "name": "Random Option & Decision Picker",
+    "h1": "Random Option & Decision Picker: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side random option & decision picker with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Sparkles",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience random option & decision picker running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online random option & decision picker with instant results and client-side processing.",
+    "longDescription": "The DevDrop Random Option & Decision Picker provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side random option & decision picker engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Random Option & Decision Picker free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Random Option & Decision Picker — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Random Option & Decision Picker online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/random-choice-picker"
+  },
+  {
+    "slug": "hex-to-ascii-converter",
+    "name": "Hexadecimal to ASCII Text Converter",
+    "h1": "Hexadecimal to ASCII Text Converter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side hexadecimal to ascii text converter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Binary",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience hexadecimal to ascii text converter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online hexadecimal to ascii text converter with instant results and client-side processing.",
+    "longDescription": "The DevDrop Hexadecimal to ASCII Text Converter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side hexadecimal to ascii text converter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Hexadecimal to ASCII Text Converter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Hexadecimal to ASCII Text Converter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Hexadecimal to ASCII Text Converter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/hex-to-ascii-converter"
+  },
+  {
+    "slug": "digital-stopwatch-timer",
+    "name": "High-Precision Digital Stopwatch & Lap Timer",
+    "h1": "High-Precision Digital Stopwatch & Lap Timer: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side high-precision digital stopwatch & lap timer with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience high-precision digital stopwatch & lap timer running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online high-precision digital stopwatch & lap timer with instant results and client-side processing.",
+    "longDescription": "The DevDrop High-Precision Digital Stopwatch & Lap Timer provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side high-precision digital stopwatch & lap timer engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this High-Precision Digital Stopwatch & Lap Timer free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "High-Precision Digital Stopwatch & Lap Timer — Free Online Tool | DEVDROP",
+    "metaDescription": "Use High-Precision Digital Stopwatch & Lap Timer online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/digital-stopwatch-timer"
+  },
+  {
+    "slug": "pomodoro-focus-timer",
+    "name": "Pomodoro 25/5 Productivity Focus Timer",
+    "h1": "Pomodoro 25/5 Productivity Focus Timer: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side pomodoro 25/5 productivity focus timer with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience pomodoro 25/5 productivity focus timer running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online pomodoro 25/5 productivity focus timer with instant results and client-side processing.",
+    "longDescription": "The DevDrop Pomodoro 25/5 Productivity Focus Timer provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side pomodoro 25/5 productivity focus timer engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Pomodoro 25/5 Productivity Focus Timer free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Pomodoro 25/5 Productivity Focus Timer — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Pomodoro 25/5 Productivity Focus Timer online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/pomodoro-focus-timer"
+  },
+  {
+    "slug": "world-clock-meeting-planner",
+    "name": "Global Timezone World Clock & Meeting Planner",
+    "h1": "Global Timezone World Clock & Meeting Planner: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side global timezone world clock & meeting planner with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Clock",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience global timezone world clock & meeting planner running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online global timezone world clock & meeting planner with instant results and client-side processing.",
+    "longDescription": "The DevDrop Global Timezone World Clock & Meeting Planner provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side global timezone world clock & meeting planner engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Global Timezone World Clock & Meeting Planner free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Global Timezone World Clock & Meeting Planner — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Global Timezone World Clock & Meeting Planner online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/world-clock-meeting-planner"
+  },
+  {
+    "slug": "text-diff-checker",
+    "name": "Text Diff & Comparison Checker",
+    "h1": "Text Diff & Comparison Checker: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side text diff & comparison checker with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "FileText",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience text diff & comparison checker running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online text diff & comparison checker with instant results and client-side processing.",
+    "longDescription": "The DevDrop Text Diff & Comparison Checker provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side text diff & comparison checker engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Text Diff & Comparison Checker free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Text Diff & Comparison Checker — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Text Diff & Comparison Checker online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/text-diff-checker"
+  },
+  {
+    "slug": "remove-duplicate-lines",
+    "name": "Duplicate Line Remover & List Sorter",
+    "h1": "Duplicate Line Remover & List Sorter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side duplicate line remover & list sorter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Type",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience duplicate line remover & list sorter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online duplicate line remover & list sorter with instant results and client-side processing.",
+    "longDescription": "The DevDrop Duplicate Line Remover & List Sorter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side duplicate line remover & list sorter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Duplicate Line Remover & List Sorter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Duplicate Line Remover & List Sorter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Duplicate Line Remover & List Sorter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/remove-duplicate-lines"
+  },
+  {
+    "slug": "sql-formatter",
+    "name": "SQL Query Beautifier & Formatter",
+    "h1": "SQL Query Beautifier & Formatter: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side sql query beautifier & formatter with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Terminal",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience sql query beautifier & formatter running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online sql query beautifier & formatter with instant results and client-side processing.",
+    "longDescription": "The DevDrop SQL Query Beautifier & Formatter provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side sql query beautifier & formatter engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this SQL Query Beautifier & Formatter free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "SQL Query Beautifier & Formatter — Free Online Tool | DEVDROP",
+    "metaDescription": "Use SQL Query Beautifier & Formatter online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/sql-formatter"
+  },
+  {
+    "slug": "regex-tester",
+    "name": "RegEx Regular Expression Tester & Matcher",
+    "h1": "RegEx Regular Expression Tester & Matcher: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side regex regular expression tester & matcher with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Terminal",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience regex regular expression tester & matcher running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online regex regular expression tester & matcher with instant results and client-side processing.",
+    "longDescription": "The DevDrop RegEx Regular Expression Tester & Matcher provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side regex regular expression tester & matcher engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this RegEx Regular Expression Tester & Matcher free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "RegEx Regular Expression Tester & Matcher — Free Online Tool | DEVDROP",
+    "metaDescription": "Use RegEx Regular Expression Tester & Matcher online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/regex-tester"
+  },
+  {
+    "slug": "image-color-picker",
+    "name": "Image Eyedropper & Hex Color Picker",
+    "h1": "Image Eyedropper & Hex Color Picker: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side image eyedropper & hex color picker with zero server storage",
+    "categorySlug": "image-media",
+    "iconName": "Palette",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience image eyedropper & hex color picker running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online image eyedropper & hex color picker with instant results and client-side processing.",
+    "longDescription": "The DevDrop Image Eyedropper & Hex Color Picker provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side image eyedropper & hex color picker engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Image Eyedropper & Hex Color Picker free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Image Eyedropper & Hex Color Picker — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Image Eyedropper & Hex Color Picker online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/image-color-picker"
+  },
+  {
+    "slug": "favicon-generator",
+    "name": "Favicon 16x16 & 32x32 PNG Generator",
+    "h1": "Favicon 16x16 & 32x32 PNG Generator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side favicon 16x16 & 32x32 png generator with zero server storage",
+    "categorySlug": "image-media",
+    "iconName": "FileImage",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience favicon 16x16 & 32x32 png generator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online favicon 16x16 & 32x32 png generator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Favicon 16x16 & 32x32 PNG Generator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side favicon 16x16 & 32x32 png generator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Favicon 16x16 & 32x32 PNG Generator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Favicon 16x16 & 32x32 PNG Generator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Favicon 16x16 & 32x32 PNG Generator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/favicon-generator"
+  },
+  {
+    "slug": "morse-code-translator",
+    "name": "Morse Code Audio & Text Translator",
+    "h1": "Morse Code Audio & Text Translator: Free High-Performance Online Tool",
+    "tagline": "Free, private, and client-side morse code audio & text translator with zero server storage",
+    "categorySlug": "developer-utils",
+    "iconName": "Volume2",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Experience morse code audio & text translator running 100% locally in your web browser. Fast, responsive, privacy-focused, and free forever.",
+    "description": "Free online morse code audio & text translator with instant results and client-side processing.",
+    "longDescription": "The DevDrop Morse Code Audio & Text Translator provides a seamless, high-performance web utility built for productivity and speed. Process your data directly on your device with complete privacy, zero server logging, and instant results.",
+    "features": [
+      "100% client-side morse code audio & text translator engine",
+      "Zero server uploads or private data tracking",
+      "Responsive design optimized for desktop and mobile",
+      "Instant copy and export capabilities"
+    ],
+    "limitations": [
+      "Operates strictly within your local browser memory."
+    ],
+    "disclaimer": "No data is transmitted or stored on remote servers.",
+    "howItWorks": [
+      "Enter your input data and view or copy the processed result immediately."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Morse Code Audio & Text Translator free to use?",
+        "answer": "Yes! All DevDrop utilities are 100% free with no registration or limits."
+      },
+      {
+        "question": "Is my data stored or tracked?",
+        "answer": "No. All computations run exclusively in your browser memory."
+      }
+    ],
+    "relatedSlugs": [
+      "word-counter",
+      "json-formatter",
+      "base64-encoder-decoder"
+    ],
+    "metaTitle": "Morse Code Audio & Text Translator — Free Online Tool | DEVDROP",
+    "metaDescription": "Use Morse Code Audio & Text Translator online for free. Fast, client-side, privacy-focused with zero server upload and instant copy.",
+    "canonicalPath": "/tools/morse-code-translator"
+  },
+  {
+    "slug": "markdown-table-generator",
+    "aliases": [
+      "md-table-builder",
+      "markdown-grid-maker"
+    ],
+    "name": "Markdown Table Generator",
+    "h1": "Markdown Table Generator: Create & Format Clean Markdown Tables Online",
+    "tagline": "Visual table builder with columns, rows, alignment, and instant Markdown output",
+    "categorySlug": "developer-utils",
+    "iconName": "Sliders",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Design and format GitHub-flavored Markdown tables with visual rows and columns. Configure alignment and copy clean Markdown syntax.",
+    "description": "Design and format GitHub-flavored Markdown tables with visual rows and columns.",
+    "longDescription": "Create clean Markdown tables effortlessly. Set row and column counts, adjust cell alignments (left, center, right), and copy formatted Markdown code ready for documentation.",
+    "features": [
+      "Interactive row and column editor",
+      "Column alignment controls",
+      "Instant Markdown syntax output"
+    ],
+    "limitations": [
+      "Operates within local browser memory."
+    ],
+    "disclaimer": "No data stored on servers.",
+    "howItWorks": [
+      "Edit table cells and copy generated Markdown."
+    ],
+    "faqs": [
+      {
+        "question": "Is this Markdown table format GitHub compatible?",
+        "answer": "Yes, it follows GitHub Flavored Markdown (GFM) table specifications."
+      }
+    ],
+    "relatedSlugs": [
+      "markdown-previewer",
+      "word-counter",
+      "json-to-csv-converter"
+    ],
+    "metaTitle": "Markdown Table Generator — Visual Markdown Table Builder | DEVDROP",
+    "metaDescription": "Create and format Markdown tables visually online for free. Custom columns, rows, alignment, and instant GFM code output.",
+    "canonicalPath": "/tools/markdown-table-generator"
+  },
+  {
+    "slug": "html-to-markdown-converter",
+    "aliases": [
+      "html2md",
+      "convert-html-markdown"
+    ],
+    "name": "HTML to Markdown Converter",
+    "h1": "HTML to Markdown Converter: Convert HTML Code to Clean Markdown Syntax",
+    "tagline": "Transform raw HTML headings, lists, tables, and links into clean Markdown text",
+    "categorySlug": "developer-utils",
+    "iconName": "FileCode",
+    "badge": "Utility",
+    "isPopular": false,
+    "shortIntro": "Convert messy HTML markup into clean, readable Markdown syntax. Preserves headers, bold, italics, code blocks, lists, and links.",
+    "description": "Convert raw HTML markup into clean, readable Markdown syntax.",
+    "longDescription": "Easily convert web articles, HTML documentation, and formatted code snippets into clean Markdown format ready for blogs, README files, and documentation engines.",
+    "features": [
+      "Converts headings, lists, links, images, and tables",
+      "Clean formatted output",
+      "1-click copy"
+    ],
+    "limitations": [
+      "Operates on standard HTML elements."
+    ],
+    "disclaimer": "Client-side processing.",
+    "howItWorks": [
+      "Paste HTML and copy formatted Markdown."
+    ],
+    "faqs": [
+      {
+        "question": "Does this handle nested lists?",
+        "answer": "Yes, standard nested ordered and unordered lists are converted into indented Markdown lists."
+      }
+    ],
+    "relatedSlugs": [
+      "markdown-previewer",
+      "markdown-table-generator",
+      "html-entity-encoder"
+    ],
+    "metaTitle": "HTML to Markdown Converter — Free HTML to MD Tool | DEVDROP",
+    "metaDescription": "Convert HTML markup to clean Markdown syntax online for free. Convert headings, lists, links, and tables with instant copy.",
+    "canonicalPath": "/tools/html-to-markdown-converter"
   }
 ];

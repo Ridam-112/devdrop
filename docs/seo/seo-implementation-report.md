@@ -6,7 +6,7 @@
 
 ## 1. Metadata & Open Graph Architecture
 
-- **Unique SEO Titles:** Each of the 88 tools has an individually crafted title following the pattern: `[Tool Name] — [Tagline / Focus] | DEVDROP`.
+- **Unique SEO Titles:** Each of the 141 tools has an individually crafted title following the pattern: `[Tool Name] — [Tagline / Focus] | DEVDROP`.
 - **Unique Meta Descriptions:** Tailored 140–160 character descriptions highlighting exact capabilities and diagnostic value.
 - **Canonical URL Tags:** Statically generated `alternates.canonical` pointing strictly to `https://devdrop.online/tools/[slug]` to prevent duplicate content flags.
 - **OpenGraph & Twitter Cards:** Configured with `summary_large_image`, absolute preview asset paths, and localized tags (`en_US`).
