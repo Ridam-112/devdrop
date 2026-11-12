@@ -4,6 +4,10 @@ import React, { useEffect, useRef } from "react";
 import { ExternalLink, Sparkles } from "lucide-react";
 
 export const ADSTERRA_SMARTLINK = "https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429";
+export const MONETAG_DIRECT_LINK = "https://uplcm.com/4/12244922";
+
+// Active primary direct link for maximum CPM
+export const PRIMARY_DIRECT_LINK = MONETAG_DIRECT_LINK;
 
 // Generic Adsterra Iframe Banner component
 interface AdsterraIframeProps {
@@ -139,13 +143,14 @@ export const AdsterraNativeBanner: React.FC = () => {
 };
 
 // High-Converting Smartlink Card
-export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string }> = ({
+export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string; link?: string }> = ({
   title = "⚡ Exclusive Partner Offers & Cloud Boosters",
   subtitle = "High-speed developer nodes, proxy proxies, and cybersecurity perks curated by our partner network.",
+  link = PRIMARY_DIRECT_LINK,
 }) => {
   return (
     <a
-      href={ADSTERRA_SMARTLINK}
+      href={link}
       target="_blank"
       rel="noopener noreferrer sponsored"
       className="w-full p-4 rounded-xl bg-gradient-to-r from-cyber-card via-cyber-dark to-cyber-card border border-cyber-cyan/30 hover:border-cyber-cyan transition-all duration-300 flex items-center justify-between gap-4 group shadow-lg hover:shadow-cyber-cyan/10"
@@ -212,7 +217,7 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
           Sponsored Network
         </span>
         <a
-          href={ADSTERRA_SMARTLINK}
+          href={PRIMARY_DIRECT_LINK}
           target="_blank"
           rel="noopener noreferrer sponsored"
           className="text-[9px] font-mono text-cyber-cyan/80 hover:text-cyber-cyan flex items-center gap-1 hover:underline"

@@ -110,7 +110,7 @@ export const Navbar: React.FC = () => {
         {/* CTA & Search Action */}
         <div className="hidden md:flex items-center gap-3">
           <a
-            href="https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429"
+            href="https://uplcm.com/4/12244922"
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-card/80 hover:bg-cyber-card border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono font-medium hover:border-cyber-cyan transition-all"
@@ -174,7 +174,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           <a
-            href="https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429"
+            href="https://uplcm.com/4/12244922"
             target="_blank"
             rel="noopener noreferrer sponsored"
             onClick={() => setMobileMenuOpen(false)}
