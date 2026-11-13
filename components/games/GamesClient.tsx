@@ -358,9 +358,10 @@ export const GamesClient: React.FC = () => {
                 <iframe
                   src={activePlayGame.iframeUrl}
                   title={activePlayGame.name}
-                  className="w-full h-full border-0"
-                  allow="fullscreen; autoplay; accelerometer; gyroscope"
+                  className="w-full h-full border-0 block"
+                  allow="fullscreen; autoplay; accelerometer; gyroscope; gamepad"
                   allowFullScreen
+                  loading="lazy"
                 />
               </div>
             ) : activePlayGame.builtInGameType && activePlayGame.builtInGameType !== "iframe" ? (
