@@ -360,21 +360,6 @@ export default function ToolDetailPage({ params }: Props) {
         </span>
       </nav>
 
-      {/* Simulation / Entertainment Notice Banner */}
-      {(tool.isSimulation || !isIndexable) && (
-        <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/30 text-amber-200 text-xs sm:text-sm font-mono flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <strong className="text-amber-300 uppercase tracking-wider block font-bold">
-              Simulation / For Entertainment &amp; Educational Demonstration Only
-            </strong>
-            <span className="text-neutral-300">
-              This module is a simulated interface designed strictly for harmless pranks, UI demonstrations, and educational visualization. It does not perform real-world hacking, exploits, unauthorized network penetration, or account interception.
-            </span>
-          </div>
-        </div>
-      )}
-
       {/* Privacy Guarantee Note */}
       <div className="mb-6 p-4 rounded-xl bg-neutral-900/80 border border-neutral-800 text-xs text-neutral-300 flex items-start gap-3">
         <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />

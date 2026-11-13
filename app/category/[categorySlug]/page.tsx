@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ChevronRight, ArrowLeft, HelpCircle, Shield, FileText, AlertTriangle } from "lucide-react";
+import { ChevronRight, ArrowLeft, HelpCircle, Shield, FileText } from "lucide-react";
 import { CATEGORIES, TOOLS, isCategoryIndexable } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
@@ -201,21 +201,6 @@ export default function CategoryPage({ params }: Props) {
           <span>Zero Installation</span>
         </div>
       </header>
-
-      {/* Simulation / Entertainment Warning Banner */}
-      {(category.isSimulation || !isIndexable) && (
-        <div className="mb-8 p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/30 text-amber-200 text-xs sm:text-sm font-mono flex items-start gap-3">
-          <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
-          <div>
-            <strong className="text-amber-300 uppercase tracking-wider block font-bold">
-              Simulation / For Entertainment &amp; Educational Demonstration Only
-            </strong>
-            <span className="text-neutral-300">
-              The tools in this category are simulations designed strictly for entertainment, UI demonstrations, and educational visualization. They do not perform real-world hacking, exploits, or account actions.
-            </span>
-          </div>
-        </div>
-      )}
 
       {/* Ad Slot */}
       <AdvertisementSlot slotId={`category-${category.slug}-banner`} format="horizontal" />

@@ -158,7 +158,7 @@ export const FinanceSimulatorEngine: React.FC<FinanceSimulatorEngineProps> = ({ 
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
-              Financial Protocol & Ledger Simulator
+              Financial Protocol &amp; Ledger Console
             </h2>
             <p className="text-xs text-cyber-muted font-mono">
               Status: {isProcessing ? "PROCESSING LEDGER..." : isCompleted ? "AUTHORIZED" : "STANDBY"}

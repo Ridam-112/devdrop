@@ -134,7 +134,7 @@ export const GamingSimulatorEngine: React.FC<GamingSimulatorEngineProps> = ({ to
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
-              Esports Engine & Game Data Simulator
+              Esports Engine &amp; Game Data Console
             </h2>
             <p className="text-xs text-cyber-muted font-mono">
               Status: {isProcessing ? "TRANSMITTING INJECTION PACKETS..." : isCompleted ? "SYNCHRONIZED" : "STANDBY"}

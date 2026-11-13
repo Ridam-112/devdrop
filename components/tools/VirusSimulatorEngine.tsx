@@ -136,7 +136,7 @@ export const VirusSimulatorEngine: React.FC<VirusSimulatorEngineProps> = ({ tool
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
-              Cyber Threat, BSOD & Payload Simulator
+              Cyber Threat, BSOD &amp; Diagnostic Console
             </h2>
             <p className="text-xs text-cyber-muted font-mono">
               Status: {isTriggered ? "CONFIRMED PAYLOAD ACTIVE" : "CONTAINMENT ACTIVE"}
@@ -288,7 +288,7 @@ export const VirusSimulatorEngine: React.FC<VirusSimulatorEngineProps> = ({ tool
           </p>
 
           <div className="p-3 bg-black/80 rounded-xl border border-cyber-borderSubtle text-xs font-mono text-cyber-red">
-            THREAT SIGNATURE: Trojan.Generic.Simulator.DevDrop / CVE-2026-9912
+            THREAT SIGNATURE: Trojan.Generic.Diagnostic.DevDrop / CVE-2026-9912
           </div>
         </div>
       )}

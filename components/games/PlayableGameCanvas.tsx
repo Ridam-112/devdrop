@@ -711,7 +711,7 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
               </span>
             </h3>
             <p className="text-xs font-mono text-cyber-muted">
-              Zero install, browser-native client-side simulation.
+              Zero install, browser-native client-side gameplay.
             </p>
           </div>
         </div>

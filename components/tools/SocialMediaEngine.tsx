@@ -142,7 +142,7 @@ export const SocialMediaEngine: React.FC<SocialMediaEngineProps> = ({ toolSlug }
           </div>
           <div>
             <h2 className="text-base sm:text-lg font-bold text-white font-mono flex items-center gap-2">
-              Social Media Protocol & Profile Simulator
+              Social Media Protocol &amp; Profile Console
             </h2>
             <p className="text-xs text-cyber-muted font-mono">
               Status: {isProcessing ? "PROCESSING PROTOCOL..." : isCompleted ? "SYNCHRONIZED" : "STANDBY"}
