@@ -18,7 +18,10 @@ import {
   Layers,
   Gamepad2,
   Flame,
-  HelpCircle
+  HelpCircle,
+  Trophy,
+  Play,
+  Star
 } from "lucide-react";
 import { TOOLS, CATEGORIES } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
@@ -266,11 +269,98 @@ export default function HomePage() {
                 <Gamepad2 className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-white mb-2">
-                4. 24+ Open-Source Games
+                4. 25+ Open-Source Games
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Enjoy open-source HTML5 classics (2048, Cyber Snake, Space Defender, Tetris) directly in your browser with zero installs.
+                Enjoy open-source 3D flight simulators and HTML5 classics (Chaos Skies 3D, 2048, Cyber Snake, Space Defender, Tetris) with zero installs.
               </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURED BEST GAME SPOTLIGHT: CHAOS SKIES 3D */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-purple-950/30 to-neutral-900 border-2 border-amber-500/40 p-6 sm:p-10 lg:p-12 shadow-2xl shadow-amber-500/10">
+          {/* Ambient decorative glow */}
+          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
+            <div className="flex-1 space-y-5 text-center lg:text-left">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-wide">
+                <Trophy className="w-4 h-4 text-amber-400" />
+                <span>#1 BEST GAME OF DEVDROP • PLAYERS&apos; CHOICE 2026</span>
+              </div>
+
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
+                ✈ CHAOS SKIES 3D
+              </h2>
+
+              <p className="text-sm sm:text-base text-neutral-300 font-sans leading-relaxed max-w-2xl">
+                The ultimate browser-based 3D fighter jet combat simulator. Pilot legendary Indian Air Force jets — the <strong>Sukhoi Su-30MKI</strong> and <strong>HAL Tejas Mk1</strong> — across Neon City, Desert Canyons, and Pacific Isles. Fire radar-guided homing missiles, drop bunker bombs, deploy defensive flares, and execute high-G barrel rolls directly in your browser with zero downloads!
+              </p>
+
+              {/* Highlights tags */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
+                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-emerald-400">
+                  ✓ Su-30MKI &amp; Tejas Mk1
+                </span>
+                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-cyan-400">
+                  ✓ Homing Missiles &amp; Flares
+                </span>
+                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-purple-400">
+                  ✓ Mobile Joystick + PC Mouse
+                </span>
+                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-amber-400 flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 fill-current text-amber-400" /> 5.0 / 5.0 Rating
+                </span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
+                <Link
+                  href="/games/chaos-skies-3d"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-black font-mono font-black text-sm uppercase tracking-wider hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 hover:scale-105"
+                >
+                  <Play className="w-4 h-4 fill-current" />
+                  <span>PLAY CHAOS SKIES 3D NOW</span>
+                </Link>
+
+                <Link
+                  href="/games"
+                  className="w-full sm:w-auto px-6 py-4 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                >
+                  <Gamepad2 className="w-4 h-4 text-purple-400" />
+                  <span>Browse All 25+ Games</span>
+                </Link>
+              </div>
+            </div>
+
+            {/* Visual Preview / Badge Card */}
+            <div className="w-full lg:w-96 flex-shrink-0">
+              <Link
+                href="/games/chaos-skies-3d"
+                className="group block relative rounded-2xl overflow-hidden border-2 border-amber-500/30 hover:border-amber-400 transition-all bg-neutral-950 p-6 text-center space-y-4 shadow-xl"
+              >
+                <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto text-4xl shadow-lg shadow-amber-500/10 group-hover:scale-110 transition-transform">
+                  ✈️
+                </div>
+                <div>
+                  <span className="text-[10px] font-mono font-bold text-amber-400 uppercase tracking-widest block">
+                    Three.js WebGL Engine
+                  </span>
+                  <h3 className="text-xl font-black text-white font-mono mt-1">
+                    Chaos Skies 3D
+                  </h3>
+                  <p className="text-xs text-neutral-400 font-sans mt-1">
+                    Play instantly in Full 3D with 60 FPS flight dynamics
+                  </p>
+                </div>
+                <div className="w-full py-2.5 rounded-lg bg-amber-400 text-black font-mono font-bold text-xs flex items-center justify-center gap-2 group-hover:bg-amber-300 transition-colors">
+                  <Play className="w-3.5 h-3.5 fill-current" />
+                  <span>LAUNCH GAME</span>
+                </div>
+              </Link>
             </div>
           </div>
         </div>

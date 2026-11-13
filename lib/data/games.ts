@@ -37,6 +37,75 @@ export interface OpenSourceGame {
 
 export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
   {
+    slug: "chaos-skies-3d",
+    name: "Chaos Skies 3D",
+    tagline: "🏆 #1 Ranked 3D Fighter Jet Simulator — Sukhoi Su-30MKI, HAL Tejas & High-G Dogfight Combat",
+    h1: "Play Chaos Skies 3D Online: Best 3D Fighter Jet Flight Combat Dogfight Game",
+    genre: "Action",
+    description: "Fly legendary modern fighter jets including the Sukhoi Su-30MKI and HAL Tejas in full 3D dogfights. Launch radar-guided missiles, drop heavy bombs, fire thermal flares, and perform high-G barrel rolls directly in your browser.",
+    longDescription: "Chaos Skies 3D is our #1 premier flagship 3D flight action combat game built with Three.js, hardware-accelerated WebGL, and the Web Audio API. Pilot authentic Indian Air Force inspired combat jets like the Sukhoi Su-30MKI and HAL Tejas Mk1 across expansive 3D theaters: Neon City, Desert Canyon, and Pacific Isles. Features realistic flight physics, heat-seeking missile lock-on systems, defensive flare countermeasures, vertical loops, evasive barrel rolls, sniper zoom scope, and full touch joystick support on mobile phones.",
+    techStack: ["Three.js", "WebGL", "HTML5 Canvas", "Web Audio API", "JavaScript", "GLSL Shaders"],
+    license: "Open Source / Free-to-Play",
+    githubUrl: "https://github.com/Ridam-112/devdrop",
+    liveDemoUrl: "https://devdrop.online/games/chaos-skies-3d",
+    isPlayableDirectly: true,
+    builtInGameType: "iframe",
+    iframeUrl: "/games/chaos-skies-3d.html",
+    badge: "🏆 #1 BEST GAME",
+    releaseYear: 2026,
+    rating: 5.0,
+    ratingCount: 3840,
+    features: [
+      "Authentic 3D Fighter Jets: Sukhoi Su-30MKI & HAL Tejas Mk1",
+      "Heat-seeking homing missiles with radar lock-on targeting HUD",
+      "Defensive thermal flare countermeasures to evade incoming missiles",
+      "Acrobatic flight maneuvers: High-G Barrel Rolls and 360° Inside Loops",
+      "3 Vast Open-Air 3D Theaters: Neon City, Desert Canyon & Pacific Isles",
+      "Interactive characters (Chacha Chai, Tigress Tara, Baba Boom) with voice quips",
+      "Touch virtual joystick & landscape tilt controls on mobile phones",
+      "Full desktop mouse-aim flight control and sniper scope zoom"
+    ],
+    howToPlay: [
+      "Aim and steer with your mouse cursor or virtual thumb joystick",
+      "Right-click to fire high-velocity 30mm aircraft autocannons",
+      "Hold Left-Click to activate long-range sniper scope camera zoom",
+      "Press F to launch heat-seeking missiles when enemies are locked in your red HUD reticle",
+      "Press C to deploy thermal flares and break lock when 'MISSILE INCOMING' warning flashes",
+      "Press E for evasive barrel roll or R to pull vertical 360° loops",
+      "Press Shift to engage twin afterburners for high-speed intercept"
+    ],
+    controls: [
+      { key: "Mouse", action: "Aim & Flight Attitude Control" },
+      { key: "Right Click", action: "Fire Autocannons" },
+      { key: "Hold Left Click", action: "Sniper Scope Zoom" },
+      { key: "F", action: "Fire Homing Missile" },
+      { key: "B / Space", action: "Drop Free-Fall Bomb" },
+      { key: "C", action: "Deploy Thermal Flares" },
+      { key: "E", action: "Barrel Roll (Dodge)" },
+      { key: "R", action: "Inside Loop Maneuver" },
+      { key: "W / S", action: "Throttle Speed Up / Down" },
+      { key: "Shift", action: "Afterburner Super Boost" },
+      { key: "V", action: "Look Rear Camera" },
+      { key: "Q", action: "Special Weapon Barrage" }
+    ],
+    metaTitle: "Chaos Skies 3D — #1 Best Free 3D Fighter Jet Flight Combat Game | DevDrop",
+    metaDescription: "Play Chaos Skies 3D online for free in your browser. Pilot Sukhoi Su-30MKI & HAL Tejas jets in high-octane 3D dogfights with homing missiles, flares, and loops. No download required.",
+    faqs: [
+      {
+        question: "What makes Chaos Skies 3D the best game on DevDrop?",
+        answer: "Chaos Skies 3D delivers true console-grade 3D dogfighting physics right in your browser without installs. With real Indian Air Force inspired fighter jets like the Su-30MKI and Tejas Mk1, missile lock-on systems, flares, and tactical aerial maneuvers, it offers an unmatched adrenaline-packed browser combat experience."
+      },
+      {
+        question: "Can I play Chaos Skies 3D on a mobile phone or tablet?",
+        answer: "Yes! Chaos Skies 3D has custom on-screen virtual touch joysticks and action buttons. Simply turn your phone to landscape mode and enjoy full 3D aerial dogfights on iOS and Android devices."
+      },
+      {
+        question: "How do I evade incoming enemy missiles in Chaos Skies 3D?",
+        answer: "When the red 'MISSILE INCOMING' HUD alert flashes and beeps, immediately press C (or the FLARE button on mobile) to launch thermal flares, and perform an evasive barrel roll (press E) or loop (press R) to break the enemy missile lock."
+      }
+    ]
+  },
+  {
     slug: "space-defender-html5",
     name: "Space Defender HTML5",
     tagline: "High-octane retro neon space combat shooter in pure HTML5 Canvas",

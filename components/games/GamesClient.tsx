@@ -353,6 +353,16 @@ export const GamesClient: React.FC = () => {
             {/* Embedded Game Canvas / Player */}
             {activePlayGame.builtInGameType === "2048" ? (
               <Playable2048 />
+            ) : activePlayGame.builtInGameType === "iframe" && activePlayGame.iframeUrl ? (
+              <div className="w-full h-[550px] sm:h-[650px] rounded-xl overflow-hidden border border-cyber-green/40 bg-black relative">
+                <iframe
+                  src={activePlayGame.iframeUrl}
+                  title={activePlayGame.name}
+                  className="w-full h-full border-0"
+                  allow="fullscreen; autoplay; accelerometer; gyroscope"
+                  allowFullScreen
+                />
+              </div>
             ) : activePlayGame.builtInGameType && activePlayGame.builtInGameType !== "iframe" ? (
               <PlayableGameCanvas
                 gameType={activePlayGame.builtInGameType}

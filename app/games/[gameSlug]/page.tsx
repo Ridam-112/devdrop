@@ -243,6 +243,33 @@ export default function GameDetailPage({ params }: Props) {
             gameType={game.builtInGameType}
             gameName={game.name}
           />
+        ) : game.iframeUrl ? (
+          <div className="w-full flex flex-col items-center gap-3">
+            <div className="w-full h-[620px] sm:h-[750px] md:h-[820px] rounded-2xl overflow-hidden border-2 border-cyber-green/50 shadow-2xl shadow-cyber-green/20 bg-neutral-950 relative">
+              <iframe
+                src={game.iframeUrl}
+                title={game.name}
+                className="w-full h-full border-0"
+                allow="fullscreen; autoplay; accelerometer; gyroscope"
+                allowFullScreen
+              />
+            </div>
+            <div className="flex items-center justify-between w-full px-2 text-xs font-mono text-neutral-400">
+              <span className="flex items-center gap-2 text-cyber-green font-bold">
+                <span className="w-2 h-2 rounded-full bg-cyber-green animate-ping" />
+                PLAYING LIVE 3D ARENA IN BROWSER
+              </span>
+              <a
+                href={game.iframeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-cyber-card hover:bg-neutral-800 border border-cyber-borderSubtle text-white font-mono text-xs transition-colors"
+              >
+                <span>Launch Fullscreen Window</span>
+                <ExternalLink className="w-3.5 h-3.5 text-cyber-cyan" />
+              </a>
+            </div>
+          </div>
         ) : (
           /* External Open-Source Game Launcher Arena */
           <div className="w-full bg-cyber-card border border-cyber-border rounded-2xl p-6 sm:p-10 text-center shadow-2xl relative overflow-hidden backdrop-blur-md">
