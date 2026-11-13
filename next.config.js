@@ -41,18 +41,6 @@ const nextConfig = {
   async redirects() {
     return [
       {
-        // 301 Permanent Redirect: www.devdrop.online -> https://devdrop.online
-        source: '/:path*',
-        has: [
-          {
-            type: 'host',
-            value: 'www.devdrop.online',
-          },
-        ],
-        destination: 'https://devdrop.online/:path*',
-        permanent: true,
-      },
-      {
         source: '/tools/wifi-hacker',
         destination: '/tools/wifi-hacker-simulator',
         permanent: true,
