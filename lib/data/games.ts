@@ -2407,66 +2407,6 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
     ]
   },
   {
-    "slug": "spiderman-web-avenue-3d",
-    "name": "Spider-Man: Web Avenue Rush 3D",
-    "tagline": "3D Skyscraper Avenue Web Swinging — shoot left & right webs to weave through skyscrapers at high speed",
-    "h1": "Play Spider-Man: Web Avenue Rush 3D Online: Free Action Browser Game",
-    "genre": "Action",
-    "description": "3D Skyscraper Avenue Web Swinging! Steer with Left & Right web pulls to avoid crashing and maintain speed combos!",
-    "longDescription": "Spider-Man: Web Avenue Rush 3D is a high-performance browser-native game featuring tactile aesthetics, procedural Web Audio sound synthesis, and instant zero-download gameplay on any desktop or mobile browser. Enjoy responsive controls, high score tracking, and smooth 60 FPS performance.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Audio API",
-      "CSS3",
-      "WebGL"
-    ],
-    "license": "Open Source / Free-to-Play",
-    "githubUrl": "https://github.com/Ridam-112/devdrop",
-    "liveDemoUrl": "https://devdrop.online/games/spiderman-web-avenue-3d",
-    "isPlayableDirectly": true,
-    "builtInGameType": "iframe",
-    "iframeUrl": "/games/40_spiderman_web_swing_2d.html",
-    "badge": "Superhero 3D",
-    "releaseYear": 2026,
-    "rating": 5,
-    "ratingCount": 3108,
-    "features": [
-      "Dynamic dual web-slinging physics",
-      "Soaring 3D skyscraper corridor environment",
-      "Velocity combo multiplier streaks",
-      "Heroic web-shooter sound effects"
-    ],
-    "howToPlay": [
-      "Use the intuitive keyboard keys or touch screen gestures to control your player",
-      "Follow on-screen objectives to rack up points and complete levels",
-      "Collect power-ups and avoid hazards to maintain your multiplier streaks",
-      "Compete to set your personal best high score saved locally on your device"
-    ],
-    "controls": [
-      {
-        "key": "A / Left Arrow",
-        "action": "Shoot Left Web"
-      },
-      {
-        "key": "D / Right Arrow",
-        "action": "Shoot Right Web"
-      }
-    ],
-    "metaTitle": "Spider-Man: Web Avenue Rush 3D — Play Free Online Action Game | DevDrop",
-    "metaDescription": "Play Spider-Man: Web Avenue Rush 3D online for free in your browser. 3D Skyscraper Avenue Web Swinging! Steer with Left & Right web pulls to avoid crashing and maintain speed combos! No downloads or installs required.",
-    "faqs": [
-      {
-        "question": "Is Spider-Man: Web Avenue Rush 3D free to play on DevDrop?",
-        "answer": "Yes! Spider-Man: Web Avenue Rush 3D is 100% free with no downloads, subscriptions, or paywalls required. Play directly inside your web browser."
-      },
-      {
-        "question": "Can I play Spider-Man: Web Avenue Rush 3D on a smartphone?",
-        "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
-      }
-    ]
-  },
-  {
     "slug": "crazy-delivery-rider-3d",
     "name": "Crazy Delivery Rider 3D",
     "tagline": "Zomato, Swiggy & Blinkit food delivery rush — weave through traffic and deliver before the timer blasts",

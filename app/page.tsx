@@ -467,7 +467,7 @@ export default function HomePage() {
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
               <span className="text-purple-400 font-bold text-sm font-mono block">70+ Open Source HTML5 Games</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Take a quick productivity break with 70+ games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, Spider-Man 3D, 2048, and Space Defender directly in your browser.
+                Take a quick productivity break with 70+ games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, Sledge Rider 3D, 2048, and Space Defender directly in your browser.
               </p>
             </div>
           </div>
