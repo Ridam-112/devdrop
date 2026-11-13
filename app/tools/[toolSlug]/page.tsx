@@ -13,7 +13,7 @@ import {
   CheckCircle2,
   FileText,
 } from "lucide-react";
-import { TOOLS, CATEGORIES, ToolItem } from "@/lib/data/tools";
+import { TOOLS, CATEGORIES, ToolItem, isToolIndexable } from "@/lib/data/tools";
 import { ShareButton } from "@/components/ShareButton";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
@@ -67,35 +67,56 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   );
   if (!tool) {
     return {
-      title: "Tool Not Found | DEVDROP",
+      title: "Tool Not Found | DevDrop",
       robots: { index: false, follow: false },
     };
   }
 
+  const isIndexable = isToolIndexable(tool);
   const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
 
+  // Standardized title format: "{Tool Name} – Free Online, No Upload | DevDrop" (50-60 chars)
+  let pageTitle = `${tool.name} – Free Online, No Upload | DevDrop`;
+  if (tool.slug === "photo-bg-remover") {
+    pageTitle = "Photo Background Remover – Free AI Cutout Online | DevDrop";
+  } else if (tool.metaTitle && tool.metaTitle.length <= 60 && !tool.metaTitle.includes("#1")) {
+    pageTitle = tool.metaTitle;
+  }
+  if (!pageTitle.endsWith("DevDrop")) {
+    pageTitle = `${pageTitle} | DevDrop`;
+  }
+
   return {
-    title: tool.metaTitle,
+    title: pageTitle,
     description: tool.metaDescription,
     alternates: {
       canonical: canonicalUrl,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
+    robots: isIndexable
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        }
+      : {
+          index: false,
+          follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
+        },
     openGraph: {
-      title: tool.metaTitle,
+      title: pageTitle,
       description: tool.metaDescription,
       url: canonicalUrl,
-      siteName: "DEVDROP",
+      siteName: "DevDrop",
       locale: "en_US",
       type: "website",
       images: [
@@ -103,13 +124,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
           url: "https://devdrop.online/og-image.png",
           width: 1200,
           height: 630,
-          alt: `${tool.name} simulation interface preview on DEVDROP`,
+          alt: `${tool.name} interface preview on DevDrop`,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: tool.metaTitle,
+      title: pageTitle,
       description: tool.metaDescription,
     },
   };
@@ -125,7 +146,10 @@ export default function ToolDetailPage({ params }: Props) {
   }
 
   const category = CATEGORIES.find((c) => c.slug === tool.categorySlug);
-  const relatedTools = TOOLS.filter((t) => tool.relatedSlugs.includes(t.slug));
+  const isIndexable = isToolIndexable(tool);
+  const relatedTools = TOOLS.filter(
+    (t) => tool.relatedSlugs.includes(t.slug) && (isIndexable ? isToolIndexable(t) : true)
+  );
 
   const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
 
@@ -177,11 +201,11 @@ export default function ToolDetailPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     name: tool.name,
-    headline: tool.h1,
+    headline: tool.h1 || tool.name,
     description: tool.metaDescription,
     applicationCategory: "UtilitiesApplication",
-    operatingSystem: "All",
-    browserRequirements: "Requires JavaScript. Requires HTML5 Canvas.",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript. HTML5 Canvas supported.",
     url: canonicalUrl,
     offers: {
       "@type": "Offer",
@@ -190,8 +214,8 @@ export default function ToolDetailPage({ params }: Props) {
     },
   };
 
-  // Structured Data: FAQPage
-  const faqJsonLd = {
+  // Structured Data: FAQPage (Only emitted when FAQs are present)
+  const faqJsonLd = tool.faqs && tool.faqs.length > 0 ? {
     "@context": "https://schema.org",
     "@type": "FAQPage",
     mainEntity: tool.faqs.map((faq) => ({
@@ -202,7 +226,7 @@ export default function ToolDetailPage({ params }: Props) {
         text: faq.answer,
       },
     })),
-  };
+  } : null;
 
   const renderSimulator = () => {
     switch (tool.slug) {
@@ -305,10 +329,12 @@ export default function ToolDetailPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(webAppJsonLd) }}
       />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
-      />
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
 
       {/* Breadcrumb Navigation */}
       <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-xs font-mono text-cyber-muted mb-6 flex-wrap">
@@ -332,6 +358,34 @@ export default function ToolDetailPage({ params }: Props) {
           {tool.name}
         </span>
       </nav>
+
+      {/* Simulation / Entertainment Notice Banner */}
+      {(tool.isSimulation || !isIndexable) && (
+        <div className="mb-6 p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/30 text-amber-200 text-xs sm:text-sm font-mono flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <strong className="text-amber-300 uppercase tracking-wider block font-bold">
+              Simulation / For Entertainment &amp; Educational Demonstration Only
+            </strong>
+            <span className="text-neutral-300">
+              This module is a simulated interface designed strictly for harmless pranks, UI demonstrations, and educational visualization. It does not perform real-world hacking, exploits, unauthorized network penetration, or account interception.
+            </span>
+          </div>
+        </div>
+      )}
+
+      {/* Privacy Guarantee Note */}
+      <div className="mb-6 p-4 rounded-xl bg-neutral-900/80 border border-neutral-800 text-xs text-neutral-300 flex items-start gap-3">
+        <ShieldCheck className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
+        <div>
+          <span className="font-bold text-white font-mono block mb-0.5">Privacy &amp; Data Security</span>
+          <p className="leading-relaxed">
+            {tool.privacyNote
+              ? tool.privacyNote
+              : "100% In-Browser Privacy: All processing runs locally inside your browser memory. Your files and input data are never uploaded to any remote server or stored in any database."}
+          </p>
+        </div>
+      </div>
 
       {/* Tool Header & Badge */}
       <header className="mb-8 pb-6 border-b border-cyber-borderSubtle">
@@ -528,21 +582,21 @@ export default function ToolDetailPage({ params }: Props) {
 
       {/* Related Tools Crawlable Section */}
       {relatedTools.length > 0 && (
-        <section className="mt-16 pt-10 border-t border-cyber-borderSubtle" aria-label="Related Cybersecurity Tools">
+        <section className="mt-16 pt-10 border-t border-cyber-borderSubtle" aria-label="Related Online Tools">
           <div className="flex items-end justify-between mb-8">
             <div>
               <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green">
                 Explore More Tools
               </span>
               <h2 className="text-2xl font-extrabold text-white font-mono mt-1">
-                Related Cyber Tools
+                Related Online Tools
               </h2>
             </div>
             <Link
               href="/tools"
               className="text-xs font-mono font-semibold text-cyber-cyan hover:underline flex items-center gap-1"
             >
-              All 87 Tools <ArrowRight className="w-3.5 h-3.5" />
+              All Tools <ArrowRight className="w-3.5 h-3.5" />
             </Link>
           </div>
 

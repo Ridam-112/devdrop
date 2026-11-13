@@ -17,6 +17,8 @@ export interface ToolCategory {
   description: string;
   longDescription: string;
   iconName: string;
+  indexable?: boolean;
+  isSimulation?: boolean;
   faqs: CategoryFaq[];
 }
 
@@ -42,11 +44,27 @@ export interface ToolItem {
   metaTitle: string;
   metaDescription: string;
   canonicalPath: string;
+  indexable?: boolean;
+  isSimulation?: boolean;
+  privacyNote?: string;
+}
+
+
+export function isToolIndexable(tool: ToolItem): boolean {
+  if (tool.indexable !== undefined) return tool.indexable;
+  const cat = CATEGORIES.find((c) => c.slug === tool.categorySlug);
+  return cat?.indexable ?? false;
+}
+
+export function isCategoryIndexable(cat: ToolCategory): boolean {
+  return cat.indexable ?? false;
 }
 
 export const CATEGORIES: ToolCategory[] = [
   {
     "slug": "wifi-network",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Wi-Fi & Network Security",
     "h1": "Wi-Fi & Network Security Simulators",
     "metaTitle": "Wi-Fi & Network Security Simulators | DEVDROP",
@@ -71,6 +89,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "gaming-sims",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Free Fire & BGMI Gaming",
     "h1": "Free Fire & BGMI Gaming Data Simulators",
     "metaTitle": "Free Fire & BGMI Gaming Simulators & Generators | DEVDROP",
@@ -95,6 +115,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "social-media",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Social Media Intelligence",
     "h1": "Social Media Security & Profile Simulators",
     "metaTitle": "Social Media Profile & Verification Simulators | DEVDROP",
@@ -119,6 +141,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "mobile-devices",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Mobile Hardware & Security",
     "h1": "Smartphone Chassis & Biometric Simulators",
     "metaTitle": "Mobile Hardware & Lockscreen Simulators | DEVDROP",
@@ -143,6 +167,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "ip-intelligence",
+    "indexable": false,
+    "isSimulation": true,
     "name": "IP & Cyber Intelligence",
     "h1": "Global IP Telemetry & Cyber Intelligence Tools",
     "metaTitle": "IP Trace, DNS & Cyber Intelligence Tools | DEVDROP",
@@ -167,6 +193,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "money-finance",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Money & Financial Protocols",
     "h1": "Financial Protocol & Payment Simulators",
     "metaTitle": "UPI Payment & Banking Statement Simulators | DEVDROP",
@@ -191,6 +219,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "ai-funny",
+    "indexable": false,
+    "isSimulation": true,
     "name": "AI Cognitive & Social Analytics",
     "h1": "AI Cognitive & Humorous Parody Generators",
     "metaTitle": "AI Polygraph, Mind Reader & Parody Tools | DEVDROP",
@@ -215,6 +245,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "virus-security",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Malware & Threat Security Lab",
     "h1": "Cyber Threat & BSOD Security Simulators",
     "metaTitle": "BSOD Crash, Ransomware & Cyber Threat Simulators | DEVDROP",
@@ -239,6 +271,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "spy-stealth",
+    "indexable": false,
+    "isSimulation": true,
     "name": "Classified Espionage Operations",
     "h1": "Secret Agent & Espionage Intelligence Ops",
     "metaTitle": "Secret Agent ID & Espionage Simulators | DEVDROP",
@@ -263,6 +297,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "image-media",
+    "indexable": true,
+    "isSimulation": false,
     "name": "Image & Photo Utilities",
     "h1": "Free Online Image & Photo Processing Tools",
     "metaTitle": "Free Image Compressor, Background Remover & Photo Tools | DEVDROP",
@@ -287,6 +323,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "pdf-document",
+    "indexable": true,
+    "isSimulation": false,
     "name": "PDF & Document Tools",
     "h1": "Free Online PDF Creator, Image to PDF & Document Tools",
     "metaTitle": "Online PDF Maker & Photo to PDF Converters | DEVDROP",
@@ -307,6 +345,8 @@ export const CATEGORIES: ToolCategory[] = [
   },
   {
     "slug": "developer-utils",
+    "indexable": true,
+    "isSimulation": false,
     "name": "Productivity & Web Utilities",
     "h1": "Essential Everyday Developer, Finance & Web Utilities",
     "metaTitle": "Everyday Online Developer Tools, Calculators & Converters | DEVDROP",

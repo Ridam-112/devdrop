@@ -28,8 +28,8 @@ export interface OpenSourceGame {
   controls: GameControl[];
   metaTitle: string;
   metaDescription: string;
-  rating: number;
-  ratingCount: number;
+  rating?: number;
+  ratingCount?: number;
   badge?: string;
   releaseYear: number;
   faqs: GameFaq[];
@@ -53,11 +53,11 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
   {
     "slug": "chaos-skies-3d",
     "name": "Chaos Skies 3D",
-    "tagline": "🏆 #1 Ranked 3D Fighter Jet Simulator — Sukhoi Su-30MKI, HAL Tejas & High-G Dogfight Combat",
-    "h1": "Play Chaos Skies 3D Online: Best 3D Fighter Jet Flight Combat Dogfight Game",
+    "tagline": "3D Fighter Jet Flight Simulator — Sukhoi Su-30MKI, HAL Tejas & High-G Dogfight Combat",
+    "h1": "Play Chaos Skies 3D Online: 3D Fighter Jet Flight Combat Simulator",
     "genre": "Action",
-    "description": "Fly legendary modern fighter jets including the Sukhoi Su-30MKI and HAL Tejas in full 3D dogfights. Launch radar-guided missiles, drop heavy bombs, fire thermal flares, and perform high-G barrel rolls directly in your browser.",
-    "longDescription": "Chaos Skies 3D is our #1 premier flagship 3D flight action combat game built with Three.js, hardware-accelerated WebGL, and the Web Audio API. Pilot authentic Indian Air Force inspired combat jets like the Sukhoi Su-30MKI and HAL Tejas Mk1 across expansive 3D theaters: Neon City, Desert Canyon, and Pacific Isles. Features realistic flight physics, heat-seeking missile lock-on systems, defensive flare countermeasures, vertical loops, evasive barrel rolls, sniper zoom scope, and full touch joystick support on mobile phones.",
+    "description": "Fly modern fighter jets including the Sukhoi Su-30MKI and HAL Tejas in full 3D dogfights. Launch radar-guided missiles, drop heavy bombs, fire thermal flares, and perform high-G barrel rolls directly in your browser.",
+    "longDescription": "Chaos Skies 3D is a premier 3D flight action combat game built with Three.js, hardware-accelerated WebGL, and the Web Audio API. Pilot authentic Indian Air Force inspired combat jets like the Sukhoi Su-30MKI and HAL Tejas Mk1 across expansive 3D theaters: Neon City, Desert Canyon, and Pacific Isles. Features realistic flight physics, heat-seeking missile lock-on systems, defensive flare countermeasures, vertical loops, evasive barrel rolls, sniper zoom scope, and full touch joystick support on mobile phones.",
     "techStack": [
       "Three.js",
       "WebGL",
@@ -72,10 +72,8 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
     "isPlayableDirectly": true,
     "builtInGameType": "iframe",
     "iframeUrl": "/games/chaos-skies-3d.html",
-    "badge": "🏆 #1 BEST GAME",
+    "badge": "Featured Flight Combat",
     "releaseYear": 2026,
-    "rating": 5,
-    "ratingCount": 3840,
     "features": [
       "Authentic 3D Fighter Jets: Sukhoi Su-30MKI & HAL Tejas Mk1",
       "Heat-seeking homing missiles with radar lock-on targeting HUD",
@@ -145,12 +143,12 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "action": "Special Weapon Barrage"
       }
     ],
-    "metaTitle": "Chaos Skies 3D — #1 Free Fighter Jet Combat Game | DevDrop",
+    "metaTitle": "Chaos Skies 3D — Free Fighter Jet Flight Game | DevDrop",
     "metaDescription": "Play Chaos Skies 3D online for free in your browser. Pilot Sukhoi Su-30MKI & HAL Tejas jets in high-octane 3D dogfights with homing missiles, flares, and loops. No download required.",
     "faqs": [
       {
-        "question": "What makes Chaos Skies 3D the best game on DevDrop?",
-        "answer": "Chaos Skies 3D delivers true console-grade 3D dogfighting physics right in your browser without installs. With real Indian Air Force inspired fighter jets like the Su-30MKI and Tejas Mk1, missile lock-on systems, flares, and tactical aerial maneuvers, it offers an unmatched adrenaline-packed browser combat experience."
+        "question": "What fighter jets can I fly in Chaos Skies 3D?",
+        "answer": "You can fly iconic Indian Air Force fighter jets including the twin-engine Sukhoi Su-30MKI air-superiority jet and the agile HAL Tejas Mk1 multirole fighter with customizable armaments and maneuvers."
       },
       {
         "question": "Can I play Chaos Skies 3D on a mobile phone or tablet?",

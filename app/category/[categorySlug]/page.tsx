@@ -2,8 +2,8 @@ import React from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import { ChevronRight, ArrowLeft, HelpCircle, Shield, FileText } from "lucide-react";
-import { CATEGORIES, TOOLS } from "@/lib/data/tools";
+import { ChevronRight, ArrowLeft, HelpCircle, Shield, FileText, AlertTriangle } from "lucide-react";
+import { CATEGORIES, TOOLS, isCategoryIndexable } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 
@@ -23,12 +23,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const category = CATEGORIES.find((c) => c.slug === params.categorySlug);
   if (!category) {
     return {
-      title: "Category Not Found | DEVDROP",
+      title: "Category Not Found | DevDrop",
       robots: { index: false, follow: false },
     };
   }
 
-  const canonicalUrl = `https://devdrop.vercel.app/category/${category.slug}`;
+  const isIndexable = isCategoryIndexable(category);
+  const canonicalUrl = `https://devdrop.online/category/${category.slug}`;
 
   return {
     title: category.metaTitle,
@@ -36,30 +37,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
+    robots: isIndexable
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        }
+      : {
+          index: false,
+          follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
+        },
     openGraph: {
       title: category.metaTitle,
       description: category.metaDescription,
       url: canonicalUrl,
-      siteName: "DEVDROP",
+      siteName: "DevDrop",
       locale: "en_US",
       type: "website",
       images: [
         {
-          url: "https://devdrop.vercel.app/og-image.png",
+          url: "https://devdrop.online/og-image.png",
           width: 1200,
           height: 630,
-          alt: `${category.name} category hub on DEVDROP`,
+          alt: `${category.name} category hub on DevDrop`,
         },
       ],
     },
@@ -78,8 +88,9 @@ export default function CategoryPage({ params }: Props) {
     notFound();
   }
 
+  const isIndexable = isCategoryIndexable(category);
   const categoryTools = TOOLS.filter((t) => t.categorySlug === category.slug);
-  const canonicalUrl = `https://devdrop.vercel.app/category/${category.slug}`;
+  const canonicalUrl = `https://devdrop.online/category/${category.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -90,13 +101,13 @@ export default function CategoryPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.vercel.app",
+        item: "https://devdrop.online",
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Categories",
-        item: "https://devdrop.vercel.app/tools",
+        item: "https://devdrop.online/tools",
       },
       {
         "@type": "ListItem",
@@ -120,7 +131,7 @@ export default function CategoryPage({ params }: Props) {
       itemListElement: categoryTools.map((tool, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
-        url: `https://devdrop.vercel.app/tools/${tool.slug}`,
+        url: `https://devdrop.online/tools/${tool.slug}`,
         name: tool.name,
       })),
     },
@@ -184,11 +195,26 @@ export default function CategoryPage({ params }: Props) {
         <div className="mt-6 flex items-center gap-4 text-xs font-mono text-cyber-muted flex-wrap">
           <span className="text-cyber-green font-bold">{categoryTools.length} Tools Available</span>
           <span>•</span>
-          <span>100% Client-Side Safe</span>
+          <span>Browser Execution</span>
           <span>•</span>
-          <span>AdSense Compliant Layout</span>
+          <span>Zero Installation</span>
         </div>
       </header>
+
+      {/* Simulation / Entertainment Warning Banner */}
+      {(category.isSimulation || !isIndexable) && (
+        <div className="mb-8 p-4 rounded-xl bg-amber-500/10 border-2 border-amber-500/30 text-amber-200 text-xs sm:text-sm font-mono flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-400 flex-shrink-0 mt-0.5" />
+          <div>
+            <strong className="text-amber-300 uppercase tracking-wider block font-bold">
+              Simulation / For Entertainment &amp; Educational Demonstration Only
+            </strong>
+            <span className="text-neutral-300">
+              The tools in this category are simulations designed strictly for entertainment, UI demonstrations, and educational visualization. They do not perform real-world hacking, exploits, or account actions.
+            </span>
+          </div>
+        </div>
+      )}
 
       {/* Ad Slot */}
       <AdvertisementSlot slotId={`category-${category.slug}-banner`} format="horizontal" />

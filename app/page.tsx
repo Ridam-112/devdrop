@@ -32,34 +32,14 @@ import { HomeQuickTools } from "@/components/HomeQuickTools";
 export const metadata: Metadata = {
   title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
   description:
-    "DevDrop (devdrop.online): 140+ free client-side developer utilities, image compressors, background removers, QR generators, PDF makers, and 70+ browser games. 100% private.",
-  keywords: [
-    "DevDrop",
-    "devdrop",
-    "dev drop",
-    "devdrop online",
-    "devdrop.online",
-    "devdrop.in",
-    "devdrop tools",
-    "devdrop file transfer",
-    "devdrop peer to peer",
-    "devdrop alternative",
-    "official devdrop",
-    "free developer tools",
-    "online utilities",
-    "client-side privacy",
-    "image compressor",
-    "photo background remover",
-    "qr code generator",
-    "open source html5 games",
-  ],
+    "DevDrop provides free online utilities: image compressors, photo background remover, QR code generator, PDF makers, and 70+ browser games.",
   alternates: {
     canonical: "https://devdrop.online",
   },
   openGraph: {
-    title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite",
+    title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
     description:
-      "100% private, client-side tools for file transfer, image compression, background removal, QR codes, PDFs, developer decoders, and 70+ open-source HTML5 games.",
+      "Free client-side tools for file conversion, image compression, QR codes, PDFs, developer utilities, and 70+ open-source HTML5 games.",
     url: "https://devdrop.online",
     siteName: "DevDrop",
     type: "website",
@@ -68,15 +48,15 @@ export const metadata: Metadata = {
         url: "https://devdrop.online/logo.png",
         width: 1024,
         height: 1024,
-        alt: "DevDrop Official Logo",
+        alt: "DevDrop Logo",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "DevDrop — Official #1 All-in-One Online Web Tools",
+    title: "DevDrop — Free Online Web Tools & Utilities",
     description:
-      "140+ free everyday web utilities, developer tools, and browser games running 100% client-side with zero logs.",
+      "Free everyday web utilities, developer tools, and browser games running fast with zero sign-up required.",
     images: ["https://devdrop.online/logo.png"],
   },
 };
@@ -95,11 +75,19 @@ export default function HomePage() {
     "password-generator",
     "loan-emi-calculator",
     "age-calculator",
-    "base64-encoder-decoder",
+    "base64-converter",
   ];
 
   const featuredUtilities = TOOLS.filter((t) => coreUtilitySlugs.includes(t.slug));
-  const popularTools = TOOLS.filter((t) => t.isPopular && !coreUtilitySlugs.includes(t.slug)).slice(0, 6);
+  const additionalUtilities = TOOLS.filter(
+    (t) =>
+      (t.categorySlug === "developer-utils" ||
+        t.categorySlug === "image-media" ||
+        t.categorySlug === "pdf-document") &&
+      !coreUtilitySlugs.includes(t.slug)
+  ).slice(0, 8);
+
+  const indexableCategories = CATEGORIES.filter((c) => c.indexable !== false);
 
   return (
     <div className="flex flex-col gap-12 sm:gap-16">
@@ -113,7 +101,7 @@ export default function HomePage() {
           {/* Trust Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-neutral-900/90 border border-neutral-700/80 text-xs font-mono text-emerald-400 mb-6 shadow-lg shadow-emerald-500/10">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-            <span className="font-semibold">140+ FREE EVERYDAY TOOLS • 100% PRIVATE • ZERO LOGS</span>
+            <span className="font-semibold">FREE ONLINE UTILITIES &bull; ZERO SIGNUP &bull; PRIVACY-FIRST</span>
           </div>
 
           {/* Hero Headline with Brand Logo */}
@@ -123,7 +111,7 @@ export default function HomePage() {
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white font-mono max-w-4xl">
-              Everyday Tools & Utilities,{" "}
+              Everyday Tools &amp; Utilities,{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-emerald-400">
                 100% In Your Browser
               </span>
@@ -133,7 +121,7 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Compress images, remove photo backgrounds with AI, generate custom QR codes & barcodes, compile PDFs, format JSON, calculate loans, and play 70+ open-source 3D and HTML5 browser games.
+            Compress images, remove photo backgrounds, generate custom QR codes &amp; barcodes, compile PDFs, format JSON, calculate loans, and play 70+ open-source 3D and HTML5 browser games.
           </p>
 
           {/* Prominent Live Search Engine */}
@@ -142,10 +130,10 @@ export default function HomePage() {
           {/* Trust Highlights Row */}
           <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs text-neutral-400 mb-8 font-mono">
             <span className="flex items-center gap-1.5 text-neutral-300">
-              <ShieldCheck className="w-4 h-4 text-emerald-400" /> 100% Client-Side Privacy
+              <ShieldCheck className="w-4 h-4 text-emerald-400" /> Client-Side Privacy
             </span>
             <span className="flex items-center gap-1.5 text-neutral-300">
-              <Zap className="w-4 h-4 text-cyan-400" /> Zero Upload Wait Time
+              <Zap className="w-4 h-4 text-cyan-400" /> Instant Processing
             </span>
             <span className="flex items-center gap-1.5 text-neutral-300">
               <Lock className="w-4 h-4 text-purple-400" /> No Account Required
@@ -159,7 +147,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-neutral-950 font-bold font-mono text-xs sm:text-sm tracking-wider shadow-lg shadow-emerald-500/20 transition-all hover:scale-[1.02]"
             >
               <Sparkles className="w-4 h-4" />
-              <span>EXPLORE ALL 140+ TOOLS</span>
+              <span>EXPLORE ALL TOOLS</span>
             </Link>
 
             <Link
@@ -167,7 +155,7 @@ export default function HomePage() {
               className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-neutral-900 border border-neutral-700 hover:border-purple-500/50 text-neutral-200 hover:text-white font-mono text-xs sm:text-sm transition-all"
             >
               <Gamepad2 className="w-4 h-4 text-purple-400" />
-              <span>PLAY HTML5 GAMES</span>
+              <span>PLAY BROWSER GAMES</span>
             </Link>
           </div>
         </div>
@@ -279,7 +267,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FEATURED BEST GAME SPOTLIGHT: CHAOS SKIES 3D */}
+      {/* FEATURED GAME SPOTLIGHT: CHAOS SKIES 3D */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-purple-950/30 to-neutral-900 border-2 border-amber-500/40 p-6 sm:p-10 lg:p-12 shadow-2xl shadow-amber-500/10">
           {/* Ambient decorative glow */}
@@ -290,7 +278,7 @@ export default function HomePage() {
             <div className="flex-1 space-y-5 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-wide">
                 <Trophy className="w-4 h-4 text-amber-400" />
-                <span>#1 BEST GAME OF DEVDROP • PLAYERS&apos; CHOICE 2026</span>
+                <span>FEATURED 3D BROWSER COMBAT SIMULATOR</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
@@ -298,7 +286,7 @@ export default function HomePage() {
               </h2>
 
               <p className="text-sm sm:text-base text-neutral-300 font-sans leading-relaxed max-w-2xl">
-                The ultimate browser-based 3D fighter jet combat simulator. Pilot legendary Indian Air Force jets — the <strong>Sukhoi Su-30MKI</strong> and <strong>HAL Tejas Mk1</strong> — across Neon City, Desert Canyons, and Pacific Isles. Fire radar-guided homing missiles, drop bunker bombs, deploy defensive flares, and execute high-G barrel rolls directly in your browser with zero downloads!
+                A browser-based 3D fighter jet combat simulator built with Three.js. Pilot legendary jets — including the <strong>Sukhoi Su-30MKI</strong> and <strong>HAL Tejas Mk1</strong> — across Neon City, Desert Canyons, and Pacific Isles with high-performance 60 FPS physics directly in your browser with zero installs.
               </p>
 
               {/* Highlights tags */}
@@ -312,8 +300,8 @@ export default function HomePage() {
                 <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-purple-400">
                   ✓ Mobile Joystick + PC Mouse
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-amber-400 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current text-amber-400" /> 5.0 / 5.0 Rating
+                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-amber-400">
+                  ✓ 60 FPS WebGL
                 </span>
               </div>
 
@@ -371,22 +359,22 @@ export default function HomePage() {
         <div className="flex items-end justify-between mb-8">
           <div>
             <span className="text-xs font-mono font-bold uppercase tracking-wider text-purple-400">
-              Explore Everything
+              Core Categories
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              Browse All 12 Tool Categories
+              Browse Tool Categories
             </h2>
           </div>
           <Link
             href="/tools"
             className="text-xs font-mono font-semibold text-cyan-400 hover:underline flex items-center gap-1"
           >
-            All categories <ArrowRight className="w-3.5 h-3.5" />
+            All tools <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {CATEGORIES.map((cat) => (
+          {indexableCategories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/category/${cat.slug}`}
@@ -417,57 +405,57 @@ export default function HomePage() {
         <AdvertisementSlot slotId="home-middle-banner" format="banner" />
       </div>
 
-      {/* 6. POPULAR CYBER EXPERIENCES & SIMULATORS */}
+      {/* 6. ADDITIONAL PRODUCTIVITY & DEVELOPER UTILITIES */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="mb-8">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
-            Interactive Diagnostics
+            More Utilities
           </span>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-            Cybersecurity & Terminal Experiences
+            Productivity &amp; Developer Utilities
           </h2>
           <p className="text-xs text-neutral-400 mt-1">
-            Popular diagnostic visualizers, hacker terminal consoles, and telecom portals.
+            Formatting, encoding, generation, and calculation tools running entirely in your browser.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {popularTools.map((tool) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {additionalUtilities.map((tool) => (
             <ToolCard key={tool.slug} tool={tool} />
           ))}
         </div>
       </section>
 
-      {/* 7. DEVDROP ECOSYSTEM COMPARISON (devdrop.online vs devdrop.in) */}
+      {/* 7. WHAT IS DEVDROP */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 sm:p-10 space-y-6">
           <div className="flex items-center gap-2 text-purple-400 text-xs font-mono font-bold uppercase tracking-wider">
-            <Sparkles className="w-4 h-4" /> The Official Platform Ecosystem
+            <Sparkles className="w-4 h-4" /> About DevDrop
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
-            Why Choose DevDrop (devdrop.online)?
+            What is DevDrop?
           </h2>
           <p className="text-sm text-neutral-300 leading-relaxed max-w-4xl">
-            When users look for <strong>DevDrop</strong> on the web, they need speed, privacy, and versatile tools that run directly in the browser. While single-purpose WebRTC links like <code className="text-purple-300 bg-purple-950/60 px-1.5 py-0.5 rounded text-xs font-mono">devdrop.in</code> offer basic phone-to-computer text and file transfers, <strong>DevDrop Online (devdrop.online)</strong> is the comprehensive all-in-one digital workspace engineered for modern creators, developers, and everyday computer users.
+            DevDrop (<strong>devdrop.online</strong>) is a free web suite designed to provide fast, privacy-focused online utilities and browser games. We believe essential tools like image compressors, PDF converters, and code formatters should be readily accessible without mandatory account registration, paywalls, or privacy intrusions.
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
-              <span className="text-emerald-400 font-bold text-sm font-mono block">140+ Browser Utilities</span>
+              <span className="text-emerald-400 font-bold text-sm font-mono block">Everyday Web Utilities</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                From image compression, background removal, and PDF makers to JSON formatters, JWT decoders, Pomodoro timers, and password generators — everything runs 100% client-side with zero data storage.
+                From image compression and PDF makers to JSON formatters, JWT decoders, Pomodoro timers, and password generators — client-side utilities execute in your browser with zero data retention.
               </p>
             </div>
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
-              <span className="text-cyan-400 font-bold text-sm font-mono block">Device-to-Device QR Linking</span>
+              <span className="text-cyan-400 font-bold text-sm font-mono block">QR Codes &amp; Barcodes</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Instant QR code generator and ISO barcode maker allow seamless sharing of Wi-Fi credentials, URLs, contact vCards, and clipboard text between your phone and laptop with no software installation.
+                Generate standard static QR codes and ISO barcodes for URLs, Wi-Fi networks, text, and vCards with instant client-side rendering.
               </p>
             </div>
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
-              <span className="text-purple-400 font-bold text-sm font-mono block">70+ Open Source HTML5 Games</span>
+              <span className="text-purple-400 font-bold text-sm font-mono block">70+ Open-Source Games</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Take a quick productivity break with 70+ games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, Sledge Rider 3D, 2048, and Space Defender directly in your browser.
+                Enjoy open-source HTML5 and WebGL games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, and classic puzzles directly in your browser.
               </p>
             </div>
           </div>
@@ -478,7 +466,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="rounded-2xl bg-neutral-900/90 border border-neutral-800 p-8 sm:p-10 space-y-6">
           <div className="flex items-center gap-2 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider">
-            <HelpCircle className="w-4 h-4" /> Transparency & Answers
+            <HelpCircle className="w-4 h-4" /> Transparency &amp; Answers
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
             Frequently Asked Questions
@@ -490,16 +478,7 @@ export default function HomePage() {
                 What is DevDrop (devdrop.online)?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                DevDrop (https://devdrop.online) is the official #1 free online suite providing over 140 client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
-              </p>
-            </div>
-
-            <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
-                How does DevDrop compare to devdrop.in?
-              </h3>
-              <p className="text-xs text-neutral-400 leading-relaxed">
-                While <span className="text-neutral-300 font-mono">devdrop.in</span> is an isolated single-function tool for transferring files between a phone and computer, <strong>DevDrop Online (devdrop.online)</strong> is a complete web utility powerhouse. DevDrop gives you file tools (PDF makers, photo-to-PDF, image compressors, background removers), QR code transfer tools, 140+ developer utilities, and 70+ games — all with 100% client-side privacy.
+                DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
               </p>
             </div>
 
@@ -508,7 +487,7 @@ export default function HomePage() {
                 Are my files or images uploaded to any server?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                No. All image compression, QR generation, PDF compilation, formatting, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never leave your device.
+                Most tools on DevDrop (including image compression, QR generation, PDF compilation, JSON formatting, and hashing) run 100% locally in your browser memory without uploading files anywhere. For the Photo Background Remover, images are sent over encrypted HTTPS to the Remove.bg API for cutout processing and are never retained.
               </p>
             </div>
 
@@ -517,7 +496,7 @@ export default function HomePage() {
                 Is DevDrop completely free for commercial and personal projects?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Yes! Every tool, generator, and code formatter on DevDrop is 100% free with no registration, subscriptions, or hidden charges.
+                Yes. Every utility, generator, and code formatter on DevDrop is completely free to use with no registration, subscriptions, or hidden charges.
               </p>
             </div>
 
@@ -526,7 +505,7 @@ export default function HomePage() {
                 How does the Photo Background Remover work?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                It combines the official Remove.bg AI model with local open-source rembg color-clustering algorithms to deliver fast, crystal-clear transparent PNG cutouts right from your browser.
+                The Photo Background Remover uses the Remove.bg API to detect subjects and produce clean transparent PNGs. When an API key is not configured, it can run a local color-clustering fallback in your browser.
               </p>
             </div>
 
@@ -535,7 +514,16 @@ export default function HomePage() {
                 Do generated QR codes or barcodes expire?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Never. DevDrop generates static standard QR codes and ISO Code 128 barcodes containing direct data that remain scannable forever without intermediary redirect links.
+                Never. DevDrop generates static standard QR codes and ISO barcodes containing direct data that remain scannable indefinitely without relying on redirect URLs.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <h3 className="text-sm font-bold text-white">
+                Are the browser games free to play?
+              </h3>
+              <p className="text-xs text-neutral-400 leading-relaxed">
+                Yes, all 70+ games are open-source HTML5 and WebGL titles that run directly in your browser with zero installation and support both mobile and desktop controls.
               </p>
             </div>
           </div>
@@ -554,15 +542,7 @@ export default function HomePage() {
                   "name": "What is DevDrop (devdrop.online)?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "DevDrop (https://devdrop.online) is the official #1 free online suite providing over 140 client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games with zero server tracking."
-                  }
-                },
-                {
-                  "@type": "Question",
-                  "name": "How does DevDrop compare to devdrop.in?",
-                  "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "While devdrop.in is an isolated single-function tool for transferring files between a phone and computer, DevDrop Online (devdrop.online) is a complete web utility powerhouse featuring file tools, image compressors, PDF makers, QR generators, 140+ developer utilities, and 70+ games."
+                    "text": "DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games with zero sign-up."
                   }
                 },
                 {
@@ -570,7 +550,7 @@ export default function HomePage() {
                   "name": "Are files or images uploaded to any server on DevDrop?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "No. All image compression, QR generation, PDF compilation, formatting, and hashing happen 100% inside your local web browser. Your sensitive documents and personal photos never leave your device."
+                    "text": "Most tools on DevDrop run 100% locally in your browser memory without uploading files anywhere. For the Photo Background Remover, images are sent over encrypted HTTPS to the Remove.bg API for cutout processing and are never retained."
                   }
                 },
                 {
@@ -578,7 +558,15 @@ export default function HomePage() {
                   "name": "Is DevDrop completely free?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Yes, every tool on DevDrop is 100% free with no registration, subscriptions, or paywalls."
+                    "text": "Yes, every tool on DevDrop is completely free with no registration, subscriptions, or paywalls."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Do generated QR codes or barcodes expire?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Never. DevDrop generates static standard QR codes and ISO barcodes containing direct data that remain scannable indefinitely."
                   }
                 }
               ]

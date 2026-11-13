@@ -1,11 +1,11 @@
 import React from "react";
 import Link from "next/link";
-import { Terminal, Shield, Sparkles, Heart, CheckCircle2, ArrowRight } from "lucide-react";
+import { Wrench, Shield, Sparkles, CheckCircle2, ArrowRight, Heart, Mail } from "lucide-react";
 
 export const metadata = {
-  title: "About DEVDROP — Web Utilities & Open Source Games Platform",
+  title: "About DevDrop — Free Online Web Utilities & Browser Games",
   description:
-    "Learn about DEVDROP (devdrop.online): 140+ client-side utilities, privacy tools, and 70+ open-source HTML5 browser games with zero server tracking.",
+    "Learn about DevDrop (devdrop.online): privacy-first client-side web tools, image and PDF utilities, developer helpers, and open-source browser games.",
   alternates: {
     canonical: "https://devdrop.online/about",
   },
@@ -15,83 +15,84 @@ export default function AboutPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green px-3 py-1 rounded-full bg-cyber-green/10 border border-cyber-green/30 inline-block mb-3">
-          ABOUT OUR UNDERGROUND LAB
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 inline-block mb-3">
+          ABOUT DEVDROP
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-          Enter the Digital Underground
+          Everyday Utilities, Built for Speed &amp; Privacy
         </h1>
-        <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-          DEVDROP was built for tech enthusiasts, gamers, and curious minds who love cyberpunk aesthetics, movie hacker tropes, and interactive cybersecurity demonstrations.
+        <p className="text-sm text-neutral-300 mt-3 leading-relaxed">
+          DevDrop (devdrop.online) is an independent web utility platform built to provide free, accessible, and privacy-focused tools and open-source games for students, creators, and developers worldwide.
         </p>
       </div>
 
-      <div className="space-y-8 text-sm text-slate-300 leading-relaxed">
-        <section className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">
+      <div className="space-y-8 text-sm text-neutral-300 leading-relaxed">
+        <section className="p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800">
           <h2 className="text-xl font-bold text-white font-mono mb-3 flex items-center gap-2">
-            <Terminal className="w-5 h-5 text-cyber-green" />
-            Our Core Mission: Honest Entertainment
+            <Wrench className="w-5 h-5 text-emerald-400" />
+            Our Core Mission: High Utility with Zero Friction
           </h2>
           <p className="mb-3">
-            Across the web, millions of users search for tools like &quot;phone location tracker&quot;, &quot;Wi-Fi password unblocker&quot;, or &quot;social account unlocker&quot;. Unfortunately, predatory websites often exploit these users by delivering dangerous spyware, deceptive surveys, or fake phishing pages.
+            Every day, millions of people need to compress an image for a job application, combine photos into a PDF, generate a clean QR code, or format a JSON payload. Unfortunately, most websites lock these basic tasks behind paywalls, intrusive subscription popups, or mandatory account creation.
           </p>
           <p>
-            <strong>DEVDROP takes the opposite approach:</strong> We build transparent, beautifully designed, and hilarious simulations that allow users to experience cinematic hacker visual effects while educating them on real-world security mechanisms.
+            <strong>DevDrop is built differently:</strong> Every tool is immediately accessible right in your web browser. No accounts, no subscriptions, and no paywalls.
           </p>
         </section>
 
-        <section className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">
+        <section className="p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800">
           <h2 className="text-xl font-bold text-white font-mono mb-3 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-cyber-cyan" />
-            Our Strict Safety Commitments
+            <Shield className="w-5 h-5 text-cyan-400" />
+            Our Privacy &amp; Data Principles
           </h2>
-          <ul className="space-y-3 mt-4">
+          <ul className="space-y-4 mt-4">
             <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-cyber-green flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block font-mono text-xs">Zero Credential Collection</strong>
-                <span>We never ask for passwords, OTP verification codes, private cookies, or private tokens.</span>
+                <strong className="text-white block font-mono text-xs">Client-Side Architecture First</strong>
+                <span>Whenever technologically possible, our tools run 100% inside your local browser memory using JavaScript and WebAssembly. Your photos, text documents, and code never touch a remote server.</span>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-cyber-green flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block font-mono text-xs">No Real Exploits or Intrusions</strong>
-                <span>Our simulators run 100% locally in browser memory. No external servers or real endpoints are scanned or targeted.</span>
+                <strong className="text-white block font-mono text-xs">Transparent API Disclosures</strong>
+                <span>When a feature requires external computational power — such as our Photo Background Remover using the Remove.bg API — we disclose that clearly and ensure data is encrypted in transit and never stored.</span>
               </div>
             </li>
             <li className="flex items-start gap-3">
-              <CheckCircle2 className="w-5 h-5 text-cyber-green flex-shrink-0 mt-0.5" />
+              <CheckCircle2 className="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block font-mono text-xs">Transparent Parody & Simulation Disclosures</strong>
-                <span>Every tool clearly presents a &quot;SIMULATION ONLY&quot; badge and never claims to have breached actual hardware or private accounts.</span>
+                <strong className="text-white block font-mono text-xs">Zero Tracking &amp; Zero Paywalls</strong>
+                <span>We do not require user accounts, passwords, or credit card details. All utilities are unconditionally free for personal, educational, and commercial workflows.</span>
               </div>
             </li>
           </ul>
         </section>
 
-        <section className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">
+        <section className="p-6 rounded-2xl bg-neutral-900/80 border border-neutral-800">
           <h2 className="text-xl font-bold text-white font-mono mb-3 flex items-center gap-2">
-            <Sparkles className="w-5 h-5 text-cyber-purple" />
-            Designed for Creators, Gamers, & Tech Enthusiasts
+            <Sparkles className="w-5 h-5 text-purple-400" />
+            The Team &amp; Contact
           </h2>
-          <p>
-            Whether you want to test interactive cybersecurity tools, customize a retro green-phosphor hacker terminal for a movie prop, or evaluate your knowledge against password entropy mathematics, DEVDROP is your playground.
+          <p className="mb-4">
+            DevDrop is maintained by a dedicated group of open-web engineers and designers. We welcome feedback, bug reports, and suggestions for new utilities from our global user community.
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-4">
+          <div className="flex flex-wrap items-center gap-4 text-xs font-mono">
             <Link
               href="/tools"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyber-green text-black font-mono font-bold text-xs"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 text-neutral-950 font-bold hover:bg-emerald-400 transition-colors shadow-lg shadow-emerald-500/20"
             >
-              <span>Explore All Simulators</span>
+              <span>Explore All Tools</span>
               <ArrowRight className="w-3.5 h-3.5" />
             </Link>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-cyber-panel border border-cyber-borderSubtle text-slate-300 font-mono text-xs hover:text-white"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-neutral-950 border border-neutral-700 text-neutral-200 hover:text-white hover:border-neutral-500 transition-colors"
             >
-              <span>Get In Touch</span>
+              <Mail className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Contact Support (support@devdrop.online)</span>
             </Link>
           </div>
         </section>

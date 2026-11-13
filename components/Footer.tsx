@@ -19,62 +19,82 @@ export const Footer: React.FC = () => {
               </span>
             </Link>
             <p className="text-xs text-slate-400 leading-relaxed">
-              The official #1 all-in-one free browser tool suite. 140+ everyday utilities, image compressors, PDF makers, QR generators, and open-source HTML5 games.
+              Fast, privacy-first web utilities, PDF creators, image tools, developer converters, and open-source browser games.
             </p>
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-cyber-panel border border-cyber-borderSubtle text-[11px] font-mono text-slate-300">
-              <Shield className="w-3.5 h-3.5 text-cyber-green" />
-              <span>100% Client-Side • Non-Destructive</span>
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-neutral-900 border border-neutral-800 text-[11px] font-mono text-slate-300">
+              <Shield className="w-3.5 h-3.5 text-emerald-400" />
+              <span>Client-Side Processing &bull; Free Forever</span>
             </div>
           </div>
 
           {/* Col 2: Categories */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green mb-4">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
               Categories
             </h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
-              {CATEGORIES.map((cat) => (
-                <li key={cat.slug}>
-                  <Link
-                    href={`/category/${cat.slug}`}
-                    className="hover:text-cyber-cyan transition-colors"
-                  >
-                    {cat.name}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link href="/category/image-media" className="hover:text-emerald-400 transition-colors">
+                  Image &amp; Photo Utilities
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/pdf-document" className="hover:text-emerald-400 transition-colors">
+                  PDF &amp; Document Tools
+                </Link>
+              </li>
+              <li>
+                <Link href="/category/developer-utils" className="hover:text-emerald-400 transition-colors">
+                  Productivity &amp; Web Utilities
+                </Link>
+              </li>
+              <li>
+                <Link href="/games" className="hover:text-emerald-400 transition-colors">
+                  70+ Open-Source Games
+                </Link>
+              </li>
+              <li>
+                <Link href="/guides" className="hover:text-emerald-400 transition-colors">
+                  How-To Guides &amp; Tutorials
+                </Link>
+              </li>
             </ul>
           </div>
 
           {/* Col 3: Popular Tools */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green mb-4">
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
               Featured Tools
             </h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
-                <Link href="/tools/phone-location-prank" className="hover:text-cyber-cyan transition-colors">
-                  Satellite Location Triangulator
+                <Link href="/tools/image-compressor" className="hover:text-emerald-400 transition-colors">
+                  Image Size Compressor
                 </Link>
               </li>
               <li>
-                <Link href="/tools/mobile-hacker" className="hover:text-cyber-cyan transition-colors">
-                  Mobile Kernel Security Auditor
+                <Link href="/tools/photo-bg-remover" className="hover:text-emerald-400 transition-colors">
+                  Photo Background Remover
                 </Link>
               </li>
               <li>
-                <Link href="/tools/phone-unlock-simulator" className="hover:text-cyber-cyan transition-colors">
-                  Smartphone Screen Lock Interface
+                <Link href="/tools/qr-code-generator" className="hover:text-emerald-400 transition-colors">
+                  Custom QR Code Generator
                 </Link>
               </li>
               <li>
-                <Link href="/tools/fake-hacker-terminal" className="hover:text-cyber-cyan transition-colors">
-                  Cyberpunk Underground Terminal
+                <Link href="/tools/photo-to-pdf" className="hover:text-emerald-400 transition-colors">
+                  Photo to PDF Converter
                 </Link>
               </li>
               <li>
-                <Link href="/tools/password-strength-checker" className="hover:text-cyber-cyan transition-colors">
-                  Password Cryptographic Entropy
+                <Link href="/tools/json-formatter" className="hover:text-emerald-400 transition-colors">
+                  JSON Formatter &amp; Validator
+                </Link>
+              </li>
+              <li>
+                <Link href="/tools/loan-emi-calculator" className="hover:text-emerald-400 transition-colors">
+                  Loan EMI Calculator
                 </Link>
               </li>
             </ul>
@@ -82,33 +102,38 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Legal & Policy Compliance */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-green mb-4">
-              Compliance & Legal
+            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
+              Platform &amp; Legal
             </h3>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
-                <Link href="/about" className="hover:text-cyber-cyan transition-colors">
-                  About DEVDROP
+                <Link href="/about" className="hover:text-emerald-400 transition-colors">
+                  About DevDrop
                 </Link>
               </li>
               <li>
-                <Link href="/disclaimer" className="hover:text-cyber-cyan transition-colors">
-                  Disclaimer & Simulation Notice
+                <Link href="/guides" className="hover:text-emerald-400 transition-colors">
+                  Guides &amp; Articles
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="hover:text-cyber-cyan transition-colors">
+                <Link href="/privacy" className="hover:text-emerald-400 transition-colors">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-cyber-cyan transition-colors">
+                <Link href="/terms" className="hover:text-emerald-400 transition-colors">
                   Terms of Service
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-cyber-cyan transition-colors">
-                  Contact & Support
+                <Link href="/disclaimer" className="hover:text-emerald-400 transition-colors">
+                  Disclaimer &amp; Notices
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-emerald-400 transition-colors">
+                  Contact &amp; Support
                 </Link>
               </li>
             </ul>
@@ -116,25 +141,28 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Disclaimer Link Strip */}
-        <div className="mt-8 p-4 rounded-xl bg-cyber-panel/40 border border-cyber-borderSubtle text-xs text-slate-400 flex items-center justify-between flex-wrap gap-3">
+        <div className="mt-8 p-4 rounded-xl bg-neutral-900/60 border border-neutral-800 text-xs text-slate-400 flex items-center justify-between flex-wrap gap-3">
           <div className="flex items-center gap-2">
-            <AlertTriangle className="w-4 h-4 text-cyber-amber flex-shrink-0" />
+            <Shield className="w-4 h-4 text-emerald-400 flex-shrink-0" />
             <span>
-              All tools on DEVDROP are for educational demonstration and simulation. Review our full{" "}
-              <Link href="/disclaimer" className="text-cyber-green underline hover:text-white">
-                Disclaimer Page
+              DevDrop is a free utility platform. Client tools run directly in your browser. Review our{" "}
+              <Link href="/privacy" className="text-emerald-400 underline hover:text-white">
+                Privacy Policy
               </Link>{" "}
-              for complete legal details.
+              and{" "}
+              <Link href="/disclaimer" className="text-emerald-400 underline hover:text-white">
+                Disclaimer
+              </Link>{" "}
+              for complete details.
             </span>
           </div>
-          <span className="font-mono text-[11px] text-cyber-muted">Version 4.2.0</span>
         </div>
 
         {/* Bottom Copyright */}
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-cyber-muted">
-          <p>© {new Date().getFullYear()} DEVDROP Platform. All rights reserved.</p>
+        <div className="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-neutral-500">
+          <p>&copy; {new Date().getFullYear()} DevDrop. All tools free for personal and commercial use.</p>
           <p>
-            Designed for cybersecurity education & entertainment
+            Built for developers, creators, and everyday productivity.
           </p>
         </div>
       </div>

@@ -180,7 +180,7 @@ export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string
     <a
       href={link}
       target="_blank"
-      rel="noopener noreferrer sponsored"
+      rel="sponsored nofollow noopener"
       className="w-full p-4 rounded-xl bg-gradient-to-r from-cyber-card via-cyber-dark to-cyber-card border border-cyber-cyan/30 hover:border-cyber-cyan transition-all duration-300 flex items-center justify-between gap-4 group shadow-lg hover:shadow-cyber-cyan/10"
     >
       <div className="flex items-center gap-3">
@@ -247,7 +247,7 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
         <a
           href={PRIMARY_DIRECT_LINK}
           target="_blank"
-          rel="noopener noreferrer sponsored"
+          rel="sponsored nofollow noopener"
           className="text-[9px] font-mono text-cyber-cyan/80 hover:text-cyber-cyan flex items-center gap-1 hover:underline"
         >
           <span>Featured Partner</span>

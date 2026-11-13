@@ -13,29 +13,23 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "All Tools", href: "/tools" },
+    { label: "Tools", href: "/tools" },
     { label: "Games", href: "/games" },
+    { label: "Guides", href: "/guides" },
     { label: "About", href: "/about" },
-    { label: "Disclaimer", href: "/disclaimer" },
   ];
 
-  return (
-    <header className="sticky top-0 z-50 w-full bg-cyber-bg/90 backdrop-blur-md border-b border-cyber-borderSubtle">
-      {/* Top Status Bar */}
-      <div className="bg-cyber-dark/95 border-b border-cyber-borderSubtle/60 py-1 px-4 text-center">
-        <p className="text-[11px] font-mono text-slate-400 flex items-center justify-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyber-green animate-pulse"></span>
-          <span>SYSTEM ONLINE • 140+ FREE CLIENT-SIDE UTILITIES &amp; GAMES • ALL ENGINES READY</span>
-        </p>
-      </div>
+  const indexableCategories = CATEGORIES.filter((c) => c.indexable !== false);
 
+  return (
+    <header className="sticky top-0 z-50 w-full bg-neutral-950/90 backdrop-blur-md border-b border-neutral-800">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link
           href="/"
-          className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-cyber-green/50 rounded-lg p-1"
+          className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-emerald-500/50 rounded-lg p-1"
         >
-          <div className="w-10 h-10 rounded-xl overflow-hidden bg-neutral-950 border border-purple-500/40 flex items-center justify-center shadow-lg shadow-purple-500/20 group-hover:border-purple-400 group-hover:shadow-purple-500/40 transition-all duration-300">
+          <div className="w-10 h-10 rounded-xl overflow-hidden bg-neutral-900 border border-neutral-700 flex items-center justify-center shadow-md group-hover:border-emerald-500 transition-all duration-300">
             <img 
               src="/logo.png" 
               alt="DevDrop Logo" 
@@ -46,15 +40,12 @@ export const Navbar: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-lg font-black tracking-wider text-white group-hover:text-cyber-green transition-colors font-mono">
+              <span className="text-lg font-black tracking-wider text-white group-hover:text-emerald-400 transition-colors font-mono">
                 DEVDROP
               </span>
-              <span className="text-[9px] font-mono font-bold px-1.5 py-0.5 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-                ONLINE
-              </span>
             </div>
-            <p className="text-[10px] font-mono text-emerald-400/80 -mt-0.5 hidden sm:block">
-              Free Online Tools &amp; Utilities
+            <p className="text-[10px] font-mono text-neutral-400 -mt-0.5 hidden sm:block">
+              Free Online Web Tools &amp; Games
             </p>
           </div>
         </Link>
@@ -69,8 +60,8 @@ export const Navbar: React.FC = () => {
                 href={link.href}
                 className={`px-3.5 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
                   isActive
-                    ? "bg-cyber-card text-cyber-green border border-cyber-border/80"
-                    : "text-slate-300 hover:text-white hover:bg-cyber-panel/50"
+                    ? "bg-neutral-800 text-emerald-400 border border-neutral-700"
+                    : "text-neutral-300 hover:text-white hover:bg-neutral-900"
                 }`}
               >
                 {link.label}
@@ -83,7 +74,7 @@ export const Navbar: React.FC = () => {
             <button
               onClick={() => setCategoriesOpen(!categoriesOpen)}
               onBlur={() => setTimeout(() => setCategoriesOpen(false), 200)}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-cyber-panel/50 transition-colors"
+              className="flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm font-medium text-neutral-300 hover:text-white hover:bg-neutral-900 transition-colors"
             >
               <span>Categories</span>
               <ChevronDown
@@ -94,12 +85,12 @@ export const Navbar: React.FC = () => {
             </button>
 
             {categoriesOpen && (
-              <div className="absolute right-0 mt-2 w-56 rounded-xl bg-cyber-card border border-cyber-borderSubtle shadow-card-cyber p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
-                {CATEGORIES.map((cat) => (
+              <div className="absolute right-0 mt-2 w-64 rounded-xl bg-neutral-900 border border-neutral-800 shadow-2xl p-2 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+                {indexableCategories.map((cat) => (
                   <Link
                     key={cat.slug}
                     href={`/category/${cat.slug}`}
-                    className="block px-3 py-2 rounded-lg text-xs font-medium text-slate-300 hover:text-cyber-green hover:bg-cyber-panel transition-colors"
+                    className="block px-3 py-2 rounded-lg text-xs font-medium text-neutral-300 hover:text-emerald-400 hover:bg-neutral-800 transition-colors"
                   >
                     {cat.name}
                   </Link>
@@ -109,22 +100,11 @@ export const Navbar: React.FC = () => {
           </div>
         </div>
 
-        {/* CTA & Search Action */}
+        {/* CTA Button */}
         <div className="hidden md:flex items-center gap-3">
-          <a
-            href="https://uplcm.com/4/12244922"
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-card/80 hover:bg-cyber-card border border-cyber-cyan/30 text-cyber-cyan text-xs font-mono font-medium hover:border-cyber-cyan transition-all"
-            title="Explore sponsored partner promotions"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyber-cyan animate-pulse" />
-            <span>PARTNER DEALS</span>
-          </a>
-
           <Link
             href="/tools"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-cyber-green text-black text-xs font-bold font-mono tracking-wider hover:bg-cyber-green/90 transition-all shadow-neon-green/40 hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-emerald-500 text-black text-xs font-bold font-mono tracking-wider hover:bg-emerald-400 transition-all shadow-md hover:scale-[1.02] active:scale-[0.98]"
           >
             <Sparkles className="w-3.5 h-3.5" />
             <span>EXPLORE TOOLS</span>
@@ -162,12 +142,12 @@ export const Navbar: React.FC = () => {
               Tool Categories
             </span>
             <div className="grid grid-cols-2 gap-1 px-1">
-              {CATEGORIES.map((cat) => (
+              {indexableCategories.map((cat) => (
                 <Link
                   key={cat.slug}
                   href={`/category/${cat.slug}`}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="px-2 py-1.5 rounded text-xs text-slate-300 hover:text-cyber-cyan hover:bg-cyber-panel"
+                  className="px-2 py-1.5 rounded text-xs text-slate-300 hover:text-emerald-400 hover:bg-neutral-800"
                 >
                   {cat.name}
                 </Link>
@@ -175,22 +155,12 @@ export const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <a
-            href="https://uplcm.com/4/12244922"
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            onClick={() => setMobileMenuOpen(false)}
-            className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2 rounded-lg bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan font-bold font-mono text-xs text-center hover:bg-cyber-cyan hover:text-black transition-all"
-          >
-            ⚡ Partner Deals & Cloud Perks
-          </a>
-
           <Link
             href="/tools"
             onClick={() => setMobileMenuOpen(false)}
-            className="w-full mt-2 inline-flex items-center justify-center gap-2 py-2.5 rounded-lg bg-cyber-green text-black font-bold font-mono text-xs text-center"
+            className="w-full mt-3 inline-flex items-center justify-center gap-2 py-2.5 rounded-lg bg-emerald-500 text-black font-bold font-mono text-xs text-center"
           >
-            Explore All 87+ Tools
+            Explore All Tools
           </Link>
         </div>
       )}

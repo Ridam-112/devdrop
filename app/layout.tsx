@@ -20,29 +20,11 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL("https://devdrop.online"),
   title: {
-    default: "DevDrop — Official #1 All-in-One Online Web Tools & Developer Utilities",
+    default: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     template: "%s | DevDrop",
   },
   description:
-    "DevDrop (devdrop.online) is the official #1 free client-side tool suite. 140+ private browser utilities: image compressor, background remover, QR code generator, PDF maker, JSON formatter, and open-source HTML5 games.",
-  keywords: [
-    "DevDrop",
-    "devdrop",
-    "dev drop",
-    "devdrop online",
-    "devdrop.online",
-    "devdrop.in",
-    "devdrop tools",
-    "devdrop file transfer",
-    "devdrop alternative",
-    "developer tools",
-    "everyday online utilities",
-    "client-side tools",
-    "free qr code generator",
-    "photo background remover",
-    "image compressor",
-    "open source html5 games",
-  ],
+    "DevDrop (devdrop.online) provides free online web utilities: image compressors, photo background remover, QR code generators, PDF makers, and open-source HTML5 browser games.",
   authors: [{ name: "DevDrop Core Team", url: "https://devdrop.online" }],
   creator: "DevDrop",
   publisher: "DevDrop Platform",
@@ -66,9 +48,9 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://devdrop.online",
     siteName: "DevDrop",
-    title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite",
+    title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     description:
-      "DevDrop (devdrop.online) is the official free client-side utility suite with 140+ tools and 70+ games. 100% private, zero server logs.",
+      "Free client-side web utilities, PDF creators, image compressors, and 70+ open-source browser games.",
     images: [
       {
         url: "https://devdrop.online/logo.png",
@@ -80,9 +62,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "DevDrop — Official #1 Online Tools & Developer Utilities",
+    title: "DevDrop — Free Online Web Tools & Utilities",
     description:
-      "140+ free everyday web utilities, developer tools, and browser games running 100% client-side with zero logs.",
+      "Free everyday web utilities, developer tools, and browser games running fast with zero sign-up required.",
     images: ["https://devdrop.online/logo.png"],
   },
   robots: {
@@ -96,9 +78,9 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  verification: {
-    google: "google-site-verification-token",
-  },
+  verification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION
+    ? { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION }
+    : undefined,
 };
 
 export default function RootLayout({
@@ -148,6 +130,9 @@ export default function RootLayout({
           data-cfasync="false"
         />
 
+        {/* Preload brand logo for Core Web Vitals LCP */}
+        <link rel="preload" href="/logo.png" as="image" type="image/png" />
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -164,11 +149,10 @@ export default function RootLayout({
                     "devdrop",
                     "Dev Drop",
                     "devdrop.online",
-                    "DevDrop Tools",
-                    "DevDrop Official"
+                    "DevDrop Tools"
                   ],
                   "description":
-                    "The official #1 free online web utility suite with 140+ client-side developer tools, file utilities, image compressors, QR generators, and open-source HTML5 games.",
+                    "Free online web utility suite with image compressors, PDF converters, developer tools, and open-source HTML5 browser games.",
                   "publisher": {
                     "@id": "https://devdrop.online/#organization"
                   },
@@ -212,7 +196,7 @@ export default function RootLayout({
                     "Photo Background Remover",
                     "Pure Client-Side PDF Maker & Photo to PDF",
                     "70+ Curated Open Source HTML5 & 3D Browser Games",
-                    "100% Private - Zero Server Uploads"
+                    "Privacy-First Client Processing for Document & Developer Tools"
                   ]
                 }
               ]

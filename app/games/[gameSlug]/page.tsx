@@ -144,13 +144,6 @@ export default function GameDetailPage({ params }: Props) {
       price: "0",
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: game.rating,
-      ratingCount: game.ratingCount,
-      bestRating: "5",
-      worstRating: "1",
-    },
   };
 
   // Structured Data: FAQPage

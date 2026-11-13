@@ -27,7 +27,7 @@ export default function TermsPage() {
       <section className="space-y-3">
         <h2 className="text-lg font-bold text-white font-mono">1. Acceptance of Terms</h2>
         <p>
-          By accessing or using DEVDROP (devdrop.vercel.app), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using or accessing this site.
+          By accessing or using DevDrop (https://devdrop.online), you agree to be bound by these Terms of Service and all applicable laws and regulations. If you do not agree with any part of these terms, you are prohibited from using or accessing this site.
         </p>
       </section>
 

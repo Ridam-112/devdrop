@@ -19,14 +19,14 @@ export default function ContactPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
       <div className="text-center max-w-2xl mx-auto mb-12">
-        <span className="text-xs font-mono font-bold uppercase tracking-wider text-cyber-cyan px-3 py-1 rounded-full bg-cyber-cyan/10 border border-cyber-cyan/30 inline-block mb-3">
-          SUPPORT & FEEDBACK
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 inline-block mb-3">
+          SUPPORT &amp; FEEDBACK
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-          Contact DEVDROP Lab
+          Contact DevDrop
         </h1>
-        <p className="text-sm text-slate-300 mt-3 leading-relaxed">
-          Have an idea for a new cyber simulator, feedback, or a partnership inquiry? We&apos;d love to hear from you.
+        <p className="text-sm text-neutral-300 mt-3 leading-relaxed">
+          Have an idea for a new web utility, bug report, or feedback? We&apos;d love to hear from you.
         </p>
       </div>
 
@@ -38,22 +38,22 @@ export default function ContactPage() {
               <Mail className="w-4 h-4 text-cyber-green" />
               Direct Communication
             </h3>
-            <p className="text-xs text-slate-400 mb-2">General inquiries & feedback:</p>
+            <p className="text-xs text-slate-400 mb-2">General inquiries &amp; feedback:</p>
             <a
-              href="mailto:contact@devdrop-sim.example.com"
-              className="text-xs font-mono text-cyber-cyan hover:underline break-all"
+              href="mailto:support@devdrop.online"
+              className="text-xs font-mono text-emerald-400 hover:underline break-all"
             >
-              contact@devdrop-sim.example.com
+              support@devdrop.online
             </a>
           </div>
 
           <div className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">
             <h3 className="text-sm font-bold text-white font-mono mb-2 flex items-center gap-2">
               <Shield className="w-4 h-4 text-cyber-purple" />
-              Ethics & Compliance
+              Privacy &amp; Safety
             </h3>
             <p className="text-xs text-slate-400 leading-relaxed">
-              If you represent an organization with inquiries about our educational simulations, our compliance team reviews all reports.
+              For security disclosures, questions about client-side data handling, or terms inquiries, reach out directly to our team.
             </p>
           </div>
         </div>

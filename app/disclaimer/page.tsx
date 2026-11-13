@@ -21,7 +21,7 @@ export const metadata = {
   description:
     "Read DEVDROP's comprehensive disclaimer regarding our fictional cyber simulators, visual effects, and educational demonstrations.",
   alternates: {
-    canonical: "https://devdrop.vercel.app/disclaimer",
+    canonical: "https://devdrop.online/disclaimer",
   },
 };
 
@@ -47,7 +47,7 @@ export default function DisclaimerPage() {
             PRIMARY COMPLIANCE &amp; SIMULATION STATEMENT:
           </p>
           <p>
-            DEVDROP (devdrop.vercel.app) is an interactive cybersecurity entertainment, video parody, educational demonstration, and harmless cyber prank platform. <strong>None of the tools, diagnostic scanners, satellite radar sweeps, terminal interfaces, gaming utilities, payment receipt generators, or network consoles on this platform possess actual hacking capabilities or interact with third-party operating systems, banks, networks, or social platforms.</strong>
+            DevDrop (https://devdrop.online) is an interactive utility and entertainment website. <strong>None of the simulated tools, diagnostic scanners, satellite radar sweeps, terminal interfaces, gaming utilities, payment receipt generators, or network consoles on this platform possess actual hacking capabilities or interact with third-party operating systems, banks, networks, or social platforms.</strong>
           </p>
           <p className="mt-2 text-slate-400">
             All tools operate 100% locally in your browser memory as simulated visual interfaces. They are designed for harmless amusement, cinematic media production, and cybersecurity awareness.

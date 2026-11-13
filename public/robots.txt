@@ -14,10 +14,11 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
-User-agent: Claude-SearchBot
+User-agent: ClaudeBot
 Allow: /
 
 User-agent: PerplexityBot
 Allow: /
 
 Sitemap: https://devdrop.online/sitemap.xml
+Host: https://devdrop.online

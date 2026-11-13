@@ -1,6 +1,7 @@
 import { MetadataRoute } from "next";
-import { TOOLS, CATEGORIES } from "@/lib/data/tools";
+import { TOOLS, CATEGORIES, isToolIndexable, isCategoryIndexable } from "@/lib/data/tools";
 import { OPEN_SOURCE_GAMES } from "@/lib/data/games";
+import { GUIDES } from "@/lib/data/guides";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://devdrop.online";
@@ -25,6 +26,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: now,
       changeFrequency: "daily",
       priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/guides`,
+      lastModified: now,
+      changeFrequency: "weekly",
+      priority: 0.85,
     },
     {
       url: `${baseUrl}/about`,
@@ -58,20 +65,28 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Dynamic category routes
-  const categoryRoutes: MetadataRoute.Sitemap = CATEGORIES.map((cat) => ({
+  // Dynamic indexable category routes only
+  const categoryRoutes: MetadataRoute.Sitemap = CATEGORIES.filter(isCategoryIndexable).map((cat) => ({
     url: `${baseUrl}/category/${cat.slug}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.8,
   }));
 
-  // Dynamic tool routes
-  const toolRoutes: MetadataRoute.Sitemap = TOOLS.map((tool) => ({
+  // Dynamic indexable tool routes only
+  const toolRoutes: MetadataRoute.Sitemap = TOOLS.filter(isToolIndexable).map((tool) => ({
     url: `${baseUrl}/tools/${tool.slug}`,
     lastModified: now,
     changeFrequency: "weekly",
     priority: 0.85,
+  }));
+
+  // Dynamic guides routes
+  const guideRoutes: MetadataRoute.Sitemap = GUIDES.map((guide) => ({
+    url: `${baseUrl}/guides/${guide.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.8,
   }));
 
   // Dynamic open-source game routes
@@ -82,5 +97,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.9,
   }));
 
-  return [...staticRoutes, ...categoryRoutes, ...toolRoutes, ...gameRoutes];
+  return [...staticRoutes, ...categoryRoutes, ...toolRoutes, ...guideRoutes, ...gameRoutes];
 }
