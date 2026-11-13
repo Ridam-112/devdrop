@@ -17,9 +17,9 @@ import { GamesClient } from "@/components/games/GamesClient";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 
 export const metadata: Metadata = {
-  title: "Play Online Open Source HTML5 Games — Free Browser Web Games | DEVDROP",
+  title: "Play 70+ Free HTML5 Browser Games Online | DevDrop",
   description:
-    "Play online open source HTML5 games free in your browser with zero downloads. Discover top open-source browser games from GitHub including 2048, SimCity, retro shooters & tactical wargames.",
+    "Play 70+ free open-source HTML5 & 3D browser games with zero downloads. Enjoy flight simulators, retro shooters, 2048, sports games, and puzzles directly in browser.",
   keywords: [
     "online open source html 5 game",
     "open source html5 games",

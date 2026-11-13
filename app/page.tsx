@@ -30,9 +30,9 @@ import { LiveSearchBar } from "@/components/LiveSearchBar";
 import { HomeQuickTools } from "@/components/HomeQuickTools";
 
 export const metadata: Metadata = {
-  title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite | DevDrop Online",
+  title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
   description:
-    "Official DevDrop (devdrop.online) platform: 140+ free client-side developer tools, peer-to-peer file drop utilities, image compressor, background remover, QR code generator, PDF maker, and 70+ open-source HTML5 games. 100% private, zero logs.",
+    "DevDrop (devdrop.online): 140+ free client-side developer utilities, image compressors, background removers, QR generators, PDF makers, and 70+ browser games. 100% private.",
   keywords: [
     "DevDrop",
     "devdrop",
@@ -119,7 +119,7 @@ export default function HomePage() {
           {/* Hero Headline with Brand Logo */}
           <div className="flex flex-col items-center justify-center gap-4 mb-6">
             <div className="w-20 h-20 rounded-2xl overflow-hidden border-2 border-purple-500/40 shadow-2xl shadow-purple-500/30 p-1 bg-neutral-950">
-              <img src="/logo.png" alt="DevDrop Brand" className="w-full h-full object-cover rounded-xl" />
+              <img src="/logo.png" alt="DevDrop Brand" width={80} height={80} className="w-full h-full object-cover rounded-xl" />
             </div>
 
             <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white font-mono max-w-4xl">

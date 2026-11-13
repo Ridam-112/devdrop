@@ -39,6 +39,8 @@ export const Navbar: React.FC = () => {
             <img 
               src="/logo.png" 
               alt="DevDrop Logo" 
+              width={40}
+              height={40}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             />
           </div>

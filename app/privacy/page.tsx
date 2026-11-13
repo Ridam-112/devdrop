@@ -5,6 +5,9 @@ import { Shield } from "lucide-react";
 export const metadata = {
   title: "Privacy Policy — DEVDROP",
   description: "Read DEVDROP's comprehensive privacy policy regarding data collection, client-side processing, and advertising standards.",
+  alternates: {
+    canonical: "https://devdrop.online/privacy",
+  },
 };
 
 export default function PrivacyPage() {

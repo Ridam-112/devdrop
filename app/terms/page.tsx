@@ -4,6 +4,9 @@ import Link from "next/link";
 export const metadata = {
   title: "Terms of Service — DEVDROP",
   description: "Review the Terms of Service governing access and acceptable use of the DEVDROP platform.",
+  alternates: {
+    canonical: "https://devdrop.online/terms",
+  },
 };
 
 export default function TermsPage() {

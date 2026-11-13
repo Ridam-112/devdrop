@@ -3,9 +3,12 @@ import Link from "next/link";
 import { Terminal, Shield, Sparkles, Heart, CheckCircle2, ArrowRight } from "lucide-react";
 
 export const metadata = {
-  title: "About DEVDROP — Cybersecurity Simulation Platform",
+  title: "About DEVDROP — Web Utilities & Open Source Games Platform",
   description:
-    "Learn about DEVDROP's mission to provide honest, entertaining, and educational cybersecurity-themed simulators without deception.",
+    "Learn about DEVDROP (devdrop.online): 140+ client-side utilities, privacy tools, and 70+ open-source HTML5 browser games with zero server tracking.",
+  alternates: {
+    canonical: "https://devdrop.online/about",
+  },
 };
 
 export default function AboutPage() {

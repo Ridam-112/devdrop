@@ -145,7 +145,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "action": "Special Weapon Barrage"
       }
     ],
-    "metaTitle": "Chaos Skies 3D — #1 Best Free 3D Fighter Jet Flight Combat Game | DevDrop",
+    "metaTitle": "Chaos Skies 3D — #1 Free Fighter Jet Combat Game | DevDrop",
     "metaDescription": "Play Chaos Skies 3D online for free in your browser. Pilot Sukhoi Su-30MKI & HAL Tejas jets in high-octane 3D dogfights with homing missiles, flares, and loops. No download required.",
     "faqs": [
       {
