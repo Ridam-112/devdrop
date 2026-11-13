@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Speed Math Duel 2D - 1 & 2 Player Fast Calculation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --clay-bg: #e0e9f8;
+      --clay-surface: #ffffff;
+      --clay-shadow: 10px 14px 28px rgba(160, 180, 205, 0.45), -8px -8px 20px #ffffff;
+      --clay-card-shadow: 12px 16px 30px rgba(150, 175, 205, 0.45), -8px -8px 22px rgba(255, 255, 255, 0.95);
+      --clay-inset: inset 3px 3px 6px rgba(255, 255, 255, 0.8), inset -3px -3px 6px rgba(160, 180, 205, 0.25);
+      --p1-color: #0984e3;
+      --p1-light: #eaf4fd;
+      --p1-border: #74b9ff;
+      --p2-color: #d63031;
+      --p2-light: #ffeaea;
+      --p2-border: #ff7675;
+      --accent: #6c5ce7;
+      --success: #00b894;
+      --danger: #d63031;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d5e4f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      color: #2d3436;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 10px;
+    }
+
+    /* Top Bar Controls */
+    .top-nav {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .nav-btn {
+      pointer-events: auto;
+      background: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #2d3436;
+      cursor: pointer;
+      box-shadow: 6px 8px 18px rgba(160, 180, 205, 0.4), inset 2px 2px 4px #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 12px 22px rgba(160, 180, 205, 0.5);
+    }
+    .nav-btn:active {
+      transform: translateY(1px);
+    }
+
+    .nav-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Main Container Screen */
+    .screen-container {
+      width: 100%;
+      max-width: 980px;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 50px 10px 20px;
+    }
+
+    /* Start / Menu Modal Screen */
+    .menu-card {
+      background: #ffffff;
+      width: 100%;
+      max-width: 580px;
+      border-radius: 36px;
+      padding: 32px 28px;
+      box-shadow: var(--clay-card-shadow);
+      text-align: center;
+      position: relative;
+      border: 3px solid #ffffff;
+      animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.92); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .badge-tag {
+      display: inline-block;
+      background: #f1f5f9;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 8px;
+      box-shadow: var(--clay-inset);
+    }
+
+    h1.game-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    p.subtitle {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 24px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      text-align: left;
+      margin: 16px 0 8px 6px;
+    }
+
+    /* Selection Grids */
+    .toggle-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .toggle-grid.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .toggle-grid.ops-grid {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    .clay-toggle {
+      background: #f8fafc;
+      border: 2px solid transparent;
+      padding: 12px 10px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #475569;
+      box-shadow: 4px 6px 14px rgba(180, 195, 215, 0.3), var(--clay-inset);
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .clay-toggle .icon {
+      font-size: 22px;
+    }
+
+    .clay-toggle:hover {
+      background: #ffffff;
+      transform: translateY(-2px);
+    }
+
+    .clay-toggle.active {
+      background: #ffffff;
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 6px 8px 20px rgba(108, 92, 231, 0.25), inset 0 0 0 2px var(--accent);
+      transform: translateY(-1px);
+    }
+
+    .play-btn {
+      width: 100%;
+      margin-top: 24px;
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      border: none;
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 16px;
+      border-radius: 24px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(108, 92, 231, 0.4), inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .play-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(108, 92, 231, 0.5);
+    }
+
+    .play-btn:active {
+      transform: translateY(2px) scale(0.99);
+    }
+
+    /* 2-Player Battle Arena */
+    .duel-arena {
+      width: 100%;
+      max-width: 580px;
+      display: none;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+    }
+
+    /* Face-to-Face Tabletop / Opposite Flip (Default for 2 Player) */
+    .duel-arena.face-to-face {
+      display: none;
+      flex-direction: column;
+      max-width: 580px;
+      gap: 14px;
+    }
+
+    .duel-arena.face-to-face .player-card.p2-card {
+      transform: rotate(180deg);
+      border-color: #fee2e2;
+    }
+
+    /* Side-by-Side Mode (Optional Horizontal View) */
+    .duel-arena.side-by-side {
+      display: none;
+      max-width: 960px;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas: 
+        "header header"
+        "p1 p2";
+      gap: 16px;
+    }
+
+    .duel-arena.side-by-side .battle-header {
+      grid-area: header;
+    }
+
+    .duel-arena.side-by-side .player-card.p1-card {
+      grid-area: p1;
+    }
+
+    .duel-arena.side-by-side .player-card.p2-card {
+      grid-area: p2;
+      transform: none;
+    }
+
+    /* Battle Progress Tug-of-war Header */
+    .battle-header {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 12px 20px;
+      box-shadow: var(--clay-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .score-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 19px;
+    }
+
+    .p1-badge {
+      color: var(--p1-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .p2-badge {
+      color: var(--p2-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .center-timer {
+      background: #f1f5f9;
+      padding: 4px 16px;
+      border-radius: 999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 16px;
+      font-weight: 700;
+      color: #334155;
+      box-shadow: var(--clay-inset);
+    }
+
+    .tug-track {
+      width: 100%;
+      height: 14px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+      display: flex;
+      position: relative;
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
+    }
+
+    .tug-p1 {
+      height: 100%;
+      background: linear-gradient(90deg, #74b9ff, var(--p1-color));
+      width: 50%;
+      transition: width 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .tug-p2 {
+      height: 100%;
+      background: linear-gradient(90deg, var(--p2-color), #ff7675);
+      width: 50%;
+      transition: width 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    /* Player Question Card */
+    .player-card {
+      background: #ffffff;
+      border-radius: 30px;
+      padding: 20px 22px;
+      box-shadow: var(--clay-card-shadow);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      border: 3px solid transparent;
+      transition: transform 0.25s ease, border-color 0.2s ease;
+    }
+
+    .player-card.p1-card {
+      border-color: #dbeafe;
+    }
+    .player-card.p2-card {
+      border-color: #fee2e2;
+    }
+
+    .player-card.frozen {
+      opacity: 0.65;
+      pointer-events: none;
+      filter: grayscale(40%);
+    }
+
+    .freeze-banner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(220, 38, 38, 0.92);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 16px;
+      z-index: 10;
+      display: none;
+      animation: pulseFreeze 0.6s infinite alternate;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.25);
+    }
+
+    @keyframes pulseFreeze {
+      0% { transform: translate(-50%, -50%) scale(0.95); }
+      100% { transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    .player-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .player-tag {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .p1-card .player-tag { color: var(--p1-color); }
+    .p2-card .player-tag { color: var(--p2-color); }
+
+    .keys-hint {
+      font-size: 12px;
+      font-weight: 700;
+      background: #f1f5f9;
+      color: #64748b;
+      padding: 4px 10px;
+      border-radius: 12px;
+      box-shadow: var(--clay-inset);
+    }
+
+    /* Math Question Display */
+    .question-box {
+      width: 100%;
+      background: #f8fafc;
+      border-radius: 24px;
+      padding: 22px 14px;
+      margin-bottom: 18px;
+      text-align: center;
+      box-shadow: var(--clay-inset);
+      border: 2px solid #ffffff;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .math-expression {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 40px;
+      font-weight: 800;
+      color: #1e293b;
+      letter-spacing: 1.5px;
+    }
+
+    .question-subtext {
+      font-size: 13px;
+      color: #94a3b8;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    /* 4 Choice Answer Buttons */
+    .answers-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .ans-btn {
+      background: #ffffff;
+      border: 3px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 16px 10px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #1e293b;
+      cursor: pointer;
+      box-shadow: 6px 8px 16px rgba(160, 180, 205, 0.35), var(--clay-inset);
+      transition: transform 0.08s ease, background-color 0.15s ease, border-color 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .ans-btn .btn-key {
+      position: absolute;
+      top: 6px;
+      left: 8px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #94a3b8;
+      background: #f1f5f9;
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
+
+    .ans-btn:active, .ans-btn.pressed {
+      transform: translateY(3px) scale(0.97);
+      box-shadow: 2px 3px 8px rgba(160, 180, 205, 0.4), var(--clay-inset);
+    }
+
+    .p1-card .ans-btn:hover {
+      border-color: var(--p1-border);
+      color: var(--p1-color);
+    }
+    .p2-card .ans-btn:hover {
+      border-color: var(--p2-border);
+      color: var(--p2-color);
+    }
+
+    /* Flash Feedback Animations */
+    .ans-btn.correct-flash {
+      background: #10b981 !important;
+      border-color: #059669 !important;
+      color: white !important;
+      animation: popGreen 0.3s ease;
+    }
+
+    .ans-btn.wrong-flash {
+      background: #ef4444 !important;
+      border-color: #dc2626 !important;
+      color: white !important;
+      animation: shakeWrong 0.35s ease;
+    }
+
+    @keyframes popGreen {
+      0% { transform: scale(0.95); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    /* Solo Mode Arena Container */
+    .solo-arena {
+      width: 100%;
+      max-width: 580px;
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .solo-stats-bar {
+      background: #ffffff;
+      border-radius: 24px;
+      padding: 12px 20px;
+      box-shadow: var(--clay-shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .solo-stat-pill {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+    }
+
+    .stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .stat-val.streak-hot {
+      color: #e17055;
+      text-shadow: 0 0 10px rgba(225, 112, 85, 0.4);
+    }
+
+    /* Result Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      backdrop-filter: blur(6px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
+    }
+
+    .result-card {
+      background: #ffffff;
+      border-radius: 36px;
+      padding: 36px 30px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+      animation: popIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: 3px solid #ffffff;
+    }
+
+    .result-trophy {
+      font-size: 64px;
+      margin-bottom: 10px;
+      animation: bounceTrophy 1.5s infinite alternate ease-in-out;
+    }
+
+    @keyframes bounceTrophy {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px) scale(1.05); }
+    }
+
+    .result-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .result-subtitle {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 22px;
+    }
+
+    .result-grid {
+      background: #f8fafc;
+      border-radius: 20px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 24px;
+      box-shadow: var(--clay-inset);
+    }
+
+    .res-item {
+      text-align: center;
+    }
+    .res-item .lbl {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .res-item .val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-top: 2px;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .action-btn {
+      padding: 14px;
+      border-radius: 18px;
+      border: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      box-shadow: 0 6px 18px rgba(108, 92, 231, 0.35);
+    }
+    .btn-secondary {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    /* Confetti Canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 250;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .duel-boards {
+        grid-template-columns: 1fr;
+      }
+      .math-expression {
+        font-size: 32px;
+      }
+      .ans-btn {
+        font-size: 22px;
+        padding: 14px 8px;
+      }
+      .menu-card {
+        padding: 24px 18px;
+      }
+      h1.game-title {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <a href="arcade_hub.html" class="nav-btn">
+      <span>◀</span> Hub
+    </a>
+    <div class="nav-group">
+      <button id="flip-btn" class="nav-btn" style="display:none;" title="Flip opponent board 180° for tabletop face-to-face play">
+        🔄 Opponent: Flipped (180°)
+      </button>
+      <button id="sound-btn" class="nav-btn">
+        🔊 Sound: ON
+      </button>
+    </div>
+  </div>
+
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="screen-container">
+
+    <!-- 1. START / CONFIG MENU -->
+    <div id="menu-screen" class="menu-card">
+      <div class="badge-tag">⚡ FAST CALCULATION CHALLENGE</div>
+      <h1 class="game-title">Speed Math Duel 2D</h1>
+      <p class="subtitle">Lightning-fast mental calculation for 1 Solo or 2 Players local!</p>
+
+      <!-- Game Mode Choice -->
+      <div class="section-title">Select Mode</div>
+      <div class="toggle-grid">
+        <button class="clay-toggle active" data-type="mode" data-val="1p">
+          <span class="icon">👤</span>
+          <span>1 Player Solo</span>
+        </button>
+        <button class="clay-toggle" data-type="mode" data-val="2p">
+          <span class="icon">⚔️</span>
+          <span>2 Player Duel</span>
+        </button>
+      </div>
+
+      <!-- Difficulty Choice -->
+      <div class="section-title">Difficulty (Speed Exam)</div>
+      <div class="toggle-grid three-col">
+        <button class="clay-toggle active" data-type="diff" data-val="easy">
+          <span class="icon">🌱</span>
+          <span>Easy</span>
+        </button>
+        <button class="clay-toggle" data-type="diff" data-val="medium">
+          <span class="icon">⚡</span>
+          <span>Medium</span>
+        </button>
+        <button class="clay-toggle" data-type="diff" data-val="hard">
+          <span class="icon">🔥</span>
+          <span>Master</span>
+        </button>
+      </div>
+
+      <!-- Math Operations Choice -->
+      <div class="section-title">Operations</div>
+      <div class="toggle-grid ops-grid">
+        <button class="clay-toggle active" data-type="op" data-val="all">
+          <span class="icon">🎲</span>
+          <span>Mix</span>
+        </button>
+        <button class="clay-toggle" data-type="op" data-val="+">
+          <span class="icon">➕</span>
+          <span>Add</span>
+        </button>
+        <button class="clay-toggle" data-type="op" data-val="-">
+          <span class="icon">➖</span>
+          <span>Sub</span>
+        </button>
+        <button class="clay-toggle" data-type="op" data-val="*">
+          <span class="icon">✖️</span>
+          <span>Mul</span>
+        </button>
+        <button class="clay-toggle" data-type="op" data-val="/">
+          <span class="icon">➗</span>
+          <span>Div</span>
+        </button>
+      </div>
+
+      <!-- Solo Exam Goal / Duel Win Goal -->
+      <div class="section-title" id="goal-title">Solo Mode Format</div>
+      <div class="toggle-grid" id="solo-goals">
+        <button class="clay-toggle active" data-type="goal" data-val="blitz">
+          <span class="icon">⏱️</span>
+          <span>60s Blitz</span>
+        </button>
+        <button class="clay-toggle" data-type="goal" data-val="exam20">
+          <span class="icon">📝</span>
+          <span>20 Questions</span>
+        </button>
+      </div>
+      <div class="toggle-grid" id="duel-goals" style="display:none;">
+        <button class="clay-toggle active" data-type="duelTarget" data-val="10">
+          <span class="icon">🎯</span>
+          <span>First to 10</span>
+        </button>
+        <button class="clay-toggle" data-type="duelTarget" data-val="20">
+          <span class="icon">🏆</span>
+          <span>First to 20</span>
+        </button>
+      </div>
+
+      <!-- Start Button -->
+      <button id="start-btn" class="play-btn">
+        <span>🚀</span> START SPEED EXAM
+      </button>
+    </div>
+
+    <!-- 2. SOLO PLAYER ARENA -->
+    <div id="solo-screen" class="solo-arena">
+      <div class="solo-stats-bar">
+        <div class="solo-stat-pill">
+          <span class="stat-label">Timer</span>
+          <span class="stat-val" id="solo-timer">60s</span>
+        </div>
+        <div class="solo-stat-pill">
+          <span class="stat-label">Score</span>
+          <span class="stat-val" id="solo-score" style="color:var(--accent);">0</span>
+        </div>
+        <div class="solo-stat-pill">
+          <span class="stat-label">Streak</span>
+          <span class="stat-val" id="solo-streak">🔥 0</span>
+        </div>
+        <div class="solo-stat-pill">
+          <span class="stat-label">Accuracy</span>
+          <span class="stat-val" id="solo-acc">100%</span>
+        </div>
+      </div>
+
+      <!-- Solo Question Card -->
+      <div class="player-card solo-card" id="solo-card">
+        <div class="player-header">
+          <div class="player-tag" style="color:var(--accent);">
+            <span>🧠</span> Solo Sprint
+          </div>
+          <div class="keys-hint">Keyboard: [A] [S] [D] [F] or [1] [2] [3] [4]</div>
+        </div>
+
+        <div class="question-box">
+          <div class="math-expression" id="solo-expr">8 + 5 = ?</div>
+          <div class="question-subtext" id="solo-subtext">Tap or press choice quickly!</div>
+        </div>
+
+        <div class="answers-grid" id="solo-choices">
+          <button class="ans-btn" data-idx="0"><span class="btn-key">A / 1</span><span class="btn-text">12</span></button>
+          <button class="ans-btn" data-idx="1"><span class="btn-key">S / 2</span><span class="btn-text">13</span></button>
+          <button class="ans-btn" data-idx="2"><span class="btn-key">D / 3</span><span class="btn-text">14</span></button>
+          <button class="ans-btn" data-idx="3"><span class="btn-key">F / 4</span><span class="btn-text">15</span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. TWO PLAYER DUEL ARENA -->
+    <div id="duel-screen" class="duel-arena face-to-face">
+      <!-- Opponent / Player 2 Board (Top, Flipped 180° for Face-to-Face Opponent) -->
+      <div class="player-card p2-card" id="p2-board">
+        <div class="freeze-banner" id="p2-freeze">⚠️ 1s FREEZE!</div>
+        <div class="player-header">
+          <div class="player-tag">🟥 Player 2 (Opponent)</div>
+          <div class="keys-hint">Keys: [H] [J] [K] [L]</div>
+        </div>
+        <div class="question-box">
+          <div class="math-expression" id="p2-expr">7 + 6 = ?</div>
+          <div class="question-subtext">First to answer wins point!</div>
+        </div>
+        <div class="answers-grid" id="p2-choices">
+          <button class="ans-btn" data-idx="0"><span class="btn-key">H</span><span class="btn-text">11</span></button>
+          <button class="ans-btn" data-idx="1"><span class="btn-key">J</span><span class="btn-text">13</span></button>
+          <button class="ans-btn" data-idx="2"><span class="btn-key">K</span><span class="btn-text">14</span></button>
+          <button class="ans-btn" data-idx="3"><span class="btn-key">L</span><span class="btn-text">12</span></button>
+        </div>
+      </div>
+
+      <!-- Center Tug-of-war momentum and score header -->
+      <div class="battle-header" id="battle-header">
+        <div class="score-row">
+          <div class="p1-badge">
+            <span>🟦 P1</span>
+            <span id="p1-score-display">0</span>
+          </div>
+          <div class="center-timer" id="duel-target-display">Target: 10 pts</div>
+          <div class="p2-badge">
+            <span id="p2-score-display">0</span>
+            <span>P2 🟥</span>
+          </div>
+        </div>
+        <div class="tug-track">
+          <div class="tug-p1" id="tug-p1" style="width: 50%;"></div>
+          <div class="tug-p2" id="tug-p2" style="width: 50%;"></div>
+        </div>
+      </div>
+
+      <!-- Player 1 Board (Bottom, Facing You Normal 0°) -->
+      <div class="player-card p1-card" id="p1-board">
+        <div class="freeze-banner" id="p1-freeze">⚠️ 1s FREEZE!</div>
+        <div class="player-header">
+          <div class="player-tag">🟦 Player 1 (You)</div>
+          <div class="keys-hint">Keys: [A] [S] [D] [F]</div>
+        </div>
+        <div class="question-box">
+          <div class="math-expression" id="p1-expr">7 + 6 = ?</div>
+          <div class="question-subtext">First to answer wins point!</div>
+        </div>
+        <div class="answers-grid" id="p1-choices">
+          <button class="ans-btn" data-idx="0"><span class="btn-key">A</span><span class="btn-text">11</span></button>
+          <button class="ans-btn" data-idx="1"><span class="btn-key">S</span><span class="btn-text">13</span></button>
+          <button class="ans-btn" data-idx="2"><span class="btn-key">D</span><span class="btn-text">14</span></button>
+          <button class="ans-btn" data-idx="3"><span class="btn-key">F</span><span class="btn-text">12</span></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RESULT MODAL -->
+  <div class="modal-overlay" id="result-modal">
+    <div class="result-card">
+      <div class="result-trophy" id="res-trophy">🏆</div>
+      <h2 class="result-title" id="res-title">Awesome Calculation!</h2>
+      <p class="result-subtitle" id="res-subtitle">Speed exam completed with flying colors</p>
+
+      <div class="result-grid">
+        <div class="res-item">
+          <div class="lbl">Final Score</div>
+          <div class="val" id="res-score">18</div>
+        </div>
+        <div class="res-item">
+          <div class="lbl">Accuracy</div>
+          <div class="val" id="res-acc">94%</div>
+        </div>
+        <div class="res-item">
+          <div class="lbl">Max Streak</div>
+          <div class="val" id="res-streak">🔥 12</div>
+        </div>
+        <div class="res-item">
+          <div class="lbl">Avg Speed</div>
+          <div class="val" id="res-speed">1.2s</div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="action-btn btn-secondary" id="res-menu-btn">Back to Menu</button>
+        <button class="action-btn btn-primary" id="res-again-btn">Play Again 🔁</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIZER (Web Audio API)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playTone(freq, type = 'sine', duration = 0.12, gainVal = 0.2) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          gain.gain.setValueAtTime(gainVal, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + duration);
+        } catch(e) {}
+      }
+      correct() {
+        this.playTone(523.25, 'triangle', 0.1, 0.2); // C5
+        setTimeout(() => this.playTone(659.25, 'triangle', 0.1, 0.22), 60); // E5
+        setTimeout(() => this.playTone(783.99, 'triangle', 0.18, 0.25), 120); // G5
+      }
+      wrong() {
+        this.playTone(180, 'sawtooth', 0.2, 0.25);
+        setTimeout(() => this.playTone(140, 'sawtooth', 0.25, 0.25), 90);
+      }
+      streakBonus() {
+        this.playTone(587.33, 'triangle', 0.08, 0.2); // D5
+        setTimeout(() => this.playTone(739.99, 'triangle', 0.08, 0.2), 60); // F#5
+        setTimeout(() => this.playTone(880.00, 'triangle', 0.14, 0.25), 120); // A5
+        setTimeout(() => this.playTone(1174.66, 'triangle', 0.25, 0.28), 180); // D6
+      }
+      win() {
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => this.playTone(freq, 'triangle', 0.25, 0.28), idx * 110);
+        });
+      }
+      blip() {
+        this.playTone(400, 'sine', 0.05, 0.15);
+      }
+    }
+    const audio = new SoundEngine();
+
+    /* =========================================================
+       CONFETTI SYSTEM
+       ========================================================= */
+    const canvas = document.getElementById('confetti-canvas');
+    const ctx = canvas.getContext('2d');
+    let confetti = [];
+    let confettiAnim = null;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    function launchConfetti(count = 70) {
+      confetti = [];
+      const colors = ['#0984e3', '#6c5ce7', '#00b894', '#fdcb6e', '#e17055', '#ff7675'];
+      for (let i = 0; i < count; i++) {
+        confetti.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+          y: canvas.height * 0.45,
+          vx: (Math.random() - 0.5) * 16,
+          vy: (Math.random() - 0.9) * 16,
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 12,
+          alpha: 1
+        });
+      }
+      if (!confettiAnim) updateConfetti();
+    }
+
+    function updateConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (let i = confetti.length - 1; i >= 0; i--) {
+        const p = confetti[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.4;
+        p.rot += p.vrot;
+        p.alpha -= 0.012;
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        ctx.restore();
+
+        if (p.alpha <= 0 || p.y > canvas.height) {
+          confetti.splice(i, 1);
+        }
+      }
+      if (confetti.length > 0) {
+        confettiAnim = requestAnimationFrame(updateConfetti);
+      } else {
+        confettiAnim = null;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    }
+
+    /* =========================================================
+       MATH ENGINE: BALANCED EASY QUESTIONS & DISTRACTORS
+       ========================================================= */
+    class MathEngine {
+      static generateQuestion(diff = 'easy', allowedOps = 'all') {
+        let op = allowedOps;
+        if (op === 'all') {
+          const pool = ['+', '-', '*', '/'];
+          op = pool[Math.floor(Math.random() * pool.length)];
+        }
+
+        let a = 0, b = 0, ans = 0;
+
+        switch (op) {
+          case '+':
+            if (diff === 'easy') {
+              a = Math.floor(Math.random() * 10) + 1;
+              b = Math.floor(Math.random() * 10) + 1;
+            } else if (diff === 'medium') {
+              a = Math.floor(Math.random() * 30) + 5;
+              b = Math.floor(Math.random() * 25) + 5;
+            } else {
+              a = Math.floor(Math.random() * 60) + 12;
+              b = Math.floor(Math.random() * 50) + 15;
+            }
+            ans = a + b;
+            break;
+
+          case '-':
+            if (diff === 'easy') {
+              b = Math.floor(Math.random() * 9) + 1;
+              a = b + Math.floor(Math.random() * 10) + 1;
+            } else if (diff === 'medium') {
+              b = Math.floor(Math.random() * 25) + 5;
+              a = b + Math.floor(Math.random() * 30) + 5;
+            } else {
+              b = Math.floor(Math.random() * 50) + 12;
+              a = b + Math.floor(Math.random() * 50) + 10;
+            }
+            ans = a - b;
+            break;
+
+          case '*':
+            if (diff === 'easy') {
+              a = Math.floor(Math.random() * 5) + 2; // 2 to 6
+              b = Math.floor(Math.random() * 5) + 2;
+            } else if (diff === 'medium') {
+              a = Math.floor(Math.random() * 8) + 2; // 2 to 9
+              b = Math.floor(Math.random() * 8) + 2;
+            } else {
+              a = Math.floor(Math.random() * 10) + 3; // 3 to 12
+              b = Math.floor(Math.random() * 10) + 3;
+            }
+            ans = a * b;
+            break;
+
+          case '/':
+            if (diff === 'easy') {
+              b = Math.floor(Math.random() * 4) + 2; // divisor 2 to 5
+              ans = Math.floor(Math.random() * 5) + 1; // 1 to 5
+            } else if (diff === 'medium') {
+              b = Math.floor(Math.random() * 7) + 2; // divisor 2 to 8
+              ans = Math.floor(Math.random() * 8) + 2; // 2 to 9
+            } else {
+              b = Math.floor(Math.random() * 9) + 2;
+              ans = Math.floor(Math.random() * 11) + 2;
+            }
+            a = b * ans; // ensures perfect integer answer
+            break;
+        }
+
+        // Generate 3 plausible distractors
+        const choices = new Set([ans]);
+        let attempts = 0;
+        const offsets = [-1, 1, -2, 2, -10, 10, -5, 5, -3, 3];
+
+        while (choices.size < 4 && attempts < 50) {
+          attempts++;
+          const offset = offsets[Math.floor(Math.random() * offsets.length)];
+          const candidate = ans + offset;
+          if (candidate > 0 && candidate !== ans) {
+            choices.add(candidate);
+          }
+        }
+
+        while (choices.size < 4) {
+          const candidate = ans + (Math.random() > 0.5 ? 1 : -1) * (choices.size + 1);
+          if (candidate > 0) choices.add(candidate);
+        }
+
+        // Shuffle choices
+        const choicesArr = Array.from(choices).sort(() => Math.random() - 0.5);
+        const correctIndex = choicesArr.indexOf(ans);
+
+        let symbol = op;
+        if (op === '*') symbol = '×';
+        if (op === '/') symbol = '÷';
+
+        return {
+          expr: `${a} ${symbol} ${b}`,
+          ans,
+          choices: choicesArr,
+          correctIndex
+        };
+      }
+    }
+
+    /* =========================================================
+       GAME STATE & CONTROLLERS
+       ========================================================= */
+    const state = {
+      mode: '1p', // '1p' or '2p'
+      diff: 'easy',
+      op: 'all',
+      goal: 'blitz', // 'blitz' (60s) or 'exam20'
+      duelTarget: 10,
+      active: false,
+      isFaceToFace: true, // Default: Opponent flipped 180° for face-to-face play
+
+      // Solo Stats
+      solo: {
+        score: 0,
+        total: 0,
+        correct: 0,
+        streak: 0,
+        maxStreak: 0,
+        timeLeft: 60,
+        startTime: 0,
+        timerId: null,
+        currentQ: null
+      },
+
+      // Duel Stats
+      duel: {
+        p1Score: 0,
+        p2Score: 0,
+        p1Frozen: false,
+        p2Frozen: false,
+        currentQ: null,
+        p1FreezeTimer: null,
+        p2FreezeTimer: null
+      }
+    };
+
+    // DOM Elements
+    const menuScreen = document.getElementById('menu-screen');
+    const soloScreen = document.getElementById('solo-screen');
+    const duelScreen = document.getElementById('duel-screen');
+    const resultModal = document.getElementById('result-modal');
+    const flipBtn = document.getElementById('flip-btn');
+    const soundBtn = document.getElementById('sound-btn');
+    const startBtn = document.getElementById('start-btn');
+
+    // Setup Config Buttons
+    document.querySelectorAll('.clay-toggle').forEach(btn => {
+      btn.addEventListener('click', () => {
+        audio.blip();
+        const type = btn.getAttribute('data-type');
+        const val = btn.getAttribute('data-val');
+
+        document.querySelectorAll(`.clay-toggle[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        state[type] = val;
+
+        // UI Adjustments when switching 1p/2p
+        if (type === 'mode') {
+          if (val === '1p') {
+            document.getElementById('goal-title').innerText = 'Solo Mode Format';
+            document.getElementById('solo-goals').style.display = 'grid';
+            document.getElementById('duel-goals').style.display = 'none';
+            flipBtn.style.display = 'none';
+          } else {
+            document.getElementById('goal-title').innerText = 'Duel Win Condition';
+            document.getElementById('solo-goals').style.display = 'none';
+            document.getElementById('duel-goals').style.display = 'grid';
+            flipBtn.style.display = 'inline-flex';
+          }
+        }
+      });
+    });
+
+    // Sound toggle
+    soundBtn.addEventListener('click', () => {
+      audio.enabled = !audio.enabled;
+      soundBtn.innerText = audio.enabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+      if (audio.enabled) audio.blip();
+    });
+
+    // Flip Opponent Tablet Face-to-Face toggle
+    flipBtn.addEventListener('click', () => {
+      state.isFaceToFace = !state.isFaceToFace;
+      audio.blip();
+      if (state.isFaceToFace) {
+        duelScreen.classList.add('face-to-face');
+        duelScreen.classList.remove('side-by-side');
+        duelScreen.style.display = 'flex';
+        flipBtn.innerText = '🔄 Opponent: Flipped (180°)';
+      } else {
+        duelScreen.classList.remove('face-to-face');
+        duelScreen.classList.add('side-by-side');
+        duelScreen.style.display = 'grid';
+        flipBtn.innerText = '🔄 Side-by-Side';
+      }
+    });
+
+    // Start Game Button
+    startBtn.addEventListener('click', () => {
+      audio.init();
+      audio.blip();
+      menuScreen.style.display = 'none';
+      if (state.mode === '1p') {
+        startSoloGame();
+      } else {
+        startDuelGame();
+      }
+    });
+
+    /* =========================================================
+       1-PLAYER SOLO MODE LOGIC
+       ========================================================= */
+    const soloTimerEl = document.getElementById('solo-timer');
+    const soloScoreEl = document.getElementById('solo-score');
+    const soloStreakEl = document.getElementById('solo-streak');
+    const soloAccEl = document.getElementById('solo-acc');
+    const soloExprEl = document.getElementById('solo-expr');
+    const soloSubtextEl = document.getElementById('solo-subtext');
+    const soloChoicesEl = document.getElementById('solo-choices');
+
+    function startSoloGame() {
+      state.active = true;
+      state.solo.score = 0;
+      state.solo.total = 0;
+      state.solo.correct = 0;
+      state.solo.streak = 0;
+      state.solo.maxStreak = 0;
+      state.solo.timeLeft = state.goal === 'blitz' ? 60 : 0;
+      state.solo.startTime = Date.now();
+
+      soloScreen.style.display = 'flex';
+      duelScreen.style.display = 'none';
+      updateSoloHUD();
+
+      nextSoloQuestion();
+
+      if (state.goal === 'blitz') {
+        state.solo.timerId = setInterval(() => {
+          state.solo.timeLeft--;
+          soloTimerEl.innerText = `${state.solo.timeLeft}s`;
+          if (state.solo.timeLeft <= 0) {
+            endSoloGame();
+          }
+        }, 1000);
+      } else {
+        // Exam 20: Count elapsed time
+        state.solo.timerId = setInterval(() => {
+          const elapsed = Math.floor((Date.now() - state.solo.startTime) / 1000);
+          soloTimerEl.innerText = `${elapsed}s`;
+        }, 1000);
+      }
+    }
+
+    function updateSoloHUD() {
+      soloScoreEl.innerText = state.solo.score;
+      soloStreakEl.innerText = `🔥 ${state.solo.streak}`;
+      if (state.solo.streak >= 4) {
+        soloStreakEl.classList.add('streak-hot');
+      } else {
+        soloStreakEl.classList.remove('streak-hot');
+      }
+
+      const acc = state.solo.total === 0 ? 100 : Math.round((state.solo.correct / state.solo.total) * 100);
+      soloAccEl.innerText = `${acc}%`;
+
+      if (state.goal === 'exam20') {
+        soloSubtextEl.innerText = `Question ${state.solo.total + 1} of 20`;
+      }
+    }
+
+    function nextSoloQuestion() {
+      if (state.goal === 'exam20' && state.solo.total >= 20) {
+        endSoloGame();
+        return;
+      }
+
+      const q = MathEngine.generateQuestion(state.diff, state.op);
+      state.solo.currentQ = q;
+      soloExprEl.innerText = `${q.expr} = ?`;
+
+      const buttons = soloChoicesEl.querySelectorAll('.ans-btn');
+      buttons.forEach((btn, idx) => {
+        btn.querySelector('.btn-text').innerText = q.choices[idx];
+        btn.classList.remove('correct-flash', 'wrong-flash');
+      });
+    }
+
+    function handleSoloChoice(choiceIdx) {
+      if (!state.active || !state.solo.currentQ) return;
+      const q = state.solo.currentQ;
+      state.solo.total++;
+
+      const buttons = soloChoicesEl.querySelectorAll('.ans-btn');
+      const chosenBtn = buttons[choiceIdx];
+
+      if (choiceIdx === q.correctIndex) {
+        // Correct!
+        state.solo.correct++;
+        state.solo.streak++;
+        if (state.solo.streak > state.solo.maxStreak) {
+          state.solo.maxStreak = state.solo.streak;
+        }
+
+        const streakMultiplier = Math.min(4, 1 + Math.floor(state.solo.streak / 3));
+        state.solo.score += 10 * streakMultiplier;
+
+        if (state.solo.streak >= 5 && state.solo.streak % 5 === 0) {
+          audio.streakBonus();
+        } else {
+          audio.correct();
+        }
+
+        chosenBtn.classList.add('correct-flash');
+      } else {
+        // Wrong!
+        state.solo.streak = 0;
+        audio.wrong();
+        chosenBtn.classList.add('wrong-flash');
+      }
+
+      updateSoloHUD();
+      setTimeout(nextSoloQuestion, 160);
+    }
+
+    // Touch / Click event listeners on Solo Buttons
+    soloChoicesEl.querySelectorAll('.ans-btn').forEach((btn) => {
+      const idx = parseInt(btn.getAttribute('data-idx'));
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        handleSoloChoice(idx);
+      });
+    });
+
+    function endSoloGame() {
+      clearInterval(state.solo.timerId);
+      state.active = false;
+      audio.win();
+      launchConfetti(80);
+
+      const elapsedSec = Math.max(1, (Date.now() - state.solo.startTime) / 1000);
+      const avgSpeed = (elapsedSec / Math.max(1, state.solo.total)).toFixed(1);
+      const acc = state.solo.total === 0 ? 0 : Math.round((state.solo.correct / state.solo.total) * 100);
+
+      document.getElementById('res-trophy').innerText = acc >= 80 ? '🏆' : '⭐';
+      document.getElementById('res-title').innerText = acc >= 80 ? 'Speed Exam Passed!' : 'Exam Finished!';
+      document.getElementById('res-subtitle').innerText = `Completed with ${state.solo.correct} correct out of ${state.solo.total} questions`;
+      document.getElementById('res-score').innerText = state.solo.score;
+      document.getElementById('res-acc').innerText = `${acc}%`;
+      document.getElementById('res-streak').innerText = `🔥 ${state.solo.maxStreak}`;
+      document.getElementById('res-speed').innerText = `${avgSpeed}s/q`;
+
+      resultModal.style.display = 'flex';
+    }
+
+    /* =========================================================
+       2-PLAYER DUEL MODE LOGIC
+       ========================================================= */
+    const p1ScoreEl = document.getElementById('p1-score-display');
+    const p2ScoreEl = document.getElementById('p2-score-display');
+    const duelTargetEl = document.getElementById('duel-target-display');
+    const tugP1El = document.getElementById('tug-p1');
+    const tugP2El = document.getElementById('tug-p2');
+
+    const p1Board = document.getElementById('p1-board');
+    const p2Board = document.getElementById('p2-board');
+    const p1ExprEl = document.getElementById('p1-expr');
+    const p2ExprEl = document.getElementById('p2-expr');
+    const p1ChoicesEl = document.getElementById('p1-choices');
+    const p2ChoicesEl = document.getElementById('p2-choices');
+    const p1FreezeBanner = document.getElementById('p1-freeze');
+    const p2FreezeBanner = document.getElementById('p2-freeze');
+
+    function startDuelGame() {
+      state.active = true;
+      state.duel.p1Score = 0;
+      state.duel.p2Score = 0;
+      state.duel.p1Frozen = false;
+      state.duel.p2Frozen = false;
+
+      soloScreen.style.display = 'none';
+      
+      // Default to Opponent Flipped 180° for Tabletop Head-to-Head play
+      state.isFaceToFace = true;
+      duelScreen.classList.add('face-to-face');
+      duelScreen.classList.remove('side-by-side');
+      duelScreen.style.display = 'flex';
+      flipBtn.style.display = 'inline-flex';
+      flipBtn.innerText = '🔄 Opponent: Flipped (180°)';
+
+      const target = parseInt(state.duelTarget) || 10;
+      duelTargetEl.innerText = `First to ${target} pts`;
+
+      updateDuelHUD();
+      nextDuelQuestion();
+    }
+
+    function updateDuelHUD() {
+      p1ScoreEl.innerText = state.duel.p1Score;
+      p2ScoreEl.innerText = state.duel.p2Score;
+
+      const target = parseInt(state.duelTarget) || 10;
+      // Tug-of-war calculation: base 50% + difference
+      const diff = state.duel.p1Score - state.duel.p2Score;
+      const p1Pct = Math.min(95, Math.max(5, 50 + (diff / target) * 45));
+      tugP1El.style.width = `${p1Pct}%`;
+      tugP2El.style.width = `${100 - p1Pct}%`;
+    }
+
+    function nextDuelQuestion() {
+      const q = MathEngine.generateQuestion(state.diff, state.op);
+      state.duel.currentQ = q;
+
+      p1ExprEl.innerText = `${q.expr} = ?`;
+      p2ExprEl.innerText = `${q.expr} = ?`;
+
+      const p1Btns = p1ChoicesEl.querySelectorAll('.ans-btn');
+      const p2Btns = p2ChoicesEl.querySelectorAll('.ans-btn');
+
+      p1Btns.forEach((btn, idx) => {
+        btn.querySelector('.btn-text').innerText = q.choices[idx];
+        btn.classList.remove('correct-flash', 'wrong-flash');
+      });
+
+      p2Btns.forEach((btn, idx) => {
+        btn.querySelector('.btn-text').innerText = q.choices[idx];
+        btn.classList.remove('correct-flash', 'wrong-flash');
+      });
+    }
+
+    function handleDuelChoice(player, choiceIdx) {
+      if (!state.active || !state.duel.currentQ) return;
+      const q = state.duel.currentQ;
+
+      // Check freeze state
+      if (player === 1 && state.duel.p1Frozen) return;
+      if (player === 2 && state.duel.p2Frozen) return;
+
+      const btnGroup = player === 1 ? p1ChoicesEl : p2ChoicesEl;
+      const btn = btnGroup.querySelectorAll('.ans-btn')[choiceIdx];
+
+      if (choiceIdx === q.correctIndex) {
+        // Player got it right first!
+        btn.classList.add('correct-flash');
+        audio.correct();
+
+        if (player === 1) state.duel.p1Score++;
+        else state.duel.p2Score++;
+
+        updateDuelHUD();
+
+        const target = parseInt(state.duelTarget) || 10;
+        if (state.duel.p1Score >= target || state.duel.p2Score >= target) {
+          setTimeout(endDuelGame, 200);
+          return;
+        }
+
+        setTimeout(nextDuelQuestion, 200);
+      } else {
+        // Wrong answer -> 1 second freeze penalty!
+        btn.classList.add('wrong-flash');
+        audio.wrong();
+        applyFreeze(player);
+      }
+    }
+
+    function applyFreeze(player) {
+      if (player === 1) {
+        state.duel.p1Frozen = true;
+        p1Board.classList.add('frozen');
+        p1FreezeBanner.style.display = 'block';
+        clearTimeout(state.duel.p1FreezeTimer);
+        state.duel.p1FreezeTimer = setTimeout(() => {
+          state.duel.p1Frozen = false;
+          p1Board.classList.remove('frozen');
+          p1FreezeBanner.style.display = 'none';
+        }, 1100);
+      } else {
+        state.duel.p2Frozen = true;
+        p2Board.classList.add('frozen');
+        p2FreezeBanner.style.display = 'block';
+        clearTimeout(state.duel.p2FreezeTimer);
+        state.duel.p2FreezeTimer = setTimeout(() => {
+          state.duel.p2Frozen = false;
+          p2Board.classList.remove('frozen');
+          p2FreezeBanner.style.display = 'none';
+        }, 1100);
+      }
+    }
+
+    // Touch / Click event listeners for Duel
+    p1ChoicesEl.querySelectorAll('.ans-btn').forEach((btn) => {
+      const idx = parseInt(btn.getAttribute('data-idx'));
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        handleDuelChoice(1, idx);
+      });
+    });
+
+    p2ChoicesEl.querySelectorAll('.ans-btn').forEach((btn) => {
+      const idx = parseInt(btn.getAttribute('data-idx'));
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        handleDuelChoice(2, idx);
+      });
+    });
+
+    function endDuelGame() {
+      state.active = false;
+      audio.win();
+      launchConfetti(90);
+
+      const isP1Win = state.duel.p1Score > state.duel.p2Score;
+      const winnerName = isP1Win ? 'Player 1 (Blue) Wins!' : 'Player 2 (Red) Wins!';
+      const winnerColor = isP1Win ? 'var(--p1-color)' : 'var(--p2-color)';
+
+      document.getElementById('res-trophy').innerText = '👑';
+      document.getElementById('res-title').innerText = winnerName;
+      document.getElementById('res-title').style.color = winnerColor;
+      document.getElementById('res-subtitle').innerText = 'Epic mental math head-to-head showdown!';
+      document.getElementById('res-score').innerText = `${state.duel.p1Score} - ${state.duel.p2Score}`;
+      document.getElementById('res-acc').innerText = `Target: ${state.duelTarget}`;
+      document.getElementById('res-streak').innerText = isP1Win ? '🟦 P1 Champ' : '🟥 P2 Champ';
+      document.getElementById('res-speed').innerText = 'Duel Match';
+
+      resultModal.style.display = 'flex';
+    }
+
+    /* =========================================================
+       UNIVERSAL KEYBOARD CONTROLLER
+       ========================================================= */
+    const KEY_MAP_P1 = {
+      'KeyA': 0, 'Digit1': 0, 'Numpad1': 0,
+      'KeyS': 1, 'Digit2': 1, 'Numpad2': 1,
+      'KeyD': 2, 'Digit3': 2, 'Numpad3': 2,
+      'KeyF': 3, 'Digit4': 3, 'Numpad4': 3
+    };
+
+    const KEY_MAP_P2 = {
+      'KeyH': 0, 'Digit7': 0, 'ArrowLeft': 0,
+      'KeyJ': 1, 'Digit8': 1, 'ArrowDown': 1,
+      'KeyK': 2, 'Digit9': 2, 'ArrowUp': 2,
+      'KeyL': 3, 'Digit0': 3, 'ArrowRight': 3
+    };
+
+    window.addEventListener('keydown', (e) => {
+      if (!state.active) return;
+
+      if (state.mode === '1p') {
+        if (e.code in KEY_MAP_P1) {
+          e.preventDefault();
+          const idx = KEY_MAP_P1[e.code];
+          handleSoloChoice(idx);
+        }
+      } else {
+        // 2-Player Mode
+        if (e.code in KEY_MAP_P1) {
+          e.preventDefault();
+          const idx = KEY_MAP_P1[e.code];
+          handleDuelChoice(1, idx);
+        } else if (e.code in KEY_MAP_P2) {
+          e.preventDefault();
+          const idx = KEY_MAP_P2[e.code];
+          handleDuelChoice(2, idx);
+        }
+      }
+    });
+
+    /* =========================================================
+       MODAL ACTION BUTTONS
+       ========================================================= */
+    document.getElementById('res-menu-btn').addEventListener('click', () => {
+      audio.blip();
+      resultModal.style.display = 'none';
+      soloScreen.style.display = 'none';
+      duelScreen.style.display = 'none';
+      flipBtn.style.display = 'none';
+      menuScreen.style.display = 'block';
+    });
+
+    document.getElementById('res-again-btn').addEventListener('click', () => {
+      audio.blip();
+      resultModal.style.display = 'none';
+      if (state.mode === '1p') {
+        startSoloGame();
+      } else {
+        startDuelGame();
+      }
+    });
+
+  </script>
+</body>
+</html>

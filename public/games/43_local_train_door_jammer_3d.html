@@ -1,0 +1,1847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Local Train Door Jammer 3D 🚆 Howrah / Sealdah Superfast Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Three.js Library -->
+  <script src="three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    :root {
+      --rail-green: #15803d;
+      --rail-yellow: #facc15;
+      --rail-red: #ef4444;
+      --rail-blue: #0284c7;
+      --clay-bg: rgba(15, 23, 42, 0.88);
+      --btn-glow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #020617;
+      font-family: 'Fredoka', cursive, system-ui, sans-serif;
+      position: fixed;
+    }
+
+    #gameCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Cinematic Speed Lines Overlay */
+    .speed-fx {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(circle at 60% 50%, transparent 40%, rgba(2, 6, 23, 0.35) 90%);
+      z-index: 5;
+    }
+
+    .wind-lines {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.28;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent 0,
+        transparent 55px,
+        rgba(255, 255, 255, 0.12) 56px,
+        transparent 58px
+      );
+      animation: windRush 0.09s linear infinite;
+      z-index: 6;
+    }
+
+    @keyframes windRush {
+      0% { transform: translateY(-40px); }
+      100% { transform: translateY(40px); }
+    }
+
+    /* HUD Header */
+    .hud-top {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 15;
+    }
+
+    .badge-card {
+      background: var(--clay-bg);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 18px;
+      padding: 10px 18px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+
+    .speed-tag {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--rail-yellow);
+      display: flex;
+      align-items: baseline;
+      gap: 5px;
+      text-shadow: 0 2px 10px rgba(250, 204, 21, 0.5);
+    }
+    .speed-unit { font-size: 13px; font-weight: 700; color: #94a3b8; }
+
+    .station-target { text-align: right; }
+    .station-name {
+      font-size: 17px;
+      font-weight: 800;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+    .station-dist {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f8fafc;
+      margin-top: 2px;
+    }
+
+    /* Crowd Pressure & Stamina Bars */
+    .status-bars {
+      position: absolute;
+      top: 90px;
+      left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .bar-wrap {
+      background: rgba(15, 23, 42, 0.88);
+      backdrop-filter: blur(10px);
+      padding: 8px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      width: 185px;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+    }
+
+    .bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: 700;
+      color: #e2e8f0;
+      margin-bottom: 5px;
+    }
+
+    .meter-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .meter-fill-pressure {
+      height: 100%;
+      width: 30%;
+      background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+      transition: width 0.15s ease;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+    }
+
+    .meter-fill-grip {
+      height: 100%;
+      width: 100%;
+      background: linear-gradient(90deg, #ef4444, #38bdf8);
+      transition: width 0.15s ease;
+    }
+
+    /* Warning Popups / Comic Notifications */
+    .alert-banner {
+      position: absolute;
+      top: 24%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: linear-gradient(135deg, #dc2626, #991b1b);
+      border: 3px solid #fef08a;
+      border-radius: 22px;
+      padding: 12px 28px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 21px;
+      text-align: center;
+      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 16px 40px rgba(220, 38, 38, 0.7), 0 0 0 4px rgba(0, 0, 0, 0.25);
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 35;
+      white-space: nowrap;
+    }
+    .alert-banner.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Station Approach QTE Bar */
+    .station-qte {
+      position: absolute;
+      bottom: 125px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.96);
+      border: 3px solid #38bdf8;
+      border-radius: 26px;
+      padding: 18px 26px;
+      text-align: center;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(56, 189, 248, 0.5);
+      display: none;
+      z-index: 30;
+      width: 340px;
+    }
+    .station-qte.active { display: block; animation: pulseQte 0.9s infinite alternate; }
+
+    @keyframes pulseQte {
+      0% { transform: translateX(-50%) scale(1); }
+      100% { transform: translateX(-50%) scale(1.04); }
+    }
+
+    .qte-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fde047;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .qte-sub {
+      font-size: 13px;
+      color: #cbd5e1;
+      margin-bottom: 14px;
+    }
+
+    .qte-btn {
+      background: linear-gradient(135deg, #22c55e, #16a34a);
+      border: none;
+      border-radius: 18px;
+      padding: 14px 24px;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(34, 197, 94, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+      transition: transform 0.1s;
+      width: 100%;
+    }
+    .qte-btn:active { transform: scale(0.96); }
+
+    /* Comic Flying Popups */
+    .comic-popup {
+      position: absolute;
+      pointer-events: none;
+      font-weight: 800;
+      font-size: 24px;
+      text-shadow: 0 3px 6px rgba(0,0,0,0.8), -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000;
+      transform: translate(-50%, -50%);
+      transition: all 0.75s cubic-bezier(0.2, 0.9, 0.3, 1);
+      z-index: 40;
+    }
+
+    /* On-Screen Touch / Keyboard Controls */
+    .controls-overlay {
+      position: absolute;
+      bottom: 20px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 25;
+    }
+
+    .ctrl-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .action-btn {
+      background: rgba(30, 41, 59, 0.88);
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255, 255, 255, 0.28);
+      border-radius: 20px;
+      padding: 14px 18px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: var(--btn-glow);
+      cursor: pointer;
+      touch-action: manipulation;
+      min-width: 80px;
+      transition: all 0.12s ease;
+    }
+    .action-btn:active, .action-btn.active {
+      transform: translateY(3px) scale(0.94);
+      border-color: #fde047;
+      background: rgba(51, 65, 85, 0.98);
+    }
+    .action-btn .btn-icon { font-size: 24px; }
+    .action-btn .btn-key { font-size: 11px; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-weight: 700; }
+
+    .btn-elbow {
+      background: linear-gradient(135deg, #f97316, #ea580c);
+      border-color: #fed7aa;
+      box-shadow: 0 8px 22px rgba(249, 115, 22, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    .btn-duck {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      border-color: #bae6fd;
+      box-shadow: 0 8px 22px rgba(2, 132, 199, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+    }
+
+    /* Start & Game Over Overlays */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.9);
+      backdrop-filter: blur(14px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .modal-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 3px solid rgba(255, 255, 255, 0.22);
+      border-radius: 28px;
+      padding: 32px 28px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 26px 70px rgba(0, 0, 0, 0.85), 0 0 45px rgba(56, 189, 248, 0.3);
+    }
+
+    .modal-title {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--rail-yellow);
+      margin-bottom: 6px;
+      text-shadow: 0 4px 14px rgba(250, 204, 21, 0.45);
+    }
+
+    .modal-sub {
+      font-size: 14px;
+      color: #94a3b8;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .instructions-list {
+      background: rgba(0, 0, 0, 0.38);
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      text-align: left;
+      font-size: 13.5px;
+      line-height: 1.85;
+      color: #cbd5e1;
+    }
+
+    .instructions-list strong { color: #facc15; }
+
+    .primary-btn {
+      background: linear-gradient(135deg, #eab308, #ca8a04);
+      color: #020617;
+      border: none;
+      border-radius: 18px;
+      padding: 15px 36px;
+      font-family: inherit;
+      font-size: 19px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 8px 26px rgba(234, 179, 8, 0.55), inset 0 2px 0 rgba(255, 255, 255, 0.45);
+      transition: all 0.15s ease;
+      width: 100%;
+    }
+    .primary-btn:hover { transform: scale(1.02); }
+    .primary-btn:active { transform: scale(0.97); }
+  </style>
+</head>
+<body>
+  <!-- 3D Canvas -->
+  <div id="gameCanvas"></div>
+  <div class="speed-fx"></div>
+  <div class="wind-lines"></div>
+
+  <!-- HUD -->
+  <div class="hud-top">
+    <div class="badge-card">
+      <div class="speed-tag">
+        <span id="speedVal">0</span>
+        <span class="speed-unit">KM/H</span>
+      </div>
+      <div style="font-size: 12px; color: #cbd5e1; font-weight: 700; margin-top: 2px;">
+        STATIONS: <span id="stationsCleared" style="color: #4ade80;">0</span> / 3
+      </div>
+    </div>
+
+    <div class="badge-card station-target">
+      <div class="station-name" id="stationName">BALLY JN</div>
+      <div class="station-dist">
+        NEXT STOP: <span id="distVal" style="color: #fde047; font-weight: 800;">1800</span>m
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Bars -->
+  <div class="status-bars">
+    <div class="bar-wrap">
+      <div class="bar-label">
+        <span>ভিড়ের চাপ (CROWD)</span>
+        <span id="pressureNum" style="color: #f87171;">35%</span>
+      </div>
+      <div class="meter-track">
+        <div class="meter-fill-pressure" id="pressureBar"></div>
+      </div>
+    </div>
+
+    <div class="bar-wrap">
+      <div class="bar-label">
+        <span>গ্রিপ স্ট্যামিনা (GRIP)</span>
+        <span id="gripNum" style="color: #38bdf8;">100%</span>
+      </div>
+      <div class="meter-track">
+        <div class="meter-fill-grip" id="gripBar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert Banner -->
+  <div class="alert-banner" id="alertBanner">⚠️ POLE INCOMING! DUCK!</div>
+
+  <!-- Station Quick Time Event -->
+  <div class="station-qte" id="stationQte">
+    <div class="qte-title">🚉 HOWRAH PLATFORM REACHED!</div>
+    <div class="qte-sub">ভিড় আসার আগেই প্ল্যাটফর্মে লাফ দিন! (3s WINDOW)</div>
+    <button class="qte-btn" id="qteJumpBtn">⚡ DE-BOARD / JUMP! (SPACE)</button>
+  </div>
+
+  <!-- On-Screen Controls for Mobile/Touch -->
+  <div class="controls-overlay">
+    <div class="ctrl-group">
+      <button class="action-btn" id="btnTuck">
+        <span class="btn-icon">🚪</span>
+        <span>ভেতরে যান</span>
+        <span class="btn-key">[A / LEFT]</span>
+      </button>
+      <button class="action-btn" id="btnLean">
+        <span class="btn-icon">💨</span>
+        <span>বাইরে ঝুলুন</span>
+        <span class="btn-key">[D / RIGHT]</span>
+      </button>
+    </div>
+
+    <div class="ctrl-group">
+      <button class="action-btn btn-duck" id="btnDuck">
+        <span class="btn-icon">⚡</span>
+        <span>মাথা নামান (DUCK)</span>
+        <span class="btn-key">[S / DOWN]</span>
+      </button>
+      <button class="action-btn btn-elbow" id="btnElbow">
+        <span class="btn-icon">💥</span>
+        <span>ধাক্কা দিন (ELBOW)</span>
+        <span class="btn-key">[SPACE]</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Start Modal -->
+  <div class="modal-overlay" id="startModal">
+    <div class="modal-card">
+      <div style="font-size: 54px; margin-bottom: 4px;">🚆</div>
+      <h1 class="modal-title">লোকাল ট্রেন সারভাইভার</h1>
+      <p style="color: #38bdf8; font-weight: 700; margin-bottom: 8px;">HOWRAH / SEALDAH SUPERFAST RUSH</p>
+      <p class="modal-sub">
+        অফিস টাইমের শিয়ালদাহ লোকাল! ভেতরে তিল ধারণের জায়গা নেই— আপনি দরজার রড ধরে এক পায়ে ঝুলছেন!
+      </p>
+
+      <div class="instructions-list">
+        <div>⚡ <strong>মাথা নিচু করুন (S / Down):</strong> পোলের ধাক্কা ও ব্রিজের গার্ডার বাঁচান!</div>
+        <div>🚪 <strong>ভেতরে ঢুকুন (A / Left):</strong> বাইরে আসা সিগন্যাল পোস্ট এড়াতে।</div>
+        <div>💥 <strong>কনুই দিয়ে ধাক্কা (SPACE):</strong> পেছনের যাত্রীরা ঠেললে রাস্তা বানান!</div>
+        <div>💨 <strong>বাইরে ঝুলুন (D / Right):</strong> টাটকা বাতাস নিন ও গ্রিপ রিকভার করুন!</div>
+        <div>🚉 <strong>স্টেশনে প্ল্যাটফর্ম জাম্প:</strong> ট্রেন থামার ঠিক মুহূর্তে নিখুঁত জাম্প দিন!</div>
+      </div>
+
+      <button class="primary-btn" id="startBtn">ট্রেনে উঠুন! (START RUSH)</button>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-overlay" id="gameOverModal" style="display: none;">
+    <div class="modal-card">
+      <div id="goEmoji" style="font-size: 54px; margin-bottom: 8px;">💥</div>
+      <h1 class="modal-title" id="goTitle">ট্রেন থেকে ছিটকে গেছেন!</h1>
+      <p class="modal-sub" id="goDesc">ইলেকট্রিক পোলে মাথা ঠুকে গেছে!</p>
+
+      <div class="instructions-list" style="text-align: center;">
+        <div style="font-size: 16px; margin-bottom: 6px;">অতিক্রান্ত দূরত্ব: <strong id="goDistance">0</strong> মিটার</div>
+        <div style="font-size: 16px;">পৌঁছানো স্টেশন: <strong id="goStations" style="color: #4ade80;">0</strong> টি</div>
+      </div>
+
+      <button class="primary-btn" id="restartBtn">আবার ট্রেনে উঠুন! (RETRY)</button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       LOCAL TRAIN AUDIO ENGINE (Web Audio API + Meme Sound FX)
+       ========================================================================== */
+    class TrainAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.audioClips = {};
+        this.initClips();
+      }
+
+      ensureContext() {
+        if (!this.ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtx();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      initClips() {
+        const list = [
+          { key: 'jaldi', src: 'audio/jaldi_waha_se_hato.mp3' },
+          { key: 'gian', src: 'audio/gian-hain-aap.mp3' },
+          { key: 'bhai', src: 'audio/bhai-ne-bola-karnekka.mp3' },
+          { key: 'slowed', src: 'audio/sourav-joshi-ki-amma-tmkb-(slowed)-made-with-Voicemod.mp3' }
+        ];
+
+        list.forEach(item => {
+          const a = new Audio();
+          a.src = item.src;
+          a.preload = 'auto';
+          this.audioClips[item.key] = a;
+        });
+      }
+
+      playClip(key, vol = 0.8) {
+        try {
+          const clip = this.audioClips[key];
+          if (clip) {
+            clip.currentTime = 0;
+            clip.volume = vol;
+            clip.play().catch(() => {});
+          }
+        } catch (e) {}
+      }
+
+      // Procedural Train Track Clatter (ta-dak ta-dak ta-dak)
+      playTrackClick(speed) {
+        if (!this.ctx || speed < 5) return;
+        const now = this.ctx.currentTime;
+
+        [0, 0.08, 0.22, 0.30].forEach((delay, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const filter = this.ctx.createBiquadFilter();
+
+          osc.type = idx % 2 === 0 ? 'triangle' : 'sine';
+          osc.frequency.setValueAtTime(65 + Math.random() * 25, now + delay);
+          osc.frequency.exponentialRampToValueAtTime(30, now + delay + 0.05);
+
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(450, now + delay);
+
+          const vol = 0.12 * Math.min(1.0, speed / 60);
+          gain.gain.setValueAtTime(vol, now + delay);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + delay + 0.06);
+
+          osc.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now + delay);
+          osc.stop(now + delay + 0.07);
+        });
+      }
+
+      // Loud Suburban EMU Electric Horn (Peep-Pooo)
+      playTrainHorn() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+
+        const f1 = 330;
+        const f2 = 415;
+
+        [f1, f2].forEach(freq => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.98, now + 0.8);
+
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.linearRampToValueAtTime(0.15, now + 0.5);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+
+          osc.start(now);
+          osc.stop(now + 0.9);
+        });
+      }
+
+      // Near-Miss Whoosh Sound (Dodge Electric Pole)
+      playWhoosh() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.25;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
+
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(300, now);
+        filter.frequency.exponentialRampToValueAtTime(1400, now + 0.12);
+        filter.frequency.exponentialRampToValueAtTime(250, now + 0.25);
+        filter.Q.setValueAtTime(3.5, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.35, now + 0.1);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        noise.start(now);
+      }
+
+      // Elbow Shove Thud Sound
+      playElbowThud() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(35, now + 0.18);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.22);
+      }
+
+      // Station Platform Bell (Ding Dong)
+      playStationChime() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        [587.33, 880].forEach((freq, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.22);
+
+          gain.gain.setValueAtTime(0.2, now + i * 0.22);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.22 + 0.6);
+
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.22);
+          osc.stop(now + i * 0.22 + 0.65);
+        });
+      }
+    }
+
+    /* ==========================================================================
+       LOCAL TRAIN 3D VISUAL OVERHAUL & GAME ENGINE
+       ========================================================================== */
+    class LocalTrainGame {
+      constructor() {
+        this.container = document.getElementById('gameCanvas');
+        this.audio = new TrainAudioEngine();
+
+        // Game State
+        this.isRunning = false;
+        this.isGameOver = false;
+        this.speed = 0; // km/h
+        this.targetSpeed = 85;
+        this.distanceTravelled = 0;
+        this.stationsCleared = 0;
+
+        // Player Physical Status
+        this.playerState = 'HANGING'; // 'HANGING', 'TUCKED', 'LEAN_OUT', 'DUCKING'
+        this.crowdPressure = 35; // 0 to 100%
+        this.gripStamina = 100;  // 0 to 100%
+        this.elbowCooldown = 0;
+
+        // Station Logic
+        this.stations = [
+          { name: 'BALLY JUNCTION', dist: 1600 },
+          { name: 'BELUR MATH', dist: 3400 },
+          { name: 'HOWRAH TERMINUS (FINAL)', dist: 5200 }
+        ];
+        this.currentStationIdx = 0;
+        this.isAtStation = false;
+        this.stationQteActive = false;
+        this.stationQteTimer = 0;
+
+        // 3D Scene Properties
+        this.scene = null;
+        this.camera = null;
+        this.renderer = null;
+
+        // 3D Meshes & Environment
+        this.trainGroup = null;
+        this.playerGroup = null;
+        this.playerShirt = null;
+        this.playerHead = null;
+        this.playerLegRight = null;
+        this.playerBag = null;
+        this.crowdGroup = null;
+        this.tracksGroup = null;
+        this.sceneryGroup = null;
+        this.poles = [];
+        this.trees = [];
+        this.billboards = [];
+        this.passingTrain = null;
+        this.sparkParticles = null;
+
+        // Timers & Track Clatter
+        this.clatterAcc = 0;
+        this.hornTimer = 8.0;
+        this.passingTrainTimer = 14.0;
+        this.cameraWobble = 0;
+
+        this.initThree();
+        this.setupEventListeners();
+      }
+
+      /* ------------------------------------------------------------------------
+         CANVAS TEXTURE GENERATORS (Rich Authentic Eastern Railway Visuals)
+         ------------------------------------------------------------------------ */
+      generateCoachSideTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1024;
+        canvas.height = 512;
+        const ctx = canvas.getContext('2d');
+
+        // Forest Green Coach Body
+        ctx.fillStyle = '#14532d';
+        ctx.fillRect(0, 0, 1024, 512);
+
+        // Broad Iconic Yellow Waistline Band
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(0, 290, 1024, 75);
+
+        // Upper Thin Yellow Pinstripe
+        ctx.fillStyle = '#fde047';
+        ctx.fillRect(0, 40, 1024, 12);
+
+        // Lower Dark Skirt
+        ctx.fillStyle = '#0f172a';
+        ctx.fillRect(0, 460, 1024, 52);
+
+        // Stainless Steel Windows with Horizontal Safety Grills
+        [80, 290, 680, 890].forEach(wx => {
+          // Window Frame
+          ctx.fillStyle = '#020617';
+          ctx.fillRect(wx, 70, 170, 160);
+          ctx.fillStyle = '#1e3a8a'; // Deep Blue Glass
+          ctx.fillRect(wx + 6, 76, 158, 148);
+
+          // 5 Horizontal Silver Safety Grill Bars ("Jali")
+          ctx.strokeStyle = '#cbd5e1';
+          ctx.lineWidth = 4;
+          for (let gy = 95; gy < 220; gy += 24) {
+            ctx.beginPath();
+            ctx.moveTo(wx + 6, gy);
+            ctx.lineTo(wx + 164, gy);
+            ctx.stroke();
+          }
+
+          // Top Window Sun Visor Eaves
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(wx - 8, 60, 186, 14);
+        });
+
+        // Destination Board Above Windows
+        ctx.fillStyle = '#09090b';
+        ctx.fillRect(420, 25, 320, 40);
+        ctx.strokeStyle = '#facc15';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(420, 25, 320, 40);
+
+        ctx.fillStyle = '#facc15';
+        ctx.font = 'bold 20px Fredoka, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('HOWRAH - BARDDHAMAN | হাওড়া', 580, 52);
+
+        // Eastern Railway Crest & Markings on Yellow Band
+        ctx.fillStyle = '#0f172a';
+        ctx.font = 'bold 26px "JetBrains Mono", sans-serif';
+        ctx.fillText('EASTERN RAILWAY', 260, 338);
+        ctx.fillText('পূর্ব রেলওয়ে', 760, 338);
+
+        // Coach Stencil Numbers
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 22px "JetBrains Mono", monospace';
+        ctx.fillText('ER 31221 EMU', 512, 420);
+        ctx.font = '16px sans-serif';
+        ctx.fillText('SECOND CLASS • দ্বিতীয় শ্রেণী', 512, 444);
+
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      generateFootboardTexture() {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 128;
+        const ctx = canvas.getContext('2d');
+
+        // Dark Cast Iron Footboard Base
+        ctx.fillStyle = '#18181b';
+        ctx.fillRect(0, 0, 512, 128);
+
+        // Yellow and Black Diagonal Hazard Warning Chevrons on Edge
+        ctx.fillStyle = '#eab308';
+        ctx.fillRect(0, 0, 512, 40);
+        ctx.fillStyle = '#09090b';
+        for (let x = -40; x < 560; x += 36) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x + 22, 0);
+          ctx.lineTo(x - 6, 40);
+          ctx.lineTo(x - 28, 40);
+          ctx.closePath();
+          ctx.fill();
+        }
+
+        // Ribbed Non-Slip Surface Ridges
+        ctx.strokeStyle = '#27272a';
+        ctx.lineWidth = 4;
+        for (let ry = 48; ry < 120; ry += 12) {
+          ctx.beginPath();
+          ctx.moveTo(0, ry);
+          ctx.lineTo(512, ry);
+          ctx.stroke();
+        }
+
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      generateBillboardTexture(type) {
+        const canvas = document.createElement('canvas');
+        canvas.width = 512;
+        canvas.height = 256;
+        const ctx = canvas.getContext('2d');
+
+        if (type === 'SRMB') {
+          ctx.fillStyle = '#1e3a8a';
+          ctx.fillRect(0, 0, 512, 256);
+          ctx.fillStyle = '#facc15';
+          ctx.fillRect(0, 0, 512, 24);
+          ctx.fillStyle = '#dc2626';
+          ctx.fillRect(0, 220, 512, 36);
+
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 56px Fredoka, sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('SRMB TMT', 256, 110);
+          ctx.fillStyle = '#fde047';
+          ctx.font = 'bold 28px sans-serif';
+          ctx.fillText('আসল শক্তি • আসল ভরসা', 256, 160);
+        } else if (type === 'BOROLINE') {
+          ctx.fillStyle = '#15803d';
+          ctx.fillRect(0, 0, 512, 256);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 52px Fredoka, serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('BOROLINE', 256, 105);
+          ctx.fillStyle = '#fef08a';
+          ctx.font = 'bold 24px sans-serif';
+          ctx.fillText('সুগন্ধি অ্যান্টিসেপ্টিক ক্রিম', 256, 155);
+          ctx.font = 'italic 18px sans-serif';
+          ctx.fillText('The Original Green Tube Since 1929', 256, 195);
+        } else {
+          ctx.fillStyle = '#b45309';
+          ctx.fillRect(0, 0, 512, 256);
+          ctx.fillStyle = '#fef08a';
+          ctx.font = 'bold 46px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('BIMAL PAN MASALA', 256, 105);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 28px sans-serif';
+          ctx.fillText('দানা দানায় জাফরানের স্বাদ', 256, 160);
+        }
+
+        return new THREE.CanvasTexture(canvas);
+      }
+
+      initThree() {
+        this.scene = new THREE.Scene();
+        
+        // Realistic Atmospheric Morning Sky with Fog
+        this.scene.background = new THREE.Color(0x7dd3fc);
+        this.scene.fog = new THREE.FogExp2(0x93c5fd, 0.0035);
+
+        this.camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 900);
+        
+        // Over-the-shoulder dramatic 3D third-person camera:
+        // Positioned behind the hanging player looking along the rushing train flank!
+        this.camera.position.set(-2.6, 2.75, -4.8);
+        this.camera.lookAt(-1.25, 2.1, 14.0);
+
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.container.appendChild(this.renderer.domElement);
+
+        // Dynamic Sunlight & Ambient Lighting
+        const hemiLight = new THREE.HemisphereLight(0xe0f2fe, 0x334155, 0.9);
+        this.scene.add(hemiLight);
+
+        const sunLight = new THREE.DirectionalLight(0xfff7ed, 1.4);
+        sunLight.position.set(-30, 50, -20);
+        sunLight.castShadow = true;
+        sunLight.shadow.mapSize.width = 1024;
+        sunLight.shadow.mapSize.height = 1024;
+        this.scene.add(sunLight);
+
+        // Build Environment, Train & Scenery
+        this.buildGroundAndTracks();
+        this.buildLocalTrainCoach();
+        this.buildPlayerCharacter();
+        this.buildPackedCrowd();
+        this.buildTracksideEnvironment();
+        this.buildOppositePassingTrain();
+
+        window.addEventListener('resize', () => this.onWindowResize());
+      }
+
+      onWindowResize() {
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+        this.camera.updateProjectionMatrix();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: TRACKS, GRAVEL BALLAST & OVERHEAD OHE TRACTION WIRES
+         ------------------------------------------------------------------------ */
+      buildGroundAndTracks() {
+        this.sceneryGroup = new THREE.Group();
+
+        // 1. Gravel Ballast Bed (Dark crushed stone gravel)
+        const ballastGeo = new THREE.PlaneGeometry(36, 1200);
+        const ballastMat = new THREE.MeshLambertMaterial({ color: 0x334155 });
+        const ballast = new THREE.Mesh(ballastGeo, ballastMat);
+        ballast.rotation.x = -Math.PI / 2;
+        ballast.position.set(2.0, -0.05, 0);
+        this.sceneryGroup.add(ballast);
+
+        // 2. Grassy Side Embankments with Bengal Soil
+        [-18, 22].forEach(ex => {
+          const grassGeo = new THREE.PlaneGeometry(28, 1200);
+          const grassMat = new THREE.MeshLambertMaterial({ color: 0x166534 });
+          const grass = new THREE.Mesh(grassGeo, grassMat);
+          grass.rotation.x = -Math.PI / 2;
+          grass.position.set(ex, -0.12, 0);
+          this.sceneryGroup.add(grass);
+        });
+
+        this.tracksGroup = new THREE.Group();
+
+        // 3. Steel Rails with Metallic Reflection (4 Rails: Player track & Down track)
+        const railMat = new THREE.MeshStandardMaterial({
+          color: 0xe2e8f0,
+          metalness: 0.85,
+          roughness: 0.18
+        });
+
+        [-2.0, 0.4, 6.0, 8.4].forEach(rx => {
+          const railGeo = new THREE.BoxGeometry(0.12, 0.22, 1200);
+          const rail = new THREE.Mesh(railGeo, railMat);
+          rail.position.set(rx, 0.12, 0);
+          this.tracksGroup.add(rail);
+        });
+
+        // 4. Wooden Sleepers (Ties) with Steel Fasteners
+        const sleeperGeo = new THREE.BoxGeometry(3.6, 0.18, 0.42);
+        const sleeperMat = new THREE.MeshLambertMaterial({ color: 0x271c19 });
+
+        for (let z = -200; z < 500; z += 1.5) {
+          const s1 = new THREE.Mesh(sleeperGeo, sleeperMat);
+          s1.position.set(-0.8, 0.04, z);
+          this.tracksGroup.add(s1);
+
+          const s2 = new THREE.Mesh(sleeperGeo, sleeperMat);
+          s2.position.set(7.2, 0.04, z);
+          this.tracksGroup.add(s2);
+        }
+
+        this.scene.add(this.tracksGroup);
+        this.scene.add(this.sceneryGroup);
+
+        // 5. Overhead Electric Traction Catenary & Contact Wire (25kV OHE)
+        const wireMat = new THREE.MeshBasicMaterial({ color: 0x1e293b });
+        const wireGeo = new THREE.CylinderGeometry(0.02, 0.02, 1200, 4);
+        wireGeo.rotateX(Math.PI / 2);
+
+        const contactWire = new THREE.Mesh(wireGeo, wireMat);
+        contactWire.position.set(-0.8, 5.8, 0);
+        this.scene.add(contactWire);
+
+        const catenaryWire = new THREE.Mesh(wireGeo, wireMat);
+        catenaryWire.position.set(-0.8, 6.8, 0);
+        this.scene.add(catenaryWire);
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: REALISTIC EASTERN RAILWAY SUBURBAN EMU COACH
+         ------------------------------------------------------------------------ */
+      buildLocalTrainCoach() {
+        this.trainGroup = new THREE.Group();
+
+        const coachTex = this.generateCoachSideTexture();
+        const footboardTex = this.generateFootboardTexture();
+
+        const matCoachLivery = new THREE.MeshLambertMaterial({ map: coachTex });
+        const matFootboard = new THREE.MeshLambertMaterial({ map: footboardTex });
+        const matSteelRoof = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.55, roughness: 0.35 });
+        const matFloor = new THREE.MeshLambertMaterial({ color: 0x1e293b });
+        const matChromePole = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.92, roughness: 0.1 });
+        const matWarmLight = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+
+        // 1. Coach Floor
+        const floorGeo = new THREE.BoxGeometry(3.6, 0.36, 46);
+        const floor = new THREE.Mesh(floorGeo, matFloor);
+        floor.position.set(0.6, 0.88, 4);
+        this.trainGroup.add(floor);
+
+        // 2. Ribbed Corrugated Steel Roof
+        const roofGeo = new THREE.CylinderGeometry(2.15, 2.15, 46, 20, 1, false, 0, Math.PI);
+        roofGeo.rotateZ(-Math.PI / 2);
+        const roof = new THREE.Mesh(roofGeo, matSteelRoof);
+        roof.position.set(0.6, 4.35, 4);
+        this.trainGroup.add(roof);
+
+        // 3. Fluorescent Interior Ceiling Tube Lights
+        for (let lz = -12; lz <= 20; lz += 8) {
+          const tubeGeo = new THREE.BoxGeometry(0.12, 0.08, 2.8);
+          const tube = new THREE.Mesh(tubeGeo, matWarmLight);
+          tube.position.set(0.6, 4.25, lz);
+          this.trainGroup.add(tube);
+        }
+
+        // 4. Exterior Flank Walls (Front & Rear of Central Doorway)
+        // Central Open Doorway is at z = -2.2 to +2.2
+        const frontWallGeo = new THREE.BoxGeometry(0.14, 3.45, 18);
+        const frontWall = new THREE.Mesh(frontWallGeo, matCoachLivery);
+        frontWall.position.set(-1.2, 2.6, 12);
+        this.trainGroup.add(frontWall);
+
+        const rearWallGeo = new THREE.BoxGeometry(0.14, 3.45, 18);
+        const rearWall = new THREE.Mesh(rearWallGeo, matCoachLivery);
+        rearWall.position.set(-1.2, 2.6, -12);
+        this.trainGroup.add(rearWall);
+
+        // 5. Doorway Header Lintol (Above open door)
+        const headerGeo = new THREE.BoxGeometry(0.15, 0.65, 4.4);
+        const header = new THREE.Mesh(headerGeo, matCoachLivery);
+        header.position.set(-1.2, 4.0, 0);
+        this.trainGroup.add(header);
+
+        // 6. Hazard-Striped Footboard Step Plate (Protruding outward)
+        const footboardGeo = new THREE.BoxGeometry(0.5, 0.2, 4.4);
+        const footboard = new THREE.Mesh(footboardGeo, matFootboard);
+        footboard.position.set(-1.42, 0.98, 0);
+        this.trainGroup.add(footboard);
+
+        // 7. Iconic Central Vertical Dividing Grab Rod
+        const poleGeo = new THREE.CylinderGeometry(0.045, 0.045, 3.25, 14);
+        const grabPole = new THREE.Mesh(poleGeo, matChromePole);
+        grabPole.position.set(-1.22, 2.52, 0);
+        this.trainGroup.add(grabPole);
+
+        // 8. Doorway Side Metal Grab Handles (Both sides of door)
+        [-2.15, 2.15].forEach(dz => {
+          const handle = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 2.6, 10), matChromePole);
+          handle.position.set(-1.25, 2.45, dz);
+          this.trainGroup.add(handle);
+        });
+
+        // 9. Steel Wheel Bogies Underneath Coach
+        const matWheel = new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.8 });
+        const wheelGeo = new THREE.CylinderGeometry(0.48, 0.48, 0.16, 16);
+        wheelGeo.rotateZ(Math.PI / 2);
+
+        [-12, -8, 12, 16].forEach(wz => {
+          const wLeft = new THREE.Mesh(wheelGeo, matWheel);
+          wLeft.position.set(-2.0, 0.48, wz);
+          this.trainGroup.add(wLeft);
+
+          const wRight = new THREE.Mesh(wheelGeo, matWheel);
+          wRight.position.set(0.4, 0.48, wz);
+          this.trainGroup.add(wRight);
+        });
+
+        // 10. Rooftop Diamond Pantograph (Touching OHE Contact Wire)
+        const pantoGroup = new THREE.Group();
+        const pantoMat = new THREE.MeshLambertMaterial({ color: 0xd97706 });
+        const armGeo = new THREE.CylinderGeometry(0.03, 0.03, 1.8, 8);
+
+        const arm1 = new THREE.Mesh(armGeo, pantoMat);
+        arm1.rotation.z = 0.55;
+        arm1.position.set(-0.4, 0.8, 0);
+        pantoGroup.add(arm1);
+
+        const arm2 = new THREE.Mesh(armGeo, pantoMat);
+        arm2.rotation.z = -0.55;
+        arm2.position.set(0.4, 0.8, 0);
+        pantoGroup.add(arm2);
+
+        // Carbon Slider Contact Pan on Top
+        const panGeo = new THREE.BoxGeometry(2.2, 0.06, 0.25);
+        const pan = new THREE.Mesh(panGeo, new THREE.MeshBasicMaterial({ color: 0x38bdf8 }));
+        pan.position.y = 1.45;
+        pantoGroup.add(pan);
+
+        pantoGroup.position.set(-0.8, 4.35, -5);
+        this.trainGroup.add(pantoGroup);
+
+        this.scene.add(this.trainGroup);
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: AUTHENTIC BENGALI COMMUTER CHARACTER (The Footboard Hero!)
+         ------------------------------------------------------------------------ */
+      buildPlayerCharacter() {
+        this.playerGroup = new THREE.Group();
+
+        const matSkin = new THREE.MeshLambertMaterial({ color: 0xdf9e76 });
+        const matShirt = new THREE.MeshLambertMaterial({ color: 0x0284c7 }); // Bengal Sky Blue Formal Shirt
+        const matPants = new THREE.MeshLambertMaterial({ color: 0x1e293b }); // Dark Navy Trousers
+        const matLeather = new THREE.MeshLambertMaterial({ color: 0x713f12 }); // Brown Leather Office Bag
+        const matShoe = new THREE.MeshLambertMaterial({ color: 0x09090b });
+        const matHair = new THREE.MeshLambertMaterial({ color: 0x18181b });
+
+        // 1. Torso with Shirt Collar
+        this.playerShirt = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.32, 0.95, 8), matShirt);
+        this.playerShirt.position.y = 2.0;
+        this.playerGroup.add(this.playerShirt);
+
+        // Collar
+        const collar = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.26, 0.15, 8), matShirt);
+        collar.position.y = 2.52;
+        this.playerGroup.add(collar);
+
+        // 2. Leather Office Shoulder Bag (Draped over shoulder)
+        this.playerBag = new THREE.Mesh(new THREE.BoxGeometry(0.45, 0.58, 0.22), matLeather);
+        this.playerBag.position.set(0.15, 1.95, 0.28);
+        this.playerBag.rotation.y = 0.25;
+        this.playerGroup.add(this.playerBag);
+
+        // 3. Head & Wind-Swept Hair
+        this.playerHead = new THREE.Mesh(new THREE.SphereGeometry(0.22, 12, 12), matSkin);
+        this.playerHead.position.y = 2.72;
+        this.playerGroup.add(this.playerHead);
+
+        // Thick Hair
+        const hair = new THREE.Mesh(new THREE.SphereGeometry(0.23, 10, 10, 0, Math.PI * 2, 0, Math.PI / 1.8), matHair);
+        hair.position.y = 2.76;
+        hair.rotation.z = -0.15;
+        this.playerGroup.add(hair);
+
+        // Glasses Frame
+        const spec = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.08, 0.06), matHair);
+        spec.position.set(0, 2.72, -0.22);
+        this.playerGroup.add(spec);
+
+        // 4. Planted Left Leg (Holding onto Footboard edge)
+        const legLeft = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.13, 0.95, 8), matPants);
+        legLeft.position.set(-0.16, 1.35, 0.15);
+        this.playerGroup.add(legLeft);
+
+        const shoeLeft = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.35), matShoe);
+        shoeLeft.position.set(-0.16, 0.95, 0.22);
+        this.playerGroup.add(shoeLeft);
+
+        // 5. Dangling Right Leg (Flying outside in the 85 km/h wind!)
+        this.playerLegRight = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.13, 0.95, 8), matPants);
+        this.playerLegRight.position.set(-0.35, 1.3, -0.2);
+        this.playerLegRight.rotation.z = -0.42;
+        this.playerGroup.add(this.playerLegRight);
+
+        const shoeRight = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.12, 0.35), matShoe);
+        shoeRight.position.set(-0.52, 0.88, -0.28);
+        shoeRight.rotation.z = -0.42;
+        this.playerGroup.add(shoeRight);
+
+        // 6. Left Arm Gripping the Center Metal Pole Firmly
+        const armLeft = new THREE.Mesh(new THREE.CylinderGeometry(0.085, 0.09, 0.78, 8), matShirt);
+        armLeft.position.set(0.12, 2.32, -0.25);
+        armLeft.rotation.x = -1.15;
+        armLeft.rotation.z = 0.52;
+        this.playerGroup.add(armLeft);
+
+        const handLeft = new THREE.Mesh(new THREE.SphereGeometry(0.09, 8, 8), matSkin);
+        handLeft.position.set(0.12, 2.68, -0.58);
+        this.playerGroup.add(handLeft);
+
+        // 7. Right Arm Balancing outside
+        const armRight = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.085, 0.75, 8), matShirt);
+        armRight.position.set(-0.35, 2.15, 0.15);
+        armRight.rotation.z = -0.7;
+        this.playerGroup.add(armRight);
+
+        // Position player on footboard edge (x = -1.48)
+        this.playerGroup.position.set(-1.48, 0.0, 0.3);
+        this.trainGroup.add(this.playerGroup);
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: PACKED COMMUTER CROWD (Inside Train Compartment)
+         ------------------------------------------------------------------------ */
+      buildPackedCrowd() {
+        this.crowdGroup = new THREE.Group();
+
+        const shirtColors = [0x3b82f6, 0xef4444, 0xf59e0b, 0x10b981, 0x8b5cf6, 0xffffff, 0x64748b];
+        const matSkin = new THREE.MeshLambertMaterial({ color: 0xd97706 });
+        const matHair = new THREE.MeshLambertMaterial({ color: 0x18181b });
+
+        // 14 Dense Commuters packed into doorway threshold
+        for (let row = 0; row < 3; row++) {
+          for (let col = -2; col <= 2; col++) {
+            const commuter = new THREE.Group();
+            const color = shirtColors[Math.floor(Math.random() * shirtColors.length)];
+            const cMat = new THREE.MeshLambertMaterial({ color });
+
+            // Torso
+            const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.32, 0.95, 8), cMat);
+            torso.position.y = 1.9;
+            commuter.add(torso);
+
+            // Head
+            const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 10), matSkin);
+            head.position.y = 2.62;
+            commuter.add(head);
+
+            // Hair
+            const hair = new THREE.Mesh(new THREE.SphereGeometry(0.23, 8, 8, 0, Math.PI * 2, 0, Math.PI / 2), matHair);
+            hair.position.y = 2.65;
+            commuter.add(hair);
+
+            // Commuter holding newspaper (Anandabazar Patrika)
+            if (row === 0 && col === 0) {
+              const newsGeo = new THREE.PlaneGeometry(0.5, 0.4);
+              const newsMat = new THREE.MeshBasicMaterial({ color: 0xfef08a, side: THREE.DoubleSide });
+              const news = new THREE.Mesh(newsGeo, newsMat);
+              news.position.set(-0.25, 2.1, -0.4);
+              news.rotation.y = 0.5;
+              commuter.add(news);
+            }
+
+            commuter.position.set(-0.6 + row * 0.85, 0, col * 0.85 + (Math.random() * 0.2 - 0.1));
+            this.crowdGroup.add(commuter);
+          }
+        }
+
+        this.trainGroup.add(this.crowdGroup);
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: TRACKSIDE KOLKATA ENVIRONMENT (Poles, Trees, Ads, Walls)
+         ------------------------------------------------------------------------ */
+      buildTracksideEnvironment() {
+        const matSteelPole = new THREE.MeshLambertMaterial({ color: 0x64748b });
+        const matInsulator = new THREE.MeshLambertMaterial({ color: 0xb91c1c });
+        const matBrick = new THREE.MeshLambertMaterial({ color: 0x7c2d12 });
+        const matWood = new THREE.MeshLambertMaterial({ color: 0x451a03 });
+        const matFoliage = new THREE.MeshLambertMaterial({ color: 0x15803d });
+
+        // 1. High Voltage OHE Lattice Poles along the track
+        for (let i = 0; i < 7; i++) {
+          const poleGroup = new THREE.Group();
+
+          // Steel Mast (Close to train door: x = -2.95)
+          const mast = new THREE.Mesh(new THREE.BoxGeometry(0.35, 8.0, 0.35), matSteelPole);
+          mast.position.y = 4.0;
+          poleGroup.add(mast);
+
+          // Horizontal Cantilever Arm
+          const arm = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.18, 0.18), matSteelPole);
+          arm.position.set(1.1, 5.8, 0);
+          poleGroup.add(arm);
+
+          // Porcelain Insulators
+          const ins = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.12, 0.5, 8), matInsulator);
+          ins.position.set(1.8, 5.5, 0);
+          poleGroup.add(ins);
+
+          // Danger Warning Sign ("DANGER 25000 VOLTS")
+          const sign = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.65, 0.65), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+          sign.position.set(0.2, 3.2, 0);
+          poleGroup.add(sign);
+
+          poleGroup.position.set(-2.95, 0, 70 + i * 65);
+          this.scene.add(poleGroup);
+          this.poles.push(poleGroup);
+        }
+
+        // 2. Trackside Brick Boundary Walls with Kolkata Advertisements
+        const adTypes = ['SRMB', 'BOROLINE', 'BIMAL'];
+        for (let i = 0; i < 6; i++) {
+          const wallGroup = new THREE.Group();
+
+          // Brick Wall Segment
+          const wall = new THREE.Mesh(new THREE.BoxGeometry(0.3, 2.8, 16), matBrick);
+          wall.position.y = 1.4;
+          wallGroup.add(wall);
+
+          // Giant Commercial Advertisement Billboard
+          const adTex = this.generateBillboardTexture(adTypes[i % adTypes.length]);
+          const boardGeo = new THREE.PlaneGeometry(6.5, 3.2);
+          const boardMat = new THREE.MeshBasicMaterial({ map: adTex, side: THREE.DoubleSide });
+          const board = new THREE.Mesh(boardGeo, boardMat);
+          board.position.set(0.22, 2.4, 0);
+          board.rotation.y = -Math.PI / 2;
+          wallGroup.add(board);
+
+          wallGroup.position.set(-6.5, 0, 40 + i * 90);
+          this.scene.add(wallGroup);
+          this.billboards.push(wallGroup);
+        }
+
+        // 3. Bengal Coconut Palm & Banana Trees along Trackside
+        for (let i = 0; i < 10; i++) {
+          const treeGroup = new THREE.Group();
+
+          // Slender Curved Palm Trunk
+          const trunkGeo = new THREE.CylinderGeometry(0.2, 0.35, 9.5, 8);
+          const trunk = new THREE.Mesh(trunkGeo, matWood);
+          trunk.position.y = 4.75;
+          trunk.rotation.z = (Math.random() * 0.15 - 0.07);
+          treeGroup.add(trunk);
+
+          // Palm Crown Fronds
+          for (let f = 0; f < 6; f++) {
+            const frondGeo = new THREE.ConeGeometry(1.6, 3.8, 5);
+            frondGeo.rotateX(Math.PI / 3);
+            const frond = new THREE.Mesh(frondGeo, matFoliage);
+            frond.position.y = 9.2;
+            frond.rotation.y = f * (Math.PI / 3);
+            treeGroup.add(frond);
+          }
+
+          treeGroup.position.set(-9.5 - Math.random() * 4, 0, 30 + i * 50);
+          this.scene.add(treeGroup);
+          this.trees.push(treeGroup);
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         3D ASSETS: OPPOSITE TRACK PASSING TRAIN (High-Speed Blast!)
+         ------------------------------------------------------------------------ */
+      buildOppositePassingTrain() {
+        this.passingTrain = new THREE.Group();
+
+        const matRedExpress = new THREE.MeshLambertMaterial({ color: 0xb91c1c });
+        const matCreamBand = new THREE.MeshLambertMaterial({ color: 0xfef08a });
+        const matSteel = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.6 });
+
+        // Long Express Train Body (85 meters long)
+        const bodyGeo = new THREE.BoxGeometry(3.6, 3.8, 85);
+        const body = new THREE.Mesh(bodyGeo, matRedExpress);
+        body.position.y = 2.4;
+        this.passingTrain.add(body);
+
+        const bandGeo = new THREE.BoxGeometry(3.7, 0.55, 85);
+        const band = new THREE.Mesh(bandGeo, matCreamBand);
+        band.position.y = 2.2;
+        this.passingTrain.add(band);
+
+        const roofGeo = new THREE.CylinderGeometry(2.05, 2.05, 85, 14, 1, false, 0, Math.PI);
+        roofGeo.rotateZ(-Math.PI / 2);
+        const roof = new THREE.Mesh(roofGeo, matSteel);
+        roof.position.y = 4.3;
+        this.passingTrain.add(roof);
+
+        // Blazing Locomotive Headlamp
+        const lamp = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.2, 12), new THREE.MeshBasicMaterial({ color: 0xfef08a }));
+        lamp.rotateX(Math.PI / 2);
+        lamp.position.set(0, 3.2, -42.6);
+        this.passingTrain.add(lamp);
+
+        this.passingTrain.position.set(7.2, 0, -500);
+        this.passingTrain.visible = false;
+        this.scene.add(this.passingTrain);
+      }
+
+      /* ------------------------------------------------------------------------
+         CONTROLS & EVENT LISTENERS
+         ------------------------------------------------------------------------ */
+      setupEventListeners() {
+        document.getElementById('startBtn').addEventListener('click', () => this.startGame());
+        document.getElementById('restartBtn').addEventListener('click', () => this.restartGame());
+
+        // Keyboard Controls
+        window.addEventListener('keydown', (e) => {
+          if (!this.isRunning || this.isGameOver) return;
+          this.audio.ensureContext();
+
+          if (e.code === 'KeyA' || e.key === 'ArrowLeft') {
+            this.setPlayerPose('TUCKED');
+          } else if (e.code === 'KeyD' || e.key === 'ArrowRight') {
+            this.setPlayerPose('LEAN_OUT');
+          } else if (e.code === 'KeyS' || e.key === 'ArrowDown') {
+            this.setPlayerPose('DUCKING');
+          } else if (e.code === 'Space') {
+            e.preventDefault();
+            if (this.stationQteActive) {
+              this.handleStationJump();
+            } else {
+              this.executeElbowPush();
+            }
+          }
+        });
+
+        window.addEventListener('keyup', (e) => {
+          if (!this.isRunning || this.isGameOver) return;
+          if (['KeyA', 'ArrowLeft', 'KeyD', 'ArrowRight', 'KeyS', 'ArrowDown'].includes(e.code) ||
+              ['ArrowLeft', 'ArrowRight', 'ArrowDown'].includes(e.key)) {
+            this.setPlayerPose('HANGING');
+          }
+        });
+
+        // Touch Button Bindings
+        const bindButton = (id, pose) => {
+          const btn = document.getElementById(id);
+          const startAction = (e) => {
+            e.preventDefault();
+            this.audio.ensureContext();
+            this.setPlayerPose(pose);
+            btn.classList.add('active');
+          };
+          const endAction = (e) => {
+            e.preventDefault();
+            this.setPlayerPose('HANGING');
+            btn.classList.remove('active');
+          };
+          btn.addEventListener('touchstart', startAction, { passive: false });
+          btn.addEventListener('touchend', endAction, { passive: false });
+          btn.addEventListener('mousedown', startAction);
+          btn.addEventListener('mouseup', endAction);
+        };
+
+        bindButton('btnTuck', 'TUCKED');
+        bindButton('btnLean', 'LEAN_OUT');
+        bindButton('btnDuck', 'DUCKING');
+
+        // Elbow Button
+        const elbowBtn = document.getElementById('btnElbow');
+        const triggerElbow = (e) => {
+          e.preventDefault();
+          this.audio.ensureContext();
+          this.executeElbowPush();
+        };
+        elbowBtn.addEventListener('touchstart', triggerElbow, { passive: false });
+        elbowBtn.addEventListener('click', triggerElbow);
+
+        // QTE Station Jump Button
+        document.getElementById('qteJumpBtn').addEventListener('click', () => {
+          this.handleStationJump();
+        });
+      }
+
+      setPlayerPose(pose) {
+        this.playerState = pose;
+
+        // Visual Pose Animation Updates
+        if (pose === 'TUCKED') {
+          this.playerGroup.position.x = -1.18;
+          this.playerGroup.rotation.z = 0.28;
+          this.playerShirt.rotation.x = 0;
+          this.playerHead.position.y = 2.72;
+          this.spawnComicPopup('🚪 TUCKED IN! SAFE!', this.playerGroup.position, '#38bdf8');
+        } else if (pose === 'LEAN_OUT') {
+          this.playerGroup.position.x = -1.86;
+          this.playerGroup.rotation.z = -0.45;
+          this.playerShirt.rotation.x = 0.18;
+          this.playerHead.position.y = 2.65;
+          this.spawnComicPopup('💨 LEANING OUT!', this.playerGroup.position, '#facc15');
+        } else if (pose === 'DUCKING') {
+          this.playerGroup.position.x = -1.48;
+          this.playerGroup.rotation.z = -0.15;
+          this.playerShirt.rotation.x = 0.98;
+          this.playerHead.position.y = 1.62;
+          this.spawnComicPopup('⚡ DUCKED! HEAD DOWN!', this.playerGroup.position, '#4ade80');
+        } else {
+          this.playerGroup.position.x = -1.48;
+          this.playerGroup.rotation.z = -0.15;
+          this.playerShirt.rotation.x = 0.1;
+          this.playerHead.position.y = 2.72;
+        }
+      }
+
+      executeElbowPush() {
+        if (this.elbowCooldown > 0) return;
+        this.elbowCooldown = 0.55;
+
+        this.audio.playElbowThud();
+        this.crowdPressure = Math.max(10, this.crowdPressure - 40);
+
+        this.crowdGroup.position.x += 0.4;
+        setTimeout(() => { this.crowdGroup.position.x = 0; }, 180);
+
+        this.spawnComicPopup('💥 DHAKKA! -40% CROWD', this.playerGroup.position, '#f97316');
+      }
+
+      handleStationJump() {
+        if (!this.stationQteActive) return;
+        this.stationQteActive = false;
+        document.getElementById('stationQte').classList.remove('active');
+
+        this.stationsCleared++;
+        document.getElementById('stationsCleared').textContent = this.stationsCleared;
+        this.audio.playStationChime();
+        this.audio.playClip('bhai', 0.9);
+
+        this.showAlert('🏆 BOLLYWOOD LANDING! SAFE ON PLATFORM!', 3000);
+        this.spawnComicPopup('🔥 PRO COMMUTER! +5000', this.playerGroup.position, '#4ade80');
+
+        this.crowdPressure = 25;
+        this.gripStamina = 100;
+
+        if (this.currentStationIdx < this.stations.length - 1) {
+          this.currentStationIdx++;
+          document.getElementById('stationName').textContent = this.stations[this.currentStationIdx].name;
+          setTimeout(() => {
+            this.targetSpeed = 85;
+            this.isAtStation = false;
+          }, 2000);
+        } else {
+          setTimeout(() => {
+            this.triggerGameOver('VICTORY');
+          }, 1500);
+        }
+      }
+
+      /* ------------------------------------------------------------------------
+         GAME START & RESTART
+         ------------------------------------------------------------------------ */
+      startGame() {
+        this.audio.ensureContext();
+        document.getElementById('startModal').style.display = 'none';
+
+        this.isRunning = true;
+        this.isGameOver = false;
+        this.speed = 0;
+        this.targetSpeed = 85;
+        this.distanceTravelled = 0;
+        this.stationsCleared = 0;
+        this.currentStationIdx = 0;
+        this.crowdPressure = 30;
+        this.gripStamina = 100;
+
+        document.getElementById('stationName').textContent = this.stations[0].name;
+
+        this.audio.playTrainHorn();
+        this.animate(0);
+      }
+
+      restartGame() {
+        document.getElementById('gameOverModal').style.display = 'none';
+        this.startGame();
+      }
+
+      triggerGameOver(reason) {
+        this.isGameOver = true;
+        this.isRunning = false;
+
+        const modal = document.getElementById('gameOverModal');
+        const title = document.getElementById('goTitle');
+        const desc = document.getElementById('goDesc');
+        const emoji = document.getElementById('goEmoji');
+
+        document.getElementById('goDistance').textContent = Math.floor(this.distanceTravelled);
+        document.getElementById('goStations').textContent = this.stationsCleared;
+
+        if (reason === 'POLE_HIT') {
+          emoji.textContent = '💥';
+          title.textContent = 'পোলে ধাক্কা খেয়ে ছিটকে গেছেন!';
+          desc.textContent = 'ইলেকট্রিক পোলে মাথা ঠুকে গেছে! পরের বার ডাক (Duck) বা ভেতরে যান!';
+          this.audio.playClip('gian', 0.9);
+        } else if (reason === 'CROWD_PUSH') {
+          emoji.textContent = '🤼';
+          title.textContent = 'ভিড়ের চাপে নিচে পড়ে গেছেন!';
+          desc.textContent = 'যাত্রীরা ধাক্কা মেরে ফেলে দিয়েছে! কনুই দিয়ে ধাক্কা (SPACE) দিতে হবে!';
+          this.audio.playClip('jaldi', 0.9);
+        } else if (reason === 'MISSED_STATION') {
+          emoji.textContent = '🚆';
+          title.textContent = 'স্টেশন পার হয়ে কারশেডে পৌঁছে গেছেন!';
+          desc.textContent = '৩ সেকেন্ড উইন্ডোতে প্ল্যাটফর্মে লাফ দিতে পারেননি!';
+          this.audio.playClip('slowed', 0.85);
+        } else if (reason === 'VICTORY') {
+          emoji.textContent = '🏆';
+          title.textContent = 'হাওড়া জংশনে সফল অবতরণ!';
+          desc.textContent = 'অভিনন্দন! আপনি লোকাল ট্রেনের কিংবদন্তি যাত্রী!';
+          this.audio.playClip('bhai', 0.9);
+        }
+
+        modal.style.display = 'flex';
+      }
+
+      showAlert(text, duration = 1800) {
+        const banner = document.getElementById('alertBanner');
+        banner.textContent = text;
+        banner.classList.add('show');
+        setTimeout(() => banner.classList.remove('show'), duration);
+      }
+
+      spawnComicPopup(text, pos, color = '#facc15') {
+        const popup = document.createElement('div');
+        popup.className = 'comic-popup';
+        popup.textContent = text;
+        popup.style.color = color;
+        popup.style.left = '50%';
+        popup.style.top = '40%';
+        document.body.appendChild(popup);
+
+        requestAnimationFrame(() => {
+          popup.style.top = '28%';
+          popup.style.opacity = '0';
+          popup.style.transform = 'translate(-50%, -50%) scale(1.35)';
+        });
+
+        setTimeout(() => popup.remove(), 750);
+      }
+
+      /* ------------------------------------------------------------------------
+         MAIN GAME LOOP & ANIMATION UPDATE
+         ------------------------------------------------------------------------ */
+      animate(time) {
+        if (!this.isRunning) return;
+        requestAnimationFrame((t) => this.animate(t));
+
+        const dt = 0.016;
+
+        // 1. Train Speed Dynamics
+        if (this.speed < this.targetSpeed) {
+          this.speed += 14 * dt;
+        } else if (this.speed > this.targetSpeed) {
+          this.speed -= 28 * dt;
+        }
+
+        const speedMps = (this.speed * 1000) / 3600;
+        this.distanceTravelled += speedMps * dt;
+
+        // 2. Track Clatter Audio Timing
+        this.clatterAcc += dt * (this.speed / 45);
+        if (this.clatterAcc > 0.42) {
+          this.clatterAcc = 0;
+          this.audio.playTrackClick(this.speed);
+        }
+
+        // 3. Train Horn
+        this.hornTimer -= dt;
+        if (this.hornTimer <= 0) {
+          this.audio.playTrainHorn();
+          this.hornTimer = 14 + Math.random() * 10;
+        }
+
+        // 4. Update HUD
+        document.getElementById('speedVal').textContent = Math.round(this.speed);
+        const nextStation = this.stations[this.currentStationIdx];
+        const distRemaining = Math.max(0, Math.round(nextStation.dist - this.distanceTravelled));
+        document.getElementById('distVal').textContent = distRemaining;
+
+        // 5. Crowd Pressure Accumulation
+        this.crowdPressure += 4.5 * dt;
+        if (this.crowdPressure >= 100) {
+          this.triggerGameOver('CROWD_PUSH');
+          return;
+        }
+        document.getElementById('pressureNum').textContent = Math.round(this.crowdPressure) + '%';
+        document.getElementById('pressureBar').style.width = Math.min(100, this.crowdPressure) + '%';
+
+        // 6. Grip Stamina
+        if (this.playerState === 'LEAN_OUT') {
+          this.gripStamina = Math.max(0, this.gripStamina - 8 * dt);
+        } else if (this.playerState === 'TUCKED') {
+          this.gripStamina = Math.min(100, this.gripStamina + 14 * dt);
+        }
+        document.getElementById('gripNum').textContent = Math.round(this.gripStamina) + '%';
+        document.getElementById('gripBar').style.width = this.gripStamina + '%';
+
+        if (this.gripStamina <= 0) {
+          this.triggerGameOver('CROWD_PUSH');
+          return;
+        }
+
+        if (this.elbowCooldown > 0) this.elbowCooldown -= dt;
+
+        // 7. Scroll Track Sleepers & Embankment backward for high-speed sensation
+        this.tracksGroup.position.z -= speedMps * dt;
+        if (this.tracksGroup.position.z < -45) {
+          this.tracksGroup.position.z = 0;
+        }
+
+        // 8. Move Poles backward & Collision Detection
+        const playerZ = 0.0;
+        this.poles.forEach((pole) => {
+          pole.position.z -= speedMps * dt;
+
+          if (pole.position.z < -60) {
+            pole.position.z = 380 + Math.random() * 40;
+          }
+
+          if (pole.position.z > 0 && pole.position.z < 38 && !this.stationQteActive) {
+            this.showAlert('⚠️ POLE INCOMING! DUCK OR TUCK IN!');
+          }
+
+          // Collision check at doorway plane
+          if (Math.abs(pole.position.z - playerZ) < 1.4) {
+            if (this.playerState === 'LEAN_OUT' || this.playerState === 'HANGING') {
+              this.triggerGameOver('POLE_HIT');
+              return;
+            } else {
+              if (!pole.hasWhooshed) {
+                pole.hasWhooshed = true;
+                this.audio.playWhoosh();
+                this.spawnComicPopup('⚡ NEAR MISS! WHOOSH!', this.playerGroup.position, '#38bdf8');
+              }
+            }
+          } else {
+            pole.hasWhooshed = false;
+          }
+        });
+
+        // 9. Move Scenery Billboards & Trees
+        this.billboards.forEach((b) => {
+          b.position.z -= speedMps * dt;
+          if (b.position.z < -80) b.position.z = 450 + Math.random() * 50;
+        });
+
+        this.trees.forEach((tr) => {
+          tr.position.z -= speedMps * dt;
+          if (tr.position.z < -80) tr.position.z = 450 + Math.random() * 50;
+        });
+
+        // 10. Opposite Passing Express Train
+        this.passingTrainTimer -= dt;
+        if (this.passingTrainTimer <= 0 && !this.passingTrain.visible) {
+          this.passingTrain.visible = true;
+          this.passingTrain.position.z = 400;
+          this.audio.playTrainHorn();
+        }
+
+        if (this.passingTrain.visible) {
+          this.passingTrain.position.z -= (speedMps + 42) * dt;
+          if (this.passingTrain.position.z < -280) {
+            this.passingTrain.visible = false;
+            this.passingTrainTimer = 18 + Math.random() * 12;
+          }
+        }
+
+        // 11. Station Arrival & 3-Second QTE Window
+        if (distRemaining < 250 && !this.isAtStation) {
+          this.targetSpeed = 16;
+          this.isAtStation = true;
+          this.stationQteActive = true;
+          this.stationQteTimer = 3.6;
+
+          document.getElementById('stationQte').classList.add('active');
+          this.audio.playStationChime();
+        }
+
+        if (this.stationQteActive) {
+          this.stationQteTimer -= dt;
+          if (this.stationQteTimer <= 0) {
+            this.stationQteActive = false;
+            document.getElementById('stationQte').classList.remove('active');
+            this.triggerGameOver('MISSED_STATION');
+            return;
+          }
+        }
+
+        // 12. Dynamic Commuter Bag & Leg Sway in the Wind
+        if (this.playerBag) {
+          this.playerBag.rotation.z = Math.sin(time * 0.012) * 0.15 * (this.speed / 60);
+        }
+        if (this.playerLegRight && this.playerState === 'HANGING') {
+          this.playerLegRight.rotation.x = Math.sin(time * 0.015) * 0.2 * (this.speed / 60);
+        }
+
+        // 13. Dynamic Cinematic Camera Motion & Speed Wobble
+        this.cameraWobble += dt * 8;
+        this.camera.position.y = 2.75 + Math.sin(this.cameraWobble) * 0.035 * (this.speed / 70);
+        this.camera.position.x = -2.6 + Math.cos(this.cameraWobble * 0.7) * 0.02 * (this.speed / 70);
+
+        this.renderer.render(this.scene, this.camera);
+      }
+    }
+
+    // Initialize Game on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      window.localTrainGame = new LocalTrainGame();
+    });
+  </script>
+</body>
+</html>

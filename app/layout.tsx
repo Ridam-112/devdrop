@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     siteName: "DevDrop",
     title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite",
     description:
-      "DevDrop (devdrop.online) is the official free client-side utility suite with 140+ tools and 24+ games. 100% private, zero server logs.",
+      "DevDrop (devdrop.online) is the official free client-side utility suite with 140+ tools and 70+ games. 100% private, zero server logs.",
     images: [
       {
         url: "https://devdrop.online/logo.png",
@@ -211,7 +211,7 @@ export default function RootLayout({
                     "Image Compressor & Format Converter",
                     "Photo Background Remover",
                     "Pure Client-Side PDF Maker & Photo to PDF",
-                    "24+ Curated Open Source HTML5 Browser Games",
+                    "70+ Curated Open Source HTML5 & 3D Browser Games",
                     "100% Private - Zero Server Uploads"
                   ]
                 }

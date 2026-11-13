@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>No Brakes Desi Bus Driver 3D • Runaway Highway Chaos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <link rel="stylesheet" href="desi_bus/css/style.css" />
+</head>
+<body>
+  <div id="gameCanvas"></div>
+
+  <!-- Mud Splatter Overlay on Screen -->
+  <div id="mudSplatter" class="mud-splatter-overlay">
+    <div class="mud-blot b1"></div>
+    <div class="mud-blot b2"></div>
+    <div class="mud-blot b3"></div>
+    <div class="mud-wiper"></div>
+  </div>
+
+  <!-- Bollywood Slow-Mo Disco Overlay -->
+  <div class="disco-overlay" id="discoOverlay"></div>
+
+  <!-- Top App HUD -->
+  <div class="top-hud">
+    <!-- Left Navigation, Camera & Weather View -->
+    <div class="top-hud-left">
+      <a href="arcade_hub.html" class="hud-pill" style="text-decoration: none;">
+        <span>🏠</span>
+        <span>Hub</span>
+      </a>
+      <div style="display: flex; gap: 6px;">
+        <button class="hud-pill" id="btnCam" style="cursor: pointer;" title="Camera View [C]">
+          <span>📹</span>
+          <span id="camModeTxt">CHASE</span>
+        </button>
+        <button class="hud-pill" id="btnWeather" style="cursor: pointer;" title="Weather [V]">
+          <span>🌤️</span>
+          <span id="weatherTxt">☀️ DAY</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Center: Chaos Meter -->
+    <div class="chaos-card">
+      <div class="chaos-title">🔥 CHAOS<span class="chaos-sub"> (SLOW-MO 100%)</span></div>
+      <div class="chaos-track">
+        <div class="chaos-fill" id="chaosFill"></div>
+      </div>
+      <div style="font-size: 11px; font-weight: 800; color: #facc15;" id="chaosTxt">0%</div>
+    </div>
+
+    <!-- Right: Damage Bill, Garage & Radio -->
+    <div class="top-hud-right">
+      <div class="hud-pill">
+        <span>💸 BILL:</span>
+        <span id="damageVal" style="color: #ef4444;">₹0</span>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+        <button class="hud-pill" id="btnRadio" style="cursor: pointer; background: #9333ea;" title="Cassette FM Radio [R]">
+          <span>📻</span>
+          <span id="radioStationTxt">Radio<span class="shortcut-hint"> [R]</span></span>
+        </button>
+        <button class="hud-pill" id="btnGarage" style="cursor: pointer; background: #6366f1;" title="Bus Garage [G]">
+          <span>🏪</span>
+          <span>Garage<span class="shortcut-hint"> [G]</span></span>
+        </button>
+        <div class="hud-pill">
+          <span>🛣️</span>
+          <span id="distVal" style="color: #38bdf8;">0m</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Toast Notification -->
+  <div id="appNotification">🚨 NO BRAKES! RUNAWAY BUS!</div>
+
+  <!-- Comic Popups Overlay -->
+  <div id="comic-container"></div>
+
+  <!-- Bottom HUD Controls & Speedometer (Mobile Friendly) -->
+  <div class="bottom-hud">
+    <!-- Left Column: Horn above Left Steer -->
+    <div class="hud-col hud-col-left">
+      <button class="ctrl-btn horn" id="btnHorn" title="Musical Air Horn [H]">
+        <span class="btn-icon">📢</span>
+        <span>HORN</span>
+      </button>
+      <button class="ctrl-btn steer-btn" id="btnLeft" title="Steer Left [A / ◀]">
+        <span class="btn-icon">◀</span>
+        <span>LEFT</span>
+      </button>
+    </div>
+
+    <!-- Center: Speedometer Display -->
+    <div class="speedo-card">
+      <div class="speedo-number" id="speedoVal">55</div>
+      <div class="speedo-unit">KM/H</div>
+      <div class="brakes-dead-badge">🚨 NO BRAKES!</div>
+      <div class="nitro-track" title="Nitro Fuel Meter">
+        <div class="nitro-fill" id="nitroFill"></div>
+      </div>
+      <div style="font-size: 9px; color: #38bdf8; font-weight: 700; margin-top: 2px;">NITRO BOOST</div>
+    </div>
+
+    <!-- Right Column: Speed & Nitro Boost above Right Steer -->
+    <div class="hud-col hud-col-right">
+      <div class="speed-btns-row">
+        <button class="ctrl-btn nitro-btn" id="btnNitro" title="Nitro Turbo Boost [Shift]">
+          <span class="btn-icon">🚀</span>
+          <span>NITRO</span>
+        </button>
+        <button class="ctrl-btn gas-btn" id="btnGas" title="Speed Up / Accelerator [W / ▲]">
+          <span class="btn-icon">⚡</span>
+          <span>SPEED 💨</span>
+        </button>
+      </div>
+      <button class="ctrl-btn steer-btn" id="btnRight" title="Steer Right [D / ▶]">
+        <span class="btn-icon">▶</span>
+        <span>RIGHT</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Start Menu Modal -->
+  <div class="modal-backdrop" id="startModal">
+    <div class="modal-card">
+      <h1 class="modal-title">NO BRAKES DESI BUS 3D</h1>
+      <p class="modal-subtitle">Driver Babu Bhai's brake pedal just snapped! The 10-ton bus cannot stop!</p>
+
+      <div class="bus-banner-preview">
+        <div style="font-weight: 800; font-size: 16px; color: #ef4444; margin-bottom: 6px;">🚌 BABU BHAI EXPRESS (42 PASSENGERS)</div>
+        <p style="font-size: 13px; color: #475569; line-height: 1.4;">
+          • Hold <b>GAS [W / Up]</b> to rev the diesel engine and reach 160+ km/h!<br />
+          • Foot brakes are 100% DEAD — bus glides with unstoppable momentum!<br />
+          • Use <b>Handbrake [SPACE]</b> to drift sideways on 2 wheels!<br />
+          • Honk <b>Air Horn [H]</b> to scare cows & panic traffic away!<br />
+          • Smash Fruit Thelas & Toll Gates to charge the <b>Chaos Meter</b>!
+        </p>
+      </div>
+
+      <button class="action-btn" id="startBtn">START RUNAWAY BUS 🚌💨</button>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-backdrop" id="gameOverModal" style="display: none;">
+    <div class="modal-card">
+      <h1 class="modal-title" style="color: #ef4444;">💥 CATASTROPHIC WRECK!</h1>
+      <p class="modal-subtitle">The runaway bus flipped over after an epic Bollywood drift!</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">Distance Survived</div>
+          <div class="stat-box-val" id="finalDistVal" style="color: #0284c7;">0m</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Public Damage Bill</div>
+          <div class="stat-box-val" id="finalDamageVal" style="color: #ef4444;">₹0</div>
+        </div>
+        <div class="stat-box" style="grid-column: span 2;">
+          <div class="stat-box-label">Total Chaos Score</div>
+          <div class="stat-box-val" id="finalScoreVal" style="color: #facc15; font-size: 26px;">0</div>
+        </div>
+      </div>
+
+      <button class="action-btn" id="restartBtn">RIDE AGAIN 🔄</button>
+    </div>
+  </div>
+
+  <!-- Bus Garage & Upgrades Modal -->
+  <div class="modal-backdrop" id="garageModal" style="display: none;">
+    <div class="modal-card garage-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 class="modal-title" style="margin-bottom: 0;">🚌 BABU BHAI'S GARAGE</h1>
+        <div class="hud-pill" style="font-size: 14px;">
+          <span>💵 TIPS:</span>
+          <span id="garageCashVal" style="color: #4ade80;">₹0</span>
+        </div>
+      </div>
+      <p class="modal-subtitle">Customize bus liveries, paint jobs, and roof accessories!</p>
+
+      <div class="garage-list" id="garageList">
+        <!-- Dynamically generated in BusGame.updateGarageUI -->
+      </div>
+
+      <div style="margin-top: 16px; display: flex; justify-content: flex-end;">
+        <button class="action-btn" id="closeGarageBtn" style="background: #334155; width: auto; padding: 10px 24px;">CLOSE [G]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Scripts -->
+  <script src="desi_bus/js/audio.js"></script>
+  <script src="desi_bus/js/bus.js"></script>
+  <script src="desi_bus/js/city.js"></script>
+  <script src="desi_bus/js/traffic.js"></script>
+  <script src="desi_bus/js/game.js"></script>
+</body>
+</html>

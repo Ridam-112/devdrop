@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Bubble Shooter - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #00cec9 0%, #0984e3 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(9, 132, 227, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🫧</span>
+        <span id="score-val">0</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🫧 🎯 🔴</div>
+        <h1 style="color: #0984e3; font-size: 28px;">Bubble Shooter</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Aim and shoot matching clay bubbles! Connect 3 or more of the same color to pop!</p>
+        <button id="btn-start" class="clay-btn">PLAY NOW ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🫧</div>
+        <h1 style="color: #ff5252; font-size: 28px;">BUBBLES REACHED BOTTOM!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">The clay bubbles overwhelmed the shooter!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin-bottom: 16px;">
+          <div style="font-size: 24px; font-weight: 700; color: #0984e3;" id="final-score">0</div>
+          <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Final Score</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      shoot() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(380, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(180, this.ctx.currentTime + 0.08);
+        g.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.1);
+      }
+      pop() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [520, 680, 840].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.04);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.04 + 0.1);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.04); o.stop(now + idx * 0.04 + 0.11);
+        });
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    const COLORS = ['#ff7675', '#00cec9', '#fdcb6e', '#a29bfe', '#2ecc71'];
+    const BUBBLE_R = 19;
+    const COLS = 11;
+    const ROWS = 13;
+
+    let grid = [];
+    let currentBubble = null;
+    let nextBubbleColor = COLORS[0];
+    let aimAngle = -Math.PI / 2;
+    let score = 0;
+    let gameState = 'START';
+
+    function getRandomColor() {
+      return COLORS[Math.floor(Math.random() * COLORS.length)];
+    }
+
+    function initGame() {
+      score = 0;
+      grid = Array(ROWS).fill(null).map(() => Array(COLS).fill(null));
+
+      // Fill first 5 rows
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < COLS; c++) {
+          grid[r][c] = getRandomColor();
+        }
+      }
+
+      currentBubble = {
+        x: W / 2,
+        y: H - 55,
+        color: getRandomColor(),
+        vx: 0,
+        vy: 0,
+        isMoving: false
+      };
+      nextBubbleColor = getRandomColor();
+
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function getBubbleCoords(r, c) {
+      const offsetX = (r % 2 === 1) ? BUBBLE_R : 0;
+      const x = BUBBLE_R + 8 + c * (BUBBLE_R * 2) + offsetX;
+      const y = 80 + r * (BUBBLE_R * 1.75);
+      return { x, y };
+    }
+
+    function aimAt(clientX, clientY) {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (clientX - rect.left) * (W / rect.width);
+      const clickY = (clientY - rect.top) * (H / rect.height);
+      const dy = clickY - (H - 55);
+      const dx = clickX - W / 2;
+      if (dy < -20) {
+        aimAngle = Math.atan2(dy, dx);
+      }
+    }
+
+    function shoot() {
+      if (currentBubble && !currentBubble.isMoving && gameState === 'PLAYING') {
+        sound.shoot();
+        const speed = 15;
+        currentBubble.vx = Math.cos(aimAngle) * speed;
+        currentBubble.vy = Math.sin(aimAngle) * speed;
+        currentBubble.isMoving = true;
+      }
+    }
+
+    canvas.addEventListener('mousemove', (e) => aimAt(e.clientX, e.clientY));
+    canvas.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) aimAt(e.touches[0].clientX, e.touches[0].clientY);
+    }, { passive: false });
+    canvas.addEventListener('click', shoot);
+    canvas.addEventListener('touchend', shoot);
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function drawClayBubble(x, y, r, color) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Inset Highlight
+      const grad = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.7)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.15)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function snapToGrid() {
+      // Find nearest empty cell in grid
+      let closest = null;
+      let minDst = 999;
+
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (!grid[r][c]) {
+            const pt = getBubbleCoords(r, c);
+            const dst = Math.hypot(pt.x - currentBubble.x, pt.y - currentBubble.y);
+            if (dst < minDst) {
+              minDst = dst;
+              closest = { r, c };
+            }
+          }
+        }
+      }
+
+      if (closest) {
+        grid[closest.r][closest.c] = currentBubble.color;
+        checkClusterMatch(closest.r, closest.c, currentBubble.color);
+      }
+
+      // Prepare next bubble
+      currentBubble = {
+        x: W / 2,
+        y: H - 55,
+        color: nextBubbleColor,
+        vx: 0,
+        vy: 0,
+        isMoving: false
+      };
+      nextBubbleColor = getRandomColor();
+    }
+
+    function checkClusterMatch(startR, startC, targetColor) {
+      const match = [];
+      const visited = Array(ROWS).fill(null).map(() => Array(COLS).fill(false));
+
+      function dfs(r, c) {
+        if (r < 0 || r >= ROWS || c < 0 || c >= COLS || visited[r][c] || grid[r][c] !== targetColor) return;
+        visited[r][c] = true;
+        match.push({ r, c });
+
+        const neighbors = [
+          [r - 1, c], [r + 1, c], [r, c - 1], [r, c + 1],
+          [r - 1, c + (r % 2 === 1 ? 1 : -1)], [r + 1, c + (r % 2 === 1 ? 1 : -1)]
+        ];
+        neighbors.forEach(([nr, nc]) => dfs(nr, nc));
+      }
+
+      dfs(startR, startC);
+
+      if (match.length >= 3) {
+        match.forEach(m => { grid[m.r][m.c] = null; });
+        score += match.length * 10;
+        sound.pop();
+        document.getElementById('score-val').innerText = score;
+      }
+    }
+
+    function loop() {
+      ctx.fillStyle = '#fbfdff';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw Grid Bubbles
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          if (grid[r][c]) {
+            const pt = getBubbleCoords(r, c);
+            drawClayBubble(pt.x, pt.y, BUBBLE_R, grid[r][c]);
+
+            // Game over check
+            if (r >= ROWS - 2) {
+              gameState = 'GAMEOVER';
+              document.getElementById('final-score').innerText = score;
+              document.getElementById('gameover-screen').classList.remove('hidden');
+            }
+          }
+        }
+      }
+
+      // Draw Aiming Guide
+      if (!currentBubble.isMoving && gameState === 'PLAYING') {
+        ctx.strokeStyle = 'rgba(160, 180, 205, 0.5)';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 8]);
+        ctx.beginPath();
+        ctx.moveTo(W / 2, H - 55);
+        ctx.lineTo(W / 2 + Math.cos(aimAngle) * 160, (H - 55) + Math.sin(aimAngle) * 160);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      }
+
+      // Update Moving Bubble
+      if (currentBubble && currentBubble.isMoving) {
+        currentBubble.x += currentBubble.vx;
+        currentBubble.y += currentBubble.vy;
+
+        // Bounce off side walls
+        if (currentBubble.x - BUBBLE_R < 10) { currentBubble.x = 10 + BUBBLE_R; currentBubble.vx *= -1; }
+        if (currentBubble.x + BUBBLE_R > W - 10) { currentBubble.x = W - 10 - BUBBLE_R; currentBubble.vx *= -1; }
+
+        // Top ceiling or other bubble collision
+        let hit = currentBubble.y - BUBBLE_R <= 80;
+        if (!hit) {
+          for (let r = 0; r < ROWS; r++) {
+            for (let c = 0; c < COLS; c++) {
+              if (grid[r][c]) {
+                const pt = getBubbleCoords(r, c);
+                if (Math.hypot(pt.x - currentBubble.x, pt.y - currentBubble.y) < BUBBLE_R * 1.8) {
+                  hit = true;
+                  break;
+                }
+              }
+            }
+            if (hit) break;
+          }
+        }
+
+        if (hit) snapToGrid();
+      }
+
+      // Draw Shooter & Current Bubble
+      if (currentBubble) {
+        drawClayBubble(currentBubble.x, currentBubble.y, BUBBLE_R, currentBubble.color);
+      }
+      // Next Bubble Preview
+      drawClayBubble(60, H - 50, BUBBLE_R * 0.8, nextBubbleColor);
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

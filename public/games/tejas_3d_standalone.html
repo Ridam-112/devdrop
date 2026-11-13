@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>HAL Tejas — Standalone HTML5 3D</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#05080d}
+body{font-family:Arial,Helvetica,sans-serif;color:#fff}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+#loading{position:fixed;inset:0;display:grid;place-items:center;background:#05080d;z-index:10;letter-spacing:3px;font:12px Arial}
+#loading.hide{display:none}
+.hud{position:fixed;inset:0;pointer-events:none}
+.top{position:absolute;left:25px;top:22px;display:flex;gap:13px;align-items:center}
+.roundel{width:40px;height:40px;border-radius:50%;border:3px solid white;background:linear-gradient(#ff7a18 0 33%,#fff 33% 66%,#138808 66%);box-shadow:0 0 22px #ff9a4455}
+h1{font-size:19px;letter-spacing:3px;margin:0}.sub{font-size:9px;letter-spacing:2px;color:#98a6b7;margin-top:4px}
+.title{position:absolute;right:25px;top:20px;text-align:right}.hal{font-size:16px;font-weight:800;letter-spacing:5px}.tejas{font-size:45px;font-weight:900;font-style:italic;letter-spacing:1px;line-height:.9}.small{font-size:9px;color:#98a6b7;letter-spacing:3px}.tri{height:3px;width:145px;margin:10px 0 0 auto;background:linear-gradient(90deg,#ff7a18 0 33%,#fff 33% 66%,#138808 66%)}
+.panel{position:absolute;left:25px;top:100px;width:235px;padding:15px;border:1px solid #ffffff20;border-radius:14px;background:#07101ad9;backdrop-filter:blur(8px)}
+.panel h2{font-size:10px;letter-spacing:2px;color:#ffad4c;margin:0 0 10px}.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #ffffff10;font-size:10px;color:#9da9b8}.row b{color:#fff}
+.controls{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);display:flex;gap:7px;pointer-events:auto}
+button{background:#07101adf;color:white;border:1px solid #ffffff26;border-radius:9px;padding:9px 12px;font-size:10px;cursor:pointer;transition:background .2s}
+button:hover{background:#172435}
+.help{position:absolute;right:23px;bottom:23px;font-size:9px;letter-spacing:1px;color:#8290a0;text-align:right}
+@media(max-width:700px){.panel,.help{display:none}.top{left:13px;top:13px}.title{right:13px;top:13px}.tejas{font-size:30px}.controls{bottom:13px}}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="loading">INITIALIZING TEJAS 3D SYSTEM…</div>
+
+<div class="hud">
+  <div class="top"><div class="roundel"></div><div><h1>INDIAN AIR FORCE</h1><div class="sub">LIGHT COMBAT AIRCRAFT</div></div></div>
+  <div class="title"><div class="hal">HAL</div><div class="tejas">TEJAS</div><div class="small">LIGHT COMBAT AIRCRAFT</div><div class="tri"></div></div>
+
+  <div class="panel">
+    <h2>AIRCRAFT DATA</h2>
+    <div class="row"><span>Aircraft</span><b>HAL Tejas</b></div>
+    <div class="row"><span>Configuration</span><b>Delta Wing</b></div>
+    <div class="row"><span>Length</span><b>13.2 m</b></div>
+    <div class="row"><span>Wingspan</span><b>8.2 m</b></div>
+    <div class="row"><span>Engine</span><b>GE F404</b></div>
+    <div class="row"><span>Crew</span><b>1</b></div>
+  </div>
+
+  <div class="controls">
+    <button id="reset">RESET</button><button id="wire">WIREFRAME</button><button id="light">LIGHTS</button>
+  </div>
+  <div class="help">DRAG · ROTATE &nbsp; SCROLL · ZOOM &nbsp; RIGHT DRAG · PAN</div>
+</div>
+
+<script>
+"use strict";
+
+/* Standalone WebGL renderer.
+   No external CDN, no imports required. */
+
+const canvas=document.getElementById("c");
+const gl=canvas.getContext("webgl",{antialias:true,alpha:false});
+if(!gl){document.getElementById("loading").textContent="WEBGL IS NOT AVAILABLE IN THIS BROWSER";throw new Error("WebGL unavailable");}
+
+const vs=`
+attribute vec3 aPos;
+attribute vec3 aNor;
+uniform mat4 uMVP,uModel;
+uniform vec3 uLight;
+varying float vLight;
+void main(){
+  vec3 n=normalize(mat3(uModel)*aNor);
+  vLight=max(.25,dot(n,normalize(uLight))*.65+.45);
+  gl_Position=uMVP*vec4(aPos,1.0);
+}`;
+const fs=`
+precision mediump float;
+uniform vec3 uColor;
+uniform float uBright;
+varying float vLight;
+void main(){gl_FragColor=vec4(uColor*(vLight*uBright),1.0);}`;
+
+function shader(type,src){const s=gl.createShader(type);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS))throw gl.getShaderInfoLog(s);return s}
+const prog=gl.createProgram();gl.attachShader(prog,shader(gl.VERTEX_SHADER,vs));gl.attachShader(prog,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(prog);
+gl.useProgram(prog);
+const aPos=gl.getAttribLocation(prog,"aPos"),aNor=gl.getAttribLocation(prog,"aNor");
+const uMVP=gl.getUniformLocation(prog,"uMVP"),uModel=gl.getUniformLocation(prog,"uModel"),uLight=gl.getUniformLocation(prog,"uLight"),uColor=gl.getUniformLocation(prog,"uColor"),uBright=gl.getUniformLocation(prog,"uBright");
+
+function mat4(){return new Float32Array(16)}
+function ident(o){o.fill(0);o[0]=o[5]=o[10]=o[15]=1;return o}
+function mul(a,b){
+ let o=mat4();
+ for(let c=0;c<4;c++)for(let r=0;r<4;r++)o[c*4+r]=a[r]*b[c*4]+a[4+r]*b[c*4+1]+a[8+r]*b[c*4+2]+a[12+r]*b[c*4+3];
+ return o;
+}
+function translate(x,y,z){let o=mat4();ident(o);o[12]=x;o[13]=y;o[14]=z;return o}
+function scale(x,y,z){let o=mat4();ident(o);o[0]=x;o[5]=y;o[10]=z;return o}
+function rx(a){let o=mat4();ident(o);let c=Math.cos(a),s=Math.sin(a);o[5]=c;o[6]=s;o[9]=-s;o[10]=c;return o}
+function ry(a){let o=mat4();ident(o);let c=Math.cos(a),s=Math.sin(a);o[0]=c;o[2]=-s;o[8]=s;o[10]=c;return o}
+function rz(a){let o=mat4();ident(o);let c=Math.cos(a),s=Math.sin(a);o[0]=c;o[1]=s;o[4]=-s;o[5]=c;return o}
+function persp(fov,asp,n,f){let o=mat4(),t=1/Math.tan(fov/2);o[0]=t/asp;o[5]=t;o[10]=(f+n)/(n-f);o[11]=-1;o[14]=2*f*n/(n-f);return o}
+function look(eye,tar,up){
+ let z=[eye[0]-tar[0],eye[1]-tar[1],eye[2]-tar[2]],zl=Math.hypot(...z);z=z.map(v=>v/zl);
+ let x=[up[1]*z[2]-up[2]*z[1],up[2]*z[0]-up[0]*z[2],up[0]*z[1]-up[1]*z[0]],xl=Math.hypot(...x);x=x.map(v=>v/xl);
+ let y=[z[1]*x[2]-z[2]*x[1],z[2]*x[0]-z[0]*x[2],z[0]*x[1]-z[1]*x[0]];
+ let o=mat4();ident(o);o[0]=x[0];o[1]=y[0];o[2]=z[0];o[4]=x[1];o[5]=y[1];o[6]=z[1];o[8]=x[2];o[9]=y[2];o[10]=z[2];o[12]=-(x[0]*eye[0]+x[1]*eye[1]+x[2]*eye[2]);o[13]=-(y[0]*eye[0]+y[1]*eye[1]+y[2]*eye[2]);o[14]=-(z[0]*eye[0]+z[1]*eye[1]+z[2]*eye[2]);return o;
+}
+
+const meshes=[];
+function addMesh(v,n,idx,color,model=ident(mat4()),wire=false){
+ const vb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,vb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(v),gl.STATIC_DRAW);
+ const nb=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,nb);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(n),gl.STATIC_DRAW);
+ const ib=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,ib);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(idx),gl.STATIC_DRAW);
+ meshes.push({vb,nb,ib,count:idx.length,color,model,wire});
+}
+function ellipsoid(cx,cy,cz,sx,sy,sz,color){
+ let v=[],n=[],idx=[],seg=28,rings=14;
+ for(let r=0;r<=rings;r++){let t=Math.PI*r/rings,st=Math.sin(t),ct=Math.cos(t);for(let j=0;j<seg;j++){let p=2*Math.PI*j/seg,sp=Math.sin(p),cp=Math.cos(p);v.push(cx+sx*st*cp,cy+sy*ct,cz+sz*st*sp);n.push(st*cp,ct,st*sp)}}
+ for(let r=0;r<rings;r++)for(let j=0;j<seg;j++){let a=r*seg+j,b=r*seg+(j+1)%seg,c=(r+1)*seg+(j+1)%seg,d=(r+1)*seg+j;idx.push(a,b,d,b,c,d)}
+ addMesh(v,n,idx,color);
+}
+function prism(points,h,color){
+ let v=[],n=[],idx=[],N=points.length;
+ // Side faces
+ for(let i=0;i<N;i++){
+   let p0=points[i],p1=points[(i+1)%N];
+   let dx=p1[0]-p0[0],dz=p1[1]-p0[1];
+   let l=Math.hypot(dx,dz)||1;
+   let nx=dz/l,nz=-dx/l;
+   let base=v.length/3;
+   v.push(p0[0],-h/2,p0[1], p1[0],-h/2,p1[1], p1[0],h/2,p1[1], p0[0],h/2,p0[1]);
+   n.push(nx,0,nz, nx,0,nz, nx,0,nz, nx,0,nz);
+   idx.push(base,base+1,base+2,base,base+2,base+3);
+ }
+ // Top cap
+ let tBase=v.length/3;
+ for(let i=0;i<N;i++){v.push(points[i][0],h/2,points[i][1]);n.push(0,1,0);}
+ for(let i=1;i<N-1;i++){idx.push(tBase,tBase+i,tBase+i+1);}
+ // Bottom cap
+ let bBase=v.length/3;
+ for(let i=0;i<N;i++){v.push(points[i][0],-h/2,points[i][1]);n.push(0,-1,0);}
+ for(let i=1;i<N-1;i++){idx.push(bBase,bBase+i+1,bBase+i);}
+ addMesh(v,n,idx,color);
+}
+
+const metal=[.45,.50,.56];
+const M=metal;
+const dark=[.08,.10,.13];
+const glass=[.12,.22,.32];
+const white=[.92,.94,.96];
+const orange=[1,.42,.05];
+const green=[.06,.55,.05];
+
+// Main fuselage and nose
+ellipsoid(0,0,0,4.35,.82,.72,M);
+ellipsoid(-3.9,.02,0,1.8,.55,.48,[.52,.57,.63]);
+ellipsoid(4.2,0,0,2.0,.62,.55,dark);
+
+// Cockpit
+ellipsoid(-2.05,.56,0,1.25,.48,.48,glass);
+
+// Dorsal spine
+prism([[ -1.0,-.3],[2.5,-.3],[2.7,.3],[-1.0,.3]],.38,dark);
+
+// Delta wings, separate each side
+prism([[.0,0],[4.0,0],[5.1,-2.9],[2.1,-2.0],[-.5,-.55]],.16,M);
+prism([[.0,0],[4.0,0],[5.1,2.9],[2.1,2.0],[-.5,.55]],.16,M);
+
+// Canards
+prism([[-2.1,0],[-.65,-1.0],[-1.0,-.2]],.13,M);
+prism([[-2.1,0],[-.65,1.0],[-1.0,.2]],.13,M);
+
+// Tail fin
+prism([[1.1,0],[2.6,0],[2.05,.0],[1.25,2.6]],.16,M);
+
+// Engine nozzle
+ellipsoid(4.9,0,0,.8,.63,.58,dark);
+ellipsoid(5.35,0,0,.38,.48,.44,[.25,.27,.29]);
+
+// Intake blocks
+prism([[.0,-.5],[1.7,-.7],[1.2,-1.05],[-.5,-.9]],.35,dark);
+prism([[.0,.5],[1.7,.7],[1.2,1.05],[-.5,.9]],.35,dark);
+
+// Landing gear
+function gear(x,z){
+  ellipsoid(x,-.9,z,.08,.55,.08,dark);
+  // Wheel: radius in X & Y (0.30, 0.30), thickness in Z (0.12) so it rolls along X
+  ellipsoid(x,-1.35,z,.30,.30,.12,dark);
+  ellipsoid(x,-1.35,z,.16,.16,.13,white);
+}
+gear(-1.8,0);gear(2.2,1.2);gear(2.2,-1.2);
+
+// Wing stores
+for(const s of [-1,1]){ellipsoid(1.6,-.38,s*1.85,.85,.14,.14,white);ellipsoid(3.3,-.38,s*2.35,.85,.14,.14,white)}
+
+// Roundels as thin cylinders
+function roundel(x,y,z,side){
+ ellipsoid(x,y,z,.38,.035,.38,white);
+ ellipsoid(x,y+.04,z,.27,.04,.27,orange);
+ ellipsoid(x,y+.08,z,.14,.045,.14,green);
+}
+roundel(1.5,.12,-2.25,1);roundel(1.5,.12,2.25,1);
+
+// Pitot
+ellipsoid(-5.35,0,0,.7,.035,.035,white);
+
+let rotX=.08,rotY=-.38,dist=11,panX=0,panY=0,wire=false,bright=1;
+let down=false,lastX=0,lastY=0,button=0;
+canvas.addEventListener("pointerdown",e=>{down=true;button=e.button;lastX=e.clientX;lastY=e.clientY;canvas.setPointerCapture(e.pointerId)});
+canvas.addEventListener("pointerup",()=>down=false);
+canvas.addEventListener("pointermove",e=>{if(!down)return;let dx=e.clientX-lastX,dy=e.clientY-lastY;lastX=e.clientX;lastY=e.clientY;
+ if(button===2){panX+=dx*.012;panY-=dy*.012}else{rotY+=dx*.008;rotX+=dy*.008;rotX=Math.max(-1.35,Math.min(1.35,rotX))}
+});
+canvas.addEventListener("contextmenu",e=>e.preventDefault());
+canvas.addEventListener("wheel",e=>{e.preventDefault();dist*=Math.exp(e.deltaY*.001);dist=Math.max(5,Math.min(25,dist))},{passive:false});
+
+document.getElementById("reset").onclick=()=>{rotX=.08;rotY=-.38;dist=11;panX=0;panY=0};
+document.getElementById("wire").onclick=()=>{wire=!wire};
+document.getElementById("light").onclick=()=>{bright=bright===1?.45:1};
+
+function resize(){let d=Math.min(devicePixelRatio||1,2),w=innerWidth,h=innerHeight;canvas.width=w*d;canvas.height=h*d;gl.viewport(0,0,canvas.width,canvas.height)}
+addEventListener("resize",resize);resize();
+
+function draw(){
+ gl.enable(gl.DEPTH_TEST);gl.clearColor(.018,.027,.045,1);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+ const asp=canvas.width/canvas.height;
+ const P=persp(Math.PI/4,asp,.1,100), V=look([0,0,dist],[panX,panY,0],[0,1,0]);
+ const R=mul(mul(ry(rotY),rx(rotX)),translate(panX,panY,0));
+ const light=[-4,7,8];
+ for(const m of meshes){
+   let MVP=mul(P,mul(V,R));
+   gl.uniformMatrix4fv(uMVP,false,MVP);gl.uniformMatrix4fv(uModel,false,R);gl.uniform3fv(uLight,light);gl.uniform3fv(uColor,m.color);gl.uniform1f(uBright,bright);
+   gl.bindBuffer(gl.ARRAY_BUFFER,m.vb);gl.enableVertexAttribArray(aPos);gl.vertexAttribPointer(aPos,3,gl.FLOAT,false,0,0);
+   gl.bindBuffer(gl.ARRAY_BUFFER,m.nb);gl.enableVertexAttribArray(aNor);gl.vertexAttribPointer(aNor,3,gl.FLOAT,false,0,0);
+   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,m.ib);
+   if(wire){gl.drawElements(gl.LINE_LOOP,m.count,gl.UNSIGNED_SHORT,0)}else{gl.drawElements(gl.TRIANGLES,m.count,gl.UNSIGNED_SHORT,0)}
+ }
+ requestAnimationFrame(draw);
+}
+const loadingElem=document.getElementById("loading");
+if(loadingElem)loadingElem.classList.add("hide");
+draw();
+</script>
+</body>
+</html>

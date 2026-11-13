@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Maze Escape - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      padding: 20px 18px;
+      border: 4px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hud {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      background: #f0f4f9;
+      border-radius: 24px;
+      box-shadow: inset 4px 4px 10px rgba(160, 180, 205, 0.4), inset -4px -4px 10px #ffffff;
+    }
+    /* D-Pad Controller */
+    .d-pad {
+      display: grid;
+      grid-template-columns: repeat(3, 56px);
+      grid-template-rows: repeat(3, 56px);
+      gap: 6px;
+      margin-top: 14px;
+    }
+    .d-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: 4px 6px 12px rgba(166, 180, 200, 0.45), inset 2px 2px 4px #ffffff, inset -2px -2px 4px rgba(166, 180, 200, 0.3);
+      border: 2px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      cursor: pointer;
+      transition: transform 0.1s;
+    }
+    .d-btn:active { transform: scale(0.92); }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+      border-radius: 36px;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #1dd1a1 0%, #10ac84 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(16, 172, 132, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🚩</span>
+        <span id="level-val">Level 1</span>
+      </div>
+      <div class="clay-pill">
+        <span>⏱️</span>
+        <span id="timer-val">0s</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Maze Canvas -->
+    <canvas id="canvas" width="400" height="400"></canvas>
+
+    <!-- D-Pad -->
+    <div class="d-pad">
+      <div></div>
+      <div class="d-btn" id="d-up">⬆️</div>
+      <div></div>
+      <div class="d-btn" id="d-left">⬅️</div>
+      <div></div>
+      <div class="d-btn" id="d-right">➡️</div>
+      <div></div>
+      <div class="d-btn" id="d-down">⬇️</div>
+      <div></div>
+    </div>
+
+    <!-- Win Modal -->
+    <div id="win-modal" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 50px; margin-bottom: 6px;">🎉 ⭐ 🚪</div>
+        <h1 style="color: #10ac84; font-size: 28px;">ESCAPED!</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">You solved the clay maze!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin: 12px 0;">
+          <div style="font-size: 18px; font-weight: 700; color: #2d3436;" id="time-taken">Completed in 12s</div>
+        </div>
+        <button id="btn-next" class="clay-btn">NEXT LEVEL ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      step() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(320, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(160, this.ctx.currentTime + 0.05);
+        g.gain.setValueAtTime(0.15, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.06);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.06);
+      }
+      win() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const SIZE = 400;
+
+    let level = 1;
+    let gridCols = 11;
+    let gridRows = 11;
+    let cellSize = SIZE / gridCols;
+
+    let maze = [];
+    let player = { r: 1, c: 1 };
+    let goal = { r: gridRows - 2, c: gridCols - 2 };
+    let seconds = 0;
+    let timerId = null;
+
+    // Generate maze using recursive backtracking
+    function generateMaze(cols, rows) {
+      const grid = Array(rows).fill(null).map(() => Array(cols).fill(1)); // 1: Wall, 0: Path
+
+      function carve(r, c) {
+        grid[r][c] = 0;
+        const dirs = [
+          [-2, 0], [2, 0], [0, -2], [0, 2]
+        ].sort(() => Math.random() - 0.5);
+
+        for (let [dr, dc] of dirs) {
+          const nr = r + dr;
+          const nc = c + dc;
+          if (nr > 0 && nr < rows - 1 && nc > 0 && nc < cols - 1 && grid[nr][nc] === 1) {
+            grid[r + dr / 2][c + dc / 2] = 0;
+            carve(nr, nc);
+          }
+        }
+      }
+
+      carve(1, 1);
+      grid[rows - 2][cols - 2] = 0;
+      return grid;
+    }
+
+    function initLevel() {
+      gridCols = 9 + (level - 1) * 2;
+      gridRows = 9 + (level - 1) * 2;
+      cellSize = SIZE / gridCols;
+
+      maze = generateMaze(gridCols, gridRows);
+      player = { r: 1, c: 1 };
+      goal = { r: gridRows - 2, c: gridCols - 2 };
+
+      seconds = 0;
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        seconds++;
+        document.getElementById('timer-val').innerText = `${seconds}s`;
+      }, 1000);
+
+      document.getElementById('level-val').innerText = `Level ${level}`;
+      document.getElementById('win-modal').classList.add('hidden');
+      draw();
+    }
+
+    function move(dr, dc) {
+      const nr = player.r + dr;
+      const nc = player.c + dc;
+      if (nr >= 0 && nr < gridRows && nc >= 0 && nc < gridCols && maze[nr][nc] === 0) {
+        player.r = nr;
+        player.c = nc;
+        sound.step();
+        draw();
+
+        // Check Goal
+        if (player.r === goal.r && player.c === goal.c) {
+          clearInterval(timerId);
+          sound.win();
+          document.getElementById('time-taken').innerText = `Completed in ${seconds}s`;
+          document.getElementById('win-modal').classList.remove('hidden');
+        }
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+
+      // Draw Clay Walls
+      for (let r = 0; r < gridRows; r++) {
+        for (let c = 0; c < gridCols; c++) {
+          const x = c * cellSize;
+          const y = r * cellSize;
+          if (maze[r][c] === 1) {
+            ctx.fillStyle = '#6c5ce7';
+            ctx.shadowColor = 'rgba(108, 92, 231, 0.4)';
+            ctx.shadowBlur = 4;
+            ctx.beginPath();
+            ctx.roundRect(x + 1, y + 1, cellSize - 2, cellSize - 2, 4);
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Inset highlight
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+            ctx.beginPath();
+            ctx.roundRect(x + 2, y + 2, cellSize - 4, (cellSize - 4) / 2, 2);
+            ctx.fill();
+          }
+        }
+      }
+
+      // Draw Exit Goal Portal
+      const gx = goal.c * cellSize + cellSize / 2;
+      const gy = goal.r * cellSize + cellSize / 2;
+      ctx.fillStyle = '#feca57';
+      ctx.font = `bold ${Math.floor(cellSize * 0.7)}px Arial`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText('⭐', gx, gy);
+
+      // Draw Player Clay Marble
+      const px = player.c * cellSize + cellSize / 2;
+      const py = player.r * cellSize + cellSize / 2;
+      const pr = cellSize * 0.38;
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(255, 107, 107, 0.5)';
+      ctx.shadowBlur = 8;
+      ctx.fillStyle = '#ff6b6b';
+      ctx.beginPath();
+      ctx.arc(px, py, pr, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Marble shine
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.beginPath();
+      ctx.arc(px - pr * 0.35, py - pr * 0.35, pr * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // Controls
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowUp' || e.key === 'w') { e.preventDefault(); move(-1, 0); }
+      if (e.key === 'ArrowDown' || e.key === 's') { e.preventDefault(); move(1, 0); }
+      if (e.key === 'ArrowLeft' || e.key === 'a') { e.preventDefault(); move(0, -1); }
+      if (e.key === 'ArrowRight' || e.key === 'd') { e.preventDefault(); move(0, 1); }
+    });
+
+    document.getElementById('d-up').addEventListener('click', () => move(-1, 0));
+    document.getElementById('d-down').addEventListener('click', () => move(1, 0));
+    document.getElementById('d-left').addEventListener('click', () => move(0, -1));
+    document.getElementById('d-right').addEventListener('click', () => move(0, 1));
+
+    document.getElementById('btn-next').addEventListener('click', () => {
+      level++;
+      initLevel();
+    });
+
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    initLevel();
+  </script>
+</body>
+</html>

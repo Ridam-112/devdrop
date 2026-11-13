@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Brick Breaker - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #2c3e50;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fdfefe;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: ew-resize;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 17px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 30px 24px;
+      border-radius: 34px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), -8px -8px 24px #ffffff,
+                  inset 4px 4px 8px #ffffff, inset -4px -4px 8px rgba(160, 178, 202, 0.25);
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 360px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 26px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(0, 184, 148, 0.35),
+                  inset 2px 2px 4px rgba(255, 255, 255, 0.6), inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .clay-btn:hover { transform: translateY(-2px) scale(1.03); }
+    .clay-btn:active { transform: translateY(2px) scale(0.97); }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🧱</span>
+        <span id="score-val">0</span>
+      </div>
+      <div class="clay-pill" id="lives-val">
+        <span>❤️</span><span>❤️</span><span>❤️</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🧱 🏓 ✨</div>
+        <h1 style="color: #00b894; font-size: 32px; font-weight: 700;">Brick Breaker</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Control the clay paddle, bounce the ball, and smash every colorful clay brick!</p>
+        <button id="btn-start" class="clay-btn">START GAME ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 💔</div>
+        <h1 style="color: #ff5252; font-size: 30px; font-weight: 700;">OUT OF BALLS!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">The clay ball fell off the edge!</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #00b894;" id="final-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Score</div>
+          </div>
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #f1c40f;" id="best-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Best</div>
+          </div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      hit(freq = 520) {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, now);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.1);
+      }
+      paddle() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(260, now);
+        o.frequency.exponentialRampToValueAtTime(380, now + 0.08);
+        g.gain.setValueAtTime(0.35, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.1);
+      }
+      lose() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(180, now);
+        o.frequency.exponentialRampToValueAtTime(50, now + 0.25);
+        g.gain.setValueAtTime(0.4, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.3);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.3);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    let gameState = 'START';
+    let score = 0;
+    let lives = 3;
+    let bestScore = parseInt(localStorage.getItem('brick_breaker_best') || '0', 10);
+
+    const PADDLE_W = 100;
+    const PADDLE_H = 18;
+    let paddleX = W / 2 - PADDLE_W / 2;
+
+    let balls = [];
+    let bricks = [];
+    let particles = [];
+
+    const BRICK_COLORS = ['#ff7675', '#fdcb6e', '#55efc4', '#74b9ff', '#a29bfe'];
+
+    function createBricks() {
+      bricks = [];
+      const rows = 5;
+      const cols = 7;
+      const bw = 54;
+      const bh = 22;
+      const pad = 9;
+      const offsetX = (W - (cols * bw + (cols - 1) * pad)) / 2;
+      const offsetY = 75;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          bricks.push({
+            x: offsetX + c * (bw + pad),
+            y: offsetY + r * (bh + pad),
+            w: bw,
+            h: bh,
+            color: BRICK_COLORS[r % BRICK_COLORS.length],
+            points: (rows - r) * 10
+          });
+        }
+      }
+    }
+
+    function resetBall() {
+      balls = [{
+        x: paddleX + PADDLE_W / 2,
+        y: H - 55,
+        vx: 3.5 * (Math.random() > 0.5 ? 1 : -1),
+        vy: -5.5,
+        r: 10
+      }];
+    }
+
+    function initGame() {
+      score = 0;
+      lives = 3;
+      particles = [];
+      paddleX = W / 2 - PADDLE_W / 2;
+      createBricks();
+      resetBall();
+      updateHUD();
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('brick_breaker_best', bestScore);
+      }
+      document.getElementById('final-score').innerText = score;
+      document.getElementById('best-score').innerText = bestScore;
+      document.getElementById('gameover-screen').classList.remove('hidden');
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').innerText = score;
+      const hearts = document.querySelectorAll('#lives-val span');
+      hearts.forEach((h, idx) => {
+        h.style.opacity = idx < lives ? '1' : '0.2';
+      });
+    }
+
+    function spawnParticles(x, y, color) {
+      for (let i = 0; i < 10; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 1.5 + Math.random() * 4;
+        particles.push({
+          x, y,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          r: 3 + Math.random() * 3,
+          color,
+          alpha: 1,
+          decay: 0.03
+        });
+      }
+    }
+
+    // Paddle input
+    function setPaddleX(clientX) {
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = W / rect.width;
+      const x = (clientX - rect.left) * scaleX - PADDLE_W / 2;
+      paddleX = Math.max(10, Math.min(W - PADDLE_W - 10, x));
+    }
+    window.addEventListener('mousemove', (e) => setPaddleX(e.clientX));
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches[0]) setPaddleX(e.touches[0].clientX);
+    }, { passive: false });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft') paddleX = Math.max(10, paddleX - 25);
+      if (e.key === 'ArrowRight') paddleX = Math.min(W - PADDLE_W - 10, paddleX + 25);
+    });
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function drawClayRoundedBox(x, y, w, h, r, color) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetY = 4;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x, y, w, h, r);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Inset Highlight
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.beginPath();
+      ctx.roundRect(x + 2, y + 2, w - 4, h / 2.5, r / 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function loop() {
+      ctx.fillStyle = '#fdfefe';
+      ctx.fillRect(0, 0, W, H);
+
+      if (gameState === 'PLAYING') {
+        // Update Ball
+        for (let i = balls.length - 1; i >= 0; i--) {
+          const b = balls[i];
+          b.x += b.vx;
+          b.y += b.vy;
+
+          // Wall bounces
+          if (b.x - b.r < 10) { b.x = 10 + b.r; b.vx *= -1; sound.hit(400); }
+          if (b.x + b.r > W - 10) { b.x = W - 10 - b.r; b.vx *= -1; sound.hit(400); }
+          if (b.y - b.r < 10) { b.y = 10 + b.r; b.vy *= -1; sound.hit(400); }
+
+          // Paddle bounce
+          if (b.y + b.r >= H - 36 && b.y - b.r <= H - 36 + PADDLE_H &&
+              b.x >= paddleX - 5 && b.x <= paddleX + PADDLE_W + 5 && b.vy > 0) {
+            b.vy = -Math.abs(b.vy);
+            const hitOffset = (b.x - (paddleX + PADDLE_W / 2)) / (PADDLE_W / 2);
+            b.vx = hitOffset * 6.5;
+            sound.paddle();
+          }
+
+          // Brick collision
+          for (let j = bricks.length - 1; j >= 0; j--) {
+            const br = bricks[j];
+            if (b.x + b.r > br.x && b.x - b.r < br.x + br.w &&
+                b.y + b.r > br.y && b.y - b.r < br.y + br.h) {
+              b.vy *= -1;
+              score += br.points;
+              updateHUD();
+              sound.hit(600 + Math.random() * 200);
+              spawnParticles(br.x + br.w / 2, br.y + br.h / 2, br.color);
+              bricks.splice(j, 1);
+              break;
+            }
+          }
+
+          // Respawn bricks if cleared
+          if (bricks.length === 0) {
+            createBricks();
+            resetBall();
+          }
+
+          // Bottom drop
+          if (b.y > H + 20) {
+            balls.splice(i, 1);
+            if (balls.length === 0) {
+              lives--;
+              sound.lose();
+              updateHUD();
+              if (lives <= 0) gameOver();
+              else resetBall();
+            }
+          }
+        }
+      }
+
+      // Draw Bricks
+      bricks.forEach(br => drawClayRoundedBox(br.x, br.y, br.w, br.h, 7, br.color));
+
+      // Draw Paddle
+      drawClayRoundedBox(paddleX, H - 36, PADDLE_W, PADDLE_H, 10, '#00b894');
+
+      // Draw Balls
+      balls.forEach(b => {
+        ctx.save();
+        ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+        ctx.shadowBlur = 8;
+        ctx.shadowOffsetY = 4;
+        ctx.fillStyle = '#ff7675';
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        // Ball highlight
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.beginPath();
+        ctx.arc(b.x - b.r * 0.35, b.y - b.r * 0.35, b.r * 0.4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Draw Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

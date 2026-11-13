@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Flight Pitch Master 2D - Takeoff & Landing Simulator</title>
+  <style>
+    :root {
+      --clay-bg: #e2eaf0;
+      --clay-panel: #f3f7fa;
+      --clay-dark: #0f172a;
+      --clay-blue: #0284c7;
+      --clay-sky: #38bdf8;
+      --clay-green: #10b981;
+      --clay-red: #ef4444;
+      --clay-gold: #f59e0b;
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--clay-bg);
+      font-family: var(--font-main);
+      color: var(--clay-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Claymorphism Elevation Styling */
+    .clay-card {
+      background: var(--clay-panel);
+      border-radius: 20px;
+      box-shadow: 
+        8px 8px 18px rgba(160, 185, 205, 0.45),
+        -6px -6px 14px rgba(255, 255, 255, 0.95),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+        inset -2px -2px 5px rgba(160, 185, 205, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+    }
+
+    .clay-btn {
+      background: linear-gradient(145deg, #38bdf8, #0284c7);
+      color: #ffffff;
+      font-weight: 900;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 
+        6px 6px 14px rgba(2, 132, 199, 0.35),
+        -5px -5px 12px rgba(255, 255, 255, 0.9),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.5);
+      transition: all 0.08s ease;
+      touch-action: manipulation;
+    }
+
+    .clay-btn:active, .clay-btn.active {
+      transform: scale(0.96);
+      box-shadow: 
+        2px 2px 6px rgba(2, 132, 199, 0.45),
+        inset 3px 3px 6px rgba(0, 70, 120, 0.4);
+    }
+
+    .clay-btn-up {
+      background: linear-gradient(145deg, #10b981, #059669);
+      box-shadow: 6px 6px 16px rgba(5, 150, 105, 0.35), -5px -5px 12px rgba(255, 255, 255, 0.9);
+    }
+
+    .clay-btn-down {
+      background: linear-gradient(145deg, #f87171, #dc2626);
+      box-shadow: 6px 6px 16px rgba(220, 38, 38, 0.35), -5px -5px 12px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Top Cockpit HUD Bar */
+    #top-bar {
+      width: 100%;
+      max-width: 900px;
+      padding: 8px 14px 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .hud-chip {
+      padding: 6px 14px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Approach Progress Track Card */
+    #approach-track-card {
+      width: calc(100% - 24px);
+      max-width: 880px;
+      padding: 7px 14px;
+      margin: 2px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .track-bar-container {
+      flex: 1;
+      height: 12px;
+      background: #cbd5e1;
+      border-radius: 6px;
+      position: relative;
+      overflow: visible;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.25);
+    }
+
+    #approach-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #38bdf8, #10b981);
+      border-radius: 6px;
+      width: 0%;
+      transition: width 0.05s linear;
+    }
+
+    #plane-marker {
+      position: absolute;
+      top: -6px;
+      left: 0%;
+      transform: translateX(-50%);
+      font-size: 15px;
+      line-height: 1;
+      pointer-events: none;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+
+    /* Flight Instruments Row */
+    #instruments-row {
+      width: 100%;
+      max-width: 880px;
+      padding: 2px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .inst-card {
+      flex: 1;
+      padding: 6px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 72px;
+    }
+
+    .inst-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #64748b;
+    }
+
+    .inst-val {
+      font-size: 17px;
+      font-weight: 900;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Artificial Horizon Pitch Gauge */
+    #horizon-gauge {
+      width: 95px;
+      height: 64px;
+      border-radius: 16px;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.9);
+      box-shadow: inset 2px 2px 6px rgba(0,0,0,0.25);
+    }
+
+    #horizon-disc {
+      position: absolute;
+      top: -30px;
+      left: -15px;
+      width: 125px;
+      height: 125px;
+      background: linear-gradient(180deg, #38bdf8 50%, #b45309 50%);
+      transition: transform 0.06s ease-out;
+    }
+
+    .horizon-reticle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 4px;
+      background: #facc15;
+      border-radius: 2px;
+      z-index: 4;
+      box-shadow: 0 0 4px rgba(0,0,0,0.6);
+    }
+
+    /* Main Flight Simulation Canvas */
+    #flight-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 900px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 200px;
+    }
+
+    #flight-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Dynamic Cockpit Warning Banner */
+    #warning-banner {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 6px 18px;
+      border-radius: 18px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.8px;
+      color: #ffffff;
+      background: rgba(15, 23, 42, 0.88);
+      border: 2px solid var(--clay-sky);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+      z-index: 8;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* Runway Distance Overlay Banner */
+    #runway-distance-chip {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 16px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 900;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid #38bdf8;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      z-index: 8;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    /* Flight Pitch Controls */
+    #flight-controls {
+      width: 100%;
+      max-width: 880px;
+      padding: 6px 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      z-index: 10;
+    }
+
+    .pitch-btn {
+      flex: 1;
+      height: 80px;
+      border-radius: 24px;
+      font-size: 15px;
+      letter-spacing: 1px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pitch-btn .pitch-sub {
+      font-size: 10px;
+      font-weight: 700;
+      opacity: 0.85;
+    }
+
+    /* Center Pitch Indicator Dial */
+    #center-angle-box {
+      width: 110px;
+      height: 80px;
+      border-radius: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+    }
+
+    /* Fullscreen Modals (Menu & Results) */
+    .clay-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 40;
+      padding: 16px;
+      opacity: 1;
+      transition: opacity 0.25s ease;
+    }
+
+    .clay-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .modal-box {
+      width: min(520px, 94vw);
+      padding: 28px 22px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .modal-title {
+      font-size: clamp(22px, 5vw, 30px);
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #0f172a;
+    }
+
+    .modal-sub {
+      font-size: 13px;
+      font-weight: 700;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    .glide-guide-table {
+      width: 100%;
+      border-radius: 16px;
+      background: #e2e8f0;
+      padding: 10px;
+      font-size: 11px;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      .pitch-btn { height: 74px; font-size: 13px; }
+      #center-angle-box { width: 90px; height: 74px; }
+      .inst-val { font-size: 14px; }
+      #horizon-gauge { width: 78px; height: 56px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar: Level & Quick Toggles -->
+  <div id="top-bar">
+    <div class="hud-chip clay-card">
+      <span>✈️</span> <span id="level-badge">🛬 STAGE 1: BUTTER LANDING</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <button id="btn-sound" class="hud-chip clay-card" style="cursor: pointer; border: none;">🔊</button>
+      <button id="btn-mode-toggle" class="hud-chip clay-card" style="cursor: pointer; border: none;">🛬 MODE: LANDING</button>
+      <button id="btn-restart" class="hud-chip clay-card" style="cursor: pointer; border: none;">🔄</button>
+    </div>
+  </div>
+
+  <!-- Approach Progress Track Bar -->
+  <div id="approach-track-card" class="clay-card">
+    <span style="font-size: 11px; font-weight: 900; color: #0284c7; white-space: nowrap;">APPROACH TRACK</span>
+    <div class="track-bar-container">
+      <div id="approach-fill"></div>
+      <div id="plane-marker">✈️</div>
+    </div>
+    <span id="runway-dist-text" style="font-size: 11px; font-weight: 900; color: #1e293b; min-width: 110px; text-align: right;">RUNWAY IN: 1,400 FT</span>
+  </div>
+
+  <!-- Flight Instruments Row -->
+  <div id="instruments-row">
+    <!-- Artificial Horizon Gauge -->
+    <div id="horizon-gauge" class="clay-card">
+      <div id="horizon-disc"></div>
+      <div class="horizon-reticle"></div>
+    </div>
+
+    <!-- Pitch Angle Degree -->
+    <div class="inst-card clay-card">
+      <span class="inst-label">PITCH ANGLE</span>
+      <span id="inst-pitch" class="inst-val" style="color: var(--clay-blue);">+2.5°</span>
+    </div>
+
+    <!-- Distance to Runway -->
+    <div class="inst-card clay-card">
+      <span class="inst-label">RUNWAY DIST</span>
+      <span id="inst-dist" class="inst-val" style="color: var(--clay-dark);">1,400 FT</span>
+    </div>
+
+    <!-- Altitude (Feet) -->
+    <div class="inst-card clay-card">
+      <span class="inst-label">ALTITUDE</span>
+      <span id="inst-alt" class="inst-val" style="color: var(--clay-gold);">220 FT</span>
+    </div>
+
+    <!-- Sink Rate (FPM) -->
+    <div class="inst-card clay-card">
+      <span class="inst-label">SINK RATE</span>
+      <span id="inst-vs" class="inst-val" style="color: var(--clay-green);">-600 FPM</span>
+    </div>
+
+    <!-- PAPI Glideslope Indicator Lights -->
+    <div class="inst-card clay-card">
+      <span class="inst-label">PAPI GLIDE</span>
+      <div id="papi-lights" style="display: flex; gap: 4px; margin-top: 2px;">
+        <div id="papi-0" class="papi-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 5px #fff;"></div>
+        <div id="papi-1" class="papi-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ffffff; box-shadow: 0 0 5px #fff;"></div>
+        <div id="papi-2" class="papi-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 5px #ef4444;"></div>
+        <div id="papi-3" class="papi-dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 5px #ef4444;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2D Flight Canvas Viewport -->
+  <div id="flight-wrap">
+    <canvas id="flight-canvas"></canvas>
+    <div id="warning-banner">DESCENDING TO RUNWAY • PREPARE TO FLARE (+3° ~ +5°)</div>
+    <div id="runway-distance-chip">🏁 RUNWAY APPROACHING: 1,400 FT</div>
+  </div>
+
+  <!-- Primary Flight Pitch Controls -->
+  <div id="flight-controls">
+    <!-- Pitch Down (Nose Down) -->
+    <button id="btn-pitch-down" class="pitch-btn clay-btn clay-btn-down">
+      <span>▼ NOSE DOWN</span>
+      <span class="pitch-sub">[S] / [DOWN ARROW]</span>
+    </button>
+
+    <!-- Center Pitch Angle Readout -->
+    <div id="center-angle-box" class="clay-card">
+      <span style="font-size: 10px; font-weight: 800; color: #64748b;">TARGET PITCH</span>
+      <span id="center-target-pitch" style="font-size: 18px; font-weight: 900; color: var(--clay-green);">+3° ~ +5°</span>
+      <span id="center-mode-sub" style="font-size: 9px; font-weight: 800; color: #94a3b8;">BUTTER FLARE</span>
+    </div>
+
+    <!-- Pitch Up (Nose Up / Flare) -->
+    <button id="btn-pitch-up" class="pitch-btn clay-btn clay-btn-up">
+      <span>▲ NOSE UP</span>
+      <span class="pitch-sub">[W] / [UP ARROW]</span>
+    </button>
+  </div>
+
+  <!-- Main Menu Modal -->
+  <div id="modal-menu" class="clay-overlay">
+    <div class="modal-box clay-card">
+      <div style="font-size: 48px;">🛫✈️🛬</div>
+      <h1 class="modal-title">FLIGHT PITCH MASTER</h1>
+      <p class="modal-sub">
+        Forward speed is constant! Your sole control is <b>PLANE PITCH ANGLE</b>.
+      </p>
+
+      <div class="glide-guide-table">
+        <div>🛬 <b>BUTTER LANDING:</b> Hold pitch at <b>+2.5° to +5.5°</b> right before touchdown so main rear wheels kiss the runway gently!</div>
+        <div>⚠️ <b>NOSE DIVE CRASH:</b> Pitching below 0° slams the fragile nose wheel into asphalt!</div>
+        <div>⚠️ <b>TAIL STRIKE CRASH:</b> Pulling nose up too steep (&gt; +10.5°) smashes the tail fin on the runway!</div>
+        <div>🛫 <b>TAKEOFF MODE:</b> Accelerate down runway, then rotate to <b>+8° ~ +13°</b> climb angle!</div>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 6px;">
+        <button id="btn-start-landing" class="clay-btn" style="font-size: 16px;">
+          🛬 START PRECISION LANDING
+        </button>
+        <button id="btn-start-takeoff" class="clay-btn" style="font-size: 15px; background: linear-gradient(145deg, #10b981, #059669);">
+          🛫 START RUNWAY TAKEOFF
+        </button>
+      </div>
+
+      <div style="font-size: 11px; color: #64748b; margin-top: 4px;">
+        Desktop: <b>[W]</b> Nose Up • <b>[S]</b> Nose Down (or Up/Down Arrows)<br />
+        Mobile: Tap &amp; Hold Big Green/Red Pitch Buttons
+      </div>
+    </div>
+  </div>
+
+  <!-- Flight Results / Debrief Modal -->
+  <div id="modal-result" class="clay-overlay hidden">
+    <div class="modal-box clay-card">
+      <div id="res-icon" style="font-size: 52px;">🧈</div>
+      <h2 id="res-title" class="modal-title">BUTTER LANDING!</h2>
+      <p id="res-desc" class="modal-sub">Smooth touchdown with perfect flare angle!</p>
+
+      <div style="display: flex; gap: 10px; margin: 8px 0; width: 100%;">
+        <div class="inst-card clay-card" style="padding: 8px;">
+          <span class="inst-label">TOUCHDOWN PITCH</span>
+          <span id="res-pitch" class="inst-val" style="color: var(--clay-blue);">+3.8°</span>
+        </div>
+        <div class="inst-card clay-card" style="padding: 8px;">
+          <span class="inst-label">TOUCHDOWN SINK</span>
+          <span id="res-vs" class="inst-val" style="color: var(--clay-green);">-130 FPM</span>
+        </div>
+        <div class="inst-card clay-card" style="padding: 8px;">
+          <span class="inst-label">RATING</span>
+          <span id="res-score" class="inst-val" style="color: var(--clay-gold);">10 / 10</span>
+        </div>
+      </div>
+
+      <button id="btn-res-next" class="clay-btn" style="width: 100%; max-width: 280px; font-size: 17px;">
+        FLY AGAIN 🔄
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. SYNTHESIZED WEB AUDIO & GPWS COCKPIT VOICE ALERTS
+       ========================================================================== */
+    class FlightAudio {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+        this.engineOsc = null;
+        this.engineGain = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtxClass();
+          this.setupEngineLoop();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        if (this.engineGain && this.ctx) {
+          this.engineGain.gain.setValueAtTime(this.isMuted ? 0 : 0.08, this.ctx.currentTime);
+        }
+        return this.isMuted;
+      }
+
+      setupEngineLoop() {
+        this.engineOsc = this.ctx.createOscillator();
+        this.engineGain = this.ctx.createGain();
+
+        this.engineOsc.type = 'sawtooth';
+        this.engineOsc.frequency.setValueAtTime(120, this.ctx.currentTime);
+        this.engineGain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+
+        this.engineOsc.connect(this.engineGain);
+        this.engineGain.connect(this.ctx.destination);
+        this.engineOsc.start();
+      }
+
+      updateEnginePitch(pitchAngle) {
+        if (!this.engineOsc || !this.ctx || this.isMuted) return;
+        const targetFreq = 120 + pitchAngle * 3.0;
+        this.engineOsc.frequency.setTargetAtTime(targetFreq, this.ctx.currentTime, 0.08);
+      }
+
+      playTouchdownChirp() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(750, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.16);
+
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      }
+
+      playCrash() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(30, now + 0.45);
+
+        gain.gain.setValueAtTime(0.6, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.5);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.5);
+      }
+
+      playFanfare() {
+        if (this.isMuted) return;
+        this.init();
+        [523.2, 659.2, 783.9, 1046.5].forEach((freq, idx) => {
+          const now = this.ctx.currentTime + idx * 0.12;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now);
+          gain.gain.setValueAtTime(0.3, now);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.35);
+        });
+      }
+
+      speakGPWS(text) {
+        if ('speechSynthesis' in window && !this.isMuted) {
+          try {
+            window.speechSynthesis.cancel();
+            const utter = new SpeechSynthesisUtterance(text);
+            utter.rate = 1.3;
+            utter.pitch = 0.9;
+            window.speechSynthesis.speak(utter);
+          } catch(e) {}
+        }
+      }
+    }
+
+    const audio = new FlightAudio();
+
+    /* ==========================================================================
+       2. FLIGHT SIMULATION CONSTANTS & STATE
+       ========================================================================== */
+    const canvas = document.getElementById('flight-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let gameMode = 'landing'; // 'landing' or 'takeoff'
+    let isFlightActive = false;
+    let hasTouchedDown = false;
+    let lastSpokenAlt = 9999;
+
+    // Aircraft State
+    // Forward speed is constant; pitch angle is the core player control!
+    let plane = {
+      x: 80,
+      alt: 220, // Altitude in feet (starts at 220 ft on final approach)
+      pitch: 2.0, // Current pitch angle in degrees (-14° to +20°)
+      targetPitch: 2.0,
+      pitchRate: 26.0, // Degrees per second control responsiveness
+      speedKnots: 145, // Constant forward airspeed
+      vs: -600, // Vertical speed in ft/min
+      gearDown: true,
+      flaps: 30
+    };
+
+    // Approach coordinates & Continuous Runway geometry
+    let worldX = 0;
+    const RUNWAY_START_X = 1400; // Threshold arrives within 3.5-4.0 seconds!
+    const RUNWAY_LENGTH = 50000; // Continuous tarmac: NEVER runs out before landing!
+    const FORWARD_FEET_PER_SEC = 380; // High speed forward sensation
+
+    // Parallax background clouds & terrain
+    let clouds = [];
+    function initClouds() {
+      clouds = [];
+      for (let i = 0; i < 16; i++) {
+        clouds.push({
+          x: Math.random() * 4000,
+          y: 20 + Math.random() * 110,
+          w: 80 + Math.random() * 140,
+          h: 22 + Math.random() * 16,
+          speed: 0.4 + Math.random() * 0.5
+        });
+      }
+    }
+    initClouds();
+
+    // Wheel Smoke Particles & Jet Trail
+    let particles = [];
+    function spawnWheelSmoke(x, y) {
+      for (let i = 0; i < 18; i++) {
+        particles.push({
+          x,
+          y,
+          vx: -(3 + Math.random() * 6),
+          vy: -(1 + Math.random() * 3),
+          r: 6 + Math.random() * 9,
+          alpha: 0.85,
+          decay: 0.025
+        });
+      }
+    }
+
+    // Approach Lighting sequence phase
+    let strobeTimer = 0;
+
+    // Canvas Resize
+    function handleResize() {
+      const rect = document.getElementById('flight-wrap').getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+    window.addEventListener('resize', handleResize);
+
+    /* ==========================================================================
+       3. CONTROLS (DESKTOP KEYBOARD & MOBILE TOUCH)
+       ========================================================================== */
+    let pitchUpHeld = false;
+    let pitchDownHeld = false;
+
+    const btnUp = document.getElementById('btn-pitch-up');
+    const btnDown = document.getElementById('btn-pitch-down');
+
+    btnUp.addEventListener('pointerdown', (e) => { e.preventDefault(); pitchUpHeld = true; btnUp.classList.add('active'); audio.init(); });
+    btnUp.addEventListener('pointerup', () => { pitchUpHeld = false; btnUp.classList.remove('active'); });
+    btnUp.addEventListener('pointercancel', () => { pitchUpHeld = false; btnUp.classList.remove('active'); });
+
+    btnDown.addEventListener('pointerdown', (e) => { e.preventDefault(); pitchDownHeld = true; btnDown.classList.add('active'); audio.init(); });
+    btnDown.addEventListener('pointerup', () => { pitchDownHeld = false; btnDown.classList.remove('active'); });
+    btnDown.addEventListener('pointercancel', () => { pitchDownHeld = false; btnDown.classList.remove('active'); });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') {
+        e.preventDefault();
+        pitchUpHeld = true;
+        btnUp.classList.add('active');
+        audio.init();
+      }
+      if (e.code === 'KeyS' || e.code === 'ArrowDown') {
+        e.preventDefault();
+        pitchDownHeld = true;
+        btnDown.classList.add('active');
+        audio.init();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') {
+        pitchUpHeld = false;
+        btnUp.classList.remove('active');
+      }
+      if (e.code === 'KeyS' || e.code === 'ArrowDown') {
+        pitchDownHeld = false;
+        btnDown.classList.remove('active');
+      }
+    });
+
+    /* ==========================================================================
+       4. FLIGHT PITCH PHYSICS ENGINE
+       ========================================================================== */
+    function updatePhysics(dt) {
+      if (!isFlightActive) return;
+
+      strobeTimer += dt * 8;
+
+      // 1. Process Pitch Angle Input
+      if (pitchUpHeld) {
+        plane.pitch = Math.min(22.0, plane.pitch + plane.pitchRate * dt);
+      } else if (pitchDownHeld) {
+        plane.pitch = Math.max(-14.0, plane.pitch - plane.pitchRate * dt);
+      }
+
+      audio.updateEnginePitch(plane.pitch);
+
+      // 2. Vertical Speed & Aerodynamics based on Pitch Angle
+      if (gameMode === 'landing') {
+        // Fast and responsive descent:
+        // Level flight (0°): -1,150 FPM (~19 ft/sec) - descends 220 ft in ~11 seconds!
+        // Nose Down (-4°): -2,150 FPM (~36 ft/sec dive!)
+        // Flare (+3.5°): -360 FPM
+        // Butter Flare (+4.5°): -140 FPM (cushions into an ultra-gentle touchdown!)
+        // Soft Float (>= +6.0°): 0 FPM (clamped so player NEVER climbs back into space)
+        let calcVS = -1150 + (plane.pitch * 225);
+        if (calcVS > 0) {
+          calcVS = 0; // Clamped in landing mode!
+        }
+        plane.vs = calcVS;
+
+        // Tail strike warning if pitched too high
+        if (plane.pitch > 10.5) {
+          const banner = document.getElementById('warning-banner');
+          banner.innerText = '⚠️ TAIL STRIKE WARNING! LOWER NOSE!';
+          banner.style.background = '#dc2626';
+        }
+      } else {
+        // Takeoff Mode
+        if (worldX > 750) {
+          if (plane.pitch > 3.0) {
+            plane.vs = (plane.pitch - 3.0) * 150; // Positive climb!
+          } else {
+            plane.vs = 0;
+          }
+        } else {
+          plane.vs = 0; // on ground rolling
+        }
+      }
+
+      // 3. Update Altitude (feet)
+      const altDelta = (plane.vs / 60) * dt;
+      plane.alt += altDelta;
+
+      // 4. Update Forward Distance flown
+      worldX += FORWARD_FEET_PER_SEC * dt;
+
+      // 5. GPWS Altitude Callouts
+      if (gameMode === 'landing') {
+        const altInt = Math.floor(plane.alt);
+        [200, 150, 100, 50, 40, 30, 20, 10].forEach(gate => {
+          if (altInt <= gate && lastSpokenAlt > gate) {
+            audio.speakGPWS(gate.toString());
+          }
+        });
+        lastSpokenAlt = altInt;
+      }
+
+      // 6. Landing Touchdown / Takeoff Detection
+      if (gameMode === 'landing') {
+        if (plane.alt <= 0) {
+          plane.alt = 0;
+          evaluateLanding();
+        }
+      } else {
+        // Takeoff Mode evaluation
+        if (plane.alt > 300 && worldX > 2800) {
+          evaluateTakeoff();
+        } else if (worldX > 3600 && plane.alt <= 20) {
+          evaluateTakeoffCrash();
+        }
+      }
+    }
+
+    /* ==========================================================================
+       5. TOUCHDOWN & TAKEOFF EVALUATION
+       ========================================================================== */
+    function evaluateLanding() {
+      isFlightActive = false;
+      hasTouchedDown = true;
+
+      const rect = document.getElementById('flight-wrap').getBoundingClientRect();
+      spawnWheelSmoke(rect.width * 0.32, rect.height * 0.72);
+
+      const pitchAtTouchdown = plane.pitch;
+      const vsAtTouchdown = plane.vs;
+      const distToRunway = RUNWAY_START_X - worldX;
+
+      const resModal = document.getElementById('modal-result');
+      const resIcon = document.getElementById('res-icon');
+      const resTitle = document.getElementById('res-title');
+      const resDesc = document.getElementById('res-desc');
+      const resPitch = document.getElementById('res-pitch');
+      const resVs = document.getElementById('res-vs');
+      const resScore = document.getElementById('res-score');
+
+      resPitch.innerText = `${pitchAtTouchdown >= 0 ? '+' : ''}${pitchAtTouchdown.toFixed(1)}°`;
+      resVs.innerText = `${Math.round(vsAtTouchdown)} FPM`;
+
+      // Check if touched down before the runway threshold
+      if (distToRunway > 150) {
+        audio.playCrash();
+        audio.speakGPWS('Undershoot!');
+        resIcon.innerText = '🚜❌';
+        resTitle.innerText = 'CRASH: LANDED SHORT OF RUNWAY';
+        resDesc.innerText = `Touched down in the dirt ${Math.round(distToRunway)} ft before runway! Maintain pitch until threshold appears.`;
+        resScore.innerText = '1 / 10';
+        resScore.style.color = 'var(--clay-red)';
+      }
+      // 1. BUTTER LANDING (Flare +2.5° to +5.5°, gentle sink > -260 FPM)
+      else if (pitchAtTouchdown >= 2.5 && pitchAtTouchdown <= 5.5 && vsAtTouchdown > -260) {
+        audio.playTouchdownChirp();
+        audio.playFanfare();
+        audio.speakGPWS('Butter!');
+        resIcon.innerText = '🧈🏆';
+        resTitle.innerText = 'BUTTER LANDING! (10/10)';
+        resDesc.innerText = 'Ultra smooth main-gear touchdown with perfect pitch flare! Passengers applaud!';
+        resScore.innerText = '10 / 10';
+        resScore.style.color = 'var(--clay-green)';
+      }
+      // 2. GOOD FIRM TOUCHDOWN (+0.5° to +7.5°, sink > -480 FPM)
+      else if (pitchAtTouchdown >= 0.5 && pitchAtTouchdown <= 7.5 && vsAtTouchdown > -480) {
+        audio.playTouchdownChirp();
+        resIcon.innerText = '🛬✨';
+        resTitle.innerText = 'SMOOTH LANDING (8/10)';
+        resDesc.innerText = 'Safe touchdown on centerline! Flare a bit earlier to achieve 10/10 butter.';
+        resScore.innerText = '8 / 10';
+        resScore.style.color = 'var(--clay-blue)';
+      }
+      // 3. NOSE GEAR COLLAPSE CRASH (Pitched down < 0°)
+      else if (pitchAtTouchdown < 0) {
+        audio.playCrash();
+        audio.speakGPWS('Nose gear failure!');
+        resIcon.innerText = '💥❌';
+        resTitle.innerText = 'CRASH: NOSE GEAR STRUCK FIRST';
+        resDesc.innerText = 'Nose gear touched before main landing wheels! Front gear collapsed under aircraft weight.';
+        resScore.innerText = '0 / 10';
+        resScore.style.color = 'var(--clay-red)';
+      }
+      // 4. TAIL STRIKE CRASH (Pitched too steep > +10.5°)
+      else if (pitchAtTouchdown > 10.5) {
+        audio.playCrash();
+        audio.speakGPWS('Tail strike!');
+        resIcon.innerText = '🔥💥';
+        resTitle.innerText = 'CRASH: TAIL STRIKE';
+        resDesc.innerText = `Pitch angle was too high (+${pitchAtTouchdown.toFixed(1)}°)! The rear tail fin smashed into the runway.`;
+        resScore.innerText = '0 / 10';
+        resScore.style.color = 'var(--clay-red)';
+      }
+      // 5. HARD SLAM CRASH
+      else {
+        audio.playCrash();
+        resIcon.innerText = '⚠️💥';
+        resTitle.innerText = 'HARD IMPACT REBOUND';
+        resDesc.innerText = `Sink rate was too aggressive (${Math.round(vsAtTouchdown)} FPM). Flare to cushion touchdown!`;
+        resScore.innerText = '3 / 10';
+        resScore.style.color = 'var(--clay-gold)';
+      }
+
+      resModal.classList.remove('hidden');
+    }
+
+    function evaluateTakeoff() {
+      isFlightActive = false;
+      audio.playFanfare();
+      audio.speakGPWS('Airborne!');
+
+      const resModal = document.getElementById('modal-result');
+      document.getElementById('res-icon').innerText = '🛫🌟';
+      document.getElementById('res-title').innerText = 'SUCCESSFUL CLIMB OUT!';
+      document.getElementById('res-desc').innerText = `Smooth takeoff with +${plane.pitch.toFixed(1)}° pitch climb. Positive rate achieved!`;
+      document.getElementById('res-pitch').innerText = `+${plane.pitch.toFixed(1)}°`;
+      document.getElementById('res-vs').innerText = `+${Math.round(plane.vs)} FPM`;
+      document.getElementById('res-score').innerText = '10 / 10';
+      resModal.classList.remove('hidden');
+    }
+
+    function evaluateTakeoffCrash() {
+      isFlightActive = false;
+      audio.playCrash();
+      const resModal = document.getElementById('modal-result');
+      document.getElementById('res-icon').innerText = '💥❌';
+      document.getElementById('res-title').innerText = 'TAKEOFF RUNWAY OVERRUN';
+      document.getElementById('res-desc').innerText = 'Failed to rotate and pull nose up before running out of asphalt!';
+      document.getElementById('res-score').innerText = '0 / 10';
+      resModal.classList.remove('hidden');
+    }
+
+    /* ==========================================================================
+       6. 2D CANVAS DRAWING (CONTINUOUS RUNWAY & APPROACH SYSTEM)
+       ========================================================================== */
+    function drawSkyAndTerrain(w, h) {
+      // 1. High Sky Gradient
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.72);
+      skyGrad.addColorStop(0, '#0284c7');
+      skyGrad.addColorStop(0.45, '#38bdf8');
+      skyGrad.addColorStop(0.85, '#bae6fd');
+      skyGrad.addColorStop(1, '#f8fafc');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, h);
+
+      // 2. Parallax Mountains
+      ctx.fillStyle = '#64748b';
+      ctx.beginPath();
+      ctx.moveTo(0, h * 0.72);
+      for (let x = 0; x <= w; x += 40) {
+        const my = h * 0.54 + Math.sin((x + worldX * 0.08) * 0.006) * 45;
+        ctx.lineTo(x, my);
+      }
+      ctx.lineTo(w, h * 0.72);
+      ctx.closePath();
+      ctx.fill();
+
+      // 3. Fast-moving Clouds
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.88)';
+      clouds.forEach(c => {
+        const cx = (c.x - worldX * 0.25) % (w + 240) - 120;
+        ctx.beginPath();
+        ctx.ellipse(cx, c.y, c.w * 0.5, c.h * 0.5, 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 4. Ground Green Field
+      const groundY = h * 0.72;
+      ctx.fillStyle = '#16a34a';
+      ctx.fillRect(0, groundY, w, h - groundY);
+
+      // Fast moving grass speed stripes
+      ctx.fillStyle = '#15803d';
+      const stripeOffset = (worldX * 0.85) % 80;
+      for (let sx = -80; sx < w + 80; sx += 80) {
+        ctx.fillRect(sx - stripeOffset, groundY, 40, h - groundY);
+      }
+
+      // 5. Runway & Approach Lighting Systems
+      const screenRunwayX = (RUNWAY_START_X - worldX) * 0.45 + (w * 0.32);
+
+      // 5a. Sequenced Flash Approach Lighting Towers (MALSR Rabbit lights)
+      const alsStartScreenX = screenRunwayX - (900 * 0.45);
+      const numTowers = 7;
+      for (let i = 0; i < numTowers; i++) {
+        const tx = alsStartScreenX + (i * 60);
+        if (tx >= -30 && tx <= w + 30) {
+          ctx.fillStyle = '#94a3b8';
+          ctx.fillRect(tx, groundY - 18, 3, 18);
+          ctx.fillRect(tx - 6, groundY - 18, 15, 3);
+
+          const isStrobeActive = Math.floor(strobeTimer) % numTowers === i;
+          ctx.fillStyle = isStrobeActive ? '#ffffff' : '#f59e0b';
+          ctx.beginPath();
+          ctx.arc(tx + 1.5, groundY - 20, isStrobeActive ? 5 : 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          if (isStrobeActive) {
+            ctx.shadowColor = '#ffffff';
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
+      }
+
+      // 5b. Continuous Runway Asphalt Strip
+      // Once reached, the tarmac extends endlessly under the plane across the screen!
+      if (screenRunwayX < w) {
+        const startX = Math.max(0, screenRunwayX);
+        ctx.fillStyle = '#1e293b';
+        ctx.fillRect(startX, groundY, w - startX, h - groundY);
+
+        // Runway Green Threshold Lighting Bar & White Piano Key Stripes
+        if (screenRunwayX >= -120 && screenRunwayX <= w) {
+          ctx.fillStyle = '#22c55e';
+          ctx.fillRect(screenRunwayX - 4, groundY + 2, 8, 48);
+
+          ctx.fillStyle = '#ffffff';
+          for (let i = 0; i < 9; i++) {
+            ctx.fillRect(screenRunwayX + 20 + i * 14, groundY + 8, 8, 36);
+          }
+        }
+
+        // Repeating White Runway Centerline Dashes across the entire asphalt strip
+        const dashSpacing = 85;
+        const dashScroll = (worldX * 0.45) % dashSpacing;
+        ctx.fillStyle = '#ffffff';
+        for (let dx = startX + 60 - dashScroll; dx < w; dx += dashSpacing) {
+          if (dx > screenRunwayX + 160) {
+            ctx.fillRect(dx, groundY + 22, 45, 6);
+          }
+        }
+
+        // Distance Remaining Boards ("[3]", "[2]", "[1]", "[ZONE]")
+        [1, 2, 3].forEach(n => {
+          const signX = screenRunwayX + (n * 380);
+          if (signX >= -40 && signX <= w + 40) {
+            ctx.fillStyle = '#0f172a';
+            ctx.fillRect(signX, groundY - 18, 16, 16);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 11px sans-serif';
+            ctx.fillText(n.toString(), signX + 4, groundY - 6);
+          }
+        });
+      }
+    }
+
+    function drawAirliner(x, y, pitchDeg) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(-pitchDeg * Math.PI / 180);
+
+      // Jet Engine Exhaust Heat Trail
+      ctx.save();
+      const trailGrad = ctx.createLinearGradient(-8, 20, -60, 20);
+      trailGrad.addColorStop(0, 'rgba(56, 189, 248, 0.45)');
+      trailGrad.addColorStop(1, 'rgba(255, 255, 255, 0)');
+      ctx.fillStyle = trailGrad;
+      ctx.fillRect(-60, 16, 52, 8);
+      ctx.restore();
+
+      // Fuselage Body
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.28)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 6;
+
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.moveTo(68, -2);
+      ctx.bezierCurveTo(74, 4, 60, 14, 40, 14);
+      ctx.lineTo(-70, 14);
+      ctx.lineTo(-94, 2);
+      ctx.lineTo(-94, -6);
+      ctx.lineTo(40, -14);
+      ctx.bezierCurveTo(60, -14, 74, -8, 68, -2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // Blue Cheatline Ribbon
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(-70, -2, 115, 6);
+
+      // Cockpit Windshield
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.moveTo(50, -10);
+      ctx.lineTo(60, -4);
+      ctx.lineTo(48, -4);
+      ctx.closePath();
+      ctx.fill();
+
+      // Passenger Windows
+      for (let w = -55; w < 35; w += 10) {
+        ctx.fillRect(w, -1, 5, 4);
+      }
+
+      // Vertical Stabilizer (Tail Fin)
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.moveTo(-74, -8);
+      ctx.lineTo(-94, -45);
+      ctx.lineTo(-78, -45);
+      ctx.lineTo(-58, -8);
+      ctx.closePath();
+      ctx.fill();
+
+      // Horizontal Stabilizer
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-92, -6, 26, 4);
+
+      // Main Wing
+      ctx.fillStyle = '#e2e8f0';
+      ctx.beginPath();
+      ctx.moveTo(10, 6);
+      ctx.lineTo(-25, 28);
+      ctx.lineTo(-38, 28);
+      ctx.lineTo(-10, 6);
+      ctx.closePath();
+      ctx.fill();
+
+      // Turbofan Engine
+      ctx.fillStyle = '#64748b';
+      ctx.beginPath();
+      ctx.roundRect(-8, 14, 28, 12, 5);
+      ctx.fill();
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(18, 15, 3, 10);
+
+      // Landing Gear
+      if (plane.gearDown) {
+        ctx.fillStyle = '#334155';
+        // Front Nose Gear
+        ctx.fillRect(44, 14, 3, 16);
+        ctx.beginPath();
+        ctx.arc(45, 32, 5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Main Gear Bogie
+        ctx.fillRect(-22, 14, 4, 18);
+        ctx.beginPath();
+        ctx.arc(-24, 34, 6, 0, Math.PI * 2);
+        ctx.arc(-16, 34, 6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    /* ==========================================================================
+       7. HUD INSTRUMENT UPDATES & MAIN RENDER LOOP
+       ========================================================================== */
+    function updateHUD() {
+      // 1. Artificial Horizon Pitch Disc
+      const horizonDisc = document.getElementById('horizon-disc');
+      const pitchOffset = plane.pitch * 2.2;
+      horizonDisc.style.transform = `translateY(${pitchOffset}px) rotate(${-plane.pitch * 0.4}deg)`;
+
+      // 2. Real-time Pitch & Telemetry Readouts
+      document.getElementById('inst-pitch').innerText = `${plane.pitch >= 0 ? '+' : ''}${plane.pitch.toFixed(1)}°`;
+      document.getElementById('inst-alt').innerText = `${Math.max(0, Math.round(plane.alt))} FT`;
+      document.getElementById('inst-vs').innerText = `${Math.round(plane.vs)} FPM`;
+
+      // 3. Runway Distance Countdown & Approach Track Progress
+      const distToRunway = RUNWAY_START_X - worldX;
+      const distElem = document.getElementById('inst-dist');
+      const distText = document.getElementById('runway-dist-text');
+      const distChip = document.getElementById('runway-distance-chip');
+      const fillBar = document.getElementById('approach-fill');
+      const planeMarker = document.getElementById('plane-marker');
+
+      let progressPercent = 0;
+      if (gameMode === 'landing') {
+        const totalApproachDist = RUNWAY_START_X;
+        progressPercent = Math.min(100, Math.max(0, (worldX / totalApproachDist) * 100));
+
+        if (distToRunway > 0) {
+          const formatted = `${Math.round(distToRunway).toLocaleString()} FT`;
+          distElem.innerText = formatted;
+          distText.innerText = `RUNWAY IN: ${formatted}`;
+          distChip.innerText = `🏁 RUNWAY APPROACHING: ${formatted}`;
+        } else {
+          distElem.innerText = 'TOUCHDOWN';
+          distText.innerText = 'TOUCHDOWN ZONE!';
+          distChip.innerText = '🛬 OVER RUNWAY! PULL NOSE UP TO FLARE!';
+        }
+      } else {
+        // Takeoff Mode Progress
+        progressPercent = Math.min(100, Math.max(0, (worldX / 2800) * 100));
+        distElem.innerText = `${Math.round(worldX).toLocaleString()} FT`;
+        distText.innerText = `TAKEOFF ROLL: ${Math.round(worldX)} FT`;
+        distChip.innerText = worldX < 750 ? 'ACCELERATING...' : 'ROTATE! PULL NOSE UP!';
+      }
+
+      fillBar.style.width = `${progressPercent}%`;
+      planeMarker.style.left = `${progressPercent}%`;
+
+      // 4. Dynamic Guidance Warning Banner
+      const banner = document.getElementById('warning-banner');
+      if (gameMode === 'landing') {
+        if (plane.alt > 60) {
+          if (plane.pitch < 0) {
+            banner.innerText = '⚠️ NOSE DOWN! EASE NOSE UP TO +2.5°!';
+            banner.style.background = '#dc2626';
+          } else if (plane.pitch > 8) {
+            banner.innerText = '⚠️ NOSE TOO HIGH! EASE DOWN TO +3° ~ +4°!';
+            banner.style.background = '#f59e0b';
+          } else {
+            banner.innerText = 'DESCENDING TO RUNWAY • PREPARE TO FLARE (+3° ~ +5°)';
+            banner.style.background = 'rgba(15, 23, 42, 0.88)';
+          }
+        } else {
+          // Landing Flare Zone (< 60 ft)
+          banner.innerText = '✈️ FLARE NOW! HOLD +3.0° TO +5.0° PITCH!';
+          banner.style.background = '#10b981';
+        }
+      } else {
+        // Takeoff Mode
+        if (worldX < 750) {
+          banner.innerText = 'RUNWAY ROLL • ACCELERATING TO ROTATION SPEED...';
+          banner.style.background = 'rgba(15, 23, 42, 0.88)';
+        } else if (plane.pitch < 7) {
+          banner.innerText = 'ROTATE! PULL NOSE UP TO +10° CLIMB!';
+          banner.style.background = '#10b981';
+        } else {
+          banner.innerText = 'POSITIVE CLIMB • MAINTAIN +10° PITCH';
+          banner.style.background = 'rgba(15, 23, 42, 0.88)';
+        }
+      }
+    }
+
+    let lastTime = performance.now();
+
+    function renderLoop(now) {
+      requestAnimationFrame(renderLoop);
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      // Update Physics & Controls
+      updatePhysics(dt);
+
+      const rect = document.getElementById('flight-wrap').getBoundingClientRect();
+      const w = rect.width;
+      const h = rect.height;
+
+      // Draw Parallax Scenery & Approach Lights
+      drawSkyAndTerrain(w, h);
+
+      // Calculate Plane Screen Altitude (scaled to 220 ft)
+      const groundScreenY = h * 0.72 - 32;
+      const maxScreenAlt = h * 0.52;
+      const screenY = groundScreenY - Math.min(maxScreenAlt, (plane.alt / 220) * maxScreenAlt);
+      const screenX = w * 0.32;
+
+      // Draw Airliner
+      drawAirliner(screenX, screenY, plane.pitch);
+
+      // Draw Wheel Smoke / Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= p.decay;
+        p.r += 0.4;
+        if (p.alpha <= 0) {
+          particles.splice(i, 1);
+        } else {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.fillStyle = '#cbd5e1';
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      // Update HUD
+      updateHUD();
+    }
+
+    /* ==========================================================================
+       8. GAME LIFECYCLE & RESET
+       ========================================================================== */
+    function startFlight(mode = 'landing') {
+      gameMode = mode;
+      isFlightActive = true;
+      hasTouchedDown = false;
+      lastSpokenAlt = 9999;
+      particles = [];
+
+      document.getElementById('modal-menu').classList.add('hidden');
+      document.getElementById('modal-result').classList.add('hidden');
+
+      if (mode === 'landing') {
+        plane.alt = 220; // Starts at 220 ft on final approach (10-12s descent)
+        plane.pitch = 2.0;
+        worldX = 0;
+        document.getElementById('level-badge').innerText = '🛬 STAGE 1: BUTTER LANDING';
+        document.getElementById('btn-mode-toggle').innerText = '🛬 MODE: LANDING';
+        document.getElementById('center-target-pitch').innerText = '+3° ~ +5°';
+        document.getElementById('center-mode-sub').innerText = 'BUTTER FLARE';
+      } else {
+        plane.alt = 0;
+        plane.pitch = 0.0;
+        worldX = 0;
+        document.getElementById('level-badge').innerText = '🛫 STAGE 2: RUNWAY TAKEOFF';
+        document.getElementById('btn-mode-toggle').innerText = '🛫 MODE: TAKEOFF';
+        document.getElementById('center-target-pitch').innerText = '+8° ~ +12°';
+        document.getElementById('center-mode-sub').innerText = 'ROTATE CLIMB';
+      }
+
+      audio.init();
+    }
+
+    document.getElementById('btn-start-landing').onclick = () => startFlight('landing');
+    document.getElementById('btn-start-takeoff').onclick = () => startFlight('takeoff');
+    document.getElementById('btn-res-next').onclick = () => startFlight(gameMode);
+    document.getElementById('btn-restart').onclick = () => startFlight(gameMode);
+    document.getElementById('btn-mode-toggle').onclick = () => startFlight(gameMode === 'landing' ? 'takeoff' : 'landing');
+
+    document.getElementById('btn-sound').onclick = () => {
+      const isMuted = audio.toggleMute();
+      document.getElementById('btn-sound').innerText = isMuted ? '🔇' : '🔊';
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      handleResize();
+      requestAnimationFrame(renderLoop);
+    });
+  </script>
+</body>
+</html>

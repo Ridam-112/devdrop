@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aircraft Carrier — Realistic 3D Flight Deck</title>
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#071521;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+  #scene{display:block;width:100%;height:100%}
+  
+  /* Top Navigation Bar */
+  .nav-bar{
+    position:fixed;top:16px;left:50%;transform:translateX(-50%);
+    display:flex;gap:10px;z-index:30;background:rgba(12,24,36,0.88);
+    padding:6px 14px;border-radius:30px;border:1px solid rgba(255,255,255,0.22);
+    backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,0.5);
+  }
+  .nav-pill{
+    color:#cbd5e1;text-decoration:none;font-size:11px;font-weight:600;
+    padding:6px 14px;border-radius:20px;letter-spacing:1px;transition:all .2s ease;
+  }
+  .nav-pill:hover{color:#fff;background:rgba(255,255,255,0.14)}
+  .nav-pill.active{background:#0284c7;color:#fff;font-weight:700;box-shadow:0 0 14px rgba(2,132,199,0.5)}
+
+  .hud{position:fixed;left:22px;top:18px;color:#eaf4fb;pointer-events:none;text-shadow:0 2px 14px rgba(0,0,0,0.8);z-index:20}
+  .hud h1{font-size:17px;letter-spacing:.18em;margin:0 0 4px;font-weight:800}
+  .hud p{font-size:10px;letter-spacing:.12em;color:#94b8cf;margin:0;font-weight:600}
+
+  .panel{
+    position:fixed;right:18px;top:18px;background:rgba(10,24,36,0.85);
+    border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:12px 16px;
+    color:#eaf4fb;font-size:11px;line-height:1.75;backdrop-filter:blur(10px);
+    box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:20;
+  }
+  .panel b{color:#38bdf8;letter-spacing:1px}
+
+  /* Bottom Controls Toolbar */
+  .controls-bar{
+    position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+    display:flex;gap:8px;z-index:30;flex-wrap:wrap;justify-content:center;
+  }
+  button{
+    background:rgba(10,24,36,0.88);color:#f1f5f9;border:1px solid rgba(255,255,255,0.22);
+    border-radius:9px;padding:9px 14px;font-size:11px;font-weight:600;letter-spacing:1px;
+    cursor:pointer;backdrop-filter:blur(8px);transition:all .2s ease;box-shadow:0 4px 15px rgba(0,0,0,0.3);
+  }
+  button:hover{background:#1a3a52;border-color:#38bdf8;transform:translateY(-1px);color:#fff}
+  button.active{background:#0284c7;color:#fff;border-color:#7dd3fc;box-shadow:0 0 16px rgba(2,132,199,0.5)}
+
+  .hint{
+    position:fixed;left:18px;bottom:18px;color:#c4d5df;background:rgba(10,24,36,0.85);
+    border:1px solid rgba(255,255,255,0.18);border-radius:9px;padding:8px 14px;font-size:11px;
+    backdrop-filter:blur(8px);z-index:20;pointer-events:none;
+  }
+
+  #loading{
+    position:fixed;inset:0;display:grid;place-items:center;color:#dcecf7;background:#071521;
+    z-index:99;letter-spacing:.15em;font-size:12px;transition:opacity .4s ease;
+  }
+  #loading.hide{opacity:0;pointer-events:none}
+  #error{display:none;position:fixed;z-index:100;left:18px;right:18px;bottom:60px;background:#321d22;color:#ffe7e7;border:1px solid #ff777766;border-radius:10px;padding:14px;font:13px/1.5 system-ui;white-space:pre-wrap}
+
+  @media(max-width:850px){
+    .panel,.hint{display:none}
+    .nav-bar{top:65px}
+    .hud h1{font-size:14px}
+  }
+</style>
+
+<!-- Import Map for Seamless Local and CDN Execution -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./three.module.js",
+    "three/": "./",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js": "./three.module.js",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js": "./OrbitControls.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="loading">INITIALIZING 3D CARRIER FLIGHT DECK…</div>
+<div id="error"></div>
+
+<div class="nav-bar">
+  <a href="/tejas_3d.html" class="nav-pill">🛩️ HAL Tejas LCA</a>
+  <a href="/riverbend_airstrip_3d.html" class="nav-pill">🏝️ Riverbend Airbase</a>
+  <a href="/carrier_3d_model_realistic.html" class="nav-pill active">🚢 Aircraft Carrier (Realistic)</a>
+</div>
+
+<div class="hud">
+  <h1>AIRCRAFT CARRIER · FLIGHT DECK</h1>
+  <p>ANGLED RUNWAY STRIP · CATAPULT LANES · REALISTIC OCEAN</p>
+</div>
+
+<div class="panel">
+  <b>FLIGHT DECK FEATURES</b><br>
+  • Angled Non-Slip Landing Deck<br>
+  • 4 Arresting Gear Pendant Cables<br>
+  • 2 Forward EMALS Catapult Tracks<br>
+  • Island Superstructure & Radar Masts<br>
+  • Sponsons, Safety Rails & Jet Park
+</div>
+
+<div class="controls-bar">
+  <button id="viewResetBtn">RESET VIEW</button>
+  <button id="viewIslandBtn">ISLAND VIEW</button>
+  <button id="viewRunwayBtn">RUNWAY VIEW</button>
+  <button id="viewBowBtn">BOW CATAPULT</button>
+  <button id="autoRotateBtn">AUTO ROTATE</button>
+  <button id="lightBtn">LIGHTING: DAY</button>
+</div>
+
+<div class="hint">🖱️ Drag: Orbit · Scroll: Zoom · Right-drag: Pan</div>
+<canvas id="scene"></canvas>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+const loading = document.querySelector('#loading');
+const errorBox = document.querySelector('#error');
+function err(t){errorBox.style.display='block';errorBox.textContent=t;loading.classList.add('hide')}
+window.addEventListener('error', e => err('3D scene error: ' + (e.message || 'Unknown error')));
+window.addEventListener('unhandledrejection', e => err('Could not load 3D libraries: ' + (e.reason?.message || String(e.reason))));
+
+const canvas = document.querySelector('#scene');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.12;
+
+const scene = new THREE.Scene();
+const skyColor = new THREE.Color(0x7896a8);
+scene.background = skyColor;
+scene.fog = new THREE.Fog(0x7896a8, 170, 560);
+
+const camera = new THREE.PerspectiveCamera(42, innerWidth/innerHeight, .1, 1200);
+camera.position.set(132, 108, 150);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.target.set(0, 10, 0);
+controls.enableDamping = true;
+controls.dampingFactor = 0.055;
+controls.maxPolarAngle = Math.PI * .49;
+controls.minDistance = 25;
+controls.maxDistance = 550;
+
+const hemiLight = new THREE.HemisphereLight(0xc8e4f5, 0x283746, 1.8);
+scene.add(hemiLight);
+
+const sun = new THREE.DirectionalLight(0xffe2bd, 3.0);
+sun.position.set(-90, 150, 80);
+sun.castShadow = true;
+sun.shadow.mapSize.set(2048, 2048);
+sun.shadow.camera.left = -150;
+sun.shadow.camera.right = 150;
+sun.shadow.camera.top = 150;
+sun.shadow.camera.bottom = -150;
+sun.shadow.bias = -0.00015;
+scene.add(sun);
+
+const mat = (color, roughness=.72, metalness=.15) => new THREE.MeshStandardMaterial({color, roughness, metalness});
+const hullMat = mat(0x253642, .52, .55);
+const deckMat = mat(0x555d61, .88, .18);
+const dark = mat(0x18252e, .65, .35);
+const white = mat(0xe5e8e5, .5, .15);
+const yellow = mat(0xe3b83f, .6, .1);
+const glass = mat(0x182c3a, .22, .5);
+
+const carrier = new THREE.Group();
+scene.add(carrier);
+
+// Long, tapered hull with stepped bow and stern.
+function hullShape(){
+ const s = new THREE.Shape();
+ s.moveTo(-57,-15);s.lineTo(51,-15);s.lineTo(60,-8);s.lineTo(63,0);
+ s.lineTo(57,12);s.lineTo(46,16);s.lineTo(-49,16);s.lineTo(-60,8);s.closePath();
+ return s;
+}
+const hullGeo = new THREE.ExtrudeGeometry(hullShape(), {depth:12, bevelEnabled:true, bevelSegments:3, steps:1, bevelSize:1.2, bevelThickness:1.2});
+hullGeo.rotateX(-Math.PI/2);
+const hull = new THREE.Mesh(hullGeo, hullMat);
+hull.position.y = 0;
+hull.castShadow = true;
+hull.receiveShadow = true;
+carrier.add(hull);
+
+// Flight deck: broad overhanging slab with angled forward edge.
+const deckShape = new THREE.Shape();
+deckShape.moveTo(-68,-19);deckShape.lineTo(52,-19);deckShape.lineTo(69,-12);
+deckShape.lineTo(69,15);deckShape.lineTo(50,21);deckShape.lineTo(-68,21);deckShape.closePath();
+const deckGeo = new THREE.ExtrudeGeometry(deckShape, {depth:3.2, bevelEnabled:true, bevelSegments:2, bevelSize:.7, bevelThickness:.5});
+deckGeo.rotateX(-Math.PI/2);
+const deck = new THREE.Mesh(deckGeo, deckMat);
+deck.position.y = 12;
+deck.castShadow = true;
+deck.receiveShadow = true;
+carrier.add(deck);
+
+// Underside dark band and hull panel details.
+const band = new THREE.Mesh(new THREE.BoxGeometry(112, 2.2, 29), dark);
+band.position.set(-2, 5, 0);
+carrier.add(band);
+
+for(let i=0; i<24; i++){
+ const seam = new THREE.Mesh(new THREE.BoxGeometry(.18, 5, .18), mat(0x71818a));
+ seam.position.set(-53+i*4.5, 3, 15.1);
+ carrier.add(seam);
+}
+
+// Island superstructure on starboard side.
+const island = new THREE.Group();
+island.position.set(25, 0, 10);
+carrier.add(island);
+
+function box(parent, w, h, d, x, y, z, material){
+ const m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
+ m.position.set(x, y, z);
+ m.castShadow = true;
+ m.receiveShadow = true;
+ parent.add(m);
+ return m;
+}
+
+box(island, 13, 7, 10, 0, 17, 0, hullMat);
+box(island, 10, 5, 8, 0, 23, 0, mat(0x9aa6a9, .65, .25));
+box(island, 8, 3, 7, 0, 27, 0, white);
+box(island, 7.5, .7, 6.5, 0, 29.1, 0, dark);
+
+for(let i=0; i<5; i++) box(island, 1.0, .28, .12, -3.1+i*1.55, 24.4, 4.08, glass);
+
+box(island, 1.2, 9, 1.2, 0, 34, 0, dark);
+box(island, 4, .35, 1.4, 0, 38.6, 0, white);
+
+const mast = new THREE.Mesh(new THREE.CylinderGeometry(.12, .25, 7, 8), dark);
+mast.position.set(0, 42, 0);
+island.add(mast);
+
+const yardArms = [];
+for(let i=0; i<3; i++){
+ const a = box(island, 2.8, .12, .12, 0, 35+i*1.3, -.2, dark);
+ a.rotation.y = .2;
+ yardArms.push(a);
+}
+
+// Flight-deck layout: a clearly visible angled landing area, deck lanes and markings.
+const flightDeck = new THREE.Group();
+flightDeck.position.set(-5, 15.24, -5);
+flightDeck.rotation.y = -0.12;
+carrier.add(flightDeck);
+
+function deckMark(parent, w, d, x, z, material=white, y=0) {
+ const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, .075, d), material);
+ mesh.position.set(x, y, z);
+ parent.add(mesh);
+ return mesh;
+}
+
+// Contrasting non-slip landing strip with crisp edge lines.
+const landingSurface = new THREE.Mesh(
+ new THREE.BoxGeometry(108, .045, 13),
+ mat(0x424b50, .95, .08)
+);
+landingSurface.position.set(0, 0, 0);
+flightDeck.add(landingSurface);
+
+for (const side of [-1, 1]) {
+ deckMark(flightDeck, 108, .28, 0, side * 6.25, white, .045);
+}
+deckMark(flightDeck, 108, .22, 0, 0, mat(0xd5d9d6, .8, .05), .05);
+
+// Broken centerline and touchdown-zone bars.
+for (let i=0; i<18; i++) {
+ deckMark(flightDeck, 2.6, .22, -50+i*5.8, 0, white, .07);
+}
+for (let i=0; i<5; i++) {
+ const x = 22 + i*3.1;
+ deckMark(flightDeck, .35, 4.8, x, -2.5, white, .075);
+ deckMark(flightDeck, .35, 4.8, x, 2.5, white, .075);
+}
+
+// Arresting-wire visual details across the angled landing area.
+for (let i=0; i<4; i++) {
+ deckMark(flightDeck, .16, 12.2, 22+i*4.1, 0, yellow, .085);
+}
+
+// Landing-area boundary and warning blocks at the aft end.
+deckMark(flightDeck, 1.0, 13.4, -53, 0, yellow, .08);
+for (let i=0; i<8; i++) {
+ const block = deckMark(flightDeck, 1.4, .65, -48+i*2.2, -8.1, i%2 ? yellow : white, .06);
+ block.rotation.y = -.12;
+}
+
+// Two forward catapult tracks kept separate from the landing lane.
+for (const z of [10.2, 15.1]) {
+ deckMark(carrier, 74, .22, 2, z, white, 15.28);
+ for (let i=0; i<15; i++) deckMark(carrier, .12, 1.1, -33+i*5, z, yellow, 15.3);
+}
+
+// Aircraft elevator outlines and tie-down points along the deck edge.
+function elevator(x, z, w=12, d=8) {
+ const edgeMat = mat(0xb8c2c2, .75, .12);
+ const y = 15.28;
+ deckMark(carrier, w, .22, x, z-d/2, edgeMat, y);
+ deckMark(carrier, w, .22, x, z+d/2, edgeMat, y);
+ deckMark(carrier, .22, d, x-w/2, z, edgeMat, y);
+ deckMark(carrier, .22, d, x+w/2, z, edgeMat, y);
+ for(let ix=-1; ix<=1; ix++) for(let iz=-1; iz<=1; iz++){
+  const dot = new THREE.Mesh(new THREE.CircleGeometry(.12, 8), dark);
+  dot.rotation.x = -Math.PI/2;
+  dot.position.set(x+ix*w*.32, 15.31, z+iz*d*.32);
+  carrier.add(dot);
+ }
+}
+elevator(49, 13, 11, 8);
+elevator(-55, 13, 10, 7);
+
+// Subtle deck tie-down grid, avoiding the marked landing lane.
+for(let x=-62; x<=62; x+=4){
+ for(let z of [-17,-14,14,17]){
+  const dot = new THREE.Mesh(new THREE.CircleGeometry(.105, 8), dark);
+  dot.rotation.x = -Math.PI/2;
+  dot.position.set(x, 15.29, z);
+  carrier.add(dot);
+ }
+}
+
+// Deck edge safety rails and tiny lights.
+for(let side of [-1, 1]){
+ for(let i=0; i<34; i++){
+  const x = -63+i*3.8;
+  const post = new THREE.Mesh(new THREE.CylinderGeometry(.12, .12, 1.1, 6), yellow);
+  post.position.set(x, 15.7, side*19.7);
+  carrier.add(post);
+ }
+ for(let i=0; i<28; i++){
+  const lamp = new THREE.Mesh(new THREE.SphereGeometry(.24, 8, 6), mat(0xf4d58a, .25, .1));
+  lamp.position.set(-60+i*4.3, 15.5, side*20.6);
+  carrier.add(lamp);
+ }
+}
+
+// Static deck aircraft: display silhouettes.
+function makeJet(x, z, scale=1, rot=0){
+ const g = new THREE.Group();
+ g.position.set(x, 15.45, z);
+ g.rotation.y = rot;
+ g.scale.setScalar(scale);
+ carrier.add(g);
+ const bodyMat = mat(0x9da8aa, .5, .35);
+ const fus = new THREE.Mesh(new THREE.CylinderGeometry(.42, .58, 9, 10), bodyMat);
+ fus.rotation.x = Math.PI/2;
+ fus.position.y = .55;
+ g.add(fus);
+ const nose = new THREE.Mesh(new THREE.ConeGeometry(.42, 2.8, 10), bodyMat);
+ nose.rotation.x = -Math.PI/2;
+ nose.position.set(0, .55, 5.6);
+ g.add(nose);
+ const wing = new THREE.Mesh(new THREE.BoxGeometry(12, .18, 2.8), bodyMat);
+ wing.position.set(0, .45, .2);
+ wing.rotation.y = .12;
+ g.add(wing);
+ const tail = new THREE.Mesh(new THREE.BoxGeometry(4, .15, 1.5), bodyMat);
+ tail.position.set(0, .55, -3.4);
+ g.add(tail);
+ const fin = new THREE.Mesh(new THREE.BoxGeometry(.18, 1.5, 2.1), bodyMat);
+ fin.position.set(0, 1.2, -3.2);
+ g.add(fin);
+ const canopy = new THREE.Mesh(new THREE.SphereGeometry(.72, 12, 8, 0, Math.PI*2, 0, Math.PI/2), glass);
+ canopy.scale.set(.8, .55, 1.4);
+ canopy.position.set(0, 1.05, 1.6);
+ g.add(canopy);
+ return g;
+}
+
+makeJet(-43, 15, .72, Math.PI/2);
+makeJet(-18, 15, .72, Math.PI/2);
+makeJet(8, 15, .68, Math.PI/2);
+makeJet(43, -16, .62, -Math.PI/2);
+
+// Ocean plane with subtle broad color variation.
+const oceanGeo = new THREE.PlaneGeometry(1000, 1000, 80, 80);
+const pos = oceanGeo.attributes.position;
+for(let i=0; i<pos.count; i++){
+ const x = pos.getX(i), y = pos.getY(i);
+ pos.setZ(i, Math.sin(x*.08)*.16 + Math.cos(y*.07)*.14 + Math.sin((x+y)*.035)*.12);
+}
+oceanGeo.computeVertexNormals();
+const ocean = new THREE.Mesh(oceanGeo, new THREE.MeshStandardMaterial({color:0x28566b, roughness:.34, metalness:.25}));
+ocean.rotation.x = -Math.PI/2;
+ocean.position.y = -2;
+ocean.receiveShadow = true;
+scene.add(ocean);
+
+// Atmospheric horizon and distant soft cloud forms.
+for(let i=0; i<18; i++){
+ const cloud = new THREE.Mesh(new THREE.SphereGeometry(1, 12, 8), new THREE.MeshStandardMaterial({color:0xe7edf0, transparent:true, opacity:.17, roughness:1}));
+ cloud.scale.set(10+Math.random()*18, 2+Math.random()*3, 5+Math.random()*8);
+ cloud.position.set((Math.random()-.5)*380, 75+Math.random()*35, -180-Math.random()*160);
+ scene.add(cloud);
+}
+
+const grid = new THREE.GridHelper(500, 80, 0x8bb1c2, 0x5c879a);
+grid.position.y = -1.85;
+grid.material.transparent = true;
+grid.material.opacity = .08;
+scene.add(grid);
+
+setTimeout(() => loading.classList.add('hide'), 200);
+
+// Interactive UI Toolbar
+let isAutoRotate = false;
+const autoRotateBtn = document.getElementById('autoRotateBtn');
+autoRotateBtn.onclick = () => {
+  isAutoRotate = !isAutoRotate;
+  autoRotateBtn.classList.toggle('active', isAutoRotate);
+};
+
+// Camera Smooth Transition
+let camTargetPos = camera.position.clone();
+let camTargetLook = controls.target.clone();
+let isTransitioning = false;
+
+function setCameraView(px, py, pz, tx, ty, tz) {
+  camTargetPos.set(px, py, pz);
+  camTargetLook.set(tx, ty, tz);
+  isTransitioning = true;
+}
+
+document.getElementById('viewResetBtn').onclick = () => setCameraView(132, 108, 150, 0, 10, 0);
+document.getElementById('viewIslandBtn').onclick = () => setCameraView(55, 36, 35, 25, 25, 10);
+document.getElementById('viewRunwayBtn').onclick = () => setCameraView(-90, 32, -15, -5, 16, -5);
+document.getElementById('viewBowBtn').onclick = () => setCameraView(78, 28, 25, 10, 16, 12);
+
+// Lighting modes
+let lightIdx = 0;
+const lightBtn = document.getElementById('lightBtn');
+const lightModes = [
+  { name: 'LIGHTING: DAY', sky: 0x7896a8, sunCol: 0xffe2bd, sunInt: 3.0, hemiInt: 1.8 },
+  { name: 'LIGHTING: SUNSET', sky: 0xc46951, sunCol: 0xff6633, sunInt: 2.2, hemiInt: 0.9 },
+  { name: 'LIGHTING: NIGHT', sky: 0x050f18, sunCol: 0x3a5d7c, sunInt: 0.45, hemiInt: 0.35 }
+];
+
+lightBtn.onclick = () => {
+  lightIdx = (lightIdx + 1) % lightModes.length;
+  const m = lightModes[lightIdx];
+  lightBtn.textContent = m.name;
+  scene.background.setHex(m.sky);
+  scene.fog.color.setHex(m.sky);
+  sun.color.setHex(m.sunCol);
+  sun.intensity = m.sunInt;
+  hemiLight.intensity = m.hemiInt;
+};
+
+const clock = new THREE.Clock();
+function animate(){
+ requestAnimationFrame(animate);
+ const time = clock.getElapsedTime();
+
+ if (isTransitioning) {
+   camera.position.lerp(camTargetPos, 0.08);
+   controls.target.lerp(camTargetLook, 0.08);
+   if (camera.position.distanceTo(camTargetPos) < 0.2) {
+     camera.position.copy(camTargetPos);
+     controls.target.copy(camTargetLook);
+     isTransitioning = false;
+   }
+ }
+
+ controls.update();
+
+ // Subtle ocean surface animation & ship pitch
+ carrier.position.y = Math.sin(time * 0.8) * 0.22;
+ carrier.rotation.z = Math.sin(time * 0.5) * 0.005;
+
+ if (isAutoRotate) {
+   carrier.rotation.y = time * 0.04;
+ }
+
+ renderer.render(scene, camera);
+}
+animate();
+
+addEventListener('resize', () => {
+ camera.aspect = innerWidth / innerHeight;
+ camera.updateProjectionMatrix();
+ renderer.setSize(innerWidth, innerHeight);
+});
+</script>
+</body>
+</html>

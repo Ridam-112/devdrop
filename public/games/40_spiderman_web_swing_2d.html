@@ -1,0 +1,4657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Spider-Man 3D: Web Avenue Rush</title>
+  <!-- Three.js Library (Local + CDN fallback) & GLTFLoader -->
+  <script src="three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <script src="GLTFLoader.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Bangers&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --spidey-red: #ef4444;
+      --spidey-dark-red: #b91c1c;
+      --spidey-blue: #2563eb;
+      --spidey-dark-blue: #1d4ed8;
+      --gold: #fbbf24;
+      --accent: #10b981;
+      --danger: #f43f5e;
+      --clay-bg: rgba(255, 255, 255, 0.9);
+      --clay-shadow: 0 10px 25px rgba(0, 0, 0, 0.25), inset 2px 2px 4px rgba(255, 255, 255, 0.9), inset -2px -2px 4px rgba(0, 0, 0, 0.1);
+      --btn-shadow: 0 8px 18px rgba(0, 0, 0, 0.3), inset 0 3px 0 rgba(255, 255, 255, 0.5), inset 0 -3px 0 rgba(0, 0, 0, 0.25);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #38bdf8;
+      font-family: 'Fredoka', cursive, sans-serif;
+      position: fixed;
+    }
+
+    #gameCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 1;
+    }
+
+    /* Screen Effects */
+    #damageFlash {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle, rgba(239, 68, 68, 0.6) 0%, transparent 80%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.08s ease-out;
+      z-index: 6;
+    }
+
+    #speed-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    /* Top Navigation */
+    .top-nav {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .nav-btn {
+      pointer-events: auto;
+      background: var(--clay-bg);
+      border: 2px solid #ffffff;
+      backdrop-filter: blur(10px);
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+      box-shadow: var(--btn-shadow);
+      transition: all 0.15s ease;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      background: #ffffff;
+    }
+    .nav-btn:active {
+      transform: scale(0.96);
+    }
+
+    /* Floating Center Alignment HUD */
+    .center-hud-container {
+      position: fixed;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .alignment-bar-box {
+      background: rgba(15, 23, 42, 0.88);
+      border: 2.5px solid #ffffff;
+      backdrop-filter: blur(12px);
+      padding: 8px 18px;
+      border-radius: 24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 290px;
+    }
+
+    .alignment-label-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .danger-left-txt { color: #f87171; }
+    .center-txt { color: #4ade80; }
+    .danger-right-txt { color: #f87171; }
+
+    /* The visual center balance gauge */
+    .gauge-track {
+      position: relative;
+      width: 100%;
+      height: 14px;
+      background: #1e293b;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .gauge-center-zone {
+      position: absolute;
+      left: 36%;
+      width: 28%;
+      top: 0;
+      bottom: 0;
+      background: rgba(34, 197, 94, 0.4);
+      border-left: 2px dashed #22c55e;
+      border-right: 2px dashed #22c55e;
+    }
+
+    .gauge-needle {
+      position: absolute;
+      top: -2px;
+      width: 18px;
+      height: 18px;
+      background: #f87171;
+      border: 2px solid #ffffff;
+      border-radius: 50%;
+      transform: translateX(-50%);
+      transition: left 0.05s linear;
+      box-shadow: 0 0 10px #ef4444;
+    }
+
+    .gauge-needle.in-center {
+      background: #22c55e;
+      box-shadow: 0 0 12px #4ade80;
+    }
+
+    /* Flashing Wall Warning Banner */
+    .wall-warning-banner {
+      position: fixed;
+      top: 86px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 55;
+      padding: 8px 22px;
+      border-radius: 999px;
+      font-family: 'Bangers', cursive;
+      font-size: 21px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #ffffff;
+      background: #ef4444;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.85);
+      display: none;
+      animation: pulseAlert 0.3s infinite alternate;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    @keyframes pulseAlert {
+      from { transform: translateX(-50%) scale(0.96); opacity: 0.9; }
+      to { transform: translateX(-50%) scale(1.06); opacity: 1; }
+    }
+
+    /* Stats HUD */
+    .stats-card {
+      position: fixed;
+      top: 70px;
+      left: 14px;
+      z-index: 50;
+      background: var(--clay-bg);
+      border: 2.5px solid #ffffff;
+      backdrop-filter: blur(10px);
+      padding: 8px 14px;
+      border-radius: 18px;
+      box-shadow: var(--btn-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      pointer-events: none;
+    }
+
+    .stat-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .stat-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 800;
+      font-size: 15px;
+      color: #0f172a;
+    }
+
+    .stat-val.gold { color: #d97706; }
+    .stat-val.multiplier { color: #16a34a; font-family: 'Bangers', cursive; font-size: 18px; }
+
+    /* Health Hearts Pill */
+    .health-pill {
+      position: fixed;
+      top: 70px;
+      right: 14px;
+      z-index: 50;
+      background: var(--clay-bg);
+      border: 2.5px solid #ffffff;
+      backdrop-filter: blur(10px);
+      padding: 8px 14px;
+      border-radius: 18px;
+      box-shadow: var(--btn-shadow);
+      display: flex;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    .heart-icon {
+      font-size: 20px;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .heart-lost {
+      opacity: 0.25;
+      filter: grayscale(1);
+    }
+
+    /* Altitude Meter Indicator */
+    .altitude-indicator {
+      position: fixed;
+      bottom: 120px;
+      left: 16px;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.8);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(8px);
+      padding: 6px 12px;
+      border-radius: 16px;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      pointer-events: none;
+    }
+
+    /* Center Combo Popups */
+    #combo-callout {
+      position: fixed;
+      top: 35%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      font-family: 'Bangers', cursive;
+      font-size: 42px;
+      color: #fbbf24;
+      text-shadow: -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 8px 25px rgba(251, 191, 36, 0.8);
+      pointer-events: none;
+      z-index: 60;
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    #combo-callout.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.15);
+    }
+
+    /* Touch Controls Overlay */
+    .controls-overlay {
+      position: fixed;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 50;
+      pointer-events: none;
+    }
+
+    .steer-btn {
+      pointer-events: auto;
+      width: clamp(135px, 34vw, 190px);
+      height: clamp(70px, 14vw, 88px);
+      border-radius: 26px;
+      background: linear-gradient(145deg, #ffffff, #e2e8f0);
+      border: 3.5px solid #ffffff;
+      box-shadow: 0 12px 25px rgba(0, 0, 0, 0.35), inset 0 3px 0 rgba(255, 255, 255, 0.9), inset 0 -4px 0 rgba(0, 0, 0, 0.15);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      touch-action: none;
+    }
+
+    .steer-btn.left-btn {
+      border-left: 6px solid var(--spidey-blue);
+    }
+
+    .steer-btn.right-btn {
+      border-right: 6px solid var(--spidey-red);
+    }
+
+    .steer-btn:active, .steer-btn.active {
+      transform: scale(0.93) translateY(3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .steer-btn.alert-pulse {
+      animation: steerAlertPulse 0.35s infinite alternate;
+      border: 3.5px solid #fbbf24 !important;
+      background: linear-gradient(145deg, #fffbeb, #fed7aa) !important;
+    }
+
+    @keyframes steerAlertPulse {
+      from { transform: scale(1); box-shadow: 0 0 16px rgba(251, 191, 36, 0.7); }
+      to { transform: scale(1.08); box-shadow: 0 0 28px rgba(239, 68, 68, 0.95); }
+    }
+
+    .steer-btn .btn-icon {
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .steer-btn .btn-text {
+      font-size: 15px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .steer-btn .btn-hint {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+    }
+
+    .center-actions-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      pointer-events: auto;
+    }
+
+    .stunt-btn {
+      pointer-events: auto;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #a855f7, #7c3aed);
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 18px rgba(124, 58, 237, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      color: #ffffff;
+      transition: transform 0.08s;
+      touch-action: none;
+    }
+
+    .stunt-btn:active {
+      transform: scale(0.9);
+    }
+
+    .center-zip-btn {
+      pointer-events: auto;
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #fbbf24, #d97706);
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 18px rgba(217, 119, 6, 0.45), inset 0 2px 0 rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      color: #ffffff;
+      transition: transform 0.08s;
+      touch-action: none;
+    }
+
+    .center-zip-btn:active {
+      transform: scale(0.9);
+    }
+
+    .btn-sub-label {
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    /* Start / Pause / Game Over Modals */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.72);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 32px;
+      border: 4px solid #ffffff;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.4), inset 2px 2px 4px rgba(255, 255, 255, 0.9);
+      padding: 28px 24px;
+      max-width: 440px;
+      width: 100%;
+      text-align: center;
+      position: relative;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.85); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .modal-title {
+      font-family: 'Bangers', cursive;
+      font-size: 38px;
+      letter-spacing: 1px;
+      color: var(--spidey-red);
+      text-shadow: 2px 2px 0 #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .modal-subtitle {
+      font-size: 14px;
+      font-weight: 700;
+      color: #64748b;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    .guide-box {
+      background: #f1f5f9;
+      border-radius: 20px;
+      padding: 14px 16px;
+      text-align: left;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+    }
+
+    .guide-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .guide-badge {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      color: #ffffff;
+      white-space: nowrap;
+    }
+
+    .badge-red { background: var(--spidey-red); }
+    .badge-blue { background: var(--spidey-blue); }
+    .badge-gold { background: #d97706; }
+
+    .action-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+      border: 3px solid #ffffff;
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.7);
+      color: #ffffff;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 19px;
+      font-weight: 800;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(239, 68, 68, 0.6);
+    }
+
+    .action-btn:active {
+      transform: scale(0.97);
+    }
+
+    .score-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .score-summary-card {
+      background: #f8fafc;
+      border: 2px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 10px;
+    }
+
+    .summary-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .summary-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+
+    /* Fullscreen Touch Tap Zones */
+    .screen-touch-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 45%;
+      height: 100%;
+      z-index: 20;
+    }
+
+    .screen-touch-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 45%;
+      height: 100%;
+      z-index: 20;
+    }
+
+    /* Spider-Sense Meter */
+    .sense-indicator {
+      position: fixed;
+      top: 148px;
+      right: 14px;
+      z-index: 50;
+      background: rgba(15, 23, 42, 0.88);
+      border: 2px solid #ffffff;
+      padding: 6px 12px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
+    }
+    .sense-label {
+      font-size: 11px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    .sense-track {
+      width: 70px;
+      height: 8px;
+      background: #334155;
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .sense-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #f59e0b, #facc15);
+      transition: width 0.1s linear;
+      box-shadow: 0 0 8px #facc15;
+    }
+
+    /* Comic Book Floating Popups */
+    #comic-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 60;
+      overflow: hidden;
+    }
+    .comic-popup {
+      position: absolute;
+      font-family: 'Fredoka', cursive, sans-serif;
+      font-size: 28px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #facc15;
+      background: #ef4444;
+      padding: 6px 18px;
+      border-radius: 12px;
+      border: 3.5px solid #ffffff;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px #ef4444;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.2s ease-out;
+      opacity: 0;
+    }
+
+    /* Suit Wardrobe Modal */
+    .suit-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+      max-height: 55vh;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .suit-card {
+      background: #f8fafc;
+      border: 2.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px 16px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'Fredoka', sans-serif;
+    }
+    .suit-card:hover {
+      transform: translateY(-2px);
+      border-color: #38bdf8;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+    }
+    .suit-card.active {
+      border-color: #ef4444;
+      background: #fff1f2;
+      box-shadow: 0 0 15px rgba(239, 68, 68, 0.35);
+    }
+    .suit-badge {
+      font-size: 14px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .suit-desc {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <!-- Three.js Canvas Container -->
+  <div id="gameCanvas"></div>
+
+  <!-- Screen Shake / Damage Flash -->
+  <div id="damageFlash"></div>
+  <canvas id="speed-overlay"></canvas>
+
+  <!-- Left & Right Touch Tap Zones for fast responsive steering -->
+  <div class="screen-touch-left" id="screenLeftZone"></div>
+  <div class="screen-touch-right" id="screenRightZone"></div>
+
+  <!-- Top Navigation -->
+  <div class="top-nav">
+    <a href="arcade_hub.html" class="nav-btn">
+      <span>🏠</span>
+      <span>Arcade Hub</span>
+    </a>
+    <button class="nav-btn" id="timeBtn" title="Toggle Day / Sunset / Night">
+      <span>☀️</span>
+      <span id="timeTxt">Day</span>
+    </button>
+    <button class="nav-btn" id="suitBtn" title="Change Spider-Man Suit">
+      <span>🕷️</span>
+      <span id="suitTxt">Suits</span>
+    </button>
+    <button class="nav-btn" id="senseBtn" title="Spider-Sense Bullet Time [Q / Shift]">
+      <span>🕸️</span>
+      <span id="senseTxt">Sense</span>
+    </button>
+    <button class="nav-btn" id="memeMusicBtn" title="Toggle Spider-Man Meme BGM">
+      <span>🎵</span>
+      <span id="memeMusicTxt">Meme BGM</span>
+    </button>
+    <button class="nav-btn" id="pauseBtn">
+      <span>⏸️</span>
+      <span>Pause</span>
+    </button>
+  </div>
+
+  <!-- Center Alignment Balancing HUD -->
+  <div class="center-hud-container">
+    <div class="alignment-bar-box">
+      <div class="alignment-label-row">
+        <span class="danger-left-txt">◀ LEFT WALL</span>
+        <span class="center-txt">⭐ PERFECT CENTER ⭐</span>
+        <span class="danger-right-txt">RIGHT WALL ▶</span>
+      </div>
+      <div class="gauge-track">
+        <div class="gauge-center-zone"></div>
+        <div class="gauge-needle in-center" id="gaugeNeedle" style="left: 50%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wall & Dive Warning Flash Banner -->
+  <div class="wall-warning-banner" id="wallWarningBanner">
+    ⚠️ TOO FAR LEFT! CLICK WEB RIGHT ▶ TO CENTER ⚠️
+  </div>
+
+  <!-- Stats HUD -->
+  <div class="stats-card">
+    <div class="stat-row">
+      <span>🏆 SCORE:</span>
+      <span class="stat-val gold" id="scoreVal">0</span>
+    </div>
+    <div class="stat-row">
+      <span>📏 DIST:</span>
+      <span class="stat-val" id="distVal">0m</span>
+    </div>
+    <div class="stat-row">
+      <span>⚡ COMBO:</span>
+      <span class="stat-val multiplier" id="comboVal">1.0x</span>
+    </div>
+  </div>
+
+  <!-- Altitude Indicator & Spider-Sense Energy Bar -->
+  <div class="altitude-indicator">
+    <span>🏙️ ALT:</span>
+    <span id="altVal" style="color: #38bdf8;">16m</span>
+  </div>
+
+  <div class="sense-indicator" id="senseBarContainer" title="Spider-Sense Bullet Time Meter">
+    <span class="sense-label">⚡ SENSE:</span>
+    <div class="sense-track">
+      <div class="sense-fill" id="senseFill" style="width: 100%;"></div>
+    </div>
+  </div>
+
+  <!-- Comic Popups Floating Container -->
+  <div id="comic-container"></div>
+
+  <!-- Health Hearts -->
+  <div class="health-pill" id="healthPill">
+    <span class="heart-icon" id="heart1">❤️</span>
+    <span class="heart-icon" id="heart2">❤️</span>
+    <span class="heart-icon" id="heart3">❤️</span>
+  </div>
+
+  <!-- Big Comic Center Combo Callout -->
+  <div id="combo-callout">PERFECT CENTER! +2X</div>
+
+  <!-- Bottom Steering Controls Overlay -->
+  <div class="controls-overlay">
+    <button class="steer-btn left-btn" id="leftSteerBtn">
+      <span class="btn-icon">🕸️ ◀</span>
+      <span class="btn-text">WEB LEFT</span>
+      <span class="btn-hint">[A / Left Arrow]</span>
+    </button>
+
+    <div class="center-actions-col">
+      <button class="stunt-btn" id="stuntBtn" title="Aerial Stunt / Flip [W / Up]">
+        <span>🤸</span>
+        <span class="btn-sub-label">FLIP [W]</span>
+      </button>
+      <button class="center-zip-btn" id="pointZipBtn" title="Web Zip to Perch [F / Tap]">
+        <span>🎯</span>
+        <span class="btn-sub-label">ZIP [F]</span>
+      </button>
+      <button class="center-zip-btn" id="centerZipBtn" title="Point Launch [Space]">
+        <span>🚀</span>
+        <span class="btn-sub-label">LAUNCH</span>
+      </button>
+    </div>
+
+    <button class="steer-btn right-btn" id="rightSteerBtn">
+      <span class="btn-icon">▶ 🕸️</span>
+      <span class="btn-text">WEB RIGHT</span>
+      <span class="btn-hint">[D / Right Arrow]</span>
+    </button>
+  </div>
+
+  <!-- Start Game Modal -->
+  <div class="modal-backdrop" id="startModal">
+    <div class="modal-card">
+      <h1 class="modal-title">SPIDER-MAN 3D</h1>
+      <p class="modal-subtitle">Web Avenue Rush • Real Pendulum Physics & Acrobatics</p>
+
+      <div class="guide-box">
+        <div class="guide-row">
+          <span class="guide-badge badge-red">Linear & Dive Swing</span>
+          <span><b>A / D</b> = Linear Swing. Dive fast downwards and tap web to trigger a massive <b>Dive Swing Swoop</b>! 🌊⚡</span>
+        </div>
+        <div class="guide-row">
+          <span class="guide-badge badge-gold">Air Tricks & Stunts</span>
+          <span><b>W / [🤸 Flip]</b> = Chain 9 iconic PS5 stunts: Cannonball, The Thinker, Moonsault, Web-Wings, Indy Grab & more! 🌪️</span>
+        </div>
+        <div class="guide-row">
+          <span class="guide-badge badge-blue">Slingshot & Point Launch</span>
+          <span><b>Hold A+D</b> = Dual Slingshot! <b>Space / [🎯 Launch]</b> = Perch Point Launch! Wall proximity = <b>Parkour Vault</b>! 👟</span>
+        </div>
+      </div>
+
+      <button class="action-btn" id="startGameBtn">SWING NOW! 🕷️</button>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-backdrop" id="gameOverModal" style="display: none;">
+    <div class="modal-card">
+      <h1 class="modal-title" style="color: var(--danger);">CRASH LANDING!</h1>
+      <p class="modal-subtitle">Spider-Man lost his swinging momentum!</p>
+
+      <div class="score-summary-grid">
+        <div class="score-summary-card">
+          <div class="summary-label">Final Score</div>
+          <div class="summary-val gold" id="finalScoreVal">0</div>
+        </div>
+        <div class="score-summary-card">
+          <div class="summary-label">Distance Swung</div>
+          <div class="summary-val" id="finalDistVal">0m</div>
+        </div>
+        <div class="score-summary-card">
+          <div class="summary-label">Best Combo</div>
+          <div class="summary-val" id="finalComboVal">1.0x</div>
+        </div>
+        <div class="score-summary-card">
+          <div class="summary-label">Best Highscore</div>
+          <div class="summary-val gold" id="bestScoreVal">0</div>
+        </div>
+      </div>
+
+      <button class="action-btn" id="restartGameBtn">PLAY AGAIN 🔄</button>
+    </div>
+  </div>
+
+  <!-- Pause Modal -->
+  <div class="modal-backdrop" id="pauseModal" style="display: none;">
+    <div class="modal-card">
+      <h1 class="modal-title">GAME PAUSED</h1>
+      <p class="modal-subtitle">Take a breather, Web-Slinger!</p>
+      <button class="action-btn" id="resumeGameBtn" style="margin-bottom: 12px;">RESUME SWING ▶</button>
+      <a href="arcade_hub.html" class="nav-btn" style="display: inline-flex; justify-content: center; width: 100%;">Exit to Arcade Hub</a>
+    </div>
+  </div>
+
+  <!-- Suit Selection Modal -->
+  <div class="modal-backdrop" id="suitModal" style="display: none;">
+    <div class="modal-card" style="max-width: 480px;">
+      <h1 class="modal-title">SPIDER SUIT WARDROBE</h1>
+      <p class="modal-subtitle">Equip your favorite Spider-Man suit in real-time</p>
+
+      <div class="suit-grid">
+        <button class="suit-card active" data-suit="CLASSIC">
+          <div class="suit-badge badge-classic">🔴 Classic</div>
+          <div class="suit-desc">Iconic Red & Blue Suit with comic webbing</div>
+        </button>
+        <button class="suit-card" data-suit="SYMBIOTE">
+          <div class="suit-badge badge-symbiote">⚫ Symbiote</div>
+          <div class="suit-desc">Deep Obsidian Black Suit with giant white spider</div>
+        </button>
+        <button class="suit-card" data-suit="MILES">
+          <div class="suit-badge badge-miles">🕷️ Miles Morales</div>
+          <div class="suit-desc">Dark Charcoal & Crimson Graffiti Track Suit</div>
+        </button>
+        <button class="suit-card" data-suit="IRON_SPIDER">
+          <div class="suit-badge badge-iron">🟡 Iron Spider</div>
+          <div class="suit-desc">Stark Armor with 4 Golden Robotic Spider Arms!</div>
+        </button>
+        <button class="suit-card" data-suit="SCARLET">
+          <div class="suit-badge badge-scarlet">🔵 Scarlet Spider</div>
+          <div class="suit-desc">Crimson Bodysuit with Torn Denim Blue Hoodie</div>
+        </button>
+      </div>
+
+      <button class="action-btn" id="closeSuitBtn" style="margin-top: 16px;">EQUIP & RETURN 🕷️</button>
+    </div>
+  </div>
+
+  <!-- Main Game Logic -->
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIS ENGINE (Web Audio API)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.windGain = null;
+        this.windFilter = null;
+      }
+
+      init() {
+        if (this.ctx) return;
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        this.ctx = new AudioContext();
+        this.setupWindAmbience();
+      }
+
+      setupWindAmbience() {
+        if (!this.ctx) return;
+        try {
+          const bufferSize = this.ctx.sampleRate * 2;
+          const noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const output = noiseBuffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            output[i] = Math.random() * 2 - 1;
+          }
+
+          const whiteNoise = this.ctx.createBufferSource();
+          whiteNoise.buffer = noiseBuffer;
+          whiteNoise.loop = true;
+
+          this.windFilter = this.ctx.createBiquadFilter();
+          this.windFilter.type = 'lowpass';
+          this.windFilter.frequency.setValueAtTime(260, this.ctx.currentTime);
+
+          this.windGain = this.ctx.createGain();
+          this.windGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+
+          whiteNoise.connect(this.windFilter);
+          this.windFilter.connect(this.windGain);
+          this.windGain.connect(this.ctx.destination);
+          whiteNoise.start();
+        } catch(e) {}
+      }
+
+      updateWind(speedRatio, fallRatio) {
+        if (!this.windFilter || !this.windGain || !this.ctx) return;
+        const targetFreq = 160 + speedRatio * 450 + fallRatio * 400;
+        const targetGain = 0.02 + speedRatio * 0.05 + fallRatio * 0.07;
+        this.windFilter.frequency.setTargetAtTime(targetFreq, this.ctx.currentTime, 0.08);
+        this.windGain.gain.setTargetAtTime(targetGain, this.ctx.currentTime, 0.08);
+      }
+
+      playThwip(isLeft) {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        const now = this.ctx.currentTime;
+        osc.frequency.setValueAtTime(isLeft ? 900 : 960, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + 0.14);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.14);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.15);
+      }
+
+      playWebHit() {
+        if (!this.ctx) return;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        const now = this.ctx.currentTime;
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.11);
+      }
+
+      playCoin() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.12);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.15);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.16);
+      }
+
+      playWallCrash() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.linearRampToValueAtTime(40, now + 0.28);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.3);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.3);
+      }
+
+      playRubberStretch(progress) {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        const startFreq = 120 + progress * 260;
+        osc.frequency.setValueAtTime(startFreq, now);
+        osc.frequency.linearRampToValueAtTime(startFreq + 35, now + 0.08);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.09);
+      }
+
+      playSlingshotLaunch() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Explosive twang snap
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(680, now);
+        osc1.frequency.exponentialRampToValueAtTime(80, now + 0.22);
+        gain1.gain.setValueAtTime(0.35, now);
+        gain1.gain.linearRampToValueAtTime(0.01, now + 0.22);
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.23);
+
+        // Supersonic whoosh
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(240, now + 0.04);
+        osc2.frequency.exponentialRampToValueAtTime(1500, now + 0.35);
+        gain2.gain.setValueAtTime(0.32, now + 0.04);
+        gain2.gain.linearRampToValueAtTime(0.01, now + 0.38);
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+        osc2.start(now + 0.04);
+        osc2.stop(now + 0.4);
+      }
+
+      playFlipWhoosh() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(160, now);
+        osc.frequency.exponentialRampToValueAtTime(740, now + 0.16);
+        osc.frequency.exponentialRampToValueAtTime(130, now + 0.36);
+        gain.gain.setValueAtTime(0.01, now);
+        gain.gain.linearRampToValueAtTime(0.32, now + 0.14);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.38);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      }
+
+      playWallVault() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Crisp tactile sneaker push-off on glass
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(320, now);
+        osc1.frequency.exponentialRampToValueAtTime(70, now + 0.12);
+        gain1.gain.setValueAtTime(0.4, now);
+        gain1.gain.linearRampToValueAtTime(0.01, now + 0.12);
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.13);
+
+        // Spring vault whoosh
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(260, now + 0.04);
+        osc2.frequency.exponentialRampToValueAtTime(900, now + 0.28);
+        gain2.gain.setValueAtTime(0.28, now + 0.04);
+        gain2.gain.linearRampToValueAtTime(0.01, now + 0.3);
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+        osc2.start(now + 0.04);
+        osc2.stop(now + 0.32);
+      }
+
+      playPointLaunch() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        // Dual thwip zip
+        const osc1 = this.ctx.createOscillator();
+        const gain1 = this.ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(450, now);
+        osc1.frequency.exponentialRampToValueAtTime(1400, now + 0.18);
+        gain1.gain.setValueAtTime(0.3, now);
+        gain1.gain.linearRampToValueAtTime(0.01, now + 0.2);
+        osc1.connect(gain1);
+        gain1.connect(this.ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.21);
+
+        // Sonic explosive catapult launch
+        const osc2 = this.ctx.createOscillator();
+        const gain2 = this.ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(120, now + 0.16);
+        osc2.frequency.exponentialRampToValueAtTime(1800, now + 0.45);
+        gain2.gain.setValueAtTime(0.4, now + 0.16);
+        gain2.gain.linearRampToValueAtTime(0.01, now + 0.48);
+        osc2.connect(gain2);
+        gain2.connect(this.ctx.destination);
+        osc2.start(now + 0.16);
+        osc2.stop(now + 0.5);
+      }
+
+      playSpiralWhoosh() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.linearRampToValueAtTime(480, now + 0.1);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.11);
+      }
+
+      playStuntChime() {
+        if (!this.ctx) return;
+        const notes = [659.25, 880, 1174.66, 1760]; // E5, A5, D6, A6
+        notes.forEach((f, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const now = this.ctx.currentTime + idx * 0.04;
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.16);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.18);
+        });
+      }
+
+      playComboBonus() {
+        if (!this.ctx) return;
+        const freqs = [523.25, 659.25, 783.99, 1046.50];
+        freqs.forEach((f, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          const now = this.ctx.currentTime + idx * 0.05;
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(f, now);
+          gain.gain.setValueAtTime(0.15, now);
+          gain.gain.linearRampToValueAtTime(0.01, now + 0.18);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.2);
+        });
+      }
+
+      playZipBoost() {
+        if (!this.ctx) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(1100, now + 0.22);
+        gain.gain.setValueAtTime(0.28, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.26);
+      }
+
+      // ==========================================
+      // ICONIC SPIDER-MAN VOICE & MEME SOUNDTRACKS
+      // ==========================================
+      createAudio(file) {
+        const audio = new Audio();
+        const tryPaths = ['audio/' + file, 'spiderman_game/audio/' + file, file];
+        let pIdx = 0;
+        audio.src = tryPaths[pIdx];
+        audio.onerror = () => {
+          pIdx++;
+          if (pIdx < tryPaths.length) {
+            audio.src = tryPaths[pIdx];
+          }
+        };
+        return audio;
+      }
+
+      initClips() {
+        if (this.clipsLoaded) return;
+        this.clipsLoaded = true;
+        this.clipIAmSpiderman = this.createAudio('i_am_spiderman.mp3');
+        this.clipMyBack = this.createAudio('my-back_mLIbOp0.mp3');
+        this.clipDirtInEye = this.createAudio('im-gonna-put-some-dirt-in-your-eye.mp3');
+        this.clipMissedThePart = this.createAudio('tobey-i-missed-the-part-where-thats-my-problem.mp3');
+        this.clipMemeSong = this.createAudio('spiderman-meme-song.mp3');
+      }
+
+      playIAmSpiderman() {
+        this.initClips();
+        try {
+          if (this.clipIAmSpiderman) {
+            this.clipIAmSpiderman.currentTime = 0;
+            this.clipIAmSpiderman.volume = 0.9;
+            this.clipIAmSpiderman.play().catch(() => {});
+          }
+        } catch(e) {}
+      }
+
+      playMyBack() {
+        this.initClips();
+        try {
+          if (this.clipMyBack) {
+            this.clipMyBack.currentTime = 0;
+            this.clipMyBack.volume = 0.95;
+            this.clipMyBack.play().catch(() => {});
+          }
+        } catch(e) {}
+      }
+
+      playDirtInEye() {
+        this.initClips();
+        try {
+          if (this.clipDirtInEye) {
+            this.clipDirtInEye.currentTime = 0;
+            this.clipDirtInEye.volume = 0.9;
+            this.clipDirtInEye.play().catch(() => {});
+          }
+        } catch(e) {}
+      }
+
+      playMissedThePart() {
+        this.initClips();
+        try {
+          if (this.clipMissedThePart) {
+            this.clipMissedThePart.currentTime = 0;
+            this.clipMissedThePart.volume = 0.9;
+            this.clipMissedThePart.play().catch(() => {});
+          }
+        } catch(e) {}
+      }
+
+      playMemeSong(loop = true) {
+        this.initClips();
+        try {
+          if (this.clipMemeSong) {
+            this.clipMemeSong.loop = loop;
+            this.clipMemeSong.volume = 0.55;
+            this.clipMemeSong.play().catch(() => {});
+            this.memeSongPlaying = true;
+          }
+        } catch(e) {}
+      }
+
+      stopMemeSong() {
+        try {
+          if (this.clipMemeSong) {
+            this.clipMemeSong.pause();
+            this.clipMemeSong.currentTime = 0;
+            this.memeSongPlaying = false;
+          }
+        } catch(e) {}
+      }
+
+      toggleMemeBgm() {
+        this.initClips();
+        if (this.memeSongPlaying) {
+          this.stopMemeSong();
+          return false;
+        } else {
+          this.playMemeSong(true);
+          return true;
+        }
+      }
+    }
+
+    const sound = new SoundEngine();
+
+    /* =========================================================
+       THREE.JS SCENE SETUP
+       Forward: -Z
+       World +X: Screen RIGHT
+       World -X: Screen LEFT
+       Left Wall: X = -13.5
+       Right Wall: X = +13.5
+       ========================================================= */
+    const container = document.getElementById('gameCanvas');
+    const scene = new THREE.Scene();
+
+    scene.background = new THREE.Color(0x38bdf8);
+    scene.fog = new THREE.FogExp2(0x7dd3fc, 0.0035);
+
+    const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.5, 900);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
+    renderer.shadowMap.enabled = false;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    // Daylight Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+    scene.add(ambientLight);
+
+    const hemiLight = new THREE.HemisphereLight(0xbae6fd, 0xd97706, 0.6);
+    hemiLight.position.set(0, 100, 0);
+    scene.add(hemiLight);
+
+    const sunLight = new THREE.DirectionalLight(0xfffbeb, 1.25);
+    sunLight.position.set(-30, 80, 40);
+    sunLight.castShadow = true;
+    sunLight.shadow.mapSize.width = 1024;
+    sunLight.shadow.mapSize.height = 1024;
+    sunLight.shadow.camera.near = 10;
+    sunLight.shadow.camera.far = 250;
+    const d = 50;
+    sunLight.shadow.camera.left = -d;
+    sunLight.shadow.camera.right = d;
+    sunLight.shadow.camera.top = d;
+    sunLight.shadow.camera.bottom = -d;
+    scene.add(sunLight);
+
+    /* =========================================================
+       ROAD & CANYON SETUP
+       ========================================================= */
+    const ROAD_WIDTH = 28;
+    const LEFT_WALL_X = -13.5;
+    const RIGHT_WALL_X = 13.5;
+    const ROAD_Y = 0;
+    const SPIDEY_BASE_Y = 16.0;
+
+    const roadGroup = new THREE.Group();
+    scene.add(roadGroup);
+
+    const roadGeo = new THREE.PlaneGeometry(ROAD_WIDTH, 1200);
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.85 });
+    const roadMesh = new THREE.Mesh(roadGeo, roadMat);
+    roadMesh.rotation.x = -Math.PI / 2;
+    roadMesh.position.set(0, ROAD_Y, -400);
+    roadMesh.receiveShadow = true;
+    roadGroup.add(roadMesh);
+
+    // Yellow Dashed Center Line
+    const centerLineGeo = new THREE.PlaneGeometry(0.8, 1200);
+    const centerLineMat = new THREE.MeshBasicMaterial({ color: 0xfbbf24 });
+    const centerLineMesh = new THREE.Mesh(centerLineGeo, centerLineMat);
+    centerLineMesh.rotation.x = -Math.PI / 2;
+    centerLineMesh.position.set(0, ROAD_Y + 0.05, -400);
+    roadGroup.add(centerLineMesh);
+
+    // Sidewalks
+    const sidewalkMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.7 });
+    const curbLeft = new THREE.Mesh(new THREE.BoxGeometry(3, 1, 1200), sidewalkMat);
+    curbLeft.position.set(LEFT_WALL_X - 1.5, ROAD_Y + 0.5, -400);
+    roadGroup.add(curbLeft);
+
+    const curbRight = new THREE.Mesh(new THREE.BoxGeometry(3, 1, 1200), sidewalkMat);
+    curbRight.position.set(RIGHT_WALL_X + 1.5, ROAD_Y + 0.5, -400);
+    roadGroup.add(curbRight);
+
+    /* =========================================================
+       SPIDER-MAN 3D CHARACTER MODEL
+       Facing forward down -Z.
+       Camera looks at his back from +Z.
+       Left arm is at -X, Right arm is at +X.
+       ========================================================= */
+    const spideyRoot = new THREE.Group();
+    scene.add(spideyRoot);
+
+    const spideyGroup = new THREE.Group();
+    spideyGroup.rotation.y = Math.PI; // Face forward down -Z
+    spideyRoot.add(spideyGroup);
+
+    // =========================================================
+    // 3D HUMAN STYLIZED CHARACTER MODEL (Rookie 3D Human Character)
+    // Authentic model from 3D Human Character.html with procedural
+    // denim & knit textures, anatomical joints, expressive face & sneakers
+    // =========================================================
+
+    // ---------- Procedural Authentic Textures ----------
+    const createProceduralTex = (fn, rx, ry) => {
+      const c = document.createElement('canvas');
+      c.width = c.height = 256;
+      fn(c.getContext('2d'));
+      const t = new THREE.CanvasTexture(c);
+      t.wrapS = t.wrapT = THREE.RepeatWrapping;
+      t.repeat.set(rx, ry);
+      if ('colorSpace' in t) t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = 8;
+      return t;
+    };
+
+    // Authentic denim weave from 3D Human Character
+    const denimTex = createProceduralTex(g => {
+      g.fillStyle = '#32609f';
+      g.fillRect(0, 0, 256, 256);
+      for (let i = 0; i < 3500; i++) {
+        g.fillStyle = Math.random() < 0.5 ? '#3d70b3' : '#264b82';
+        const x = Math.random() * 256, y = Math.random() * 256;
+        Math.random() < 0.5 ? g.fillRect(x, y, 2 + Math.random() * 10, 1) : g.fillRect(x, y, 1, 2 + Math.random() * 10);
+      }
+    }, 4, 3);
+
+    // Authentic ribbed knit fabric from 3D Human Character
+    const knitTex = createProceduralTex(g => {
+      g.fillStyle = '#c4222c';
+      g.fillRect(0, 0, 256, 256);
+      for (let x = 0; x < 256; x += 4) {
+        g.fillStyle = 'rgba(0,0,0,.13)';
+        g.fillRect(x, 0, 2, 256);
+      }
+      for (let i = 0; i < 2500; i++) {
+        g.fillStyle = 'rgba(255,255,255,.05)';
+        g.fillRect(Math.random() * 256, Math.random() * 256, 1, 2);
+      }
+    }, 4, 3);
+
+    // Authentic Materials from 3D Human Character
+    const spideyRedMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      map: knitTex,
+      roughness: 0.92
+    });
+
+    const spideyBlueMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      map: denimTex,
+      roughness: 0.85
+    });
+
+    const spideyDarkMat = new THREE.MeshStandardMaterial({
+      color: 0x050505,
+      roughness: 0.2
+    });
+
+    const spideySilverMat = new THREE.MeshStandardMaterial({
+      color: 0xd4d4d8,
+      roughness: 0.2,
+      metalness: 0.85
+    });
+
+    const skinMat = new THREE.MeshStandardMaterial({
+      color: 0xe0ac88,
+      roughness: 0.55,
+      emissive: 0x2a0f08,
+      emissiveIntensity: 0.25
+    });
+
+    const hoodDMat = new THREE.MeshStandardMaterial({ color: 0x9c161f, roughness: 0.9 });
+    const jeansDMat = new THREE.MeshStandardMaterial({ color: 0x24487a, roughness: 0.9 });
+    const shoeUpperMat = new THREE.MeshStandardMaterial({ color: 0xf4f4f4, roughness: 0.45 });
+    const shoeSoleMat = new THREE.MeshStandardMaterial({ color: 0xcfcfcf, roughness: 0.7 });
+    const hairMat = new THREE.MeshStandardMaterial({ color: 0x2a1b12, roughness: 0.75 });
+    const eyeWhiteMat = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.2 });
+    const eyeIrisMat = new THREE.MeshStandardMaterial({ color: 0x4a3020, roughness: 0.3 });
+    const eyePupilMat = new THREE.MeshStandardMaterial({ color: 0x050505, roughness: 0.2 });
+    const lipMat = new THREE.MeshStandardMaterial({ color: 0xb4635f, roughness: 0.45 });
+    const browMat = new THREE.MeshStandardMaterial({ color: 0x24160e, roughness: 0.9 });
+    const laceMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 });
+
+    // Geometric Rig Helpers
+    const SP = new THREE.SphereGeometry(1, 28, 20);
+    const makeCapsule = (r, len) => {
+      if (typeof THREE.CapsuleGeometry !== 'undefined') {
+        return new THREE.CapsuleGeometry(r, Math.max(0.005, len), 3, 8);
+      }
+      return new THREE.CylinderGeometry(r, r, Math.max(0.005, len), 8);
+    };
+    const mm = (geo, m, x = 0, y = 0, z = 0, sx = 1, sy = 1, sz = 1, par) => {
+      const o = new THREE.Mesh(geo, m);
+      o.position.set(x, y, z);
+      o.scale.set(sx, sy, sz);
+      o.castShadow = true;
+      o.receiveShadow = true;
+      if (par) par.add(o);
+      return o;
+    };
+    const lathe = (pts, m, seg = 32) => {
+      const o = new THREE.Mesh(new THREE.LatheGeometry(pts.map(p => new THREE.Vector2(p[0], p[1])), seg), m);
+      o.castShadow = true;
+      o.receiveShadow = true;
+      return o;
+    };
+    const segLimb = (len, rt, rb, m) => {
+      const p = [], n = 6;
+      for (let i = 0; i <= n; i++) {
+        const a = i / n * Math.PI / 2;
+        p.push([rb * Math.sin(a), -len - rb * 0.6 * Math.cos(a)]);
+      }
+      for (let i = 0; i <= n; i++) {
+        const a = i / n * Math.PI / 2;
+        p.push([rt * Math.cos(a), rt * 0.6 * Math.sin(a)]);
+      }
+      return lathe(p, m, 28);
+    };
+    const G = (par, x = 0, y = 0, z = 0) => {
+      const g = new THREE.Group();
+      g.position.set(x, y, z);
+      if (par) par.add(g);
+      return g;
+    };
+
+    // ---------- Scaled Character Rig Hierarchy ----------
+    const humanRig = new THREE.Group();
+    humanRig.scale.set(1.95, 1.95, 1.95);
+    humanRig.position.set(0, -1.75, 0);
+    spideyGroup.add(humanRig);
+
+    const humanRoot = G(humanRig, 0, 0.92, 0);
+    const spine = G(humanRoot, 0, 0.06, 0);
+
+    // Pelvis in Jeans
+    mm(new THREE.CylinderGeometry(0.185, 0.2, 0.24, 32), spideyBlueMat, 0, -0.08, 0, 1, 1, 0.72, humanRoot);
+
+    // Torso: Lathe Hoodie Body (Athletic V-Taper from 3D Human Character)
+    const torsoLathe = lathe([
+      [0, -0.05], [0.19, -0.05], [0.2, 0], [0.19, 0.12], [0.195, 0.25],
+      [0.215, 0.38], [0.232, 0.46], [0.2, 0.52], [0.11, 0.56], [0, 0.58]
+    ], spideyRedMat, 40);
+    torsoLathe.scale.z = 0.62;
+    spine.add(torsoLathe);
+
+    // Ribbed Hem & Kangaroo Pocket
+    const ribbedHem = mm(new THREE.TorusGeometry(0.2, 0.028, 10, 40), hoodDMat, 0, -0.03, 0, 1, 1, 0.62, spine);
+    ribbedHem.rotation.x = Math.PI / 2;
+
+    const kangarooPocket = mm(new THREE.BoxGeometry(0.24, 0.1, 0.03), spideyRedMat, 0, 0.1, 0.12, 1, 1, 1, spine);
+    kangarooPocket.rotation.x = -0.12;
+
+    // Collar & Hood resting behind neck
+    const hoodCollar = mm(new THREE.TorusGeometry(0.095, 0.036, 12, 32), spideyRedMat, 0, 0.55, 0.01, 1, 1, 0.85, spine);
+    hoodCollar.rotation.x = Math.PI / 2.1;
+    mm(SP, spideyRedMat, 0, 0.55, -0.09, 0.13, 0.1, 0.075, spine); // Hood folded behind neck
+
+    // Hoodie Drawstrings & Beads
+    const drawstringL = mm(new THREE.CylinderGeometry(0.004, 0.004, 0.17, 6), laceMat, -0.035, 0.44, 0.14, 1, 1, 1, spine);
+    mm(SP, laceMat, -0.035, 0.355, 0.14, 0.009, 0.009, 0.009, spine);
+    const drawstringR = mm(new THREE.CylinderGeometry(0.004, 0.004, 0.17, 6), laceMat, 0.035, 0.44, 0.14, 1, 1, 1, spine);
+    mm(SP, laceMat, 0.035, 0.355, 0.14, 0.009, 0.009, 0.009, spine);
+
+    // Neck
+    mm(new THREE.CylinderGeometry(0.048, 0.056, 0.12, 20), skinMat, 0, 0.6, 0, 1, 1, 1, spine);
+
+    // Head & Detailed Expressive Face
+    const head = G(spine, 0, 0.72, 0);
+    mm(SP, skinMat, 0, 0, 0, 0.085, 0.115, 0.1, head);              // Cranium
+    mm(SP, skinMat, 0, -0.065, 0.025, 0.07, 0.07, 0.075, head);      // Jaw / Chin
+    mm(SP, skinMat, 0, -0.012, 0.098, 0.016, 0.024, 0.02, head);     // Nose bridge
+    mm(SP, skinMat, 0, -0.03, 0.112, 0.014, 0.012, 0.014, head);      // Nose tip
+
+    // Ears & Cheeks & Eyebrows
+    [-1, 1].forEach(s => {
+      mm(SP, skinMat, s * 0.087, -0.005, 0, 0.01, 0.026, 0.019, head);     // Ear
+      mm(SP, skinMat, s * 0.05, -0.04, 0.082, 0.03, 0.026, 0.02, head);     // Cheek
+      const b = mm(new THREE.BoxGeometry(0.034, 0.006, 0.008), browMat, s * 0.037, 0.05, 0.094, 1, 1, 1, head);
+      b.rotation.z = -s * 0.12;
+    });
+
+    // Eyes with Blinking Support (Sclera + Iris + Pupil)
+    const eyeGroup = G(head, 0, 0.018, 0.088);
+    [-1, 1].forEach(s => {
+      const e = G(eyeGroup, s * 0.037, 0, 0);
+      mm(SP, eyeWhiteMat, 0, 0, 0, 0.0155, 0.012, 0.012, e);
+      mm(SP, eyeIrisMat, 0, 0, 0.0075, 0.0085, 0.0085, 0.004, e);
+      mm(SP, eyePupilMat, 0, 0, 0.01, 0.0042, 0.0042, 0.003, e);
+    });
+
+    // Lips & Sculpted Hair
+    mm(SP, lipMat, 0, -0.058, 0.094, 0.026, 0.0075, 0.012, head);
+    const hairMesh = mm(new THREE.SphereGeometry(1, 32, 20, 0, Math.PI * 2, 0, 1.95), hairMat, 0, 0.01, -0.008, 0.093, 0.123, 0.109, head);
+    hairMesh.rotation.x = -0.12;
+
+    // Articulated Arms (Shoulder -> Elbow -> Wrist -> Hand + Fingers)
+    function buildArm(s) {
+      const sh = G(spine, s * 0.258, 0.47, 0);
+      sh.add(segLimb(0.3, 0.062, 0.052, spideyRedMat));
+
+      const el = G(sh, 0, -0.3, 0);
+      el.add(segLimb(0.27, 0.052, 0.045, spideyRedMat));
+
+      const wr = G(el, 0, -0.27, 0);
+      const cuff = mm(new THREE.TorusGeometry(0.044, 0.013, 8, 20), hoodDMat, 0, 0.005, 0, 1, 1, 1, wr);
+      cuff.rotation.x = Math.PI / 2;
+
+      // Chrome Web Shooter Bracelet on Wrist
+      const webShooterMesh = mm(new THREE.CylinderGeometry(0.026, 0.026, 0.022, 12), spideySilverMat, 0, -0.01, 0, 1, 1, 1, wr);
+      webShooterMesh.rotation.x = Math.PI / 2;
+
+      const hd = G(wr, 0, 0, 0);
+      hd.rotation.x = -0.12;
+      mm(SP, skinMat, 0, -0.055, 0, 0.04, 0.052, 0.02, hd); // Palm
+
+      // 4 Fingers
+      [[-0.027, 0.04], [-0.009, 0.048], [0.009, 0.046], [0.027, 0.036]].forEach(([fx, fl]) => {
+        const f = mm(makeCapsule(0.0085, fl - 0.017), skinMat, fx, -0.1 - fl / 2 + 0.02, 0.002, 1, 1, 1, hd);
+        f.rotation.x = -0.12;
+      });
+      // Thumb
+      const th = mm(makeCapsule(0.009, 0.03), skinMat, -s * 0.042, -0.065, 0.006, 1, 1, 1, hd);
+      th.rotation.z = s * 0.5;
+      th.rotation.x = -0.2;
+
+      return { sh, el, wr, hd };
+    }
+
+    // Articulated Legs (Hip -> Knee -> Ankle -> Sneaker)
+    function buildLeg(s) {
+      const hip = G(humanRoot, s * 0.095, 0, 0);
+      hip.add(segLimb(0.42, 0.09, 0.066, spideyBlueMat));
+
+      const kn = G(hip, 0, -0.42, 0);
+      kn.add(segLimb(0.42, 0.064, 0.048, spideyBlueMat));
+
+      const an = G(kn, 0, -0.42, 0);
+      const denimCuff = mm(new THREE.TorusGeometry(0.05, 0.012, 8, 20), jeansDMat, 0, 0.02, 0, 1, 1, 1, an);
+      denimCuff.rotation.x = Math.PI / 2;
+
+      // Stylized Sneaker & Sole from 3D Human Character
+      mm(SP, shoeUpperMat, 0, -0.02, 0.045, 0.052, 0.046, 0.13, an);
+      mm(new THREE.BoxGeometry(0.104, 0.022, 0.27), shoeSoleMat, 0, -0.066, 0.05, 1, 1, 1, an);
+      mm(new THREE.BoxGeometry(0.05, 0.004, 0.07), laceMat, 0, 0.0, 0.07, 1, 1, 1, an);
+
+      return { hip, kn, an };
+    }
+
+    // Anatomical mapping (with spideyGroup facing down world -Z via rotation.y = Math.PI):
+    // Local x > 0 maps to World -X (Left). Local x < 0 maps to World +X (Right).
+    const armLeft = buildArm(1);   // World Left (-X)
+    const armRight = buildArm(-1); // World Right (+X)
+    const legLeft = buildLeg(1);   // World Left (-X)
+    const legRight = buildLeg(-1); // World Right (+X)
+
+    const A = [armLeft, armRight]; // A[0] = Left Arm, A[1] = Right Arm
+    const L = [legLeft, legRight]; // L[0] = Left Leg, L[1] = Right Leg
+
+    // Hook all pivot references directly so existing animations and web physics seamlessly control the rig
+    const leftArmPivot = A[0].sh;
+    const rightArmPivot = A[1].sh;
+    const leftElbowPivot = A[0].el;
+    const rightElbowPivot = A[1].el;
+    const leftLegPivot = L[0].hip;
+    const rightLegPivot = L[1].hip;
+    const leftKneePivot = L[0].kn;
+    const rightKneePivot = L[1].kn;
+    const headMesh = head;
+    const torsoMesh = spine;
+
+    // Spider-Man 2 Web Wings (deployable underarm gliding aero-wings)
+    const webWingMat = new THREE.MeshStandardMaterial({
+      color: 0x93c5fd,
+      roughness: 0.25,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 0.75,
+      side: THREE.DoubleSide
+    });
+    const wingShape = new THREE.Shape();
+    wingShape.moveTo(0, 0);
+    wingShape.lineTo(1.1, -0.25);
+    wingShape.lineTo(0.9, -1.1);
+    wingShape.lineTo(0.1, -0.8);
+    wingShape.closePath();
+    const wingGeo = new THREE.ShapeGeometry(wingShape);
+
+    const leftWebWing = new THREE.Mesh(wingGeo, webWingMat);
+    leftWebWing.position.set(-0.65, 0.45, 0);
+    leftWebWing.scale.set(-1, 1, 1);
+    leftWebWing.visible = false;
+    spideyGroup.add(leftWebWing);
+
+    const rightWebWing = new THREE.Mesh(wingGeo, webWingMat);
+    rightWebWing.position.set(0.65, 0.45, 0);
+    rightWebWing.visible = false;
+    spideyGroup.add(rightWebWing);
+
+    // =========================================================
+    // SUIT ACCESSORIES: IRON SPIDER WALDOES & SCARLET HOODIE
+    // =========================================================
+    const ironGoldMat = new THREE.MeshStandardMaterial({
+      color: 0xf59e0b,
+      roughness: 0.22,
+      metalness: 0.88
+    });
+
+    // Iron Spider 4 Articulated Golden Waldoes (Mechanical Spider Legs)
+    const ironWaldoesGroup = new THREE.Group();
+    ironWaldoesGroup.position.set(0, 0.35, -0.38);
+
+    function createWaldoArm(isLeft, isUpper) {
+      const root = new THREE.Group();
+      const signX = isLeft ? -1 : 1;
+      const signY = isUpper ? 1 : -1;
+
+      const socket = new THREE.Mesh(new THREE.SphereGeometry(0.15, 8, 8), ironGoldMat);
+      root.add(socket);
+
+      const seg1Geo = new THREE.CylinderGeometry(0.08, 0.08, 1.2, 8);
+      seg1Geo.translate(0, 0.6, 0);
+      const seg1 = new THREE.Mesh(seg1Geo, ironGoldMat);
+      seg1.rotation.z = signX * (isUpper ? -0.85 : -1.2);
+      seg1.rotation.x = isUpper ? -0.4 : 0.4;
+      root.add(seg1);
+
+      const elbow = new THREE.Group();
+      elbow.position.set(signX * (isUpper ? 0.9 : 1.1), isUpper ? 0.8 : -0.7, 0.2);
+
+      const clawGeo = new THREE.ConeGeometry(0.12, 1.3, 8);
+      clawGeo.translate(0, 0.65, 0);
+      const claw = new THREE.Mesh(clawGeo, ironGoldMat);
+      claw.rotation.z = signX * (isUpper ? 1.4 : 0.8);
+      claw.rotation.x = isUpper ? 0.6 : -0.3;
+      elbow.add(claw);
+
+      root.add(elbow);
+      root.userData = { elbow, signX, signY, isUpper };
+      return root;
+    }
+
+    const waldoUpperL = createWaldoArm(true, true);
+    const waldoUpperR = createWaldoArm(false, true);
+    const waldoLowerL = createWaldoArm(true, false);
+    const waldoLowerR = createWaldoArm(false, false);
+
+    ironWaldoesGroup.add(waldoUpperL);
+    ironWaldoesGroup.add(waldoUpperR);
+    ironWaldoesGroup.add(waldoLowerL);
+    ironWaldoesGroup.add(waldoLowerR);
+    ironWaldoesGroup.visible = false;
+    spideyGroup.add(ironWaldoesGroup);
+
+    // Scarlet Spider Denim Hoodie Vest
+    const denimBlueMat = new THREE.MeshStandardMaterial({
+      color: 0x0284c7,
+      roughness: 0.65,
+      metalness: 0.05
+    });
+    const scarletHoodieMesh = new THREE.Mesh(
+      new THREE.BoxGeometry(1.36, 1.62, 0.96),
+      denimBlueMat
+    );
+    scarletHoodieMesh.position.set(0, 0, 0);
+    scarletHoodieMesh.visible = false;
+    spideyGroup.add(scarletHoodieMesh);
+
+    // Spider-Sense Corona Waves
+    const spiderSenseGroup = new THREE.Group();
+    spiderSenseGroup.position.set(0, 2.2, 0.08);
+
+    const senseLineMat = new THREE.MeshBasicMaterial({ color: 0xfacc15, wireframe: true });
+    for (let i = 0; i < 3; i++) {
+      const arc = new THREE.Mesh(
+        new THREE.TorusGeometry(0.45 + i * 0.28, 0.035, 6, 16, Math.PI * 0.75),
+        senseLineMat
+      );
+      arc.rotation.x = -Math.PI / 2;
+      arc.rotation.z = (Math.PI * 0.125);
+      arc.position.y = i * 0.22;
+      spiderSenseGroup.add(arc);
+    }
+    spiderSenseGroup.visible = false;
+    spideyGroup.add(spiderSenseGroup);
+
+    // Suit Presets
+    const SUIT_PRESETS = {
+      CLASSIC: { name: 'Classic Red & Blue', red: 0xc4222c, hoodD: 0x9c161f, blue: 0x32609f, jeansD: 0x24487a, dark: 0x050505, silver: 0xd4d4d8, shoe: 0xf4f4f4, roughness: 0.9, metalness: 0.05, waldoes: false, hoodie: false },
+      SYMBIOTE: { name: 'Symbiote Black Suit', red: 0x16181f, hoodD: 0x0c0d12, blue: 0x12141a, jeansD: 0x090a0d, dark: 0xffffff, silver: 0x475569, shoe: 0x242833, roughness: 0.35, metalness: 0.25, waldoes: false, hoodie: false },
+      MILES: { name: 'Miles Morales Track Suit', red: 0x22262e, hoodD: 0xe11d48, blue: 0x14161c, jeansD: 0xe11d48, dark: 0xe11d48, silver: 0xef4444, shoe: 0xef4444, roughness: 0.55, metalness: 0.1, waldoes: false, hoodie: false },
+      IRON_SPIDER: { name: 'Iron Spider Armor', red: 0x991b1b, hoodD: 0xb45309, blue: 0xb45309, jeansD: 0xf59e0b, dark: 0xf59e0b, silver: 0xfbbf24, shoe: 0xfbbf24, roughness: 0.2, metalness: 0.85, waldoes: true, hoodie: false },
+      SCARLET: { name: 'Scarlet Spider', red: 0xdc2626, hoodD: 0x991b1b, blue: 0x0284c7, jeansD: 0x0369a1, dark: 0x0f172a, silver: 0x94a3b8, shoe: 0xffffff, roughness: 0.5, metalness: 0.05, waldoes: false, hoodie: true }
+    };
+
+    let currentSuit = 'CLASSIC';
+    function setSuit(suitKey) {
+      const suit = SUIT_PRESETS[suitKey] || SUIT_PRESETS.CLASSIC;
+      currentSuit = suitKey;
+      spideyRedMat.color.setHex(suit.red);
+      spideyRedMat.roughness = suit.roughness;
+      spideyRedMat.metalness = suit.metalness;
+      hoodDMat.color.setHex(suit.hoodD || 0x9c161f);
+      spideyBlueMat.color.setHex(suit.blue);
+      spideyBlueMat.roughness = suit.roughness;
+      spideyBlueMat.metalness = suit.metalness;
+      jeansDMat.color.setHex(suit.jeansD || 0x24487a);
+      spideyDarkMat.color.setHex(suit.dark);
+      spideySilverMat.color.setHex(suit.silver);
+      shoeUpperMat.color.setHex(suit.shoe || 0xf4f4f4);
+      ironWaldoesGroup.visible = !!suit.waldoes;
+      scarletHoodieMesh.visible = !!suit.hoodie;
+      return suit;
+    }
+
+    let currentTimeOfDay = 'DAY';
+    function setTimeOfDay(mode) {
+      currentTimeOfDay = mode;
+      if (mode === 'SUNSET') {
+        scene.background.setHex(0xf97316);
+        scene.fog.color.setHex(0xc2410c);
+        scene.fog.density = 0.0075;
+        sunLight.color.setHex(0xfde047);
+        sunLight.intensity = 1.35;
+        ambientLight.color.setHex(0x7c2d12);
+        ambientLight.intensity = 0.7;
+        document.body.style.background = '#7c2d12';
+      } else if (mode === 'NIGHT') {
+        scene.background.setHex(0x060913);
+        scene.fog.color.setHex(0x060913);
+        scene.fog.density = 0.009;
+        sunLight.color.setHex(0x60a5fa);
+        sunLight.intensity = 0.55;
+        ambientLight.color.setHex(0x1e1b4b);
+        ambientLight.intensity = 0.55;
+        document.body.style.background = '#060913';
+      } else {
+        currentTimeOfDay = 'DAY';
+        scene.background.setHex(0x38bdf8);
+        scene.fog.color.setHex(0x38bdf8);
+        scene.fog.density = 0.0075;
+        sunLight.color.setHex(0xfffbeb);
+        sunLight.intensity = 1.15;
+        ambientLight.color.setHex(0xffffff);
+        ambientLight.intensity = 0.75;
+        document.body.style.background = '#0284c7';
+      }
+      return currentTimeOfDay;
+    }
+
+    // Reusable Scratch Math Vectors for 120 FPS Garbage-Collection-Free Rendering
+    const _scratchWristL = new THREE.Vector3();
+    const _scratchWristR = new THREE.Vector3();
+    const _scratchActiveWrist = new THREE.Vector3();
+    const _scratchLookAhead = new THREE.Vector3();
+
+    // Drop Shadow on Road below
+    const shadowMesh = new THREE.Mesh(
+      new THREE.CircleGeometry(1.6, 24),
+      new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.35 })
+    );
+    shadowMesh.rotation.x = -Math.PI / 2;
+    shadowMesh.position.y = ROAD_Y + 0.1;
+    scene.add(shadowMesh);
+
+    /* =========================================================
+       DUAL THICK GLOWING 3D WEB STRANDS & WALL SPLAT DECALS
+       Supports both single swings and dual rubberband slingshot!
+       ========================================================= */
+    const webStrandMat = new THREE.MeshStandardMaterial({
+      color: 0xffffff,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.85,
+      roughness: 0.1,
+      metalness: 0.1
+    });
+
+    function createWebStrand() {
+      const geo = new THREE.CylinderGeometry(0.12, 0.12, 1, 8);
+      geo.translate(0, 0.5, 0);
+      geo.rotateX(Math.PI / 2);
+      const mesh = new THREE.Mesh(geo, webStrandMat);
+      mesh.visible = false;
+      scene.add(mesh);
+      return mesh;
+    }
+
+    const leftWebMesh = createWebStrand();
+    const rightWebMesh = createWebStrand();
+
+    function createWebSplatDecal() {
+      const group = new THREE.Group();
+      const splatDisc = new THREE.Mesh(
+        new THREE.CircleGeometry(1.5, 16),
+        new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.92 })
+      );
+      group.add(splatDisc);
+
+      const spokePts = [];
+      for (let i = 0; i < 8; i++) {
+        const a = (i / 8) * Math.PI * 2;
+        spokePts.push(new THREE.Vector3(0, 0, 0.02));
+        spokePts.push(new THREE.Vector3(Math.cos(a) * 2.1, Math.sin(a) * 2.1, 0.02));
+      }
+      const spokeGeo = new THREE.BufferGeometry().setFromPoints(spokePts);
+      const spokeLines = new THREE.LineSegments(spokeGeo, new THREE.LineBasicMaterial({ color: 0x0f172a, linewidth: 2 }));
+      group.add(spokeLines);
+      group.visible = false;
+      scene.add(group);
+      return group;
+    }
+
+    const leftWebSplat = createWebSplatDecal();
+    const rightWebSplat = createWebSplatDecal();
+
+    /* =========================================================
+       WALL SPARK & WEB HIT PARTICLES
+       ========================================================= */
+    const SPARK_COUNT = 80;
+    const sparkGeo = new THREE.BufferGeometry();
+    const sparkPositions = new Float32Array(SPARK_COUNT * 3);
+    const sparkVelocities = [];
+
+    for (let i = 0; i < SPARK_COUNT; i++) {
+      sparkPositions[i * 3] = 0;
+      sparkPositions[i * 3 + 1] = 0;
+      sparkPositions[i * 3 + 2] = 0;
+      sparkVelocities.push({ x: 0, y: 0, z: 0, life: 0 });
+    }
+    sparkGeo.setAttribute('position', new THREE.BufferAttribute(sparkPositions, 3));
+    const sparkMat = new THREE.PointsMaterial({
+      color: 0xfef08a,
+      size: 0.7,
+      transparent: true,
+      opacity: 0.9,
+      blending: THREE.AdditiveBlending
+    });
+    const sparkPoints = new THREE.Points(sparkGeo, sparkMat);
+    scene.add(sparkPoints);
+
+    function triggerWallSparks(x, y, z, isLeftWall) {
+      const posAttr = sparkGeo.attributes.position.array;
+      const spreadX = isLeftWall ? 5 : -5;
+      for (let i = 0; i < SPARK_COUNT; i++) {
+        posAttr[i * 3] = x;
+        posAttr[i * 3 + 1] = y + (Math.random() - 0.5) * 2;
+        posAttr[i * 3 + 2] = z + (Math.random() - 0.5) * 2;
+
+        sparkVelocities[i] = {
+          x: spreadX * (0.4 + Math.random() * 0.8),
+          y: (Math.random() - 0.2) * 5,
+          z: (Math.random() - 0.5) * 6,
+          life: 0.5 + Math.random() * 0.4
+        };
+      }
+      sparkGeo.attributes.position.needsUpdate = true;
+    }
+
+    function triggerWebHitSparks(x, y, z, isLeft) {
+      const posAttr = sparkGeo.attributes.position.array;
+      const spreadX = isLeft ? 3 : -3;
+      for (let i = 0; i < 25; i++) {
+        posAttr[i * 3] = x;
+        posAttr[i * 3 + 1] = y;
+        posAttr[i * 3 + 2] = z;
+
+        sparkVelocities[i] = {
+          x: spreadX * (0.5 + Math.random() * 0.6),
+          y: (Math.random() - 0.5) * 4,
+          z: (Math.random() - 0.5) * 4,
+          life: 0.35 + Math.random() * 0.25
+        };
+      }
+      sparkGeo.attributes.position.needsUpdate = true;
+    }
+
+    /* =========================================================
+       PROCEDURAL ENDLESS SKYSCRAPERS (Optimized Canvas Textures)
+       Zero child meshes: 24 meshes total instead of 5,600!
+       ========================================================= */
+    function createSkyscraperTexture(baseColorHex, litWindowHex, isGlass) {
+      const canvas = document.createElement('canvas');
+      canvas.width = 256;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = baseColorHex;
+      ctx.fillRect(0, 0, 256, 512);
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.22)';
+      for (let x = 0; x < 256; x += 32) {
+        ctx.fillRect(x, 0, 4, 512);
+      }
+
+      const cols = 6;
+      const rows = 14;
+      const cellW = 256 / cols;
+      const cellH = 512 / rows;
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const wx = c * cellW + 6;
+          const wy = r * cellH + 6;
+          const ww = cellW - 12;
+          const wh = cellH - 12;
+
+          const rand = Math.random();
+          if (rand < 0.35) {
+            ctx.fillStyle = litWindowHex;
+          } else if (rand < 0.65) {
+            ctx.fillStyle = isGlass ? '#93c5fd' : '#bae6fd';
+          } else {
+            ctx.fillStyle = '#334155';
+          }
+          ctx.fillRect(wx, wy, ww, wh);
+
+          ctx.strokeStyle = 'rgba(15, 23, 42, 0.35)';
+          ctx.lineWidth = 1.2;
+          ctx.strokeRect(wx, wy, ww, wh);
+        }
+      }
+
+      const texture = new THREE.CanvasTexture(canvas);
+      texture.wrapS = THREE.RepeatWrapping;
+      texture.wrapT = THREE.RepeatWrapping;
+      texture.repeat.set(2, 4);
+      return texture;
+    }
+
+    const facadeTextures = [
+      createSkyscraperTexture('#0284c7', '#fef08a', true),
+      createSkyscraperTexture('#1e293b', '#38bdf8', false),
+      createSkyscraperTexture('#0f172a', '#facc15', true),
+      createSkyscraperTexture('#334155', '#bae6fd', false)
+    ];
+
+    const buildingMaterials = facadeTextures.map(tex => {
+      return new THREE.MeshStandardMaterial({
+        map: tex,
+        roughness: 0.35,
+        metalness: 0.15
+      });
+    });
+
+    const buildingPool = [];
+    const BUILDING_COUNT = 24;
+    const BUILDING_DEPTH = 36;
+    const BUILDING_SPACING = 38;
+
+    function createBuildingMesh(isLeft, zPos) {
+      const width = 18 + Math.random() * 8;
+      const height = 48 + Math.random() * 45;
+      const depth = BUILDING_DEPTH;
+
+      const mat = buildingMaterials[Math.floor(Math.random() * buildingMaterials.length)];
+      const bodyMesh = new THREE.Mesh(new THREE.BoxGeometry(width, height, depth), mat);
+      bodyMesh.position.y = height / 2;
+
+      const posX = isLeft ? (LEFT_WALL_X - width / 2) : (RIGHT_WALL_X + width / 2);
+      bodyMesh.position.set(posX, height / 2, zPos);
+
+      // Rooftop Details: Wooden Water Tower & Radio Transmitter
+      if (Math.random() > 0.3) {
+        const waterTowerMat = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.85 });
+        const tower = new THREE.Mesh(new THREE.CylinderGeometry(1.8, 1.8, 2.8, 8), waterTowerMat);
+        tower.position.set((Math.random() - 0.5) * (width * 0.4), height / 2 + 1.4, (Math.random() - 0.5) * (depth - 8));
+        bodyMesh.add(tower);
+      }
+      if (Math.random() > 0.4) {
+        const antennaMat = new THREE.MeshBasicMaterial({ color: 0xd1d5db });
+        const antenna = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.5, 6), antennaMat);
+        antenna.position.set((Math.random() - 0.5) * (width * 0.5), height / 2 + 2.25, 0);
+        const beacon = new THREE.Mesh(new THREE.SphereGeometry(0.25, 6, 6), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+        beacon.position.y = 2.25;
+        antenna.add(beacon);
+        bodyMesh.add(antenna);
+      }
+
+      bodyMesh.userData = { isLeft: isLeft, width: width, height: height };
+      scene.add(bodyMesh);
+      return bodyMesh;
+    }
+
+    for (let i = 0; i < BUILDING_COUNT; i++) {
+      const isLeft = i % 2 === 0;
+      const pairIndex = Math.floor(i / 2);
+      const zPos = -pairIndex * BUILDING_SPACING + 80;
+      buildingPool.push(createBuildingMesh(isLeft, zPos));
+    }
+
+    // Rooftop Steam Particles
+    const STEAM_COUNT = 45;
+    const steamGeo = new THREE.BufferGeometry();
+    const steamPositions = new Float32Array(STEAM_COUNT * 3);
+    const steamVelocities = [];
+    for (let i = 0; i < STEAM_COUNT; i++) {
+      steamPositions[i * 3] = (Math.random() - 0.5) * 24;
+      steamPositions[i * 3 + 1] = 20 + Math.random() * 30;
+      steamPositions[i * 3 + 2] = -Math.random() * 300;
+      steamVelocities.push({
+        vy: 1.2 + Math.random() * 2.0,
+        vx: (Math.random() - 0.5) * 0.8,
+        life: Math.random() * 3.0
+      });
+    }
+    steamGeo.setAttribute('position', new THREE.BufferAttribute(steamPositions, 3));
+    const steamMat = new THREE.PointsMaterial({
+      color: 0xffffff,
+      size: 1.6,
+      transparent: true,
+      opacity: 0.35
+    });
+    const steamPoints = new THREE.Points(steamGeo, steamMat);
+    scene.add(steamPoints);
+
+    function updateSteamParticles(dt) {
+      const posArr = steamGeo.attributes.position.array;
+      for (let i = 0; i < STEAM_COUNT; i++) {
+        posArr[i * 3 + 1] += steamVelocities[i].vy * dt * 4;
+        posArr[i * 3] += steamVelocities[i].vx * dt * 4;
+        steamVelocities[i].life += dt;
+        if (steamVelocities[i].life > 3.0 || posArr[i * 3 + 2] > (GAME.spidey.z + 40)) {
+          steamVelocities[i].life = 0;
+          posArr[i * 3] = (Math.random() - 0.5) * 24;
+          posArr[i * 3 + 1] = 20 + Math.random() * 25;
+          posArr[i * 3 + 2] = GAME.spidey.z - 40 - Math.random() * 240;
+        }
+      }
+      steamGeo.attributes.position.needsUpdate = true;
+    }
+
+    // Ground Traffic Cars
+    const trafficPool = [];
+    const TRAFFIC_COUNT = 12;
+    const LANES_X = [-7.5, -2.5, 2.5, 7.5];
+    const carColors = [0xfacc15, 0xfacc15, 0xef4444, 0x3b82f6, 0x1e293b, 0xffffff];
+
+    function createCarMesh(colorHex, isPolice) {
+      const carGroup = new THREE.Group();
+      const bodyMat = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.4, metalness: 0.3 });
+      const darkMat = new THREE.MeshStandardMaterial({ color: 0x090d16, roughness: 0.7 });
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.7, 4.2), bodyMat);
+      body.position.y = 0.55;
+      carGroup.add(body);
+
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.7, 0.65, 2.2), darkMat);
+      cabin.position.set(0, 1.15, -0.2);
+      carGroup.add(cabin);
+
+      for (let wx of [-1.0, 1.0]) {
+        for (let wz of [-1.3, 1.3]) {
+          const wheel = new THREE.Mesh(new THREE.CylinderGeometry(0.35, 0.35, 0.25, 8), darkMat);
+          wheel.rotation.z = Math.PI / 2;
+          wheel.position.set(wx, 0.35, wz);
+          carGroup.add(wheel);
+        }
+      }
+
+      const lightMat = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+      for (let lx of [-0.65, 0.65]) {
+        const hl = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.1), lightMat);
+        hl.position.set(lx, 0.6, -2.12);
+        carGroup.add(hl);
+      }
+
+      const tailMat = new THREE.MeshBasicMaterial({ color: 0xef4444 });
+      for (let lx of [-0.65, 0.65]) {
+        const tl = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.2, 0.1), tailMat);
+        tl.position.set(lx, 0.6, 2.12);
+        carGroup.add(tl);
+      }
+
+      if (isPolice) {
+        const lightbar = new THREE.Group();
+        const sirenRed = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.2, 0.2), new THREE.MeshBasicMaterial({ color: 0xef4444 }));
+        sirenRed.position.x = -0.3;
+        const sirenBlue = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.2, 0.2), new THREE.MeshBasicMaterial({ color: 0x3b82f6 }));
+        sirenBlue.position.x = 0.3;
+        lightbar.add(sirenRed);
+        lightbar.add(sirenBlue);
+        lightbar.position.set(0, 1.55, -0.2);
+        carGroup.add(lightbar);
+        carGroup.userData.lightbar = lightbar;
+        carGroup.userData.sirenRed = sirenRed;
+        carGroup.userData.sirenBlue = sirenBlue;
+      }
+
+      carGroup.userData.isPolice = isPolice;
+      carGroup.userData.speed = 22 + Math.random() * 12;
+      scene.add(carGroup);
+      return carGroup;
+    }
+
+    for (let i = 0; i < TRAFFIC_COUNT; i++) {
+      const isPolice = (i === 0);
+      const color = isPolice ? 0xffffff : carColors[i % carColors.length];
+      const car = createCarMesh(color, isPolice);
+      const lane = LANES_X[i % LANES_X.length];
+      car.position.set(lane, ROAD_Y, -(i * 35 + 30));
+      trafficPool.push(car);
+    }
+
+    function updateTraffic(dt, spideyZ) {
+      const time = performance.now() * 0.008;
+      for (let i = 0; i < TRAFFIC_COUNT; i++) {
+        const car = trafficPool[i];
+        car.position.z -= car.userData.speed * dt;
+
+        if (car.userData.isPolice && car.userData.sirenRed) {
+          const strobe = Math.sin(time * 8.0) > 0;
+          car.userData.sirenRed.visible = strobe;
+          car.userData.sirenBlue.visible = !strobe;
+        }
+
+        if (car.position.z > spideyZ + 60) {
+          const lane = LANES_X[Math.floor(Math.random() * LANES_X.length)];
+          car.position.x = lane;
+          car.position.z = spideyZ - 260 - Math.random() * 140;
+          car.userData.speed = 22 + Math.random() * 12;
+        }
+      }
+    }
+
+    // Mid-Air Acrobat Boost Rings
+    const ringPool = [];
+    const RING_COUNT = 6;
+    const ringGeo = new THREE.TorusGeometry(2.4, 0.18, 8, 24);
+    const ringMat = new THREE.MeshStandardMaterial({
+      color: 0xfbbf24,
+      emissive: 0xf59e0b,
+      emissiveIntensity: 0.8,
+      metalness: 0.9,
+      roughness: 0.15
+    });
+
+    for (let i = 0; i < RING_COUNT; i++) {
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      ring.position.set(
+        (Math.random() - 0.5) * 12,
+        14 + Math.random() * 14,
+        -(i * 65 + 60)
+      );
+      ring.userData = { active: true };
+      scene.add(ring);
+      ringPool.push(ring);
+    }
+
+    function updateRings(dt, s) {
+      for (let i = 0; i < RING_COUNT; i++) {
+        const ring = ringPool[i];
+        ring.rotation.z += dt * 1.5;
+
+        const dz = Math.abs(ring.position.z - s.z);
+        const dx = Math.abs(ring.position.x - s.x);
+        const dy = Math.abs(ring.position.y - s.y);
+
+        if (ring.userData.active && dz < 2.5 && dx < 2.4 && dy < 2.4) {
+          ring.userData.active = false;
+          ring.visible = false;
+          triggerWebHitSparks(ring.position.x, ring.position.y, ring.position.z, true);
+          sound.playStuntChime();
+          spawnComicPopup('RING BOOST!', s.x, s.y);
+          showComboPopup('⚡ ACROBAT RING BOOST! +350 PTS +SPEED!');
+          GAME.score += 350;
+          GAME.combo = Math.min(GAME.combo + 0.3, 5.0);
+          s.vz = Math.min(s.vz + 12.0, 72.0);
+          drawSpeedLines(1.0);
+        }
+
+        if (ring.position.z > s.z + 40) {
+          ring.position.set(
+            (Math.random() - 0.5) * 12,
+            14 + Math.random() * 14,
+            s.z - 260 - Math.random() * 90
+          );
+          ring.userData.active = true;
+          ring.visible = true;
+        }
+      }
+    }
+
+    // Oscorp Aerial Patrol Drones
+    const dronePool = [];
+    const DRONE_COUNT = 4;
+
+    function createDroneMesh() {
+      const group = new THREE.Group();
+      const droneMat = new THREE.MeshStandardMaterial({ color: 0x334155, roughness: 0.3, metalness: 0.7 });
+      const eyeMat = new THREE.MeshBasicMaterial({ color: 0x22c55e });
+      const bladeMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8 });
+
+      const body = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.35, 1.4), droneMat);
+      group.add(body);
+
+      const eye = new THREE.Mesh(new THREE.SphereGeometry(0.22, 8, 8), eyeMat);
+      eye.position.set(0, 0, 0.72);
+      group.add(eye);
+
+      const blades = [];
+      const armOffsets = [
+        [-0.9, -0.9],
+        [0.9, -0.9],
+        [-0.9, 0.9],
+        [0.9, 0.9]
+      ];
+      for (let [ax, az] of armOffsets) {
+        const arm = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.9, 6), droneMat);
+        arm.rotation.z = Math.PI / 2;
+        arm.position.set(ax * 0.5, 0, az * 0.5);
+        group.add(arm);
+
+        const blade = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.04, 0.12), bladeMat);
+        blade.position.set(ax, 0.2, az);
+        group.add(blade);
+        blades.push(blade);
+      }
+
+      group.userData = { blades, active: true, baseY: 18 };
+      scene.add(group);
+      return group;
+    }
+
+    for (let i = 0; i < DRONE_COUNT; i++) {
+      const drone = createDroneMesh();
+      drone.position.set(
+        (Math.random() - 0.5) * 14,
+        16 + Math.random() * 12,
+        -(i * 90 + 90)
+      );
+      drone.userData.baseY = drone.position.y;
+      dronePool.push(drone);
+    }
+
+    function updateDrones(dt, s) {
+      const time = performance.now() * 0.005;
+      for (let i = 0; i < DRONE_COUNT; i++) {
+        const drone = dronePool[i];
+        drone.userData.blades.forEach(b => b.rotation.y += dt * 32.0);
+        drone.position.y = drone.userData.baseY + Math.sin(time * 3.0 + i) * 1.2;
+
+        const dz = Math.abs(drone.position.z - s.z);
+        const dx = Math.abs(drone.position.x - s.x);
+        const dy = Math.abs(drone.position.y - s.y);
+
+        if (drone.userData.active && dz < 2.8 && dx < 2.5 && dy < 2.5) {
+          drone.userData.active = false;
+          drone.visible = false;
+          triggerWebHitSparks(drone.position.x, drone.position.y, drone.position.z, true);
+          sound.playWallCrash();
+          spawnComicPopup('BOOM!', s.x, s.y);
+          showComboPopup('💥 OSCORP DRONE SMASH! +1000 PTS +CATAPULT!');
+          GAME.score += 1000;
+          GAME.combo = Math.min(GAME.combo + 0.5, 5.0);
+          s.vz = Math.min(s.vz + 16.0, 75.0);
+          s.vy = Math.max(s.vy, 10.0);
+          triggerAcrobaticStunt('FRONT_FLIP');
+          drawSpeedLines(1.0);
+        }
+
+        if (drone.position.z > s.z + 40) {
+          drone.position.set(
+            (Math.random() - 0.5) * 14,
+            16 + Math.random() * 12,
+            s.z - 300 - Math.random() * 120
+          );
+          drone.userData.baseY = drone.position.y;
+          drone.userData.active = true;
+          drone.visible = true;
+        }
+      }
+    }
+
+    // Web Zip-to-Point Perch System
+    const perchReticleGeo = new THREE.RingGeometry(0.8, 1.05, 16);
+    const perchReticleMat = new THREE.MeshBasicMaterial({
+      color: 0x38bdf8,
+      side: THREE.DoubleSide,
+      transparent: true,
+      opacity: 0.85
+    });
+    const perchReticle = new THREE.Mesh(perchReticleGeo, perchReticleMat);
+    scene.add(perchReticle);
+
+    const currentPerchTarget = new THREE.Vector3();
+    let hasPerchTarget = false;
+
+    function updatePerchReticle(s) {
+      let closestDist = 999;
+      hasPerchTarget = false;
+
+      for (let i = 0; i < BUILDING_COUNT; i++) {
+        const b = buildingPool[i];
+        const bz = b.position.z;
+        const dz = bz - s.z;
+        if (dz < -18 && dz > -80) {
+          const bx = b.userData.isLeft ? (LEFT_WALL_X + 1.5) : (RIGHT_WALL_X - 1.5);
+          const by = Math.min(b.userData.height + 1.0, 48);
+          const dist = Math.hypot(bx - s.x, by - s.y, dz);
+          if (dist < closestDist) {
+            closestDist = dist;
+            currentPerchTarget.set(bx, by, bz);
+            hasPerchTarget = true;
+          }
+        }
+      }
+
+      if (hasPerchTarget && GAME.state === 'PLAYING') {
+        perchReticle.position.copy(currentPerchTarget);
+        perchReticle.rotation.z += 0.05;
+        perchReticle.lookAt(camera.position);
+        perchReticle.visible = true;
+      } else {
+        perchReticle.visible = false;
+      }
+    }
+
+    function triggerWebZip() {
+      if (GAME.state !== 'PLAYING') return;
+      sound.init();
+
+      if (hasPerchTarget) {
+        GAME.isZipping = true;
+        GAME.zipTarget.copy(currentPerchTarget);
+        GAME.swinging = false;
+        GAME.swingSide = null;
+        sound.playWallVault();
+        sound.playIAmSpiderman();
+        spawnComicPopup('ZIP!', GAME.spidey.x, GAME.spidey.y);
+      } else {
+        triggerPointLaunch();
+      }
+    }
+
+    // Comic Book Text Popups Helper
+    function spawnComicPopup(text, x, y) {
+      const container = document.getElementById('comic-container');
+      if (!container) return;
+      const el = document.createElement('div');
+      el.className = 'comic-popup';
+      el.textContent = text;
+      const randRot = (Math.random() - 0.5) * 24;
+      el.style.transform = `translate(-50%, -50%) rotate(${randRot}deg) scale(0.6)`;
+      el.style.left = `${50 + (Math.random() - 0.5) * 25}%`;
+      el.style.top = `${40 + (Math.random() - 0.5) * 20}%`;
+      container.appendChild(el);
+      requestAnimationFrame(() => {
+        el.style.transform = `translate(-50%, -50px) rotate(${randRot}deg) scale(1.15)`;
+        el.style.opacity = '1';
+      });
+      setTimeout(() => {
+        el.style.opacity = '0';
+        setTimeout(() => el.remove(), 250);
+      }, 650);
+    }
+
+    /* =========================================================
+       COLLECTIBLES: GOLDEN SPIDER TOKENS
+       ========================================================= */
+    const tokenPool = [];
+    const TOKEN_COUNT = 15;
+    const tokenGeo = new THREE.TorusGeometry(1.2, 0.32, 12, 24);
+    const tokenMat = new THREE.MeshStandardMaterial({
+      color: 0xfbbf24,
+      emissive: 0xd97706,
+      emissiveIntensity: 0.4,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+
+    for (let i = 0; i < TOKEN_COUNT; i++) {
+      const mesh = new THREE.Mesh(tokenGeo, tokenMat);
+      mesh.position.set(
+        (Math.random() - 0.5) * 14,
+        SPIDEY_BASE_Y + (Math.random() - 0.5) * 4,
+        -(i * 45 + 50)
+      );
+      mesh.userData = { active: true };
+      scene.add(mesh);
+      tokenPool.push(mesh);
+    }
+
+    /* =========================================================
+       GAME STATE & REALISTIC PENDULUM SWING PHYSICS
+       ========================================================= */
+    const GAME = {
+      state: 'START',
+      score: 0,
+      highScore: parseInt(localStorage.getItem('spidey_highscore_3d') || '0', 10),
+      distance: 0,
+      combo: 1.0,
+      centerStreakTimer: 0,
+      hearts: 3,
+      isInvincible: false,
+      invincibleTimer: 0,
+
+      spidey: {
+        x: 0,
+        y: SPIDEY_BASE_Y,
+        z: 0,
+        vx: 0,
+        vy: 0,
+        vz: 26
+      },
+
+      // Web Pendulum State
+      swinging: false,
+      swingSide: null, // 'LEFT' or 'RIGHT'
+      swingPose: 'CLASSIC', // 'CLASSIC', 'TWO_HANDED', 'BETWEEN_LEGS', 'UPSIDE_DOWN', 'SWING_KICK', 'FORWARD_DIVE_SWING', 'LOOP_DE_LOOP'
+      apexStyleCounter: 0,
+      isDoing360Flip: false,
+      flipProgress: 0.0,
+      webAnchor: new THREE.Vector3(), // FIXED stationary spot on skyscraper
+      webRestLength: 22,
+      swingTime: 0,
+
+      // Acrobatic Stunt System (Insomniac PS5 Inspired)
+      stuntState: 'NONE', // 'NONE', 'FRONT_FLIP', 'BACK_FLIP', 'SIDE_SPIN', 'CANNONBALL', 'THE_THINKER', 'INDY_GRAB', 'SKYWARD_SOAR', 'TRUST_FALL', 'WEB_WINGS'
+      stuntProgress: 0.0,
+      stuntIndex: 0,
+      trickStreak: 0,
+
+      // Dive & Spiral Corkscrew System
+      isDiving: false,
+      isDiveSwinging: false,
+      diveSwingTimer: 0.0,
+      spiralAngle: 0.0,
+
+      // Point Launch System
+      isPointLaunching: false,
+      pointLaunchTime: 0.0,
+      pointLaunchTarget: new THREE.Vector3(),
+
+      // Skyscraper Wall-Running System
+      isWallRunning: false,
+      wallRunSide: null,
+      wallRunTimer: 0.0,
+      wallRunStepTimer: 0.0,
+
+      // Web Zip-to-Point System
+      isZipping: false,
+      zipTarget: new THREE.Vector3(),
+
+      // Spider-Sense Bullet Time System
+      spiderSenseActive: false,
+      spiderSenseEnergy: 100.0,
+
+      // Parkour Wall Vault System
+      isWallVaulting: false,
+      wallVaultSide: null,
+      wallVaultTimer: 0.0,
+
+      // Crosswind drift
+      driftTimer: 0,
+
+      // Fast alternating tap (rhythm speed pump)
+      lastTapSide: null,
+      lastTapTime: 0,
+      rhythmStreak: 0,
+
+      // Dual-web rubberband slingshot
+      isSlingshotting: false,
+      slingshotCharge: 0,
+      slingshotAnchorLeft: new THREE.Vector3(),
+      slingshotAnchorRight: new THREE.Vector3(),
+      slingshotSoundTimer: 0,
+      fullChargeTime: 0,
+
+      // Button inputs
+      leftPressed: false,
+      rightPressed: false
+    };
+
+    /* =========================================================
+       DOM ELEMENTS
+       ========================================================= */
+    const scoreValEl = document.getElementById('scoreVal');
+    const distValEl = document.getElementById('distVal');
+    const comboValEl = document.getElementById('comboVal');
+    const altValEl = document.getElementById('altVal');
+    const gaugeNeedleEl = document.getElementById('gaugeNeedle');
+    const wallWarningBannerEl = document.getElementById('wallWarningBanner');
+    const damageFlashEl = document.getElementById('damageFlash');
+    const comboCalloutEl = document.getElementById('combo-callout');
+
+    const startModal = document.getElementById('startModal');
+    const gameOverModal = document.getElementById('gameOverModal');
+    const pauseModal = document.getElementById('pauseModal');
+
+    const startGameBtn = document.getElementById('startGameBtn');
+    const restartGameBtn = document.getElementById('restartGameBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resumeGameBtn = document.getElementById('resumeGameBtn');
+    const memeMusicBtn = document.getElementById('memeMusicBtn');
+
+    const leftSteerBtn = document.getElementById('leftSteerBtn');
+    const rightSteerBtn = document.getElementById('rightSteerBtn');
+    const centerZipBtn = document.getElementById('centerZipBtn');
+    const stuntBtn = document.getElementById('stuntBtn');
+
+    const screenLeftZone = document.getElementById('screenLeftZone');
+    const screenRightZone = document.getElementById('screenRightZone');
+
+    const heart1 = document.getElementById('heart1');
+    const heart2 = document.getElementById('heart2');
+    const heart3 = document.getElementById('heart3');
+
+    function updateHUD() {
+      if (scoreValEl) scoreValEl.textContent = Math.floor(GAME.score).toLocaleString();
+      if (distValEl) distValEl.textContent = Math.floor(GAME.distance) + 'm';
+      if (comboValEl) comboValEl.textContent = GAME.combo.toFixed(1) + 'x';
+      if (altValEl && GAME.spidey) altValEl.textContent = Math.max(0, Math.floor(GAME.spidey.y)) + 'm';
+    }
+
+    /* =========================================================
+       INPUT, SWING & SLINGSHOT LAUNCH LOGIC
+       ========================================================= */
+    function startSlingshot() {
+      if (GAME.state !== 'PLAYING') return;
+      sound.init();
+
+      GAME.isSlingshotting = true;
+      GAME.slingshotCharge = 0;
+      GAME.swinging = false;
+      GAME.fullChargeTime = 0;
+
+      const s = GAME.spidey;
+      const anchorY = Math.max(s.y + 12, 24);
+      const anchorZ = s.z - 20;
+
+      GAME.slingshotAnchorLeft.set(LEFT_WALL_X, anchorY, anchorZ);
+      GAME.slingshotAnchorRight.set(RIGHT_WALL_X, anchorY, anchorZ);
+
+      // Trigger sparks on both skyscraper walls
+      triggerWebHitSparks(LEFT_WALL_X, anchorY, anchorZ, true);
+      triggerWebHitSparks(RIGHT_WALL_X, anchorY, anchorZ, false);
+
+      sound.playThwip(true);
+      sound.playThwip(false);
+      sound.playWebHit();
+    }
+
+    function launchSlingshot() {
+      if (!GAME.isSlingshotting) return;
+      GAME.isSlingshotting = false;
+
+      const s = GAME.spidey;
+      const charge = Math.max(GAME.slingshotCharge, 0.35);
+
+      // Catapult forward at crazy rubberband launch speed!
+      s.vz = 55 + charge * 30; // up to 85 m/s!
+      s.vy = 12 + charge * 6;  // soar forward
+      s.x = 0; // dead center
+      s.vx = 0;
+
+      sound.playSlingshotLaunch();
+      GAME.combo = Math.min(GAME.combo + 1.5, 5.0);
+      GAME.score += Math.floor(600 * charge * GAME.combo);
+
+      showComboPopup(`🏹 RUBBERBAND SLINGSHOT! ${Math.floor(s.vz)} m/s! 💥`);
+      drawSpeedLines(1.0);
+
+      GAME.slingshotCharge = 0;
+      wallWarningBannerEl.style.display = 'none';
+      wallWarningBannerEl.style.background = '#ef4444';
+
+      leftWebMesh.visible = false;
+      rightWebMesh.visible = false;
+      leftWebSplat.visible = false;
+      rightWebSplat.visible = false;
+    }
+
+    function attachWeb(side) {
+      if (GAME.state !== 'PLAYING') return;
+      sound.init();
+
+      const now = performance.now();
+
+      if (side === 'LEFT') {
+        GAME.leftPressed = true;
+        leftSteerBtn.classList.add('active');
+      } else if (side === 'RIGHT') {
+        GAME.rightPressed = true;
+        rightSteerBtn.classList.add('active');
+      }
+
+      // If BOTH A and D are pressed together -> Enter DUAL RUBBERBAND SLINGSHOT!
+      if (GAME.leftPressed && GAME.rightPressed) {
+        startSlingshot();
+        return;
+      }
+
+      if (GAME.isSlingshotting) return;
+
+      // 1. FAST ALTERNATING TAP PUMPING CHECK (A then D then A fast):
+      const isAlternating = (side === 'LEFT' && GAME.lastTapSide === 'RIGHT') ||
+                            (side === 'RIGHT' && GAME.lastTapSide === 'LEFT');
+      const timeSinceLastTap = now - GAME.lastTapTime;
+
+      if (isAlternating && timeSinceLastTap < 480) {
+        GAME.rhythmStreak++;
+        const boost = Math.min(4.5 + GAME.rhythmStreak * 0.8, 10.0);
+        GAME.spidey.vz = Math.min(GAME.spidey.vz + boost, 64.0);
+        GAME.spidey.vy = Math.max(GAME.spidey.vy + 3.5, 11.0);
+
+        if (GAME.rhythmStreak >= 2) {
+          showComboPopup(`⚡ FAST SWING! ${Math.floor(GAME.spidey.vz)} m/s 🔥`);
+        }
+      } else if (timeSinceLastTap >= 600) {
+        GAME.rhythmStreak = 0;
+      }
+
+      GAME.lastTapSide = side;
+      GAME.lastTapTime = now;
+
+      const s = GAME.spidey;
+
+      // Check if entering DIVE SWING or HIGH-SPEED LOOP or DYNAMIC STYLE:
+      const isSteepDive = (s.vy < -5.5);
+      GAME.swinging = true;
+      GAME.swingSide = side;
+      GAME.swingTime = 0;
+      GAME.stuntState = 'NONE';
+      GAME.stuntProgress = 0;
+      spideyGroup.rotation.set(0, Math.PI, 0);
+
+      if (isSteepDive) {
+        GAME.isDiveSwinging = true;
+        GAME.diveSwingTimer = 0;
+        GAME.swingPose = 'FORWARD_DIVE_SWING';
+        showComboPopup(`🌊 DIVE SWING SWOOP! ${Math.floor(s.vz)} m/s ⚡`);
+        sound.playZipBoost();
+      } else if (s.vz > 44 && Math.random() < 0.35) {
+        GAME.isDiveSwinging = false;
+        GAME.swingPose = 'LOOP_DE_LOOP';
+        showComboPopup(`🌀 360° VERTICAL LOOP-DE-LOOP! ${Math.floor(s.vz)} m/s ⚡`);
+        sound.playFlipWhoosh();
+      } else {
+        GAME.isDiveSwinging = false;
+        const r = Math.random();
+        if (r < 0.38) {
+          GAME.swingPose = 'CLASSIC';
+        } else if (r < 0.58) {
+          GAME.swingPose = 'TWO_HANDED';
+          showComboPopup("🕸️ TWO-HANDED POWER SWING! 💪");
+        } else if (r < 0.74) {
+          GAME.swingPose = 'BETWEEN_LEGS';
+          showComboPopup("🕸️ BETWEEN-THE-LEGS SLING! 🤸");
+        } else if (r < 0.88) {
+          GAME.swingPose = 'SWING_KICK';
+          showComboPopup("👟 HURDLE SWING KICK! 💥");
+        } else {
+          GAME.swingPose = 'UPSIDE_DOWN';
+          showComboPopup("🙃 UPSIDE-DOWN WEB SWING! 🕸️");
+        }
+      }
+
+      const isLeft = (side === 'LEFT');
+      const anchorX = isLeft ? LEFT_WALL_X : RIGHT_WALL_X;
+      const anchorY = Math.max(s.y + 14, 25);
+      const anchorZ = s.z - 22;
+
+      GAME.webAnchor.set(anchorX, anchorY, anchorZ);
+      const initialDist = Math.hypot(anchorX - s.x, anchorY - s.y, anchorZ - s.z);
+      GAME.webRestLength = initialDist * 0.94;
+
+      triggerWebHitSparks(anchorX, anchorY, anchorZ, isLeft);
+      sound.playThwip(isLeft);
+      sound.playWebHit();
+    }
+
+    /* =========================================================
+       SWINGING ACROBATICS & AIR TRICKS (Marvel's Spider-Man PS5)
+       ========================================================= */
+    const APEX_STUNTS = [
+      'SKYWARD_SOAR',   // Eagle Soar Cloud Gaze / Chest Lift Height Gain!
+      'SIDE_SPIN',      // Flying Helix / 360 Barrel Roll Spin!
+      'FRONT_FLIP',     // Spider Roll / Front Somersault
+      'BACK_FLIP',      // Moonsault / Shooting Star Backflip
+      'WEBSTER',        // Webster Flip (one-leg kick somersault)
+      'WINDMILL',       // Windmill Breakdance Flare
+      'DRAGON_ROLL',    // Dragon Roll (helical corkscrew spin)
+      'TURTLE_SPIN',    // Turtle Spin (compact horizontal shell spin)
+      'CANNONBALL',     // Knee-Clutch Cannonball Tuck Roll
+      'THE_THINKER',    // Rodin's Thinker Hand-to-Chin Stunt
+      'INDY_GRAB',      // Extreme Skater Indy Foot Grab
+      'ROLY_POLY',      // Roly Poly multi-tuck spin
+      'TRUST_FALL',     // Hands-Behind-Head Chillin' Backfall
+      'WEB_WINGS'       // Spider-Man 2 Web-Wings Aero Glide
+    ];
+
+    function triggerAcrobaticStunt(stuntType) {
+      GAME.stuntState = stuntType;
+      GAME.stuntProgress = 0.0;
+
+      if (stuntType === 'FRONT_FLIP') {
+        showComboPopup("🤸 FRONT SOMERSAULT FLIP! +400 PTS");
+        sound.playFlipWhoosh();
+      } else if (stuntType === 'BACK_FLIP') {
+        showComboPopup("🤸 MOONSAULT BACKFLIP! +450 PTS");
+        sound.playFlipWhoosh();
+      } else if (stuntType === 'SIDE_SPIN') {
+        showComboPopup("🌪️ FLYING HELIX BARREL ROLL! +500 PTS");
+        sound.playFlipWhoosh();
+      } else if (stuntType === 'WEBSTER') {
+        showComboPopup("🤸 WEBSTER SOMERSAULT FLIP! +480 PTS");
+        sound.playFlipWhoosh();
+      } else if (stuntType === 'WINDMILL') {
+        showComboPopup("🌪️ WINDMILL BREAKDANCE FLARE! +520 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'DRAGON_ROLL') {
+        showComboPopup("🐉 DRAGON CORKSCREW ROLL! +550 PTS");
+        sound.playFlipWhoosh();
+        sound.playZipBoost();
+      } else if (stuntType === 'TURTLE_SPIN') {
+        showComboPopup("🐢 TURTLE HORIZONTAL SPIN! +480 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'CANNONBALL') {
+        showComboPopup("💣 CANNONBALL TUCK ROLL! +450 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'THE_THINKER') {
+        showComboPopup("🤔 THE THINKER DIVE! +500 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'INDY_GRAB') {
+        showComboPopup("🛹 INDY FOOT GRAB! +450 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'ROLY_POLY') {
+        showComboPopup("🌀 ROLY POLY DUAL-TUCK! +460 PTS");
+        sound.playFlipWhoosh();
+      } else if (stuntType === 'SKYWARD_SOAR') {
+        showComboPopup("🚀 SKYWARD EAGLE SOAR! +500 PTS");
+        sound.playZipBoost();
+      } else if (stuntType === 'TRUST_FALL') {
+        showComboPopup("😎 CHILLIN' TRUST FALL! +500 PTS");
+        sound.playStuntChime();
+      } else if (stuntType === 'WEB_WINGS') {
+        showComboPopup("🦅 WEB-WINGS AERO GLIDE! +550 PTS");
+        sound.playZipBoost();
+      }
+    }
+
+    function triggerApexRelease() {
+      const s = GAME.spidey;
+      GAME.apexStyleCounter++;
+      const stuntType = APEX_STUNTS[GAME.apexStyleCounter % APEX_STUNTS.length];
+
+      s.vy = Math.min(Math.max(s.vy, 13.0) + 13.0, 32.0);
+      s.vz = Math.min(s.vz + 12.0, 56.0);
+      GAME.score += 500;
+      updateHUD();
+
+      triggerAcrobaticStunt(stuntType);
+    }
+
+    function triggerManualStunt() {
+      if (GAME.state !== 'PLAYING') return;
+      sound.init();
+
+      if (GAME.swinging) {
+        detachWeb(GAME.swingSide);
+        triggerApexRelease();
+        return;
+      }
+
+      // Air Trick Chaining in mid-air!
+      GAME.trickStreak = (GAME.trickStreak || 0) + 1;
+      GAME.stuntIndex = (GAME.stuntIndex + 1) % APEX_STUNTS.length;
+      const stuntType = APEX_STUNTS[GAME.stuntIndex];
+      const s = GAME.spidey;
+      s.vy = Math.max(s.vy + 7.0, 14.0);
+      s.vz = Math.min(s.vz + 6.0, 62.0);
+
+      const streakBonus = GAME.trickStreak * 200;
+      GAME.score += 350 + streakBonus;
+      GAME.combo = Math.min(GAME.combo + 0.35, 5.0);
+      updateHUD();
+      drawSpeedLines(0.85);
+
+      triggerAcrobaticStunt(stuntType);
+
+      if (GAME.trickStreak >= 2) {
+        setTimeout(() => {
+          showComboPopup(`🔥 ${GAME.trickStreak}X TRICK CHAIN! +${streakBonus} PTS! ⚡`);
+        }, 360);
+      }
+    }
+
+    function triggerWallParkourVault(isLeftWall) {
+      const s = GAME.spidey;
+      GAME.isWallVaulting = true;
+      GAME.wallVaultTimer = 0.35;
+      GAME.wallVaultSide = isLeftWall ? 'LEFT' : 'RIGHT';
+
+      const wallX = isLeftWall ? LEFT_WALL_X : RIGHT_WALL_X;
+      triggerWallSparks(wallX, s.y, s.z, isLeftWall);
+
+      // Explosive push-off spring away from the wall
+      s.vx = isLeftWall ? 16.5 : -16.5;
+      s.vy = Math.max(s.vy + 9.0, 15.0);
+      s.vz = Math.min(s.vz + 10.0, 65.0);
+
+      triggerAcrobaticStunt('SIDE_SPIN');
+      sound.playWallVault();
+      sound.playMissedThePart();
+      showComboPopup("👟 PARKOUR WALL VAULT! 🤸 +BOOST!");
+      GAME.score += 450;
+      GAME.combo = Math.min(GAME.combo + 0.5, 5.0);
+      updateHUD();
+      drawSpeedLines(0.85);
+
+      wallWarningBannerEl.style.display = 'none';
+      leftSteerBtn.classList.remove('alert-pulse');
+      rightSteerBtn.classList.remove('alert-pulse');
+    }
+
+    function triggerPointLaunch() {
+      if (GAME.state !== 'PLAYING') return;
+      sound.init();
+
+      // Clear any existing web cords
+      GAME.swinging = false;
+      GAME.swingSide = null;
+      GAME.isDiveSwinging = false;
+      leftWebMesh.visible = false;
+      rightWebMesh.visible = false;
+      leftWebSplat.visible = false;
+      rightWebSplat.visible = false;
+
+      const s = GAME.spidey;
+      const isLeft = s.x <= 0;
+      const anchorX = isLeft ? (LEFT_WALL_X + 2.0) : (RIGHT_WALL_X - 2.0);
+      const anchorY = Math.max(s.y + 14, 32);
+      const anchorZ = s.z - 30;
+
+      // Sparks at target perch
+      triggerWebHitSparks(anchorX, anchorY, anchorZ, isLeft);
+
+      // Instant catapult launch
+      s.x = THREE.MathUtils.lerp(s.x, 0, 0.6);
+      s.vx = 0;
+      s.vy = Math.max(s.vy, 14.0) + 12.0;
+      s.vz = Math.min(s.vz + 26.0, 78.0);
+
+      triggerAcrobaticStunt('FRONT_FLIP');
+      sound.playPointLaunch();
+      sound.playDirtInEye();
+      showComboPopup(`🎯 POINT LAUNCH VAULT! ${Math.floor(s.vz)} m/s! 💥`);
+      GAME.score += 500;
+      GAME.combo = Math.min(GAME.combo + 0.5, 5.0);
+      updateHUD();
+      drawSpeedLines(1.0);
+    }
+
+    function detachWeb(side) {
+      if (side === 'LEFT') {
+        GAME.leftPressed = false;
+        leftSteerBtn.classList.remove('active');
+      } else if (side === 'RIGHT') {
+        GAME.rightPressed = false;
+        rightSteerBtn.classList.remove('active');
+      }
+
+      // If we were stretching slingshot and released either button -> LAUNCH!
+      if (GAME.isSlingshotting) {
+        launchSlingshot();
+        return;
+      }
+
+      if (!GAME.leftPressed && !GAME.rightPressed) {
+        if (GAME.swinging) {
+          const s = GAME.spidey;
+          const dz = GAME.webAnchor.z - s.z;
+          // If released at the last moment of the swing (during upward swoop or apex):
+          const isApexRelease = (s.vy > 0 || dz > -7 || GAME.isDiveSwinging) && (GAME.swingTime > 0.2);
+          if (isApexRelease) {
+            triggerApexRelease();
+          } else if (s.vy > 0) {
+            s.vy = Math.min(s.vy + 5.0, 22.0);
+            s.vz = Math.min(s.vz + 5.0, 42.0);
+          }
+        }
+        GAME.swinging = false;
+        GAME.swingSide = null;
+        GAME.swingPose = 'CLASSIC';
+        GAME.isDiveSwinging = false;
+        leftWebMesh.visible = false;
+        rightWebMesh.visible = false;
+        leftWebSplat.visible = false;
+        rightWebSplat.visible = false;
+      }
+    }
+
+    // Touch & Pointer Listeners
+    leftSteerBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); attachWeb('LEFT'); });
+    leftSteerBtn.addEventListener('pointerup', (e) => { e.preventDefault(); detachWeb('LEFT'); });
+    leftSteerBtn.addEventListener('pointercancel', (e) => { e.preventDefault(); detachWeb('LEFT'); });
+
+    rightSteerBtn.addEventListener('pointerdown', (e) => { e.preventDefault(); attachWeb('RIGHT'); });
+    rightSteerBtn.addEventListener('pointerup', (e) => { e.preventDefault(); detachWeb('RIGHT'); });
+    rightSteerBtn.addEventListener('pointercancel', (e) => { e.preventDefault(); detachWeb('RIGHT'); });
+
+    // Fullscreen Screen Tap Zones
+    screenLeftZone.addEventListener('pointerdown', (e) => { e.preventDefault(); attachWeb('LEFT'); });
+    screenLeftZone.addEventListener('pointerup', (e) => { e.preventDefault(); detachWeb('LEFT'); });
+    screenRightZone.addEventListener('pointerdown', (e) => { e.preventDefault(); attachWeb('RIGHT'); });
+    screenRightZone.addEventListener('pointerup', (e) => { e.preventDefault(); detachWeb('RIGHT'); });
+
+    // Aerial Stunt Button [W / Up]
+    stuntBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      triggerManualStunt();
+    });
+
+    // Point Launch Perch Button [Space]
+    centerZipBtn.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      triggerPointLaunch();
+    });
+
+    // Keyboard Controls
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft') {
+        attachWeb('LEFT');
+      } else if (e.code === 'KeyD' || e.code === 'ArrowRight') {
+        attachWeb('RIGHT');
+      } else if (e.code === 'KeyW' || e.code === 'ArrowUp') {
+        triggerManualStunt();
+      } else if (e.code === 'KeyS' || e.code === 'ArrowDown') {
+        GAME.isDiving = true;
+      } else if (e.code === 'Space') {
+        triggerPointLaunch();
+      } else if (e.code === 'KeyP') {
+        togglePause();
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      if (e.code === 'KeyA' || e.code === 'ArrowLeft') {
+        detachWeb('LEFT');
+      } else if (e.code === 'KeyD' || e.code === 'ArrowRight') {
+        detachWeb('RIGHT');
+      } else if (e.code === 'KeyS' || e.code === 'ArrowDown') {
+        GAME.isDiving = false;
+      }
+    });
+
+    /* =========================================================
+       GAME FLOW & LIFECYCLE
+       ========================================================= */
+    function startGame() {
+      sound.init();
+      sound.playIAmSpiderman();
+      sound.playMemeSong(true);
+      GAME.state = 'PLAYING';
+      GAME.score = 0;
+      GAME.distance = 0;
+      GAME.combo = 1.0;
+      GAME.centerStreakTimer = 0;
+      GAME.hearts = 3;
+      GAME.isInvincible = false;
+      GAME.invincibleTimer = 0;
+      GAME.swinging = false;
+      GAME.swingSide = null;
+      GAME.swingPose = 'CLASSIC';
+      GAME.apexStyleCounter = 0;
+      GAME.stuntState = 'NONE';
+      GAME.stuntProgress = 0;
+      GAME.stuntIndex = 0;
+      GAME.trickStreak = 0;
+      GAME.isDiving = false;
+      GAME.isDiveSwinging = false;
+      GAME.diveSwingTimer = 0;
+      GAME.spiralAngle = 0;
+      GAME.isPointLaunching = false;
+      GAME.pointLaunchTime = 0;
+      GAME.isWallRunning = false;
+      GAME.isZipping = false;
+      GAME.spiderSenseActive = false;
+      GAME.spiderSenseEnergy = 100.0;
+      if (typeof spiderSenseGroup !== 'undefined') spiderSenseGroup.visible = false;
+      if (typeof perchReticle !== 'undefined') perchReticle.visible = false;
+      GAME.isWallVaulting = false;
+      GAME.wallVaultTimer = 0;
+      GAME.isSlingshotting = false;
+      GAME.slingshotCharge = 0;
+      GAME.rhythmStreak = 0;
+      GAME.lastTapSide = null;
+      GAME.lastTapTime = 0;
+      GAME.leftPressed = false;
+      GAME.rightPressed = false;
+
+      // Reset Spidey physics state
+      GAME.spidey.x = 0;
+      GAME.spidey.y = SPIDEY_BASE_Y;
+      GAME.spidey.z = 0;
+      GAME.spidey.vx = 0;
+      GAME.spidey.vy = 0;
+      GAME.spidey.vz = 26;
+
+      // Reset 3D mesh transforms
+      spideyRoot.position.set(0, SPIDEY_BASE_Y, 0);
+      spideyRoot.rotation.set(0, 0, 0);
+      spideyGroup.rotation.set(0, Math.PI, 0);
+      headMesh.rotation.set(0, 0, 0);
+      spideyRoot.visible = true;
+
+      leftArmPivot.rotation.set(0, 0, 0);
+      rightArmPivot.rotation.set(0, 0, 0);
+      leftLegPivot.rotation.set(0, 0, 0);
+      rightLegPivot.rotation.set(0, 0, 0);
+
+      shadowMesh.position.set(0, ROAD_Y + 0.1, 0);
+
+      // Reset all buildings back along z = 0
+      for (let i = 0; i < BUILDING_COUNT; i++) {
+        const pairIndex = Math.floor(i / 2);
+        const zPos = -pairIndex * BUILDING_SPACING + 80;
+        buildingPool[i].position.z = zPos;
+      }
+
+      // Reset road group
+      roadGroup.position.set(0, 0, 0);
+
+      // Reset collectibles
+      for (let i = 0; i < TOKEN_COUNT; i++) {
+        const token = tokenPool[i];
+        token.position.set(
+          (Math.random() - 0.5) * 14,
+          SPIDEY_BASE_Y + (Math.random() - 0.5) * 4,
+          -(i * 45 + 50)
+        );
+        token.userData.active = true;
+        token.visible = true;
+      }
+
+      // Reset camera
+      camera.position.set(0, SPIDEY_BASE_Y + 4.2, 12.5);
+      camera.lookAt(0, SPIDEY_BASE_Y + 1.0, -20);
+
+      // Reset lighting
+      sunLight.position.set(-30, 80, 40);
+      sunLight.target.position.set(0, SPIDEY_BASE_Y, -10);
+      sunLight.target.updateMatrixWorld();
+
+      // Reset webs & FX
+      leftWebMesh.visible = false;
+      rightWebMesh.visible = false;
+      leftWebSplat.visible = false;
+      rightWebSplat.visible = false;
+
+      leftWebWing.visible = false;
+      rightWebWing.visible = false;
+      GAME.swingPose = 'CLASSIC';
+
+      damageFlashEl.style.opacity = '0';
+      wallWarningBannerEl.style.display = 'none';
+      wallWarningBannerEl.style.background = '#ef4444';
+      speedCtx.clearRect(0, 0, speedCanvas.width, speedCanvas.height);
+
+      leftSteerBtn.classList.remove('active', 'alert-pulse');
+      rightSteerBtn.classList.remove('active', 'alert-pulse');
+
+      // Prevent huge dt step on restart
+      lastTime = performance.now();
+
+      updateHeartsUI();
+      scoreValEl.textContent = '0';
+      distValEl.textContent = '0m';
+      comboValEl.textContent = '1.0x';
+      altValEl.textContent = Math.floor(SPIDEY_BASE_Y) + 'm';
+      gaugeNeedleEl.style.left = '50%';
+      gaugeNeedleEl.classList.add('in-center');
+
+      startModal.style.display = 'none';
+      gameOverModal.style.display = 'none';
+      pauseModal.style.display = 'none';
+    }
+
+    function togglePause() {
+      if (GAME.state === 'PLAYING') {
+        GAME.state = 'PAUSED';
+        pauseModal.style.display = 'flex';
+      } else if (GAME.state === 'PAUSED') {
+        GAME.state = 'PLAYING';
+        pauseModal.style.display = 'none';
+      }
+    }
+
+    function triggerGameOver() {
+      GAME.state = 'GAMEOVER';
+      sound.playWallCrash();
+      sound.playMyBack();
+
+      if (GAME.score > GAME.highScore) {
+        GAME.highScore = GAME.score;
+        localStorage.setItem('spidey_highscore_3d', GAME.highScore.toString());
+      }
+
+      document.getElementById('finalScoreVal').textContent = Math.floor(GAME.score).toLocaleString();
+      document.getElementById('finalDistVal').textContent = Math.floor(GAME.distance) + 'm';
+      document.getElementById('finalComboVal').textContent = GAME.combo.toFixed(1) + 'x';
+      document.getElementById('bestScoreVal').textContent = Math.floor(GAME.highScore).toLocaleString();
+
+      gameOverModal.style.display = 'flex';
+    }
+
+    startGameBtn.addEventListener('click', startGame);
+    restartGameBtn.addEventListener('click', startGame);
+    pauseBtn.addEventListener('click', togglePause);
+    resumeGameBtn.addEventListener('click', togglePause);
+    memeMusicBtn.addEventListener('click', () => {
+      const isPlaying = sound.toggleMemeBgm();
+      memeMusicBtn.classList.toggle('active', isPlaying);
+    });
+
+    function updateHeartsUI() {
+      heart1.classList.toggle('heart-lost', GAME.hearts < 1);
+      heart2.classList.toggle('heart-lost', GAME.hearts < 2);
+      heart3.classList.toggle('heart-lost', GAME.hearts < 3);
+    }
+
+    function takeDamage(isLeftWall) {
+      if (GAME.isInvincible || GAME.state !== 'PLAYING') return;
+
+      GAME.hearts--;
+      updateHeartsUI();
+      sound.playWallCrash();
+      sound.playMyBack();
+
+      damageFlashEl.style.opacity = '1';
+      setTimeout(() => { damageFlashEl.style.opacity = '0'; }, 180);
+
+      triggerWallSparks(GAME.spidey.x, GAME.spidey.y, GAME.spidey.z, isLeftWall);
+
+      const s = GAME.spidey;
+      s.vx = isLeftWall ? 8.0 : -8.0;
+      s.vz = Math.max(s.vz * 0.75, 18);
+      GAME.combo = 1.0;
+
+      GAME.isInvincible = true;
+      GAME.invincibleTimer = 1.2;
+
+      if (GAME.hearts <= 0) {
+        triggerGameOver();
+      }
+    }
+
+    let lastComboSoundTime = 0;
+    function showComboPopup(text) {
+      comboCalloutEl.textContent = text;
+      comboCalloutEl.classList.add('show');
+      const now = performance.now();
+      if (now - lastComboSoundTime > 320) {
+        lastComboSoundTime = now;
+        sound.playComboBonus();
+      }
+      setTimeout(() => {
+        comboCalloutEl.classList.remove('show');
+      }, 700);
+    }
+
+    /* =========================================================
+       SPEED LINES 2D OVERLAY CANVAS
+       ========================================================= */
+    const speedCanvas = document.getElementById('speed-overlay');
+    const speedCtx = speedCanvas.getContext('2d');
+    function resizeSpeedCanvas() {
+      speedCanvas.width = window.innerWidth;
+      speedCanvas.height = window.innerHeight;
+    }
+    resizeSpeedCanvas();
+    window.addEventListener('resize', resizeSpeedCanvas);
+
+    function drawSpeedLines(speedRatio) {
+      speedCtx.clearRect(0, 0, speedCanvas.width, speedCanvas.height);
+      if (speedRatio < 0.65) return;
+
+      const count = Math.floor((speedRatio - 0.6) * 35);
+      const cx = speedCanvas.width / 2;
+      const cy = speedCanvas.height / 2;
+
+      speedCtx.strokeStyle = 'rgba(255, 255, 255, 0.28)';
+      speedCtx.lineWidth = 1.8;
+
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist1 = 160 + Math.random() * 220;
+        const dist2 = dist1 + 70 + Math.random() * 110;
+
+        speedCtx.beginPath();
+        speedCtx.moveTo(cx + Math.cos(angle) * dist1, cy + Math.sin(angle) * dist1);
+        speedCtx.lineTo(cx + Math.cos(angle) * dist2, cy + Math.sin(angle) * dist2);
+        speedCtx.stroke();
+      }
+    }
+
+    /* =========================================================
+       MAIN PHYSICS & GAME LOOP
+       Authentic Pendulum Swing + Real Gravity Falling Physics
+       ========================================================= */
+    let lastTime = performance.now();
+
+    function animate(now) {
+      requestAnimationFrame(animate);
+      // Clamped dt (capped at 50ms) for high-FPS (120Hz/144Hz) ultra-smooth physics
+      const rawDt = (now - lastTime) / 1000;
+      const dt = Math.min(Math.max(rawDt, 0.008), 0.04);
+      lastTime = now;
+
+      if (GAME.state === 'PLAYING') {
+        updateGame(dt, now);
+      }
+
+      updateVisuals(dt);
+      renderer.render(scene, camera);
+    }
+
+    function updateGame(dt, now) {
+      const s = GAME.spidey;
+
+      // Spider-Sense Bullet-Time Slow Motion
+      if (GAME.spiderSenseActive) {
+        GAME.spiderSenseEnergy = Math.max(0, GAME.spiderSenseEnergy - dt * 25.0);
+        const senseFill = document.getElementById('senseFill');
+        if (senseFill) senseFill.style.width = GAME.spiderSenseEnergy + '%';
+        dt *= 0.25; // 4x Bullet-Time Slow Motion
+        if (GAME.spiderSenseEnergy <= 0) {
+          toggleSpiderSense(false);
+        }
+      } else {
+        GAME.spiderSenseEnergy = Math.min(100.0, GAME.spiderSenseEnergy + dt * 12.0);
+        const senseFill = document.getElementById('senseFill');
+        if (senseFill) senseFill.style.width = GAME.spiderSenseEnergy + '%';
+      }
+
+      // 1. Natural Wind / Urban Crosswind Drift
+      GAME.driftTimer += dt * 0.8;
+      const naturalDrift = Math.sin(GAME.driftTimer) * 1.5 + Math.cos(GAME.driftTimer * 0.4) * 0.8;
+      s.vx += naturalDrift * dt;
+
+      // Web Zip-to-Point Perch Pull
+      if (GAME.isZipping && GAME.zipTarget) {
+        const dx = GAME.zipTarget.x - s.x;
+        const dy = GAME.zipTarget.y - s.y;
+        const dz = GAME.zipTarget.z - s.z;
+        const dist = Math.hypot(dx, dy, dz);
+
+        if (dist > 2.2) {
+          const zipSpeed = 72.0;
+          s.vx = (dx / dist) * zipSpeed;
+          s.vy = (dy / dist) * zipSpeed;
+          s.vz = -(dz / dist) * zipSpeed;
+          s.x += s.vx * dt;
+          s.y += s.vy * dt;
+          s.z -= s.vz * dt;
+          return;
+        } else {
+          GAME.isZipping = false;
+          s.x = THREE.MathUtils.lerp(s.x, 0, 0.4);
+          s.vy = 16.0;
+          s.vz = Math.min(s.vz + 24.0, 75.0);
+          triggerAcrobaticStunt('FRONT_FLIP');
+          sound.playPointLaunch();
+          sound.playDirtInEye();
+          spawnComicPopup('THWIP!', s.x, s.y);
+          showComboPopup('🎯 POINT PERCH VAULT! +500 PTS');
+          GAME.score += 500;
+          GAME.combo = Math.min(GAME.combo + 0.5, 5.0);
+          drawSpeedLines(1.0);
+        }
+      }
+
+      // Skyscraper Wall-Running Check
+      const isNearLeftWall = (s.x <= LEFT_WALL_X + 2.5);
+      const isNearRightWall = (s.x >= RIGHT_WALL_X - 2.5);
+      const wantsWallRun = (isNearLeftWall && (GAME.leftPressed || s.vx < -1.5)) ||
+                           (isNearRightWall && (GAME.rightPressed || s.vx > 1.5));
+
+      if (!GAME.swinging && !GAME.isSlingshotting && !GAME.isZipping && wantsWallRun && s.vy > -16.0 && s.y > 6.0) {
+        GAME.isWallRunning = true;
+        GAME.wallRunSide = isNearLeftWall ? 'LEFT' : 'RIGHT';
+        GAME.wallRunTimer += dt;
+        GAME.wallRunStepTimer = (GAME.wallRunStepTimer || 0) + dt;
+
+        s.x = THREE.MathUtils.lerp(s.x, isNearLeftWall ? (LEFT_WALL_X + 1.2) : (RIGHT_WALL_X - 1.2), 0.25);
+        s.vx = 0;
+        s.vy = Math.max(s.vy * 0.9, -1.8);
+        s.vz = Math.min(s.vz + 22.0 * dt, 56.0);
+
+        if (GAME.wallRunStepTimer > 0.12) {
+          GAME.wallRunStepTimer = 0;
+          triggerWallSparks(s.x, s.y, s.z, isNearLeftWall);
+        }
+
+        wallWarningBannerEl.textContent = `👟 SKYSCRAPER WALL-RUN! [SPACE / TAP TO VAULT] 👟`;
+        wallWarningBannerEl.style.display = 'block';
+        wallWarningBannerEl.style.background = '#0284c7';
+      } else {
+        if (GAME.isWallRunning) {
+          GAME.isWallRunning = false;
+          const isLeft = (GAME.wallRunSide === 'LEFT');
+          s.vx = isLeft ? 15.0 : -15.0;
+          s.vy = 14.0;
+          s.vz += 18.0;
+          sound.playWallVault();
+          sound.playMissedThePart();
+          spawnComicPopup('WALL RUN!', s.x, s.y);
+          showComboPopup('👟 WALL RUN LAUNCH! +600 PTS');
+          GAME.score += 600;
+          GAME.combo = Math.min(GAME.combo + 0.4, 5.0);
+        }
+      }
+
+      // 2. SLINGSHOT RUBBERBAND MODE vs PENDULUM SWING vs FREE FALLING
+      if (GAME.isSlingshotting) {
+        // Charging the rubber band tension:
+        GAME.slingshotCharge = Math.min(GAME.slingshotCharge + dt * 1.5, 1.0);
+
+        // Periodic tension hum sound:
+        GAME.slingshotSoundTimer = (GAME.slingshotSoundTimer || 0) + dt;
+        if (GAME.slingshotSoundTimer > 0.1) {
+          GAME.slingshotSoundTimer = 0;
+          sound.playRubberStretch(GAME.slingshotCharge);
+        }
+
+        // Pull toward center X = 0:
+        s.x = THREE.MathUtils.lerp(s.x, 0, 0.25);
+        s.vx = 0;
+
+        // Pull backwards against tension (rubber band decelerating forward motion):
+        s.vz = THREE.MathUtils.lerp(s.vz, 2, 0.2);
+        s.vy = THREE.MathUtils.lerp(s.vy, 0, 0.2);
+
+        // Elastic tremor vibration:
+        const vibration = Math.sin(now * 0.08) * (0.16 * GAME.slingshotCharge);
+        s.x += vibration;
+
+        // Slingshot posture: arms spread wide back, chest pulled back
+        leftArmPivot.rotation.z = -1.6;
+        leftArmPivot.rotation.x = -0.7;
+        rightArmPivot.rotation.z = 1.6;
+        rightArmPivot.rotation.x = -0.7;
+        spideyGroup.rotation.x = -0.22;
+        spideyGroup.rotation.z = 0;
+
+        // HUD Banner update:
+        const pct = Math.floor(GAME.slingshotCharge * 100);
+        wallWarningBannerEl.textContent = `🏹 RUBBERBAND STRETCH: ${pct}% ... RELEASE TO LAUNCH! 🏹`;
+        wallWarningBannerEl.style.display = 'block';
+        wallWarningBannerEl.style.background = '#8b5cf6';
+
+        // Auto-launch if held at 100% full stretch:
+        if (GAME.slingshotCharge >= 1.0) {
+          GAME.fullChargeTime = (GAME.fullChargeTime || 0) + dt;
+          if (GAME.fullChargeTime > 0.4) {
+            GAME.fullChargeTime = 0;
+            launchSlingshot();
+          }
+        } else {
+          GAME.fullChargeTime = 0;
+        }
+      } else if (GAME.swinging) {
+        GAME.swingTime += dt;
+
+        // STATIC FIXED ANCHOR on the skyscraper facade:
+        const dx = GAME.webAnchor.x - s.x;
+        const dy = GAME.webAnchor.y - s.y;
+        const dz = GAME.webAnchor.z - s.z;
+        const dist = Math.hypot(dx, dy, dz);
+
+        // Unit vector pointing from Spidey to the Anchor:
+        const ux = dx / dist;
+        const uy = dy / dist;
+        const uz = dz / dist; // < 0 when anchor is ahead, > 0 when anchor is behind
+
+        // Gravity pulls downward:
+        s.vy -= 26 * dt;
+
+        // Elastic pendulum cord tension:
+        if (dist >= GAME.webRestLength) {
+          const stretch = dist - GAME.webRestLength;
+          const tension = stretch * 48 + 20;
+
+          // Lateral acceleration (pulls towards Left or Right wall):
+          s.vx += ux * tension * dt;
+
+          // Vertical acceleration (cancels falling and lifts Spidey upward into pendulum arc):
+          s.vy += uy * tension * dt;
+
+          // Forward acceleration:
+          // Notice: anchor is ahead down -Z, so uz < 0.
+          // Pulling towards anchor ahead pulls Spidey in direction -Z, which ACCELERATES forward speed s.vz!
+          const forwardPull = -uz;
+          s.vz += forwardPull * tension * 0.75 * dt;
+        }
+
+        // Dynamic style acceleration boosts:
+        if (GAME.swingPose === 'LOOP_DE_LOOP') {
+          s.vz = Math.min(s.vz + 26 * dt, 72.0);
+          s.vy += 14 * dt;
+        } else if (GAME.swingPose === 'SWING_KICK' && dz > -8 && dz < 4) {
+          s.vz = Math.min(s.vz + 24 * dt, 70.0);
+          s.vy += 16 * dt;
+        }
+
+        // Swooping pendulum arc momentum at the curve of the swing:
+        if (dz > -12 && dz < 6) {
+          s.vy += 22 * dt; // upward swoop
+          s.vz += 16 * dt; // forward acceleration
+
+          // Dive Swing Swoop Boost!
+          if (GAME.isDiveSwinging) {
+            s.vy += 32 * dt; // massive upward rebound
+            s.vz += 20 * dt; // supersonic acceleration
+            drawSpeedLines(1.0);
+          }
+        }
+
+        // Guaranteed exhilarating forward velocity (NEVER moves backwards!):
+        s.vz = Math.max(s.vz, 24);
+        s.vz = Math.min(s.vz, 68);
+
+        // Natural apex release: if Spider-Man swings past the anchor (anchor is > 6m behind him)
+        if (dz > 6.0) {
+          GAME.swinging = false;
+          GAME.swingSide = null;
+          GAME.swingPose = 'REGULAR';
+          GAME.isDiveSwinging = false;
+          leftWebMesh.visible = false;
+          rightWebMesh.visible = false;
+          leftWebSplat.visible = false;
+          rightWebSplat.visible = false;
+          triggerApexRelease();
+        }
+      } else {
+        // REAL FREE-FALLING / DIVING PHYSICS (Gravity in full effect!)
+        leftWebMesh.visible = false;
+        rightWebMesh.visible = false;
+        leftWebSplat.visible = false;
+        rightWebSplat.visible = false;
+
+        // Auto-chain web swing if holding steer button and descending:
+        if (s.vy < 3.0 && GAME.stuntState === 'NONE') {
+          if (GAME.leftPressed) {
+            attachWeb('LEFT');
+          } else if (GAME.rightPressed) {
+            attachWeb('RIGHT');
+          }
+        }
+
+        // Gravity accelerates downward:
+        s.vy -= 28 * dt;
+        s.vy = Math.max(s.vy, -42); // realistic terminal velocity
+
+        // Gentle forward coasting (guaranteed forward motion):
+        s.vz = THREE.MathUtils.lerp(s.vz, 26, 0.04);
+        s.vz = Math.max(s.vz, 22);
+      }
+
+      // 3. Advance Acrobatic Stunts (Flips, Rolls, Wings & Soars)
+      if (GAME.stuntState !== 'NONE') {
+        // Aerodynamic lift for Web-Wings glider
+        if (GAME.stuntState === 'WEB_WINGS') {
+          s.vy = Math.max(s.vy, -3.2); // strong aero glide lift!
+          s.vz = Math.min(s.vz + 16.0 * dt, 68.0);
+        }
+
+        GAME.stuntProgress += dt * 2.2;
+        if (GAME.stuntProgress >= 1.0) {
+          GAME.stuntState = 'NONE';
+          GAME.stuntProgress = 0;
+          spideyGroup.rotation.set(0, Math.PI, 0);
+        }
+      }
+
+      // 4. Dive & Spiral Corkscrew Roll Logic (Throttled audio)
+      if (GAME.isDiving) {
+        s.vy -= 46 * dt; // fast dive-bomb descent
+        s.vz += 15 * dt; // forward speed surge
+        GAME.spiralAngle += dt * 12.0;
+
+        GAME.spiralSoundTimer = (GAME.spiralSoundTimer || 0) + dt;
+        if (GAME.spiralSoundTimer > 0.3) {
+          GAME.spiralSoundTimer = 0;
+          sound.playSpiralWhoosh();
+        }
+        drawSpeedLines(0.9);
+      } else if (!GAME.swinging && s.vy < -6.5) {
+        GAME.spiralAngle += dt * 7.5;
+      } else {
+        GAME.spiralAngle = 0;
+        GAME.spiralSoundTimer = 0.3;
+      }
+
+      // 5. Wall Vault Timer
+      if (GAME.isWallVaulting) {
+        GAME.wallVaultTimer -= dt;
+        if (GAME.wallVaultTimer <= 0) {
+          GAME.isWallVaulting = false;
+        }
+      }
+
+      // Air resistance damping
+      s.vx *= 0.96;
+      s.vy *= 0.985;
+
+      // Integrate positions (Moving forward along -Z!)
+      s.x += s.vx * dt;
+      s.y += s.vy * dt;
+      s.z -= s.vz * dt;
+
+      // Road Danger & Asphalt Collision Check:
+      // Asphalt level is at ROAD_Y = 0
+      if (s.y < 5.5) {
+        wallWarningBannerEl.textContent = "⚠️ LOW ALTITUDE! TAP OR HOLD TO SHOOT WEB! ⚠️";
+        wallWarningBannerEl.style.display = 'block';
+      }
+
+      if (s.y <= 1.8) {
+        // Hit the road!
+        s.y = 1.8;
+        takeDamage(false);
+        // Emergency recoil rebound
+        s.vy = 20.0;
+        s.vz = 22.0;
+        sound.playWallCrash();
+      }
+
+      // Sky ceiling cap (high above the skyscrapers)
+      if (s.y > 58.0) {
+        s.y = 58.0;
+        s.vy = Math.min(s.vy, -1.0);
+      }
+
+      GAME.distance = -s.z * 0.8;
+
+      // 3. Center Maintenance Check ("centre maintain korte hobe")
+      const absX = Math.abs(s.x);
+      if (absX < 3.2 && s.y >= 5.5) {
+        GAME.centerStreakTimer += dt;
+        GAME.score += (30 + GAME.combo * 20) * dt;
+
+        if (GAME.centerStreakTimer > 2.8) {
+          if (GAME.combo < 5.0) {
+            GAME.combo = Math.min(GAME.combo + 0.5, 5.0);
+            GAME.centerStreakTimer = 0;
+            showComboPopup("PERFECT CENTER! " + GAME.combo.toFixed(1) + "X 🔥");
+          }
+        }
+      } else {
+        GAME.centerStreakTimer = 0;
+        GAME.score += 10 * dt;
+      }
+
+      // 4. Wall Proximity Warning & Collision / Parkour Vault Handling
+      const CRASH_LIMIT = 11.2;
+      const WARNING_LIMIT = 7.8;
+
+      if (s.x <= -CRASH_LIMIT) {
+        s.x = -CRASH_LIMIT;
+        triggerWallParkourVault(true);
+      } else if (s.x >= CRASH_LIMIT) {
+        s.x = CRASH_LIMIT;
+        triggerWallParkourVault(false);
+      }
+
+      if (s.y >= 5.5) {
+        if (s.x < -WARNING_LIMIT) {
+          wallWarningBannerEl.textContent = "⚠️ TOO FAR LEFT! CLICK WEB RIGHT ▶ TO CENTER ⚠️";
+          wallWarningBannerEl.style.display = 'block';
+          rightSteerBtn.classList.add('alert-pulse');
+          leftSteerBtn.classList.remove('alert-pulse');
+        } else if (s.x > WARNING_LIMIT) {
+          wallWarningBannerEl.textContent = "⚠️ TOO FAR RIGHT! CLICK ◀ WEB LEFT TO CENTER ⚠️";
+          wallWarningBannerEl.style.display = 'block';
+          leftSteerBtn.classList.add('alert-pulse');
+          rightSteerBtn.classList.remove('alert-pulse');
+        } else {
+          wallWarningBannerEl.style.display = 'none';
+          leftSteerBtn.classList.remove('alert-pulse');
+          rightSteerBtn.classList.remove('alert-pulse');
+        }
+      }
+
+      // 5. Invincibility flicker
+      if (GAME.isInvincible) {
+        GAME.invincibleTimer -= dt;
+        spideyRoot.visible = Math.floor(now / 80) % 2 === 0;
+        if (GAME.invincibleTimer <= 0) {
+          GAME.isInvincible = false;
+          spideyRoot.visible = true;
+        }
+      } else {
+        spideyRoot.visible = true;
+      }
+
+      // 6. Collectibles Check
+      tokenPool.forEach(token => {
+        token.rotation.y += dt * 3;
+        const dz = Math.abs(token.position.z - s.z);
+        const dx = Math.abs(token.position.x - s.x);
+        const dy = Math.abs(token.position.y - s.y);
+
+        if (dz < 2.5 && dx < 2.2 && dy < 2.5 && token.userData.active) {
+          token.userData.active = false;
+          token.visible = false;
+          GAME.score += 250 * GAME.combo;
+          sound.playCoin();
+        }
+
+        if (token.position.z > s.z + 30) {
+          token.position.z = s.z - (200 + Math.random() * 50);
+          token.position.x = (Math.random() - 0.5) * 16;
+          token.position.y = SPIDEY_BASE_Y + (Math.random() - 0.5) * 5;
+          token.userData.active = true;
+          token.visible = true;
+        }
+      });
+
+      // 7. Procedural Building Recycling down -Z
+      buildingPool.forEach(bldg => {
+        if (bldg.position.z > s.z + 60) {
+          bldg.position.z -= BUILDING_SPACING * (BUILDING_COUNT / 2);
+        }
+      });
+
+      // 8. Endless Road Cycling
+      if (roadGroup.position.z > s.z + 300) {
+        roadGroup.position.z = s.z;
+      }
+
+      // Update HUD Metrics
+      scoreValEl.textContent = Math.floor(GAME.score).toLocaleString();
+      distValEl.textContent = Math.floor(GAME.distance) + 'm';
+      comboValEl.textContent = GAME.combo.toFixed(1) + 'x';
+      altValEl.textContent = Math.max(0, Math.floor(s.y)) + 'm';
+
+      // Update Center Alignment Gauge
+      const needlePercent = Math.max(0, Math.min(100, ((s.x - LEFT_WALL_X) / (RIGHT_WALL_X - LEFT_WALL_X)) * 100));
+      gaugeNeedleEl.style.left = needlePercent + '%';
+      gaugeNeedleEl.classList.toggle('in-center', absX < 3.2);
+
+      // Sound & Speed lines
+      const fallSpeed = Math.max(0, -s.vy);
+      sound.updateWind(Math.min(s.vz / 36, 1.0), Math.min(fallSpeed / 30, 1.0));
+      drawSpeedLines(Math.max(s.vz / 36, fallSpeed / 28));
+
+      // Update living city elements: Traffic, Drones, Rings, Steam, and Perch Reticle
+      updateTraffic(dt, s.z);
+      updateDrones(dt, s);
+      updateRings(dt, s);
+      updateSteamParticles(dt);
+      updatePerchReticle(s);
+    }
+
+    /* =========================================================
+       3D VISUAL TRANSFORMATIONS & CAMERA CHASE
+       ========================================================= */
+    function updateVisuals(dt) {
+      const s = GAME.spidey;
+
+      spideyRoot.position.set(s.x, s.y, s.z);
+
+      // Frame-rate independent exponential decay dampening for 120 FPS ultra-smoothness
+      const damp = 1.0 - Math.exp(-14.0 * dt);
+      const slowDamp = 1.0 - Math.exp(-8.0 * dt);
+      const fastDamp = 1.0 - Math.exp(-22.0 * dt);
+
+      // Web wings default hidden; deployed during WEB_WINGS
+      leftWebWing.visible = (GAME.stuntState === 'WEB_WINGS');
+      rightWebWing.visible = (GAME.stuntState === 'WEB_WINGS');
+
+      // Shoulder stretch default positions (Humanoid Clavicle Anchor)
+      let targetLeftShoulderY = 0.47;
+      let targetRightShoulderY = 0.47;
+
+      // Real Anatomical Limb Articulations (Shoulder, Elbow, Wrist, Hip, Knee, Ankle)
+      let targetLeftArmX = 0, targetLeftArmY = 0, targetLeftArmZ = -0.15;
+      let targetRightArmX = 0, targetRightArmY = 0, targetRightArmZ = 0.15;
+      let targetLeftElbowX = -0.15;
+      let targetRightElbowX = -0.15;
+      let targetLeftWristX = 0, targetLeftWristY = 0;
+      let targetRightWristX = 0, targetRightWristY = 0;
+
+      let targetLeftHipX = 0, targetLeftHipY = 0, targetLeftHipZ = -0.05;
+      let targetRightHipX = 0, targetRightHipY = 0, targetRightHipZ = 0.05;
+      let targetLeftKneeX = 0.15;
+      let targetRightKneeX = 0.15;
+      let targetLeftAnkleX = 0;
+      let targetRightAnkleX = 0;
+
+      let targetSpineRoll = 0, targetSpinePitch = 0, targetSpineYaw = 0;
+      let targetHeadPitch = 0, targetHeadYaw = 0, targetHeadRoll = 0;
+
+      let targetRoll = -s.vx * 0.08;
+      let targetPitch = 0.15;
+      let targetYaw = s.vx * 0.04;
+
+      if (GAME.stuntState !== 'NONE') {
+        // 🤸 MID-AIR ACROBATIC STUNT SYSTEM (Insomniac Spider-Man Authentic Stunt Moves)
+        targetRoll = 0;
+        targetPitch = 0;
+        targetYaw = 0;
+
+        if (GAME.stuntState === 'FRONT_FLIP') {
+          // 1. Spider Roll / Front Somersault Flip
+          const angle = GAME.stuntProgress * Math.PI * 2;
+          spideyGroup.rotation.x = angle;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = -0.55;
+          leftArmPivot.rotation.set(1.2, 0, -0.35);
+          rightArmPivot.rotation.set(1.2, 0, 0.35);
+          leftLegPivot.rotation.set(-1.3, 0, -0.2);
+          rightLegPivot.rotation.set(-1.3, 0, 0.2);
+        } else if (GAME.stuntState === 'BACK_FLIP') {
+          // 2. Moonsault / Shooting Star Backflip Arch
+          const angle = -GAME.stuntProgress * Math.PI * 2;
+          spideyGroup.rotation.x = angle;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = 0.5;
+          leftArmPivot.rotation.set(-1.5, 0, -0.4);
+          rightArmPivot.rotation.set(-1.5, 0, 0.4);
+          leftLegPivot.rotation.set(0.65, 0, 0);
+          rightLegPivot.rotation.set(0.65, 0, 0);
+        } else if (GAME.stuntState === 'SIDE_SPIN') {
+          // 3. Flying Helix 360° Barrel Roll
+          const angle = GAME.stuntProgress * Math.PI * 2;
+          spideyGroup.rotation.z = angle;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          headMesh.rotation.x = 0;
+          leftArmPivot.rotation.set(0.3, 0, -0.15);
+          rightArmPivot.rotation.set(0.3, 0, 0.15);
+          leftLegPivot.rotation.set(0, 0, -0.08);
+          rightLegPivot.rotation.set(0, 0, 0.08);
+        } else if (GAME.stuntState === 'WEBSTER') {
+          // 4. Webster Flip: One-leg backward kick somersault
+          const angle = GAME.stuntProgress * Math.PI * 2;
+          spideyGroup.rotation.x = angle;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = -0.4;
+          leftLegPivot.rotation.set(1.0, 0, -0.15);  // dynamic kick high backward
+          rightLegPivot.rotation.set(-1.4, 0, 0.15); // tucked knee
+          leftArmPivot.rotation.set(-0.8, 0, -0.5);
+          rightArmPivot.rotation.set(1.1, 0, 0.3);
+        } else if (GAME.stuntState === 'WINDMILL') {
+          // 5. Windmill Breakdance Flare: Fast horizontal spin with wide V-split legs
+          spideyGroup.rotation.x = 0.4;
+          spideyGroup.rotation.y = Math.PI + GAME.stuntProgress * Math.PI * 4;
+          spideyGroup.rotation.z = 0;
+          const legFlutter = Math.sin(GAME.stuntProgress * Math.PI * 6) * 0.4;
+          leftLegPivot.rotation.set(-0.6 + legFlutter, 0, -0.85);
+          rightLegPivot.rotation.set(-0.6 - legFlutter, 0, 0.85);
+          leftArmPivot.rotation.set(0.2, 0, -1.35);
+          rightArmPivot.rotation.set(0.2, 0, 1.35);
+        } else if (GAME.stuntState === 'DRAGON_ROLL') {
+          // 6. Dragon Roll: Helical 720° corkscrew twist
+          spideyGroup.rotation.x = GAME.stuntProgress * Math.PI * 2;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = GAME.stuntProgress * Math.PI * 4;
+          headMesh.rotation.set(0, 0, 0);
+          leftArmPivot.rotation.set(0.9, 0, 0.3);
+          rightArmPivot.rotation.set(0.9, 0, -0.3);
+          leftLegPivot.rotation.set(-0.4, 0, -0.05);
+          rightLegPivot.rotation.set(-0.4, 0, 0.05);
+        } else if (GAME.stuntState === 'TURTLE_SPIN') {
+          // 7. Turtle Spin: Compact horizontal shell flat-spin
+          spideyGroup.rotation.x = 0.75; // flat face down
+          spideyGroup.rotation.y = Math.PI + GAME.stuntProgress * Math.PI * 4;
+          spideyGroup.rotation.z = 0;
+          leftArmPivot.rotation.set(1.6, 0, 0.4);
+          rightArmPivot.rotation.set(1.6, 0, -0.4);
+          leftLegPivot.rotation.set(-1.7, 0, -0.2);
+          rightLegPivot.rotation.set(-1.7, 0, 0.2);
+        } else if (GAME.stuntState === 'CANNONBALL') {
+          // 8. Spherical Cannonball Knee Clutch Roll
+          const angle = GAME.stuntProgress * Math.PI * 2.5;
+          spideyGroup.rotation.x = angle;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = -0.7;
+          leftArmPivot.rotation.set(1.5, 0, 0.25);
+          rightArmPivot.rotation.set(1.5, 0, -0.25);
+          leftLegPivot.rotation.set(-1.6, 0, -0.15);
+          rightLegPivot.rotation.set(-1.6, 0, 0.15);
+        } else if (GAME.stuntState === 'THE_THINKER') {
+          // 9. The Thinker Hand-to-Chin Pondering Pose
+          targetPitch = -0.85;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.set(-0.35, 0.25, 0.15);
+          rightArmPivot.rotation.set(-1.65, 0, -0.55); // fist resting under chin
+          leftArmPivot.rotation.set(0.6, 0, -0.45);   // casual arm back
+          rightLegPivot.rotation.set(-1.4, 0, 0.3);   // knee bent up to elbow
+          leftLegPivot.rotation.set(0.2, 0, -0.1);    // trailing leg
+        } else if (GAME.stuntState === 'INDY_GRAB') {
+          // 10. Extreme Skater Indy Foot Grab
+          targetRoll = -0.35;
+          targetPitch = 0.2;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.set(0.25, -0.2, 0);
+          rightLegPivot.rotation.set(-1.5, 0, 0.4);   // tucked knee
+          leftLegPivot.rotation.set(0.35, 0, -0.35);  // extended leg
+          rightArmPivot.rotation.set(-1.3, 0, -0.3);  // hand grabs foot
+          leftArmPivot.rotation.set(0.2, 0, -1.5);    // balance wing
+        } else if (GAME.stuntState === 'ROLY_POLY') {
+          // 11. Roly Poly: Double tucked somersault
+          spideyGroup.rotation.x = GAME.stuntProgress * Math.PI * 4;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = -0.7;
+          leftArmPivot.rotation.set(1.4, 0, -0.2);
+          rightArmPivot.rotation.set(1.4, 0, 0.2);
+          leftLegPivot.rotation.set(-1.5, 0, -0.1);
+          rightLegPivot.rotation.set(-1.5, 0, 0.1);
+        } else if (GAME.stuntState === 'SKYWARD_SOAR') {
+          // 12. Eagle Soar with Chest High to Cloud Ceiling
+          targetPitch = 0.65;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = 0.6;
+          leftArmPivot.rotation.set(-0.7, 0, -1.4);
+          rightArmPivot.rotation.set(-0.7, 0, 1.4);
+          leftLegPivot.rotation.set(0.35, 0, 0);
+          rightLegPivot.rotation.set(0.35, 0, 0);
+        } else if (GAME.stuntState === 'TRUST_FALL') {
+          // 13. Chillin' Flat-on-Back Trust Fall (Hands Behind Head)
+          targetPitch = 1.45;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = 0.2;
+          leftArmPivot.rotation.set(-1.8, 0, -0.75); // hands behind head
+          rightArmPivot.rotation.set(-1.8, 0, 0.75);
+          leftLegPivot.rotation.set(0.1, 0, 0.15);
+          rightLegPivot.rotation.set(-0.35, 0, -0.15); // relaxed crossed feet
+        } else if (GAME.stuntState === 'WEB_WINGS') {
+          // 14. Spider-Man 2 Web-Wings Aero Glider
+          targetPitch = -0.08;
+          targetRoll = -s.vx * 0.08;
+          spideyGroup.rotation.x = 0;
+          spideyGroup.rotation.y = Math.PI;
+          spideyGroup.rotation.z = 0;
+          headMesh.rotation.x = 0.25;
+          leftArmPivot.rotation.set(0.05, 0, -1.55); // wings spread out wide
+          rightArmPivot.rotation.set(0.05, 0, 1.55);
+          leftLegPivot.rotation.set(-0.1, 0, -0.18);
+          rightLegPivot.rotation.set(-0.1, 0, 0.18);
+        }
+      } else if (GAME.isWallRunning) {
+        // 👟 WALL-RUNNING: Horizontal sprint on building glass!
+        const isLeft = (GAME.wallRunSide === 'LEFT');
+        targetRoll = isLeft ? -1.48 : 1.48;
+        targetPitch = 0.12;
+        targetYaw = isLeft ? 0.15 : -0.15;
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, 0.1, damp);
+
+        const stepAngle = GAME.wallRunTimer * 26.0;
+        const stride = Math.sin(stepAngle);
+        leftLegPivot.rotation.set(stride * 0.95, 0, 0);
+        rightLegPivot.rotation.set(-stride * 0.95, 0, 0);
+        targetLeftKneeX = Math.max(0, -stride * 1.4);
+        targetRightKneeX = Math.max(0, stride * 1.4);
+
+        leftArmPivot.rotation.set(-stride * 0.85, 0, isLeft ? -0.35 : -0.15);
+        rightArmPivot.rotation.set(stride * 0.85, 0, isLeft ? 0.15 : 0.35);
+        targetLeftElbowX = -0.7;
+        targetRightElbowX = -0.7;
+      } else if (GAME.isZipping) {
+        // 🎯 POINT ZIP: Aerodynamic forward slingshot bullet tuck
+        targetRoll = 0;
+        targetPitch = -0.28;
+        targetYaw = 0;
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, -0.4, damp);
+        leftArmPivot.rotation.set(1.45, 0, -0.35);
+        rightArmPivot.rotation.set(1.45, 0, 0.35);
+        leftLegPivot.rotation.set(0.35, 0, -0.08);
+        rightLegPivot.rotation.set(0.35, 0, 0.08);
+        targetLeftElbowX = -0.35;
+        targetRightElbowX = -0.35;
+        targetLeftKneeX = 0.65;
+        targetRightKneeX = 0.65;
+      } else if (GAME.isWallVaulting) {
+        // Parkour Wall Vault crouch & push-off pose
+        const isLeft = (GAME.wallVaultSide === 'LEFT');
+        targetRoll = isLeft ? 0.75 : -0.75;
+        targetPitch = 0.2;
+        headMesh.rotation.x = -0.3;
+        leftArmPivot.rotation.set(0.8, 0, -0.6);
+        rightArmPivot.rotation.set(0.8, 0, 0.6);
+        leftLegPivot.rotation.set(-1.1, 0, -0.4);
+        rightLegPivot.rotation.set(-1.1, 0, 0.4);
+      } else if (GAME.isSlingshotting) {
+        spideyGroup.rotation.x = 0;
+        spideyGroup.rotation.y = Math.PI;
+        spideyGroup.rotation.z = 0;
+        leftLegPivot.rotation.z = 0;
+        rightLegPivot.rotation.z = 0;
+        targetRoll = 0;
+        targetPitch = -0.22;
+        headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, -0.2, damp);
+      } else if (GAME.swinging) {
+        // =========================================================
+        // DYNAMIC HUMANOID PENDULUM SWING PHYSICS
+        // Dynamic bone movements change continuously with swing arc,
+        // velocity, centripetal G-force, tension & anchor geometry!
+        // =========================================================
+        const isLeft = (GAME.swingSide === 'LEFT');
+        spideyGroup.rotation.y = Math.PI;
+
+        const dx = GAME.webAnchor.x - s.x;
+        const dy = GAME.webAnchor.y - s.y;
+        const dz = GAME.webAnchor.z - s.z;
+        const dist = Math.max(Math.hypot(dx, dy, dz), 1.0);
+
+        const speed = Math.hypot(s.vx, s.vy, s.vz);
+        const speedSq = speed * speed;
+        // Real physical centripetal G-force tension
+        const gForce = THREE.MathUtils.clamp(speedSq / 850.0, 0.25, 2.2);
+
+        // Arc progress:
+        // -1.0: Dropping into swing (anchor is far ahead down -Z)
+        //  0.0: Bottom swoop point (peak speed & centripetal compression)
+        // +1.0: Ascending / pumping to apex (anchor is behind down +Z)
+        const arcProgress = THREE.MathUtils.clamp((s.z - GAME.webAnchor.z) / 12.0, -1.0, 1.0);
+
+        // Dynamic Root Banking & Pitch (Reacts to swing momentum & turn radius)
+        targetRoll = (isLeft ? -1 : 1) * (0.36 + gForce * 0.16 + Math.abs(s.vx) * 0.015);
+        targetPitch = -arcProgress * 0.42 + (s.vy * 0.016);
+        targetYaw = (isLeft ? -0.16 : 0.16) * (1.0 - Math.abs(arcProgress) * 0.4);
+
+        // Dynamic Spine Curvature into pendulum arc (Human athletic core tension)
+        targetSpineRoll = (isLeft ? -1 : 1) * (0.16 + gForce * 0.14);
+        targetSpinePitch = -arcProgress * 0.26 + (s.vy < 0 ? -0.12 : 0.16); // Lean into dive, arch back on climb
+        targetSpineYaw = (isLeft ? 0.18 : -0.18); // Chest rotates toward web tension line
+
+        // Head Gaze Tracking: glances at building anchor on entry, scans horizon at base, looks up on climb
+        targetHeadYaw = (isLeft ? -0.26 : 0.26);
+        targetHeadPitch = -arcProgress * 0.35 + (s.vy * 0.015);
+        targetHeadRoll = (isLeft ? 0.15 : -0.15);
+
+        // Centripetal knee absorption (Legs compress at highest speed / lowest swoop)
+        const kneeGCompression = gForce * 0.44;
+
+        if (isLeft) {
+          // Left arm A[0] is ACTIVE holding the web cord
+          targetLeftShoulderY = 0.52 + 0.03 * gForce;
+          targetLeftArmZ = -1.42 - gForce * 0.08;
+          targetLeftArmX = 0.95 + arcProgress * 0.35;
+          targetLeftElbowX = -0.18 - gForce * 0.12;
+          targetLeftWristX = -0.35;
+          targetLeftWristY = 0.22;
+
+          // Right arm A[1] is FREE trailing counterbalance
+          const freeSway = Math.sin(GAME.swingTime * 6.5) * 0.16;
+          targetRightArmX = -0.32 + freeSway - (speed * 0.007);
+          targetRightArmZ = 0.55 + freeSway * 0.5;
+          targetRightElbowX = -0.42;
+          targetRightWristX = 0.1;
+          targetRightWristY = 0;
+
+          // Legs: Lead leg (Left) tucks forward on ascent, Trailing leg (Right) sweeps back
+          targetLeftHipX = -0.55 - Math.max(0, arcProgress) * 0.65;
+          targetLeftHipZ = -0.18;
+          targetLeftKneeX = 0.45 + kneeGCompression + Math.max(0, arcProgress) * 0.35;
+          targetLeftAnkleX = -targetLeftKneeX * 0.28;
+
+          targetRightHipX = 0.32 - Math.max(0, arcProgress) * 0.5;
+          targetRightHipZ = 0.12;
+          targetRightKneeX = 0.25 + kneeGCompression * 0.6;
+          targetRightAnkleX = -targetRightKneeX * 0.28;
+        } else {
+          // Right arm A[1] is ACTIVE holding the web cord
+          targetRightShoulderY = 0.52 + 0.03 * gForce;
+          targetRightArmZ = 1.42 + gForce * 0.08;
+          targetRightArmX = 0.95 + arcProgress * 0.35;
+          targetRightElbowX = -0.18 - gForce * 0.12;
+          targetRightWristX = -0.35;
+          targetRightWristY = -0.22;
+
+          // Left arm A[0] is FREE trailing counterbalance
+          const freeSway = Math.sin(GAME.swingTime * 6.5) * 0.16;
+          targetLeftArmX = -0.32 + freeSway - (speed * 0.007);
+          targetLeftArmZ = -0.55 - freeSway * 0.5;
+          targetLeftElbowX = -0.42;
+          targetLeftWristX = 0.1;
+          targetLeftWristY = 0;
+
+          // Legs: Lead leg (Right) tucks forward on ascent, Trailing leg (Left) sweeps back
+          targetRightHipX = -0.55 - Math.max(0, arcProgress) * 0.65;
+          targetRightHipZ = 0.18;
+          targetRightKneeX = 0.45 + kneeGCompression + Math.max(0, arcProgress) * 0.35;
+          targetRightAnkleX = -targetRightKneeX * 0.28;
+
+          targetLeftHipX = 0.32 - Math.max(0, arcProgress) * 0.5;
+          targetLeftHipZ = -0.12;
+          targetLeftKneeX = 0.25 + kneeGCompression * 0.6;
+          targetLeftAnkleX = -targetLeftKneeX * 0.28;
+        }
+
+        // Distinct Swing Style Variations (Body pose adapts to style!)
+        if (GAME.swingPose === 'TWO_HANDED') {
+          targetRoll = (isLeft ? -0.32 : 0.32);
+          targetPitch = 0.28;
+          targetLeftShoulderY = 0.52;
+          targetRightShoulderY = 0.52;
+          targetLeftArmZ = -0.65;
+          targetRightArmZ = 0.65;
+          targetLeftArmX = 1.05 + arcProgress * 0.3;
+          targetRightArmX = 1.05 + arcProgress * 0.3;
+          targetLeftElbowX = -0.25;
+          targetRightElbowX = -0.25;
+          // Gymnastic high-bar leg pump
+          targetLeftHipX = targetRightHipX = -0.65 - Math.max(0, arcProgress) * 0.5;
+          targetLeftKneeX = targetRightKneeX = 0.55 + kneeGCompression * 0.6;
+        } else if (GAME.swingPose === 'FORWARD_DIVE_SWING') {
+          targetRoll = (isLeft ? -0.3 : 0.3);
+          targetPitch = (arcProgress < 0) ? -0.75 : 0.55;
+          targetHeadPitch = (arcProgress < 0) ? -0.5 : 0.4;
+          targetLeftArmX = isLeft ? 1.15 : -0.85;
+          targetRightArmX = isLeft ? -0.85 : 1.15;
+          targetLeftHipX = targetRightHipX = 0.45;
+          targetLeftKneeX = targetRightKneeX = 0.2;
+        } else if (GAME.swingPose === 'BETWEEN_LEGS') {
+          targetRoll = (isLeft ? -0.38 : 0.38);
+          targetPitch = 0.58;
+          targetHeadPitch = -0.28;
+          targetLeftHipX = -1.35; targetLeftHipZ = -0.75;
+          targetRightHipX = -1.35; targetRightHipZ = 0.75;
+          targetLeftKneeX = targetRightKneeX = 0.3;
+          if (isLeft) {
+            targetLeftArmX = -1.55; targetLeftArmZ = 0.15;
+            targetRightArmX = 1.1; targetRightArmZ = 0.85;
+          } else {
+            targetRightArmX = -1.55; targetRightArmZ = -0.15;
+            targetLeftArmX = 1.1; targetLeftArmZ = -0.85;
+          }
+        } else if (GAME.swingPose === 'SWING_KICK') {
+          targetRoll = (isLeft ? -0.35 : 0.35);
+          targetPitch = -0.12;
+          targetHeadPitch = 0.2;
+          if (isLeft) {
+            targetLeftArmX = 0.95; targetLeftArmZ = -1.3;
+            targetRightArmX = -0.6; targetRightArmZ = 0.8;
+            targetLeftHipX = -1.55; // Extended horizontal kick leg
+            targetLeftKneeX = 0.1;
+            targetRightHipX = -0.7; // Tucked leg
+            targetRightKneeX = 1.25;
+          } else {
+            targetRightArmX = 0.95; targetRightArmZ = 1.3;
+            targetLeftArmX = -0.6; targetLeftArmZ = -0.8;
+            targetRightHipX = -1.55; // Extended horizontal kick leg
+            targetRightKneeX = 0.1;
+            targetLeftHipX = -0.7; // Tucked leg
+            targetLeftKneeX = 1.25;
+          }
+        } else if (GAME.swingPose === 'LOOP_DE_LOOP') {
+          const loopAngle = GAME.swingTime * 14.0;
+          spideyGroup.rotation.x = loopAngle;
+          targetRoll = 0;
+          targetPitch = 0;
+          targetHeadPitch = -0.3;
+          targetLeftArmX = 1.15; targetLeftArmZ = -0.5;
+          targetRightArmX = 1.15; targetRightArmZ = 0.5;
+          targetLeftHipX = targetRightHipX = -1.2;
+          targetLeftKneeX = targetRightKneeX = 0.8;
+        }
+      } else {
+        // =========================================================
+        // FREE-FLIGHT / FREE-FALLING / DIVING PHYSICS
+        // (Smooth aerodynamic gliding when no web is attached)
+        // =========================================================
+        spideyGroup.rotation.x = 0;
+        spideyGroup.rotation.y = Math.PI;
+        spideyGroup.rotation.z = 0;
+
+        if (s.vy > 1.2) {
+          // 🚀 CASE 1: HEROIC EAGLE SOAR / CHEST-LIFT (Ascending high into the sky)
+          const climb = Math.min(s.vy / 22.0, 1.0);
+          targetPitch = 0.42 + climb * 0.36; // Chest pushed upward toward the clouds
+          targetHeadPitch = 0.55 * climb;    // Head looks up at sky
+
+          // Spread arms wide back like wings
+          targetLeftArmZ = -1.45 * climb;
+          targetRightArmZ = 1.45 * climb;
+          targetLeftArmX = -0.75 * climb;
+          targetRightArmX = -0.75 * climb;
+
+          // Sleek trailing legs
+          targetLeftHipX = 0.35 * climb;
+          targetRightHipX = 0.35 * climb;
+          targetLeftHipZ = -0.12 * climb;
+          targetRightHipZ = 0.12 * climb;
+          targetLeftKneeX = 0.2;
+          targetRightKneeX = 0.2;
+        } else if (s.vy < -1.2 || GAME.isDiving) {
+          // 🤿 CASE 2: REALISTIC AERODYNAMIC SKYDIVE DIVE-BOMB
+          const dive = Math.min(Math.max((-s.vy - 1.2) / 22.0, 0), 1.0);
+          targetPitch = -0.32 - (dive * 1.05); // Torso angles down toward avenue
+          targetHeadPitch = -0.68 * dive;      // Head looks straight down at street
+
+          // Continuous corkscrew spiral roll around flight axis
+          spideyGroup.rotation.z = GAME.spiralAngle;
+
+          // Aerodynamic arms trailing wind currents
+          const armWindFlutter = Math.sin(GAME.driftTimer * 14.0) * (0.04 * dive);
+          targetLeftArmX = 1.55 * dive + armWindFlutter;
+          targetLeftArmZ = -0.32 * (1.0 - dive) - 0.22;
+          targetRightArmX = 1.55 * dive - armWindFlutter;
+          targetRightArmZ = 0.32 * (1.0 - dive) + 0.22;
+
+          // Bent knees cutting through air
+          targetLeftHipX = -0.62 * dive;
+          targetRightHipX = -0.62 * dive;
+          targetLeftHipZ = -0.16;
+          targetRightHipZ = 0.16;
+          targetLeftElbowX = 0.5 * dive;
+          targetRightElbowX = 0.5 * dive;
+          targetLeftKneeX = 0.85 * dive;
+          targetRightKneeX = 0.85 * dive;
+        } else {
+          // Neutral Glide around apex
+          targetPitch = 0.08;
+          targetHeadPitch = 0;
+          targetLeftArmX = 0.1; targetLeftArmZ = -0.18;
+          targetRightArmX = 0.1; targetRightArmZ = 0.18;
+          targetLeftHipX = 0; targetLeftHipZ = -0.06;
+          targetRightHipX = 0; targetRightHipZ = 0.06;
+          targetLeftElbowX = -0.15; targetRightElbowX = -0.15;
+          targetLeftKneeX = 0.18; targetRightKneeX = 0.18;
+        }
+      }
+
+      // =========================================================
+      // UNIVERSAL SMOOTH BONE LERPING (Zero Snapping, 120 FPS Fluidity)
+      // =========================================================
+      // Shoulders
+      A[0].sh.position.y = THREE.MathUtils.lerp(A[0].sh.position.y, targetLeftShoulderY, damp);
+      A[1].sh.position.y = THREE.MathUtils.lerp(A[1].sh.position.y, targetRightShoulderY, damp);
+
+      A[0].sh.rotation.x = THREE.MathUtils.lerp(A[0].sh.rotation.x, targetLeftArmX, damp);
+      A[0].sh.rotation.y = THREE.MathUtils.lerp(A[0].sh.rotation.y, targetLeftArmY, damp);
+      A[0].sh.rotation.z = THREE.MathUtils.lerp(A[0].sh.rotation.z, targetLeftArmZ, damp);
+
+      A[1].sh.rotation.x = THREE.MathUtils.lerp(A[1].sh.rotation.x, targetRightArmX, damp);
+      A[1].sh.rotation.y = THREE.MathUtils.lerp(A[1].sh.rotation.y, targetRightArmY, damp);
+      A[1].sh.rotation.z = THREE.MathUtils.lerp(A[1].sh.rotation.z, targetRightArmZ, damp);
+
+      // Elbows & Wrists
+      A[0].el.rotation.x = THREE.MathUtils.lerp(A[0].el.rotation.x, targetLeftElbowX, damp);
+      A[1].el.rotation.x = THREE.MathUtils.lerp(A[1].el.rotation.x, targetRightElbowX, damp);
+
+      A[0].wr.rotation.x = THREE.MathUtils.lerp(A[0].wr.rotation.x, targetLeftWristX, damp);
+      A[0].wr.rotation.y = THREE.MathUtils.lerp(A[0].wr.rotation.y, targetLeftWristY, damp);
+      A[1].wr.rotation.x = THREE.MathUtils.lerp(A[1].wr.rotation.x, targetRightWristX, damp);
+      A[1].wr.rotation.y = THREE.MathUtils.lerp(A[1].wr.rotation.y, targetRightWristY, damp);
+
+      // Hips, Knees & Ankles
+      L[0].hip.rotation.x = THREE.MathUtils.lerp(L[0].hip.rotation.x, targetLeftHipX, damp);
+      L[0].hip.rotation.y = THREE.MathUtils.lerp(L[0].hip.rotation.y, targetLeftHipY, damp);
+      L[0].hip.rotation.z = THREE.MathUtils.lerp(L[0].hip.rotation.z, targetLeftHipZ, damp);
+
+      L[1].hip.rotation.x = THREE.MathUtils.lerp(L[1].hip.rotation.x, targetRightHipX, damp);
+      L[1].hip.rotation.y = THREE.MathUtils.lerp(L[1].hip.rotation.y, targetRightHipY, damp);
+      L[1].hip.rotation.z = THREE.MathUtils.lerp(L[1].hip.rotation.z, targetRightHipZ, damp);
+
+      L[0].kn.rotation.x = THREE.MathUtils.lerp(L[0].kn.rotation.x, targetLeftKneeX, damp);
+      L[1].kn.rotation.x = THREE.MathUtils.lerp(L[1].kn.rotation.x, targetRightKneeX, damp);
+
+      L[0].an.rotation.x = THREE.MathUtils.lerp(L[0].an.rotation.x, targetLeftAnkleX, damp);
+      L[1].an.rotation.x = THREE.MathUtils.lerp(L[1].an.rotation.x, targetRightAnkleX, damp);
+
+      // Dynamic Spine Curvature & Head Gaze
+      spine.rotation.x = THREE.MathUtils.lerp(spine.rotation.x, targetSpinePitch, damp);
+      spine.rotation.y = THREE.MathUtils.lerp(spine.rotation.y, targetSpineYaw, damp);
+      spine.rotation.z = THREE.MathUtils.lerp(spine.rotation.z, targetSpineRoll, damp);
+
+      headMesh.rotation.x = THREE.MathUtils.lerp(headMesh.rotation.x, targetHeadPitch, damp);
+      headMesh.rotation.y = THREE.MathUtils.lerp(headMesh.rotation.y, targetHeadYaw, damp);
+      headMesh.rotation.z = THREE.MathUtils.lerp(headMesh.rotation.z, targetHeadRoll, damp);
+
+      // Breathing motion from 3D Human Character
+      if (typeof torsoLathe !== 'undefined') {
+        const breath = Math.sin(performance.now() * 0.0016) * 0.012;
+        torsoLathe.position.y = breath;
+      }
+
+      // Eye Blinking from 3D Human Character
+      if (typeof eyeGroup !== 'undefined') {
+        const blink = (performance.now() * 0.001 % 4.2) < 0.12 ? 0.1 : 1.0;
+        eyeGroup.scale.y = blink;
+      }
+
+      // Hoodie Drawstrings Wind Aerodynamics (reacts to forward & vertical airflow)
+      const airDragZ = THREE.MathUtils.clamp(-s.vz * 0.015, -0.65, 0.65);
+      const airLiftY = THREE.MathUtils.clamp(-s.vy * 0.02, -0.4, 0.4);
+      const flutter = Math.sin(performance.now() * 0.018) * 0.05;
+      if (typeof drawstringL !== 'undefined' && typeof drawstringR !== 'undefined') {
+        drawstringL.rotation.x = THREE.MathUtils.lerp(drawstringL.rotation.x, airDragZ + airLiftY + flutter, slowDamp);
+        drawstringR.rotation.x = THREE.MathUtils.lerp(drawstringR.rotation.x, airDragZ + airLiftY - flutter, slowDamp);
+      }
+
+      // Root banking, pitch and yaw using frame-rate independent damp
+      spideyRoot.rotation.z = THREE.MathUtils.lerp(spideyRoot.rotation.z, targetRoll, damp);
+      spideyRoot.rotation.x = THREE.MathUtils.lerp(spideyRoot.rotation.x, targetPitch, damp);
+      spideyRoot.rotation.y = THREE.MathUtils.lerp(spideyRoot.rotation.y, targetYaw, damp);
+
+      // Drop shadow on road below
+      shadowMesh.position.set(s.x, ROAD_Y + 0.1, s.z);
+
+      // =========================================================
+      // THICK 3D GLOWING WEB STRAND RENDERING (Zero GC allocations!)
+      // =========================================================
+      if (GAME.isSlingshotting) {
+        // Dual rubberband web strands attached to human wrists!
+        spideyRoot.updateMatrixWorld(true);
+        A[0].wr.getWorldPosition(_scratchWristL);
+        A[1].wr.getWorldPosition(_scratchWristR);
+
+        const distL = _scratchWristL.distanceTo(GAME.slingshotAnchorLeft);
+        leftWebMesh.position.copy(_scratchWristL);
+        leftWebMesh.lookAt(GAME.slingshotAnchorLeft);
+        leftWebMesh.scale.set(1.4, 1.4, distL);
+        leftWebMesh.visible = true;
+
+        const distR = _scratchWristR.distanceTo(GAME.slingshotAnchorRight);
+        rightWebMesh.position.copy(_scratchWristR);
+        rightWebMesh.lookAt(GAME.slingshotAnchorRight);
+        rightWebMesh.scale.set(1.4, 1.4, distR);
+        rightWebMesh.visible = true;
+
+        leftWebSplat.position.copy(GAME.slingshotAnchorLeft);
+        leftWebSplat.rotation.y = Math.PI / 2;
+        leftWebSplat.visible = true;
+
+        rightWebSplat.position.copy(GAME.slingshotAnchorRight);
+        rightWebSplat.rotation.y = -Math.PI / 2;
+        rightWebSplat.visible = true;
+      } else if (GAME.isZipping && GAME.zipTarget) {
+        // 🎯 Dual web zip cords to target perch
+        spideyRoot.updateMatrixWorld(true);
+        A[0].wr.getWorldPosition(_scratchWristL);
+        A[1].wr.getWorldPosition(_scratchWristR);
+
+        const distL = _scratchWristL.distanceTo(GAME.zipTarget);
+        leftWebMesh.position.copy(_scratchWristL);
+        leftWebMesh.lookAt(GAME.zipTarget);
+        leftWebMesh.scale.set(1.2, 1.2, distL);
+        leftWebMesh.visible = true;
+
+        const distR = _scratchWristR.distanceTo(GAME.zipTarget);
+        rightWebMesh.position.copy(_scratchWristR);
+        rightWebMesh.lookAt(GAME.zipTarget);
+        rightWebMesh.scale.set(1.2, 1.2, distR);
+        rightWebMesh.visible = true;
+
+        leftWebSplat.position.copy(GAME.zipTarget);
+        leftWebSplat.visible = true;
+        rightWebSplat.visible = false;
+      } else if (GAME.swinging) {
+        const isLeft = (GAME.swingSide === 'LEFT');
+        spideyRoot.updateMatrixWorld(true);
+        const activeArm = isLeft ? A[0] : A[1];
+        activeArm.wr.getWorldPosition(_scratchActiveWrist);
+        const anchorPos = GAME.webAnchor;
+        const dist = _scratchActiveWrist.distanceTo(anchorPos);
+
+        if (isLeft) {
+          leftWebMesh.position.copy(_scratchActiveWrist);
+          leftWebMesh.lookAt(anchorPos);
+          leftWebMesh.scale.set(1, 1, dist);
+          leftWebMesh.visible = true;
+          rightWebMesh.visible = false;
+
+          leftWebSplat.position.copy(anchorPos);
+          leftWebSplat.rotation.y = Math.PI / 2;
+          leftWebSplat.visible = true;
+          rightWebSplat.visible = false;
+        } else {
+          rightWebMesh.position.copy(_scratchActiveWrist);
+          rightWebMesh.lookAt(anchorPos);
+          rightWebMesh.scale.set(1, 1, dist);
+          rightWebMesh.visible = true;
+          leftWebMesh.visible = false;
+
+          rightWebSplat.position.copy(anchorPos);
+          rightWebSplat.rotation.y = -Math.PI / 2;
+          rightWebSplat.visible = true;
+          leftWebSplat.visible = false;
+        }
+      } else {
+        leftWebMesh.visible = false;
+        rightWebMesh.visible = false;
+        leftWebSplat.visible = false;
+        rightWebSplat.visible = false;
+      }
+
+      // Spark particles animation
+      const sparkPosAttr = sparkGeo.attributes.position.array;
+      for (let i = 0; i < SPARK_COUNT; i++) {
+        if (sparkVelocities[i].life > 0) {
+          sparkVelocities[i].life -= dt;
+          sparkPosAttr[i * 3] += sparkVelocities[i].x * dt * 25;
+          sparkPosAttr[i * 3 + 1] += sparkVelocities[i].y * dt * 25;
+          sparkPosAttr[i * 3 + 2] += sparkVelocities[i].z * dt * 25;
+        } else {
+          sparkPosAttr[i * 3 + 1] = -100;
+        }
+      }
+      sparkGeo.attributes.position.needsUpdate = true;
+
+      // Dynamic Waldoes Flexing for Iron Spider Suit
+      if (typeof ironWaldoesGroup !== 'undefined' && ironWaldoesGroup.visible) {
+        const waldoTime = performance.now() * 0.005;
+        const flex = Math.sin(waldoTime) * 0.12;
+        ironWaldoesGroup.children.forEach((arm) => {
+          const { signX, isUpper } = arm.userData || { signX: 1, isUpper: true };
+          arm.rotation.z = flex * signX * (isUpper ? 0.8 : -0.8);
+          if (arm.userData && arm.userData.elbow) {
+            arm.userData.elbow.rotation.x = (isUpper ? 0.2 : -0.2) + flex * 0.5;
+          }
+        });
+      }
+
+      // Spider-Sense Pulsing Halo
+      if (typeof spiderSenseGroup !== 'undefined' && spiderSenseGroup.visible) {
+        spiderSenseGroup.rotation.y = performance.now() * 0.006;
+        const pulse = 1.0 + Math.sin(performance.now() * 0.015) * 0.15;
+        spiderSenseGroup.scale.set(pulse, pulse, pulse);
+      }
+
+      // Third-Person Chase Camera:
+      // Smoothly tracks altitude and dynamically swoops during dives and skyward climbs
+      const camTargetX = s.x * 0.65;
+      const camTargetY = Math.max(s.y + (s.vy < -5 ? 4.8 : 3.8), 6.0);
+      const camTargetZ = s.z + 12.5;
+
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, camTargetX, damp);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, camTargetY, damp);
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, camTargetZ, damp);
+
+      const lookY = s.y + (s.vy > 1.0 ? 3.0 : -2.5 * Math.min(Math.max(-s.vy / 22, 0), 1.0));
+      _scratchLookAhead.set(s.x * 0.35, Math.max(lookY, 2.0), s.z - 22);
+      camera.lookAt(_scratchLookAhead);
+
+      // Dynamic FOV Swoop: Expands at extreme speed or during steep dives
+      const speedFovRatio = Math.min(Math.max((s.vz - 20) / 45, 0), 1.0);
+      const targetFov = 65 + (speedFovRatio * 16) + (GAME.isDiving ? 8 : 0);
+      camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, damp);
+      camera.updateProjectionMatrix();
+
+      sunLight.position.set(s.x - 30, s.y + 80, s.z + 40);
+      sunLight.target.position.set(s.x, s.y, s.z - 10);
+      sunLight.target.updateMatrixWorld();
+    }
+
+    // UI Buttons & Feature Controls
+    const pointZipBtn = document.getElementById('pointZipBtn');
+    if (pointZipBtn) {
+      pointZipBtn.addEventListener('click', (e) => { e.preventDefault(); triggerWebZip(); });
+    }
+
+    const timeBtn = document.getElementById('timeBtn');
+    const timeTxt = document.getElementById('timeTxt');
+    const timeModes = ['DAY', 'SUNSET', 'NIGHT'];
+    let timeModeIdx = 0;
+    function cycleTimeOfDay() {
+      timeModeIdx = (timeModeIdx + 1) % timeModes.length;
+      const mode = timeModes[timeModeIdx];
+      setTimeOfDay(mode);
+      if (timeTxt) timeTxt.textContent = mode.charAt(0) + mode.slice(1).toLowerCase();
+      spawnComicPopup(mode + '!', GAME.spidey.x, GAME.spidey.y);
+    }
+    if (timeBtn) {
+      timeBtn.addEventListener('click', (e) => { e.preventDefault(); cycleTimeOfDay(); });
+    }
+
+    const senseBtn = document.getElementById('senseBtn');
+    function toggleSpiderSense(force) {
+      if (GAME.state !== 'PLAYING') return;
+      GAME.spiderSenseActive = (typeof force === 'boolean') ? force : !GAME.spiderSenseActive;
+      if (typeof spiderSenseGroup !== 'undefined') {
+        spiderSenseGroup.visible = GAME.spiderSenseActive;
+      }
+      if (senseBtn) {
+        senseBtn.classList.toggle('active', GAME.spiderSenseActive);
+      }
+      const flash = document.getElementById('damageFlash');
+      if (GAME.spiderSenseActive) {
+        sound.playSpiralWhoosh();
+        spawnComicPopup('SPIDER-SENSE!', GAME.spidey.x, GAME.spidey.y);
+        if (flash) {
+          flash.style.background = 'radial-gradient(circle, rgba(250, 204, 21, 0.35) 0%, transparent 75%)';
+          flash.style.opacity = '1';
+        }
+      } else {
+        if (flash) {
+          flash.style.opacity = '0';
+          flash.style.background = 'radial-gradient(circle, rgba(239, 68, 68, 0.6) 0%, transparent 80%)';
+        }
+      }
+    }
+    if (senseBtn) {
+      senseBtn.addEventListener('click', (e) => { e.preventDefault(); toggleSpiderSense(); });
+    }
+
+    const suitBtn = document.getElementById('suitBtn');
+    const suitModal = document.getElementById('suitModal');
+    const closeSuitBtn = document.getElementById('closeSuitBtn');
+
+    if (suitBtn && suitModal) {
+      suitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        suitModal.style.display = 'flex';
+      });
+    }
+    if (closeSuitBtn && suitModal) {
+      closeSuitBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        suitModal.style.display = 'none';
+      });
+    }
+    document.querySelectorAll('.suit-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.suit-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        const suitKey = card.getAttribute('data-suit');
+        setSuit(suitKey);
+        spawnComicPopup(suitKey + ' SUIT!', GAME.spidey.x, GAME.spidey.y);
+      });
+    });
+
+    // Keyboard controls for new features
+    window.addEventListener('keydown', (e) => {
+      if (e.repeat) return;
+      const key = e.key.toLowerCase();
+      if (key === 'f') {
+        triggerWebZip();
+      } else if (key === 'q' || key === 'shift') {
+        toggleSpiderSense();
+      } else if (key === 't') {
+        cycleTimeOfDay();
+      }
+    });
+/* =========================================================
+       RESIZE HANDLER
+       ========================================================= */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    requestAnimationFrame(animate);
+
+    window.leftElbowPivot = leftElbowPivot;
+    window.rightElbowPivot = rightElbowPivot;
+    window.leftKneePivot = leftKneePivot;
+    window.rightKneePivot = rightKneePivot;
+    window.sound = sound;
+    window.GAME = GAME;
+    window.startGame = startGame;
+    window.triggerAcrobaticStunt = triggerAcrobaticStunt;
+    window.updateVisuals = updateVisuals;
+    window.setSuit = setSuit;
+    window.setTimeOfDay = setTimeOfDay;
+    window.toggleSpiderSense = toggleSpiderSense;
+    window.triggerWebZip = triggerWebZip;
+    window.spawnComicPopup = spawnComicPopup;
+    window.ironWaldoesGroup = ironWaldoesGroup;
+    window.spiderSenseGroup = spiderSenseGroup;
+  </script>
+</body>
+</html>

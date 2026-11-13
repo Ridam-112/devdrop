@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Clay Runner - Endless Adventure</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e0ebf7 0%, #cfdef3 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #334e68;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(150, 168, 195, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(150, 168, 195, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px rgba(255, 255, 255, 0.9), inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 17px;
+      font-weight: 700;
+      color: #243b53;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(235, 243, 253, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden {
+      display: none;
+    }
+    .clay-card {
+      background: #ffffff;
+      padding: 30px 24px;
+      border-radius: 34px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), -8px -8px 24px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 178, 202, 0.25);
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 360px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 26px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(10, 189, 227, 0.35),
+                  inset 2px 2px 4px rgba(255, 255, 255, 0.6), inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .clay-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+    }
+    .clay-btn:active {
+      transform: translateY(2px) scale(0.97);
+    }
+    /* Controls hint */
+    .controls-hint {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .ctrl-badge {
+      background: #f0f4f9;
+      border-radius: 12px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #627d98;
+      box-shadow: inset 2px 2px 4px rgba(170, 185, 205, 0.4), inset -2px -2px 4px #ffffff;
+    }
+    /* Touch controls on screen for mobile */
+    .touch-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .touch-btn {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #ffffff;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.5), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.35);
+      border: 2px solid #ffffff;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="440" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🏃</span>
+        <span id="hud-dist">0m</span>
+      </div>
+      <div class="clay-pill">
+        <span>🪙</span>
+        <span id="hud-coins">0</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Mobile Touch buttons -->
+    <div class="touch-controls">
+      <div style="display: flex; gap: 10px;">
+        <div class="touch-btn" id="btn-left">⬅️</div>
+        <div class="touch-btn" id="btn-right">➡️</div>
+      </div>
+      <div style="display: flex; gap: 10px;">
+        <div class="touch-btn" id="btn-slide">⬇️</div>
+        <div class="touch-btn" id="btn-jump">⬆️</div>
+      </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🦕 💨</div>
+        <h1 style="color: #0abde3; font-size: 32px; font-weight: 700;">Clay Runner</h1>
+        <p style="color: #627d98; font-size: 15px; margin: 10px 0;">Dodge clay obstacles across 3 lanes, jump over hurdles, and collect shiny clay coins!</p>
+        <div class="controls-hint">
+          <span class="ctrl-badge">⬅️ ➡️ Lanes</span>
+          <span class="ctrl-badge">⬆️ Jump</span>
+          <span class="ctrl-badge">⬇️ Slide</span>
+        </div>
+        <button id="btn-start" class="clay-btn">RUN NOW ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 😵</div>
+        <h1 style="color: #ff5252; font-size: 30px; font-weight: 700;">CRASHED!</h1>
+        <p style="color: #627d98; font-size: 14px; margin-bottom: 16px;">You ran into a giant clay obstacle!</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 22px; font-weight: 700; color: #0abde3;" id="final-dist">0m</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Distance</div>
+          </div>
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 22px; font-weight: 700; color: #f39c12;" id="final-coins">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Coins</div>
+          </div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Audio Synthesizer ---
+    class ClayAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      jump() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(220, now);
+        o.frequency.exponentialRampToValueAtTime(540, now + 0.14);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.15);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.15);
+      }
+      coin() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, now);
+        o.frequency.setValueAtTime(1320, now + 0.06);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.2);
+      }
+      crash() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(150, now);
+        o.frequency.exponentialRampToValueAtTime(35, now + 0.35);
+        g.gain.setValueAtTime(0.5, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.4);
+      }
+    }
+    const audio = new ClayAudio();
+
+    // --- Game Logic ---
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 440;
+    const H = 720;
+
+    const LANES = [W * 0.24, W * 0.5, W * 0.76];
+    let currentLane = 1; // 0: Left, 1: Middle, 2: Right
+    let targetX = LANES[1];
+    let playerX = LANES[1];
+    let playerY = H * 0.75;
+    let playerJumpY = 0;
+    let jumpVy = 0;
+    let isSliding = false;
+    let slideTimer = 0;
+
+    let gameState = 'START';
+    let distance = 0;
+    let coins = 0;
+    let speed = 6;
+    let spawnTimer = 0;
+
+    let obstacles = [];
+    let coinItems = [];
+    let particles = [];
+    let scenery = [];
+
+    // Initialize decorative clay scenery
+    for (let i = 0; i < 8; i++) {
+      scenery.push({
+        x: Math.random() < 0.5 ? 25 : W - 25,
+        y: i * 100,
+        r: 18 + Math.random() * 12,
+        color: Math.random() < 0.5 ? '#a8e6cf' : '#dcedc1'
+      });
+    }
+
+    function initGame() {
+      currentLane = 1;
+      targetX = LANES[1];
+      playerX = LANES[1];
+      playerJumpY = 0;
+      jumpVy = 0;
+      isSliding = false;
+      distance = 0;
+      coins = 0;
+      speed = 6.5;
+      obstacles = [];
+      coinItems = [];
+      particles = [];
+      spawnTimer = 0;
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function jump() {
+      if (playerJumpY === 0 && !isSliding) {
+        jumpVy = -13;
+        audio.jump();
+      }
+    }
+
+    function slide() {
+      if (playerJumpY === 0 && !isSliding) {
+        isSliding = true;
+        slideTimer = 35;
+      }
+    }
+
+    function moveLeft() {
+      if (currentLane > 0) {
+        currentLane--;
+        targetX = LANES[currentLane];
+      }
+    }
+
+    function moveRight() {
+      if (currentLane < 2) {
+        currentLane++;
+        targetX = LANES[currentLane];
+      }
+    }
+
+    // --- Inputs ---
+    window.addEventListener('keydown', (e) => {
+      if (gameState !== 'PLAYING') return;
+      if (e.key === 'ArrowLeft' || e.key === 'a') moveLeft();
+      if (e.key === 'ArrowRight' || e.key === 'd') moveRight();
+      if (e.key === 'ArrowUp' || e.key === ' ' || e.key === 'w') { e.preventDefault(); jump(); }
+      if (e.key === 'ArrowDown' || e.key === 's') { e.preventDefault(); slide(); }
+    });
+
+    // Touch button handlers
+    document.getElementById('btn-left').addEventListener('click', moveLeft);
+    document.getElementById('btn-right').addEventListener('click', moveRight);
+    document.getElementById('btn-jump').addEventListener('click', jump);
+    document.getElementById('btn-slide').addEventListener('click', slide);
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = audio.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    // Swipe controls on canvas
+    let touchStartX = 0;
+    let touchStartY = 0;
+    canvas.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    });
+    canvas.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = e.changedTouches[0].clientY - touchStartY;
+      if (Math.abs(dx) > Math.abs(dy)) {
+        if (dx > 30) moveRight();
+        else if (dx < -30) moveLeft();
+      } else {
+        if (dy < -30) jump();
+        else if (dy > 30) slide();
+      }
+    });
+
+    // --- Spawners ---
+    function spawnRow() {
+      const lane = Math.floor(Math.random() * 3);
+      const isHigh = Math.random() < 0.35; // requires slide
+      obstacles.push({
+        lane,
+        x: LANES[lane],
+        y: -50,
+        w: 64,
+        h: isHigh ? 28 : 50,
+        isHigh,
+        color: isHigh ? '#ff7675' : '#e17055'
+      });
+
+      // Spawn coins in another lane
+      const coinLane = (lane + 1 + Math.floor(Math.random() * 2)) % 3;
+      for (let i = 0; i < 3; i++) {
+        coinItems.push({
+          lane: coinLane,
+          x: LANES[coinLane],
+          y: -50 - i * 40,
+          r: 12,
+          collected: false
+        });
+      }
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      audio.crash();
+      document.getElementById('final-dist').innerText = Math.floor(distance) + 'm';
+      document.getElementById('final-coins').innerText = coins;
+      document.getElementById('gameover-screen').classList.remove('hidden');
+    }
+
+    // --- Drawing Clay Shapes ---
+    function drawClayCircle(x, y, r, color) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.45)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Inset soft highlight
+      const grad = ctx.createRadialGradient(x - r * 0.35, y - r * 0.35, r * 0.1, x, y, r);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.15)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    function drawClayBox(x, y, w, h, r, color) {
+      ctx.save();
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x - w / 2, y - h / 2, w, h, r);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Clay highlight overlay
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+      ctx.beginPath();
+      ctx.roundRect(x - w / 2 + 3, y - h / 2 + 3, w - 6, h / 3, r / 2);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // --- Main Loop ---
+    function loop() {
+      // Background gradient
+      ctx.fillStyle = '#f3f8fe';
+      ctx.fillRect(0, 0, W, H);
+
+      // Draw clay track / lanes
+      ctx.fillStyle = '#e8f0fe';
+      ctx.beginPath();
+      ctx.roundRect(W * 0.1, 0, W * 0.8, H, 24);
+      ctx.fill();
+
+      // Lane dividers (soft clay grooves)
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([18, 18]);
+      ctx.beginPath();
+      ctx.moveTo(W * 0.37, 0); ctx.lineTo(W * 0.37, H);
+      ctx.moveTo(W * 0.63, 0); ctx.lineTo(W * 0.63, H);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Scenery trees / rocks on sides
+      scenery.forEach(s => {
+        if (gameState === 'PLAYING') {
+          s.y += speed * 0.6;
+          if (s.y > H + 50) s.y = -50;
+        }
+        drawClayCircle(s.x, s.y, s.r, s.color);
+      });
+
+      if (gameState === 'PLAYING') {
+        distance += speed * 0.05;
+        speed = 6.5 + Math.min(distance / 200, 6);
+        document.getElementById('hud-dist').innerText = Math.floor(distance) + 'm';
+        document.getElementById('hud-coins').innerText = coins;
+
+        // Player lane lerp
+        playerX += (targetX - playerX) * 0.22;
+
+        // Jump physics
+        if (playerJumpY < 0 || jumpVy !== 0) {
+          playerJumpY += jumpVy;
+          jumpVy += 0.8;
+          if (playerJumpY >= 0) {
+            playerJumpY = 0;
+            jumpVy = 0;
+          }
+        }
+
+        // Slide timer
+        if (isSliding) {
+          slideTimer--;
+          if (slideTimer <= 0) isSliding = false;
+        }
+
+        // Spawns
+        spawnTimer++;
+        if (spawnTimer > 75) {
+          spawnTimer = 0;
+          spawnRow();
+        }
+
+        // Update Obstacles
+        for (let i = obstacles.length - 1; i >= 0; i--) {
+          const obs = obstacles[i];
+          obs.y += speed;
+
+          // Collision check
+          if (Math.abs(obs.x - playerX) < 40 && Math.abs(obs.y - playerY) < 35) {
+            if (obs.isHigh) {
+              // High obstacle: must slide
+              if (!isSliding) { gameOver(); return; }
+            } else {
+              // Low hurdle: must jump
+              if (playerJumpY > -25) { gameOver(); return; }
+            }
+          }
+
+          if (obs.y > H + 60) obstacles.splice(i, 1);
+        }
+
+        // Update Coins
+        for (let i = coinItems.length - 1; i >= 0; i--) {
+          const c = coinItems[i];
+          c.y += speed;
+
+          if (!c.collected && Math.abs(c.x - playerX) < 32 && Math.abs(c.y - (playerY + playerJumpY)) < 32) {
+            c.collected = true;
+            coins++;
+            audio.coin();
+          }
+
+          if (c.y > H + 60 || c.collected) coinItems.splice(i, 1);
+        }
+      }
+
+      // Draw Coins
+      coinItems.forEach(c => {
+        drawClayCircle(c.x, c.y, c.r, '#f1c40f');
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('★', c.x, c.y + 4);
+      });
+
+      // Draw Obstacles
+      obstacles.forEach(obs => {
+        if (obs.isHigh) {
+          // Floating high hurdle
+          drawClayBox(obs.x, obs.y, obs.w, obs.h, 14, obs.color);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 13px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('SLIDE ⬇', obs.x, obs.y + 5);
+        } else {
+          // Ground hurdle
+          drawClayBox(obs.x, obs.y, obs.w, obs.h, 14, obs.color);
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 13px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('JUMP ⬆', obs.x, obs.y + 5);
+        }
+      });
+
+      // Draw Clay Runner Character (Cute Dino Blob)
+      const drawY = playerY + playerJumpY;
+      const r = isSliding ? 18 : 26;
+
+      // Shadow on ground
+      ctx.fillStyle = 'rgba(160, 180, 205, 0.4)';
+      ctx.beginPath();
+      ctx.ellipse(playerX, playerY + 28, 24 * (1 - Math.abs(playerJumpY) / 140), 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Blob Body
+      drawClayCircle(playerX, drawY, r, '#2ecc71');
+
+      // Cute Face
+      ctx.fillStyle = '#2d3436';
+      ctx.beginPath();
+      ctx.arc(playerX - 7, drawY - 4, 3, 0, Math.PI * 2);
+      ctx.arc(playerX + 7, drawY - 4, 3, 0, Math.PI * 2);
+      ctx.fill();
+      // Cheeks
+      ctx.fillStyle = '#ff7675';
+      ctx.beginPath();
+      ctx.arc(playerX - 12, drawY + 3, 3, 0, Math.PI * 2);
+      ctx.arc(playerX + 12, drawY + 3, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

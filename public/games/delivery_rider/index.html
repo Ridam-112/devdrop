@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Crazy Delivery Rider 3D • Zomato, Swiggy & Blinkit Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+  <script src="js/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="gameCanvas"></div>
+
+  <!-- Mud Splatter Overlay on Screen -->
+  <div id="mudSplatter" class="mud-splatter-overlay">
+    <div class="mud-blot b1"></div>
+    <div class="mud-blot b2"></div>
+    <div class="mud-blot b3"></div>
+    <div class="mud-wiper"></div>
+  </div>
+
+  <!-- Speed Trap Camera Flash Screen Overlay -->
+  <div id="speedFlashOverlay" class="speed-flash-overlay"></div>
+
+  <!-- Top App Navigation & Order Dashboard -->
+  <div class="top-hud">
+    <!-- Left Navigation, Camera/Weather & Mini-Map Radar -->
+    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; pointer-events: none;">
+      <a href="../arcade_hub.html" class="hud-pill" style="text-decoration: none;">
+        <span>🏠</span>
+        <span>Arcade Hub</span>
+      </a>
+      <div style="display: flex; gap: 6px;">
+        <button class="hud-pill" id="btnCam" style="cursor: pointer; padding: 6px 12px; font-size: 12px;" title="Camera Mode [C]">
+          <span>📹</span>
+          <span id="camModeTxt">CHASE</span>
+        </button>
+        <button class="hud-pill" id="btnWeather" style="cursor: pointer; padding: 6px 12px; font-size: 12px;" title="Weather [V]">
+          <span>🌤️</span>
+          <span id="weatherTxt">SUNNY</span>
+        </button>
+      </div>
+      <!-- Mini-Map GPS Radar (Flows cleanly below buttons without overlapping) -->
+      <div class="radar-card" id="radarCard">
+        <div class="radar-label">📡 GPS RADAR</div>
+        <canvas id="radarCanvas" width="96" height="96"></canvas>
+      </div>
+    </div>
+
+    <!-- Center: Order Tracking Card & Turn-by-Turn GPS Banner -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none;">
+      <div class="order-card">
+        <div class="status-badge" id="orderStatusBadge">STEP 1: PICKUP ORDER</div>
+        <div class="order-title" id="orderItemTxt">Loading Next Order...</div>
+        <div class="timer-box">
+          <span>⏱️ BOMB TIMER:</span>
+          <span class="timer-val" id="timerVal">--s</span>
+        </div>
+        <div class="dist-txt" id="distVal">0m to Restaurant</div>
+      </div>
+
+      <!-- Turn-by-Turn GPS Navigation Banner (Stacked neatly below Order Card) -->
+      <div class="gps-nav-banner" id="gpsNavBanner" style="display: none;">
+        <div class="gps-needle" id="gpsNeedle">⬆</div>
+        <div class="gps-info">
+          <div id="gpsInstructionTxt">⬆ STRAIGHT AHEAD (65m)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings, Garage & Meme Audio -->
+    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+      <div class="hud-pill">
+        <span>💵</span>
+        <span id="cashVal" style="color: #4ade80;">₹0</span>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+        <button class="hud-pill" id="btnRadio" style="cursor: pointer; background: #9333ea; padding: 6px 12px; font-size: 12px;" title="Delivery FM Radio [R]">
+          <span>📻</span>
+          <span id="radioStationTxt">FM Radio [R]</span>
+        </button>
+        <button class="hud-pill" id="btnGarage" style="cursor: pointer; background: #6366f1; padding: 6px 12px; font-size: 12px;" title="Vehicle Garage [G]">
+          <span>🏪</span>
+          <span>Garage [G]</span>
+        </button>
+        <button class="hud-pill" id="memeBgmBtn" style="cursor: pointer; padding: 6px 12px; font-size: 12px;">
+          <span>🎵</span>
+          <span>Meme Song</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- App Toast Notification -->
+  <div id="appNotification">📱 NEW ORDER RECEIVED!</div>
+
+  <!-- Comic Popups Overlay -->
+  <div id="comic-container"></div>
+
+  <!-- Bottom Controls & Speedometer -->
+  <div class="bottom-hud">
+    <!-- Steering & Drift (Left Side) -->
+    <div class="controls-group">
+      <button class="ctrl-btn" id="btnLeft">
+        <span class="btn-icon">◀</span>
+        <span>LEFT</span>
+      </button>
+      <button class="ctrl-btn" id="btnRight">
+        <span class="btn-icon">▶</span>
+        <span>RIGHT</span>
+      </button>
+      <button class="ctrl-btn" id="btnDrift" style="background: #6366f1;">
+        <span class="btn-icon">💨</span>
+        <span>DRIFT</span>
+      </button>
+      <button class="ctrl-btn wheelie" id="btnWheelie" style="background: #e11d48;">
+        <span class="btn-icon">🔥</span>
+        <span>WHEELIE [F]</span>
+      </button>
+    </div>
+
+    <!-- Speedometer (Center) -->
+    <div class="speedo-card">
+      <div class="speedo-number" id="speedoVal">0</div>
+      <div class="speedo-unit">KM/H</div>
+      <div style="font-size: 10px; color: #facc15; font-weight: 800; margin-top: 1px;">⚡ LIMIT: 80 KM/H</div>
+      <div class="nitro-track" title="Nitro Boost Meter">
+        <div class="nitro-fill" id="nitroFill"></div>
+      </div>
+      <div style="font-size: 10px; color: #38bdf8; font-weight: 700; margin-top: 2px;">NITRO [SHIFT]</div>
+    </div>
+
+    <!-- Gas, Brake, Nitro & Horn (Right Side) -->
+    <div class="controls-group">
+      <button class="ctrl-btn horn" id="btnHorn">
+        <span class="btn-icon">📢</span>
+        <span>HORN [H]</span>
+      </button>
+      <button class="ctrl-btn nitro" id="btnNitro">
+        <span class="btn-icon">⚡</span>
+        <span>NITRO</span>
+      </button>
+      <button class="ctrl-btn brake" id="btnBrake">
+        <span class="btn-icon">🛑</span>
+        <span>BRAKE</span>
+      </button>
+      <button class="ctrl-btn gas" id="btnGas">
+        <span class="btn-icon">🚀</span>
+        <span>GAS [W]</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Start Menu Modal -->
+  <div class="modal-backdrop" id="startModal">
+    <div class="modal-card">
+      <h1 class="modal-title">CRAZY DELIVERY RIDER 3D</h1>
+      <p class="modal-subtitle">Pick your company, beat the traffic & deliver before the bomb timer blasts!</p>
+
+      <div class="company-grid">
+        <div class="company-btn zomato active" data-company="ZOMATO">
+          <div class="comp-icon">🔴</div>
+          <div>
+            <div class="comp-name">Zomato Delivery Rider</div>
+            <div class="comp-desc">Signature Red Thermal Bag & 150cc Street Bike</div>
+          </div>
+        </div>
+
+        <div class="company-btn swiggy" data-company="SWIGGY">
+          <div class="comp-icon">🟠</div>
+          <div>
+            <div class="comp-name">Swiggy Instant Rider</div>
+            <div class="comp-desc">Signature Orange Bag & City Street Scooter</div>
+          </div>
+        </div>
+
+        <div class="company-btn blinkit" data-company="BLINKIT">
+          <div class="comp-icon">🟡</div>
+          <div>
+            <div class="comp-name">Blinkit 10-Minute Express</div>
+            <div class="comp-desc">Yellow Grocery Crate & Ultra-Fast E-Bike</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: #475569; margin-bottom: 16px; font-weight: 600;">
+        ⚠️ <b>Warning</b>: Overtake autos & buses closely for <b>+NITRO</b>! If time runs out, the bike <b>BLASTS</b>! 💥
+      </p>
+
+      <button class="action-btn" id="startBtn">START DELIVERIES! 🛵💨</button>
+    </div>
+  </div>
+
+  <!-- Game Over Modal -->
+  <div class="modal-backdrop" id="gameOverModal" style="display: none;">
+    <div class="modal-card">
+      <h1 class="modal-title" style="color: var(--zomato-red);">💥 BIKE EXPLODED!</h1>
+      <p class="modal-subtitle">Delivery time expired or catastrophic crash!</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">Cash Tips Earned</div>
+          <div class="stat-box-val" id="finalCashVal" style="color: #16a34a;">₹0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Orders Delivered</div>
+          <div class="stat-box-val" id="finalOrdersVal">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Near-Miss Overtakes</div>
+          <div class="stat-box-val" id="finalOvertakesVal" style="color: #f59e0b;">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Total Score</div>
+          <div class="stat-box-val" id="finalScoreVal">0</div>
+        </div>
+      </div>
+
+      <button class="action-btn" id="restartBtn">RIDE AGAIN 🔄</button>
+    </div>
+  </div>
+
+  <!-- Garage & Vehicle Upgrades Modal -->
+  <div class="modal-backdrop" id="garageModal" style="display: none;">
+    <div class="modal-card garage-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 class="modal-title" style="margin-bottom: 0;">🛵 RIDER'S GARAGE & STORE</h1>
+        <div class="hud-pill" style="font-size: 14px;">
+          <span>💵 CASH:</span>
+          <span id="garageCashVal" style="color: #4ade80;">₹0</span>
+        </div>
+      </div>
+      <p class="modal-subtitle">Upgrade from an eco-cycle to a 100cc Splendor, drift Auto, or 1300cc Hayabusa rocket!</p>
+
+      <!-- Garage Category Tabs -->
+      <div class="garage-tabs">
+        <button class="garage-tab-btn active" id="tabVehicles">🛵 VEHICLES & BIKES</button>
+        <button class="garage-tab-btn" id="tabBags">🎒 DELIVERY GEAR & BAGS</button>
+      </div>
+
+      <div class="garage-list" id="garageList">
+        <!-- Dynamically populated via DeliveryGame.updateGarageUI -->
+      </div>
+
+      <div style="margin-top: 16px; display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="action-btn" id="closeGarageBtn" style="background: #334155; width: auto; padding: 10px 24px;">CLOSE [G]</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hidden Game Metric Counters -->
+  <div style="display: none;">
+    <span id="scoreVal">0</span>
+    <span id="ordersVal">0</span>
+  </div>
+
+  <!-- Game Scripts -->
+  <script src="js/sound.js"></script>
+  <script src="js/city.js"></script>
+  <script src="js/vehicle.js"></script>
+  <script src="js/traffic.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>

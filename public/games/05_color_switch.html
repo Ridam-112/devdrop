@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Color Switch - Claymorphism Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #2c3e50;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 20px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 30px 24px;
+      border-radius: 34px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), -8px -8px 24px #ffffff,
+                  inset 4px 4px 8px #ffffff, inset -4px -4px 8px rgba(160, 178, 202, 0.25);
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 360px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 26px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(108, 92, 231, 0.35),
+                  inset 2px 2px 4px rgba(255, 255, 255, 0.6), inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .clay-btn:hover { transform: translateY(-2px) scale(1.03); }
+    .clay-btn:active { transform: translateY(2px) scale(0.97); }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="440" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>⭐</span>
+        <span id="score-val">0</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🎨 🟣 🟢</div>
+        <h1 style="color: #6c5ce7; font-size: 32px; font-weight: 700;">Color Switch</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Tap to bounce! Pass through matching clay colors only. Collect stars along the way!</p>
+        <button id="btn-start" class="clay-btn">TAP TO PLAY ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🎨</div>
+        <h1 style="color: #ff5252; font-size: 30px; font-weight: 700;">COLOR MISMATCH!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">The clay ball hit the wrong color segment!</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #6c5ce7;" id="final-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Score</div>
+          </div>
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #f1c40f;" id="best-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Best</div>
+          </div>
+        </div>
+        <button id="btn-restart" class="clay-btn">TRY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      jump() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(280, now);
+        o.frequency.exponentialRampToValueAtTime(560, now + 0.08);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.1);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.1);
+      }
+      star() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, now);
+        o.frequency.setValueAtTime(1320, now + 0.06);
+        g.gain.setValueAtTime(0.3, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.18);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.18);
+      }
+      switchColor() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const notes = [440, 554, 659];
+        notes.forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.2, now + idx * 0.04);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.04 + 0.1);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.04); o.stop(now + idx * 0.04 + 0.1);
+        });
+      }
+      crash() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(150, now);
+        o.frequency.exponentialRampToValueAtTime(30, now + 0.35);
+        g.gain.setValueAtTime(0.5, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.4);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 440;
+    const H = 720;
+
+    // Clay Palette
+    const COLORS = ['#ff6b6b', '#1dd1a1', '#54a0ff', '#feca57'];
+
+    let gameState = 'START';
+    let score = 0;
+    let bestScore = parseInt(localStorage.getItem('color_switch_best') || '0', 10);
+
+    const GRAVITY = 0.24;
+    const JUMP_FORCE = -5.4;
+
+    let player = {
+      x: W / 2,
+      y: H * 0.75,
+      vy: 0,
+      r: 12,
+      color: COLORS[0]
+    };
+
+    let obstacles = [];
+    let changers = [];
+    let stars = [];
+    let particles = [];
+    let nextSpawnY = 0;
+
+    class ClayRingObstacle {
+      constructor(y) {
+        this.x = W / 2;
+        this.y = y;
+        this.r = 82;
+        this.thickness = 18;
+        this.angle = 0;
+        this.speed = (Math.random() > 0.5 ? 1 : -1) * (0.016 + Math.min(score, 30) * 0.0006);
+      }
+      update() { this.angle += this.speed; }
+      checkCollision(p) {
+        const dist = Math.hypot(p.x - this.x, p.y - this.y);
+        if (dist + p.r > this.r - this.thickness / 2 && dist - p.r < this.r + this.thickness / 2) {
+          let ang = Math.atan2(p.y - this.y, p.x - this.x);
+          if (ang < 0) ang += Math.PI * 2;
+          let adj = (ang - this.angle) % (Math.PI * 2);
+          if (adj < 0) adj += Math.PI * 2;
+          let seg = Math.floor(adj / (Math.PI / 2));
+          return COLORS[seg] !== p.color;
+        }
+        return false;
+      }
+      draw() {
+        const step = Math.PI / 2;
+        ctx.lineWidth = this.thickness;
+        ctx.lineCap = 'butt';
+        for (let i = 0; i < 4; i++) {
+          ctx.save();
+          ctx.strokeStyle = COLORS[i];
+          ctx.shadowColor = 'rgba(160, 180, 205, 0.45)';
+          ctx.shadowBlur = 8;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, this.angle + i * step - 0.02, this.angle + (i + 1) * step + 0.02);
+          ctx.stroke();
+          ctx.restore();
+        }
+      }
+    }
+
+    class ClayColorChanger {
+      constructor(y) {
+        this.x = W / 2;
+        this.y = y;
+        this.r = 16;
+        this.angle = 0;
+        this.collected = false;
+      }
+      update() { this.angle += 0.04; }
+      draw() {
+        if (this.collected) return;
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.angle);
+        const step = Math.PI / 2;
+        for (let i = 0; i < 4; i++) {
+          ctx.fillStyle = COLORS[i];
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.arc(0, 0, this.r, i * step, (i + 1) * step);
+          ctx.fill();
+        }
+        // White core
+        ctx.fillStyle = '#ffffff';
+        ctx.beginPath();
+        ctx.arc(0, 0, this.r * 0.35, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+    }
+
+    class ClayStar {
+      constructor(y) {
+        this.x = W / 2;
+        this.y = y;
+        this.r = 14;
+        this.collected = false;
+      }
+      draw() {
+        if (this.collected) return;
+        ctx.save();
+        ctx.fillStyle = '#feca57';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.shadowColor = 'rgba(254, 202, 87, 0.5)';
+        ctx.shadowBlur = 10;
+        ctx.fillText('⭐', this.x, this.y);
+        ctx.restore();
+      }
+    }
+
+    function spawnObstacle() {
+      obstacles.push(new ClayRingObstacle(nextSpawnY));
+      stars.push(new ClayStar(nextSpawnY));
+      changers.push(new ClayColorChanger(nextSpawnY - 210));
+      nextSpawnY -= 400;
+    }
+
+    function initGame() {
+      score = 0;
+      player = {
+        x: W / 2,
+        y: H * 0.75,
+        vy: 0,
+        r: 12,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)]
+      };
+      obstacles = [];
+      changers = [];
+      stars = [];
+      particles = [];
+      nextSpawnY = H * 0.35;
+
+      for (let i = 0; i < 3; i++) spawnObstacle();
+
+      updateHUD();
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      sound.crash();
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('color_switch_best', bestScore);
+      }
+      document.getElementById('final-score').innerText = score;
+      document.getElementById('best-score').innerText = bestScore;
+      document.getElementById('gameover-screen').classList.remove('hidden');
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').innerText = score;
+    }
+
+    function jump() {
+      if (gameState === 'PLAYING') {
+        player.vy = JUMP_FORCE;
+        sound.jump();
+      } else if (gameState === 'START') {
+        initGame();
+      }
+    }
+
+    window.addEventListener('pointerdown', (e) => {
+      if (!e.target.closest('button')) jump();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); jump(); }
+    });
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function loop() {
+      ctx.fillStyle = '#fdfefe';
+      ctx.fillRect(0, 0, W, H);
+
+      if (gameState === 'PLAYING') {
+        player.vy += GRAVITY;
+        player.y += player.vy;
+
+        // Bottom drop
+        if (player.y > H + 20) { gameOver(); return; }
+
+        // Camera follow
+        const camTrigger = H * 0.52;
+        if (player.y < camTrigger) {
+          const diff = camTrigger - player.y;
+          player.y = camTrigger;
+          nextSpawnY += diff;
+          obstacles.forEach(o => o.y += diff);
+          stars.forEach(s => s.y += diff);
+          changers.forEach(c => c.y += diff);
+          particles.forEach(p => p.y += diff);
+        }
+
+        // Cleanup & spawn
+        if (obstacles.length > 0 && obstacles[0].y > H + 200) obstacles.shift();
+        if (stars.length > 0 && stars[0].y > H + 200) stars.shift();
+        if (changers.length > 0 && changers[0].y > H + 200) changers.shift();
+        while (obstacles.length < 3) spawnObstacle();
+
+        // Obstacles collision & update
+        for (let obs of obstacles) {
+          obs.update();
+          if (obs.checkCollision(player)) {
+            gameOver();
+            return;
+          }
+        }
+
+        // Star collection
+        stars.forEach(s => {
+          if (!s.collected && Math.hypot(player.x - s.x, player.y - s.y) < player.r + s.r) {
+            s.collected = true;
+            score++;
+            sound.star();
+            updateHUD();
+          }
+        });
+
+        // Color changer collision
+        changers.forEach(c => {
+          c.update();
+          if (!c.collected && Math.hypot(player.x - c.x, player.y - c.y) < player.r + c.r) {
+            c.collected = true;
+            const available = COLORS.filter(col => col !== player.color);
+            player.color = available[Math.floor(Math.random() * available.length)];
+            sound.switchColor();
+          }
+        });
+      }
+
+      // Draw Obstacles, Stars, Changers
+      obstacles.forEach(o => o.draw());
+      stars.forEach(s => s.draw());
+      changers.forEach(c => c.draw());
+
+      // Draw Clay Player Ball
+      ctx.save();
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.45)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 6;
+      ctx.fillStyle = player.color;
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Inset Highlight
+      const grad = ctx.createRadialGradient(player.x - player.r * 0.35, player.y - player.r * 0.35, player.r * 0.1, player.x, player.y, player.r);
+      grad.addColorStop(0, 'rgba(255, 255, 255, 0.7)');
+      grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+      grad.addColorStop(1, 'rgba(0, 0, 0, 0.15)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(player.x, player.y, player.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

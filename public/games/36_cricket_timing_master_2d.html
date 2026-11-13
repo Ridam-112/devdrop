@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Arcade Cricket 2D - One-Tap Timing Master</title>
+  <style>
+    :root {
+      --clay-bg: #e2eaf4;
+      --clay-card: #ffffff;
+      --clay-dark: #0f172a;
+      --clay-blue: #0284c7;
+      --clay-green: #10b981;
+      --clay-red: #ef4444;
+      --clay-gold: #f59e0b;
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #e2eaf4;
+      font-family: var(--font-main);
+      color: var(--clay-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Claymorphism Elevation Styling */
+    .clay-card {
+      background: var(--clay-card);
+      border-radius: 20px;
+      box-shadow: 
+        8px 8px 18px rgba(160, 185, 205, 0.45),
+        -6px -6px 14px rgba(255, 255, 255, 0.95),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+        inset -2px -2px 5px rgba(160, 185, 205, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .clay-btn {
+      background: linear-gradient(145deg, #38bdf8, #0284c7);
+      color: #ffffff;
+      font-weight: 900;
+      border: none;
+      border-radius: 18px;
+      padding: 10px 20px;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 
+        6px 6px 14px rgba(2, 132, 199, 0.35),
+        -5px -5px 12px rgba(255, 255, 255, 0.9),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.5);
+      transition: all 0.08s ease;
+      touch-action: manipulation;
+    }
+
+    .clay-btn:active {
+      transform: scale(0.96);
+      box-shadow: 
+        2px 2px 6px rgba(2, 132, 199, 0.45),
+        inset 3px 3px 6px rgba(0, 70, 120, 0.4);
+    }
+
+    /* Top Match Header HUD */
+    #top-hud {
+      width: 100%;
+      max-width: 900px;
+      padding: 8px 14px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      gap: 10px;
+    }
+
+    .score-board {
+      flex: 1;
+      max-width: 520px;
+      padding: 8px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 12px;
+      font-weight: 900;
+      margin: 0 auto;
+    }
+
+    .score-readout {
+      font-size: 26px;
+      letter-spacing: 1.5px;
+      color: #0f172a;
+      background: #e2e8f0;
+      padding: 2px 16px;
+      border-radius: 14px;
+      box-shadow: inset 2px 2px 4px rgba(0,0,0,0.12);
+    }
+
+    .over-balls-wrap {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+
+    .ball-dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      border: 1.5px solid rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 900;
+      color: #ffffff;
+    }
+
+    .ball-dot.dot-0 { background: #94a3b8; }
+    .ball-dot.dot-1, .ball-dot.dot-2 { background: #0284c7; }
+    .ball-dot.dot-4 { background: #10b981; }
+    .ball-dot.dot-6 { background: #ef4444; }
+    .ball-dot.dot-w { background: #7f1d1d; }
+
+    /* Main Match Canvas Viewport */
+    #pitch-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 960px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: #38bdf8;
+    }
+
+    #game-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Sleek Clean Shot Announcement Toast */
+    #hit-banner {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      padding: 12px 32px;
+      border-radius: 24px;
+      font-size: clamp(24px, 5.5vw, 42px);
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      border: 3px solid #ffffff;
+      z-index: 25;
+      pointer-events: none;
+      white-space: nowrap;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    #hit-banner.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    #hit-banner.six { background: linear-gradient(135deg, #f59e0b, #ef4444); }
+    #hit-banner.four { background: linear-gradient(135deg, #10b981, #059669); }
+    #hit-banner.out { background: linear-gradient(135deg, #dc2626, #7f1d1d); }
+    #hit-banner.dot { background: linear-gradient(135deg, #64748b, #334155); }
+
+    /* Timing Quality Toast */
+    #timing-badge {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 5px 20px;
+      border-radius: 16px;
+      font-size: 13px;
+      font-weight: 900;
+      color: #0f172a;
+      background: rgba(255, 255, 255, 0.95);
+      border: 2px solid #0284c7;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    #timing-badge.show {
+      opacity: 1;
+    }
+
+    /* One-Tap Big Action Bar */
+    #tap-prompt-bar {
+      width: 100%;
+      max-width: 900px;
+      padding: 8px 14px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    #tap-btn {
+      width: 100%;
+      height: 60px;
+      border-radius: 22px;
+      font-size: 16px;
+      letter-spacing: 1px;
+      background: linear-gradient(145deg, #10b981, #059669);
+      box-shadow: 6px 6px 16px rgba(5, 150, 105, 0.3), -5px -5px 12px rgba(255, 255, 255, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Modals & Overlays */
+    .clay-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 14px;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+
+    .clay-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .modal-box {
+      width: min(500px, 94vw);
+      padding: 26px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .timing-guide-card {
+      width: 100%;
+      background: #f1f5f9;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-size: 12px;
+      font-weight: 800;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      .score-board { padding: 4px 10px; font-size: 12px; }
+      .score-readout { font-size: 20px; padding: 1px 10px; }
+      #tap-btn { height: 52px; font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Match Header HUD -->
+  <div id="top-hud">
+    <div class="score-board clay-card">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="font-size: 20px;">🏏</span>
+        <span id="hud-match-title" style="font-size: 13px;">SUPER OVER</span>
+      </div>
+
+      <div class="score-readout" id="hud-score">0 / 0</div>
+
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 2px;">
+        <div style="font-size: 11px; font-weight: 800; color: #64748b;" id="hud-target-info">NEED 18 IN 6 BALLS</div>
+        <div class="over-balls-wrap" id="hud-dots">
+          <div class="ball-dot">1</div>
+          <div class="ball-dot">2</div>
+          <div class="ball-dot">3</div>
+          <div class="ball-dot">4</div>
+          <div class="ball-dot">5</div>
+          <div class="ball-dot">6</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; gap: 6px;">
+      <button id="btn-sound" class="clay-btn" style="padding: 6px 10px;">🔊</button>
+      <button id="btn-pause" class="clay-btn" style="padding: 6px 10px;">⏸️</button>
+    </div>
+  </div>
+
+  <!-- Main Match Canvas Viewport (Tap / Click Anywhere) -->
+  <div id="pitch-wrap">
+    <canvas id="game-canvas"></canvas>
+    <div id="hit-banner">🚀 SIX! 🚀</div>
+    <div id="timing-badge">PERFECT TIMING!</div>
+  </div>
+
+  <!-- One-Tap Big Action Bar -->
+  <div id="tap-prompt-bar">
+    <button id="tap-btn" class="clay-btn">
+      <span>🏏</span>
+      <span>TAP HERE OR PRESS [SPACE] TO SWING!</span>
+    </button>
+  </div>
+
+  <!-- Start Menu Modal -->
+  <div id="modal-menu" class="clay-overlay">
+    <div class="modal-box clay-card">
+      <div style="font-size: 50px;">🏏🍃☀️</div>
+      <h1 style="font-size: 24px; font-weight: 900; color: #0f172a;">MINIMAL CRICKET 2D</h1>
+      <p style="font-size: 13px; font-weight: 700; color: #64748b;">
+        Clean minimalist cricket. Tap <b>[SPACE]</b> or tap the screen as the ball reaches the <b>TIMING SPOT</b>!
+      </p>
+
+      <div class="timing-guide-card">
+        <div>🚀 <b>BULLSEYE SPOT (Perfect):</b> <b>6 RUNS</b> (Huge lofted six!)</div>
+        <div>⚡ <b>INNER CIRCLE (Great):</b> <b>4 RUNS</b> (Cover drive boundary four!)</div>
+        <div>🏃 <b>MID CIRCLE (Good):</b> <b>2 RUNS</b> or <b>1 RUN</b></div>
+        <div>💥 <b>MISTIMED / MISSED:</b> <b>WICKET (BOWLED OUT)</b> or 0 Runs!</div>
+      </div>
+
+      <div style="display: flex; gap: 8px; width: 100%;">
+        <button id="diff-easy" class="clay-btn" style="flex: 1; padding: 8px; font-size: 12px; background: #94a3b8;">EASY (14 RUNS)</button>
+        <button id="diff-med" class="clay-btn" style="flex: 1; padding: 8px; font-size: 12px;">PRO (18 RUNS)</button>
+        <button id="diff-hard" class="clay-btn" style="flex: 1; padding: 8px; font-size: 12px; background: #94a3b8;">HARD (24 RUNS)</button>
+      </div>
+
+      <button id="btn-start-match" class="clay-btn" style="width: 100%; font-size: 16px; padding: 12px; margin-top: 4px;">
+        🏏 PLAY CRICKET!
+      </button>
+
+      <div style="font-size: 11px; color: #64748b;">
+        Desktop: Press <b>[SPACEBAR]</b> or Click Anywhere<br />
+        Mobile: Tap anywhere on screen!
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div id="modal-result" class="clay-overlay hidden">
+    <div class="modal-box clay-card">
+      <div id="res-trophy" style="font-size: 52px;">🏆</div>
+      <h2 id="res-title" style="font-size: 24px; font-weight: 900; color: #0f172a;">MATCH FINISHED!</h2>
+      <p id="res-desc" style="font-size: 13px; font-weight: 700; color: #64748b;">What an exciting Super Over finish!</p>
+
+      <div style="font-size: 32px; font-weight: 900; color: #0284c7; margin: 4px 0;" id="res-score-summary">
+        SCORED 22 / 1 (TARGET 18)
+      </div>
+
+      <div style="display: flex; gap: 10px; width: 100%; margin: 6px 0;">
+        <div class="clay-card" style="flex: 1; padding: 8px;">
+          <div style="font-size: 10px; font-weight: 800; color: #64748b;">SIXES 🚀</div>
+          <div id="stat-sixes" style="font-size: 18px; font-weight: 900; color: #ef4444;">2</div>
+        </div>
+        <div class="clay-card" style="flex: 1; padding: 8px;">
+          <div style="font-size: 10px; font-weight: 800; color: #64748b;">FOURS ⚡</div>
+          <div id="stat-fours" style="font-size: 18px; font-weight: 900; color: #10b981;">2</div>
+        </div>
+        <div class="clay-card" style="flex: 1; padding: 8px;">
+          <div style="font-size: 10px; font-weight: 800; color: #64748b;">HIGH SCORE</div>
+          <div id="stat-high" style="font-size: 18px; font-weight: 900; color: #f59e0b;">22</div>
+        </div>
+      </div>
+
+      <button id="btn-restart-match" class="clay-btn" style="width: 100%; font-size: 16px; padding: 12px; margin-top: 6px;">
+        PLAY AGAIN 🔄
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. SYNTHESIZED WEB AUDIO (BAT CRACK, WOODEN STUMPS, WHOOSH, CHEERS)
+       ========================================================================== */
+    class CricketAudio {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtxClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        return this.isMuted;
+      }
+
+      playBatCrack(isSix = false) {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(isSix ? 520 : 400, now);
+        osc.frequency.exponentialRampToValueAtTime(90, now + 0.12);
+
+        gain.gain.setValueAtTime(isSix ? 0.75 : 0.55, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playStumpsClatter() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [240, 340, 480].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.05);
+          osc.frequency.exponentialRampToValueAtTime(60, now + idx * 0.05 + 0.2);
+          gain.gain.setValueAtTime(0.4, now + idx * 0.05);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.05 + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.05);
+          osc.stop(now + idx * 0.05 + 0.2);
+        });
+      }
+
+      playWhoosh() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.exponentialRampToValueAtTime(90, now + 0.2);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      playCheer(massive = false) {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        [523, 659, 783, 1046].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          gain.gain.setValueAtTime(massive ? 0.45 : 0.25, now + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.09 + 0.45);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.45);
+        });
+      }
+    }
+
+    const audio = new CricketAudio();
+
+    /* ==========================================================================
+       2. MINIMALIST 2D CRICKET FIELD & COORDINATES
+       ========================================================================== */
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const FIELD_W = 1000;
+    const FIELD_H = 550;
+    const GROUND_Y = 410; // Ground surface baseline
+
+    // Timing Sweet-Spot: In front of batsman's popping crease
+    const FIXED_SPOT_X = 330;
+    const FIXED_SPOT_Y = GROUND_Y;
+
+    const BATSMAN_X = 230;
+    const BATSMAN_Y = GROUND_Y;
+    const BOWLER_X = 820;
+    const BOWLER_Y = GROUND_Y;
+
+    let isMatchActive = false;
+    let targetRuns = 18;
+    let currentBalls = 0;
+    let runsScored = 0;
+    let wicketsLost = 0;
+    let ballResults = [];
+    let stats = { sixes: 0, fours: 0 };
+    let highScore = parseInt(localStorage.getItem('cricket_high_score') || '0', 10);
+
+    // Ball Flight State
+    let ball = {
+      x: BOWLER_X,
+      y: BOWLER_Y - 90,
+      vx: 0,
+      vy: 0,
+      r: 10,
+      inFlight: false,
+      isHit: false,
+      hitResult: null,
+      trail: []
+    };
+
+    // Stumps Physics
+    let stumps = [
+      { x: BATSMAN_X - 38, y: GROUND_Y - 65, w: 5, h: 65, vx: 0, vy: 0, rot: 0, knocked: false },
+      { x: BATSMAN_X - 28, y: GROUND_Y - 65, w: 5, h: 65, vx: 0, vy: 0, rot: 0, knocked: false },
+      { x: BATSMAN_X - 18, y: GROUND_Y - 65, w: 5, h: 65, vx: 0, vy: 0, rot: 0, knocked: false }
+    ];
+    let bails = [
+      { x: BATSMAN_X - 33, y: GROUND_Y - 68, w: 14, h: 4, vx: 0, vy: 0, rot: 0, knocked: false },
+      { x: BATSMAN_X - 22, y: GROUND_Y - 68, w: 14, h: 4, vx: 0, vy: 0, rot: 0, knocked: false }
+    ];
+
+    // Batsman Fluid Swing State
+    let batsman = {
+      x: BATSMAN_X,
+      y: BATSMAN_Y,
+      stanceAngle: 0.25, // ready backlift angle
+      batAngle: 0.25,
+      isSwinging: false,
+      swingPhase: 0, // 0 to 1
+      swingShot: 'six', // 'six', 'four', 'drive'
+      bodyLean: 0
+    };
+
+    // Bowler State
+    let bowler = {
+      x: BOWLER_X,
+      y: BOWLER_Y,
+      armAngle: -0.5,
+      isBowling: false,
+      runupOffset: 0
+    };
+
+    let deliveryTimer = 1.0;
+
+    function resetWickets() {
+      stumps.forEach((s, idx) => {
+        s.x = BATSMAN_X - 38 + idx * 10;
+        s.y = GROUND_Y - 65;
+        s.vx = 0; s.vy = 0; s.rot = 0;
+        s.knocked = false;
+      });
+      bails.forEach((b, idx) => {
+        b.x = BATSMAN_X - 33 + idx * 11;
+        b.y = GROUND_Y - 68;
+        b.vx = 0; b.vy = 0; b.rot = 0;
+        b.knocked = false;
+      });
+    }
+
+    /* ==========================================================================
+       3. ONE-TAP TIMING SPOT MECHANIC (SPACE / SCREEN TAP)
+       ========================================================================== */
+    function triggerHitAction() {
+      if (!isMatchActive || !ball.inFlight || ball.isHit) return;
+
+      audio.init();
+
+      // Trigger fluid bat swing
+      batsman.isSwinging = true;
+      batsman.swingPhase = 0;
+
+      // Distance from ball to FIXED TIMING SPOT
+      const distToSpot = ball.x - FIXED_SPOT_X;
+      const absDist = Math.abs(distToSpot);
+
+      // Timing thresholds:
+      // absDist <= 32: BULLSEYE (6 RUNS!)
+      // absDist <= 70: INNER ZONE (4 RUNS!)
+      // absDist <= 115: MID ZONE (2 RUNS!)
+      // absDist <= 165: OUTER ZONE (1 RUN!)
+      // otherwise: MISSED!
+
+      if (absDist <= 32) {
+        handleHitResult(6, '💥 6 RUNS! BULLSEYE! 🚀', 'six', 'PERFECT TIMING (BULLSEYE!)');
+      } else if (absDist <= 70) {
+        handleHitResult(4, '⚡ 4 RUNS! BOUNDARY! 🏏', 'four', 'GREAT TIMING (FOUR!)');
+      } else if (absDist <= 115) {
+        handleHitResult(2, '🏃 2 RUNS!', 'drive', distToSpot > 0 ? 'GOOD TIMING (SLIGHTLY EARLY)' : 'GOOD TIMING (SLIGHTLY LATE)');
+      } else if (absDist <= 165) {
+        handleHitResult(1, '🚶 1 RUN!', 'drive', 'FAIR TIMING (SINGLE)');
+      } else {
+        // Completely mistimed swing
+        showTimingToast(distToSpot > 0 ? 'TOO EARLY! ❌' : 'TOO LATE! ❌');
+      }
+    }
+
+    function handleHitResult(runs, bannerText, shotType, timingNote) {
+      ball.isHit = true;
+      ball.hitResult = runs;
+      batsman.swingShot = shotType;
+
+      if (runs === 6) {
+        stats.sixes++;
+        ball.vx = 22 + Math.random() * 4;
+        ball.vy = -18 - Math.random() * 4;
+        audio.playBatCrack(true);
+        audio.playCheer(true);
+      } else if (runs === 4) {
+        stats.fours++;
+        ball.vx = 20 + Math.random() * 3;
+        ball.vy = -4 - Math.random() * 2;
+        audio.playBatCrack(false);
+        audio.playCheer(false);
+      } else {
+        ball.vx = 12 + Math.random() * 3;
+        ball.vy = -6;
+        audio.playBatCrack(false);
+      }
+
+      showTimingToast(timingNote);
+      recordBallResult(runs, bannerText, shotType);
+    }
+
+    // Desktop: Spacebar & Left Click
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'Enter') {
+        e.preventDefault();
+        triggerHitAction();
+      }
+    });
+
+    // Mobile / Pointer: Tap Anywhere on Canvas or Button
+    document.getElementById('pitch-wrap').addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      triggerHitAction();
+    });
+
+    document.getElementById('tap-btn').addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      triggerHitAction();
+    });
+
+    /* ==========================================================================
+       4. FLUID BAT SWING & BOWLING ACTION ENGINE
+       ========================================================================== */
+    function bowlDelivery() {
+      if (currentBalls >= 6 || wicketsLost >= 2) {
+        endMatch();
+        return;
+      }
+
+      ball.inFlight = true;
+      ball.isHit = false;
+      ball.hitResult = null;
+      ball.trail = [];
+
+      ball.x = BOWLER_X - 25;
+      ball.y = GROUND_Y - 90;
+
+      // Consistent, readable delivery speed towards the timing spot
+      const speed = 10.5 + (Math.random() - 0.5) * 1.8;
+      ball.vx = -speed;
+      ball.vy = 2.2;
+
+      bowler.isBowling = true;
+      bowler.armAngle = 0;
+      audio.playWhoosh();
+    }
+
+    function updateGame(dt) {
+      if (!isMatchActive) return;
+
+      // 1. Fluid Batsman Bat Swing Animation
+      if (batsman.isSwinging) {
+        batsman.swingPhase += dt * 3.5; // smooth downswing & follow-through
+
+        if (batsman.swingPhase < 0.4) {
+          // Downswing phase towards the ball
+          const p = batsman.swingPhase / 0.4;
+          batsman.batAngle = 0.25 - p * 1.6;
+          batsman.bodyLean = p * 6;
+        } else if (batsman.swingPhase < 0.75) {
+          // Follow-through high finish
+          const p = (batsman.swingPhase - 0.4) / 0.35;
+          if (batsman.swingShot === 'six') {
+            batsman.batAngle = -1.35 - p * 0.9; // High sixer follow-through!
+          } else {
+            batsman.batAngle = -1.35 + p * 0.5; // Ground drive finish
+          }
+          batsman.bodyLean = 6 * (1 - p * 0.3);
+        } else {
+          // Return to ready stance
+          const p = (batsman.swingPhase - 0.75) / 0.25;
+          batsman.batAngle = -2.25 * (1 - p) + 0.25 * p;
+          batsman.bodyLean = 4 * (1 - p);
+        }
+
+        if (batsman.swingPhase >= 1.0) {
+          batsman.isSwinging = false;
+          batsman.batAngle = batsman.stanceAngle;
+          batsman.bodyLean = 0;
+        }
+      }
+
+      // 2. Bowler Arm Windmill Rotation
+      if (bowler.isBowling) {
+        bowler.armAngle += dt * 12;
+        if (bowler.armAngle >= Math.PI * 2) {
+          bowler.isBowling = false;
+          bowler.armAngle = -0.5;
+        }
+      }
+
+      // 3. Ball Flight Physics
+      if (ball.inFlight) {
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        ball.trail.push({ x: ball.x, y: ball.y });
+        if (ball.trail.length > 7) ball.trail.shift();
+
+        if (!ball.isHit) {
+          // Pitch bounce as it approaches the spot
+          if (ball.y >= GROUND_Y - ball.r && ball.vx < 0) {
+            ball.y = GROUND_Y - ball.r;
+            ball.vy = -3.0;
+          }
+
+          // Check if ball hits the stumps (Clean Bowled!)
+          if (ball.x <= BATSMAN_X - 15 && ball.x >= BATSMAN_X - 45 && ball.y >= GROUND_Y - 70) {
+            handleCleanBowled();
+          }
+          // Missed delivery passes to keeper
+          else if (ball.x < BATSMAN_X - 60) {
+            ball.inFlight = false;
+            recordBallResult(0, '🛑 DOT BALL (MISSED)', 'dot');
+          }
+        } else {
+          // After hit flight
+          ball.vy += 0.46; // Gravity
+
+          if (ball.x > FIELD_W || ball.y < -50) {
+            ball.inFlight = false;
+          } else if (ball.y >= GROUND_Y - ball.r) {
+            ball.y = GROUND_Y - ball.r;
+            ball.vy = -ball.vy * 0.42;
+            ball.vx *= 0.94;
+            if (Math.abs(ball.vx) < 1.0) {
+              ball.inFlight = false;
+            }
+          }
+        }
+      }
+
+      // 4. Stumps & Bails Physics when Bowled
+      stumps.forEach(s => {
+        if (s.knocked) {
+          s.x += s.vx; s.y += s.vy;
+          s.vy += 0.45; s.rot += 0.18;
+        }
+      });
+      bails.forEach(b => {
+        if (b.knocked) {
+          b.x += b.vx; b.y += b.vy;
+          b.vy += 0.45; b.rot += 0.28;
+        }
+      });
+
+      // Next ball countdown
+      if (!ball.inFlight) {
+        deliveryTimer -= dt;
+        if (deliveryTimer <= 0) {
+          bowlDelivery();
+        }
+      }
+    }
+
+    function handleCleanBowled() {
+      ball.inFlight = false;
+      audio.playStumpsClatter();
+
+      stumps.forEach((s, idx) => {
+        s.knocked = true;
+        s.vx = -(2 + idx * 2 + Math.random() * 2);
+        s.vy = -(4 + Math.random() * 4);
+      });
+      bails.forEach(b => {
+        b.knocked = true;
+        b.vx = -(3 + Math.random() * 4);
+        b.vy = -(6 + Math.random() * 5);
+      });
+
+      showTimingToast('CLEAN BOWLED! 💥');
+      recordBallResult('W', '💥 OUT! CLEAN BOWLED! 💥', 'out');
+    }
+
+    function recordBallResult(result, bannerText, styleClass) {
+      currentBalls++;
+
+      if (result === 'W') {
+        wicketsLost++;
+        ballResults.push('W');
+      } else {
+        runsScored += result;
+        ballResults.push(result);
+      }
+
+      showHitToast(bannerText, styleClass);
+      updateScoreboard();
+
+      if (runsScored > highScore) {
+        highScore = runsScored;
+        localStorage.setItem('cricket_high_score', highScore.toString());
+      }
+
+      if (runsScored >= targetRuns || wicketsLost >= 2 || currentBalls >= 6) {
+        setTimeout(endMatch, 1600);
+        return;
+      }
+
+      deliveryTimer = 1.8; // 1.8s between deliveries
+    }
+
+    function showHitToast(text, styleClass = '') {
+      const banner = document.getElementById('hit-banner');
+      banner.innerText = text;
+      banner.className = `show ${styleClass}`;
+      setTimeout(() => { banner.className = ''; }, 1200);
+    }
+
+    function showTimingToast(text) {
+      const badge = document.getElementById('timing-badge');
+      badge.innerText = text;
+      badge.classList.add('show');
+      setTimeout(() => badge.classList.remove('show'), 1100);
+    }
+
+    function updateScoreboard() {
+      document.getElementById('hud-score').innerText = `${runsScored} / ${wicketsLost}`;
+      const needed = Math.max(0, targetRuns - runsScored);
+      const ballsLeft = 6 - currentBalls;
+
+      if (needed <= 0) {
+        document.getElementById('hud-target-info').innerText = 'TARGET ACHIEVED! 🏆';
+      } else {
+        document.getElementById('hud-target-info').innerText = `NEED ${needed} IN ${ballsLeft} BALLS`;
+      }
+
+      const dots = document.querySelectorAll('.ball-dot');
+      ballResults.forEach((res, idx) => {
+        if (dots[idx]) {
+          dots[idx].className = 'ball-dot';
+          dots[idx].innerText = res;
+          if (res === 6) dots[idx].classList.add('dot-6');
+          else if (res === 4) dots[idx].classList.add('dot-4');
+          else if (res === 2 || res === 1) dots[idx].classList.add('dot-1');
+          else if (res === 'W') dots[idx].classList.add('dot-w');
+          else dots[idx].classList.add('dot-0');
+        }
+      });
+    }
+
+    /* ==========================================================================
+       5. MINIMALIST 2D CANVAS DRAWING (CLEAN SKY, GRASS & CRICKET CHARACTERS)
+       ========================================================================== */
+    function drawMinimalistPitch() {
+      // 1. Pure Clean Blue Background (ONLY BLUE!)
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillRect(0, 0, FIELD_W, GROUND_Y);
+
+      // 2. Normal Minimal Clean Grass Field
+      ctx.fillStyle = '#22c55e';
+      ctx.fillRect(0, GROUND_Y, FIELD_W, FIELD_H - GROUND_Y);
+
+      // 3. Clean Natural Beige Clay Cricket Pitch Strip
+      const pitchStartX = BATSMAN_X - 70;
+      const pitchEndX = BOWLER_X + 40;
+      const pitchW = pitchEndX - pitchStartX;
+
+      ctx.fillStyle = '#e5d0ac';
+      ctx.fillRect(pitchStartX, GROUND_Y, pitchW, FIELD_H - GROUND_Y);
+
+      // Crisp White Crease Markings
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      // Batting Popping Crease
+      ctx.beginPath(); ctx.moveTo(BATSMAN_X, GROUND_Y); ctx.lineTo(BATSMAN_X, FIELD_H); ctx.stroke();
+      // Bowling Crease
+      ctx.beginPath(); ctx.moveTo(BOWLER_X - 40, GROUND_Y); ctx.lineTo(BOWLER_X - 40, FIELD_H); ctx.stroke();
+
+      // =========================================================================
+      // 4. ELEGANT MINIMALIST TIMING SPOT ON PITCH
+      // =========================================================================
+      ctx.save();
+      ctx.translate(FIXED_SPOT_X, FIXED_SPOT_Y);
+
+      const pulse = Math.sin(performance.now() * 0.007) * 2;
+
+      // Outer Ring: 1 & 2 Runs
+      ctx.fillStyle = 'rgba(2, 132, 199, 0.25)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 68 + pulse, 16, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0284c7';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Inner Ring: 4 Runs
+      ctx.fillStyle = 'rgba(16, 185, 129, 0.4)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 36 + pulse * 0.5, 10, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#10b981';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Center Bullseye Spot: 6 RUNS!
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 16, 6, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Minimalist Clean Marker Label
+      ctx.fillStyle = '#0f172a';
+      ctx.font = '800 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('TIMING SPOT [6]', 0, 30);
+
+      ctx.restore();
+
+      // 5. Wooden Stumps & Bails (Batting End)
+      stumps.forEach(s => {
+        ctx.save();
+        ctx.translate(s.x, s.y);
+        ctx.rotate(s.rot);
+        ctx.fillStyle = '#d97706';
+        ctx.fillRect(-s.w / 2, 0, s.w, s.h);
+        ctx.strokeStyle = '#78350f';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(-s.w / 2, 0, s.w, s.h);
+        ctx.restore();
+      });
+
+      bails.forEach(b => {
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.rot);
+        ctx.fillStyle = '#b45309';
+        ctx.fillRect(-b.w / 2, -b.h / 2, b.w, b.h);
+        ctx.restore();
+      });
+    }
+
+    // PROPER CRICKET BATSMAN WITH FLUID BAT SWING
+    function drawBatsman() {
+      ctx.save();
+      ctx.translate(batsman.x + batsman.bodyLean, batsman.y);
+
+      // Player Shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 28, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Back Leg (Backfoot)
+      ctx.fillStyle = '#ffffff'; // White pad
+      ctx.fillRect(-16, -38, 12, 38);
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(-16, -38, 12, 38);
+
+      // Front Leg (Frontfoot stride)
+      const frontFootOffset = batsman.isSwinging ? 12 : 2;
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(frontFootOffset, -38, 13, 38);
+      ctx.strokeRect(frontFootOffset, -38, 13, 38);
+
+      // Torso / Jersey (Classic Royal Blue Cricket Kit)
+      ctx.fillStyle = '#0284c7';
+      ctx.beginPath();
+      ctx.roundRect(-12, -78, 26, 42, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Head & Helmet
+      ctx.save();
+      ctx.translate(0, -96);
+
+      // Face
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, 0, 16, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Blue Cricket Helmet with Visor Peak
+      ctx.fillStyle = '#0369a1';
+      ctx.beginPath();
+      ctx.arc(0, -4, 17, Math.PI * 0.85, Math.PI * 2.15);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Helmet Peak
+      ctx.fillStyle = '#0284c7';
+      ctx.fillRect(4, -8, 18, 5);
+      ctx.strokeRect(4, -8, 18, 5);
+
+      // Face grill / eye
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(8, -1, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore(); // Head restore
+
+      // CRICKET BAT & ARMS (FLUID SWING ARC!)
+      ctx.save();
+      ctx.translate(2, -58); // Shoulder pivot
+      ctx.rotate(batsman.batAngle);
+
+      // Swing Motion Blur trail when swinging
+      if (batsman.isSwinging) {
+        ctx.fillStyle = 'rgba(251, 191, 36, 0.45)';
+        ctx.beginPath();
+        ctx.arc(0, 0, 72, -0.4, 0.8);
+        ctx.lineTo(0, 0);
+        ctx.fill();
+      }
+
+      // Both Arms holding the bat handle
+      ctx.fillStyle = '#ffffff'; // White batting gloves
+      ctx.beginPath();
+      ctx.ellipse(0, 12, 7, 14, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Rubber Bat Handle
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(-3, 14, 6, 20);
+      ctx.strokeRect(-3, 14, 6, 20);
+
+      // English Willow Bat Blade
+      ctx.fillStyle = '#fde68a';
+      ctx.beginPath();
+      ctx.roundRect(-6, 34, 13, 52, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#78350f';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Red Grip / Brand Sticker
+      ctx.fillStyle = '#ef4444';
+      ctx.fillRect(-5, 42, 11, 8);
+
+      ctx.restore(); // Bat restore
+      ctx.restore(); // Batsman restore
+    }
+
+    // PROPER CRICKET BOWLER WITH SMOOTH ACTION
+    function drawBowler() {
+      ctx.save();
+      ctx.translate(bowler.x, bowler.y);
+
+      // Shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 26, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Bowler Legs & Spikes
+      ctx.fillStyle = '#ffffff'; // White trousers
+      ctx.fillRect(-14, -36, 11, 36);
+      ctx.fillRect(2, -36, 11, 36);
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(-14, -36, 11, 36);
+      ctx.strokeRect(2, -36, 11, 36);
+
+      // Red / White Bowling Jersey
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.roundRect(-12, -76, 25, 42, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Non-bowling Left Arm (Pointed forward towards batsman)
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.roundRect(-18, -65, 16, 6, 3);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Bowling Right Arm (Fluid Windmill Rotation)
+      ctx.save();
+      ctx.translate(4, -65); // Shoulder pivot
+      ctx.rotate(-bowler.armAngle);
+
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.roundRect(-4, -6, 8, 36, 4);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Shiny Red Cricket Ball in Hand (while bowling before release)
+      if (bowler.isBowling && bowler.armAngle < Math.PI * 0.7) {
+        ctx.fillStyle = '#dc2626';
+        ctx.beginPath();
+        ctx.arc(0, 32, 7, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+      ctx.restore();
+
+      // Head & Bowler Cap
+      ctx.save();
+      ctx.translate(0, -94);
+
+      // Face
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(0, 0, 15, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Red Cap
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(0, -4, 16, Math.PI * 0.85, Math.PI * 2.15);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Cap Peak
+      ctx.fillStyle = '#dc2626';
+      ctx.fillRect(-18, -6, 14, 4);
+      ctx.strokeRect(-18, -6, 14, 4);
+
+      // Eye
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(-6, -1, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore(); // Head
+      ctx.restore(); // Bowler
+    }
+
+    // DRAW SHINY RED LEATHER CRICKET BALL
+    function drawBall() {
+      if (!ball.inFlight) return;
+
+      // Motion Trail
+      ball.trail.forEach((pt, idx) => {
+        ctx.fillStyle = ball.hitResult === 6 ? 'rgba(239, 68, 68, 0.45)' : 'rgba(220, 38, 38, 0.25)';
+        ctx.beginPath();
+        ctx.arc(pt.x, pt.y, ball.r * (idx / ball.trail.length), 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Shadow on Pitch
+      const shadowAlpha = Math.max(0.1, 0.4 - (GROUND_Y - ball.y) / 350);
+      ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
+      ctx.beginPath();
+      ctx.ellipse(ball.x, GROUND_Y, ball.r * 1.1, 4, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Red Cricket Ball
+      ctx.save();
+      ctx.translate(ball.x, ball.y);
+
+      // White outline pop halo
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, 0, ball.r + 1, 0, Math.PI * 2); ctx.stroke();
+
+      ctx.fillStyle = ball.hitResult === 6 ? '#fbbf24' : '#dc2626';
+      ctx.beginPath(); ctx.arc(0, 0, ball.r, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#7f1d1d'; ctx.lineWidth = 2; ctx.stroke();
+
+      // White Seam
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.ellipse(0, 0, ball.r * 0.9, ball.r * 0.3, Math.PI / 4, 0, Math.PI * 2);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    /* ==========================================================================
+       6. MAIN RENDER LOOP & RESIZE
+       ========================================================================== */
+    function handleResize() {
+      const rect = document.getElementById('pitch-wrap').getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+    }
+    window.addEventListener('resize', handleResize);
+
+    let lastTime = performance.now();
+
+    function renderLoop(now) {
+      requestAnimationFrame(renderLoop);
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      // Update Simulation
+      updateGame(dt);
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      const scaleX = w / FIELD_W;
+      const scaleY = h / FIELD_H;
+      const scale = Math.min(scaleX, scaleY);
+
+      const offsetX = (w - FIELD_W * scale) / 2;
+      const offsetY = (h - FIELD_H * scale) / 2;
+
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      // 1. Draw Clean Minimalist Pitch & Grass (NO NOISY BLEACHERS!)
+      drawMinimalistPitch();
+
+      // 2. Draw Realistic Batsman & Bowler
+      drawBatsman();
+      drawBowler();
+
+      // 3. Draw Leather Ball
+      drawBall();
+
+      ctx.restore();
+    }
+
+    /* ==========================================================================
+       7. LIFECYCLE & MENU TRIGGERS
+       ========================================================================== */
+    function startMatch() {
+      runsScored = 0;
+      wicketsLost = 0;
+      currentBalls = 0;
+      ballResults = [];
+      stats = { sixes: 0, fours: 0 };
+      isMatchActive = true;
+      ball.inFlight = false;
+      deliveryTimer = 0.8;
+
+      document.getElementById('hud-score').innerText = '0 / 0';
+      document.getElementById('hud-target-info').innerText = `NEED ${targetRuns} IN 6 BALLS`;
+
+      const dots = document.querySelectorAll('.ball-dot');
+      dots.forEach((d, idx) => {
+        d.className = 'ball-dot';
+        d.innerText = (idx + 1).toString();
+      });
+
+      document.getElementById('modal-menu').classList.add('hidden');
+      document.getElementById('modal-result').classList.add('hidden');
+
+      resetWickets();
+      audio.init();
+    }
+
+    function endMatch() {
+      isMatchActive = false;
+
+      const resModal = document.getElementById('modal-result');
+      const resTrophy = document.getElementById('res-trophy');
+      const resTitle = document.getElementById('res-title');
+      const resDesc = document.getElementById('res-desc');
+      const resScore = document.getElementById('res-score-summary');
+
+      resScore.innerText = `SCORED ${runsScored} / ${wicketsLost} (TARGET ${targetRuns})`;
+      document.getElementById('stat-sixes').innerText = stats.sixes.toString();
+      document.getElementById('stat-fours').innerText = stats.fours.toString();
+      document.getElementById('stat-high').innerText = highScore.toString();
+
+      if (runsScored >= targetRuns) {
+        audio.playCheer(true);
+        resTrophy.innerText = '🏆🥇';
+        resTitle.innerText = 'CHAMPION! TARGET CHASED!';
+        resDesc.innerText = 'Masterful timing! You won the Super Over match!';
+      } else {
+        audio.playStumpsClatter();
+        resTrophy.innerText = '💔🥈';
+        resTitle.innerText = 'MATCH LOST!';
+        resDesc.innerText = 'Fell short of target. Time your hit right on the fixed spot!';
+      }
+
+      resModal.classList.remove('hidden');
+    }
+
+    const diffButtons = [
+      { id: 'diff-easy', runs: 14 },
+      { id: 'diff-med', runs: 18 },
+      { id: 'diff-hard', runs: 24 }
+    ];
+    diffButtons.forEach(btn => {
+      document.getElementById(btn.id).onclick = () => {
+        targetRuns = btn.runs;
+        diffButtons.forEach(b => {
+          document.getElementById(b.id).style.background = (b.id === btn.id) ? 'linear-gradient(145deg, #38bdf8, #0284c7)' : '#94a3b8';
+        });
+      };
+    });
+
+    document.getElementById('btn-start-match').onclick = startMatch;
+    document.getElementById('btn-restart-match').onclick = startMatch;
+
+    document.getElementById('btn-pause').onclick = () => {
+      isMatchActive = !isMatchActive;
+      document.getElementById('btn-pause').innerText = isMatchActive ? '⏸️' : '▶️';
+    };
+
+    document.getElementById('btn-sound').onclick = () => {
+      const isMuted = audio.toggleMute();
+      document.getElementById('btn-sound').innerText = isMuted ? '🔇' : '🔊';
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      handleResize();
+      requestAnimationFrame(renderLoop);
+    });
+  </script>
+</body>
+</html>

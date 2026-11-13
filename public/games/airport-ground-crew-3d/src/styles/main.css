@@ -1,0 +1,467 @@
+:root {
+  --primary-blue: #0984e3;
+  --airport-dark: #0c1b33;
+  --safety-yellow: #fdcb6e;
+  --safety-yellow-bright: #ffeaa7;
+  --hazard-orange: #e17055;
+  --success-green: #00b894;
+  --danger-red: #d63031;
+  --panel-bg: rgba(12, 27, 51, 0.88);
+  --panel-border: rgba(253, 203, 110, 0.45);
+  --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--airport-dark);
+  font-family: var(--font-main);
+  color: #ffffff;
+  touch-action: none;
+}
+
+#canvas-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+}
+
+/* Glass Panels with Airport Styling */
+.glass-panel {
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid var(--panel-border);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 1px 1px 3px rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+}
+
+/* In-Game HUD */
+#hud-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 16px 20px;
+}
+
+.hud-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: 12px;
+}
+
+.mission-tracker {
+  padding: 10px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 260px;
+  max-width: 420px;
+  border-left: 5px solid var(--safety-yellow);
+}
+
+.mission-badge {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--safety-yellow);
+  font-weight: 800;
+}
+
+.mission-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.mission-obj {
+  font-size: 13px;
+  color: #dfe6e9;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.hud-telemetry {
+  display: flex;
+  gap: 10px;
+}
+
+.telemetry-card {
+  padding: 8px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 75px;
+}
+
+.telemetry-label {
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #a4b0be;
+  font-weight: 800;
+}
+
+.telemetry-value {
+  font-size: 20px;
+  font-weight: 900;
+  color: #fff;
+  font-variant-numeric: tabular-nums;
+}
+
+.hud-top-right {
+  display: flex;
+  gap: 8px;
+  pointer-events: auto;
+}
+
+.hud-icon-btn {
+  width: 42px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border: 2px solid var(--panel-border);
+  border-radius: 12px;
+  background: var(--panel-bg);
+  color: #fff;
+  font-size: 18px;
+  transition: all 0.15s ease;
+}
+
+.hud-icon-btn:hover {
+  border-color: var(--safety-yellow);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(253, 203, 110, 0.4);
+}
+
+/* Real-time 3D Navigation Waypoint HUD Pin */
+#hud-waypoint-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 18px;
+  border-radius: 24px;
+  background: rgba(12, 27, 51, 0.94);
+  border: 2px solid var(--safety-yellow);
+  box-shadow: 0 0 25px rgba(241, 196, 15, 0.85), inset 0 0 10px rgba(241, 196, 15, 0.25);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  pointer-events: none;
+  z-index: 15;
+  display: none;
+  white-space: nowrap;
+  animation: wpPulse 1.4s infinite alternate;
+}
+
+@keyframes wpPulse {
+  from { transform: translate(-50%, -50%) scale(0.96); box-shadow: 0 0 15px rgba(241, 196, 15, 0.6); }
+  to { transform: translate(-50%, -50%) scale(1.04); box-shadow: 0 0 30px rgba(241, 196, 15, 0.95); }
+}
+
+#hud-waypoint-indicator .wp-arrow {
+  color: var(--safety-yellow);
+  font-size: 16px;
+  margin-right: 6px;
+  display: inline-block;
+  font-weight: 900;
+}
+
+#hud-waypoint-indicator .wp-dist {
+  color: #55efc4;
+  margin-left: 8px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 900;
+}
+
+/* Prompt Banner */
+#interaction-prompt {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 1px;
+  color: #0c1b33;
+  background: var(--safety-yellow);
+  box-shadow: 0 8px 25px rgba(253, 203, 110, 0.6);
+  pointer-events: none;
+  z-index: 12;
+  display: none;
+  animation: promptPulse 1.2s infinite alternate;
+  white-space: nowrap;
+}
+
+@keyframes promptPulse {
+  from { transform: translateX(-50%) scale(0.96); }
+  to { transform: translateX(-50%) scale(1.04); }
+}
+
+/* Screen Overlays & Menus */
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(8, 16, 32, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 1;
+  transition: opacity 0.25s ease;
+}
+
+.screen-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+  display: none;
+}
+
+.menu-dialog {
+  width: min(560px, 94vw);
+  padding: 34px 28px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-color: var(--safety-yellow);
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.game-logo-title {
+  font-size: clamp(28px, 6vw, 42px);
+  font-weight: 900;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #ffffff 0%, var(--safety-yellow) 50%, #f39c12 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.1;
+  filter: drop-shadow(0 2px 8px rgba(253, 203, 110, 0.4));
+}
+
+.game-sublogo {
+  font-size: 12px;
+  letter-spacing: 4px;
+  color: var(--safety-yellow);
+  text-transform: uppercase;
+  font-weight: 800;
+  margin-top: -6px;
+}
+
+.btn-primary {
+  width: 100%;
+  max-width: 320px;
+  padding: 14px 24px;
+  border: 2px solid var(--safety-yellow);
+  border-radius: 14px;
+  background: linear-gradient(135deg, #f1c40f 0%, #e67e22 100%);
+  color: #0c1b33;
+  font-size: 16px;
+  font-weight: 900;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 8px 24px rgba(241, 196, 15, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 12px 28px rgba(241, 196, 15, 0.6);
+}
+
+.btn-secondary {
+  width: 100%;
+  max-width: 320px;
+  padding: 12px 20px;
+  border: 2px solid rgba(255, 255, 255, 0.25);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: #ffffff;
+}
+
+/* Mobile Controls */
+#mobile-controls {
+  position: absolute;
+  bottom: 16px;
+  left: 0;
+  width: 100%;
+  padding: 0 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  pointer-events: auto;
+  z-index: 12;
+  touch-action: none;
+}
+
+.virtual-joystick-base {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(253, 203, 110, 0.4);
+  position: relative;
+  touch-action: none;
+}
+
+.virtual-joystick-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--safety-yellow);
+  box-shadow: 0 0 15px rgba(253, 203, 110, 0.7);
+  position: absolute;
+  top: 35px;
+  left: 35px;
+  pointer-events: none;
+}
+
+.mobile-action-cluster {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.mobile-touch-btn {
+  width: 66px;
+  height: 66px;
+  border-radius: 20px;
+  background: var(--panel-bg);
+  border: 2px solid var(--safety-yellow);
+  color: var(--safety-yellow);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 900;
+  font-size: 11px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: transform 0.08s ease;
+}
+
+.mobile-touch-btn:active, .mobile-touch-btn.pressed {
+  transform: scale(0.92);
+  background: var(--safety-yellow);
+  color: #0c1b33;
+}
+
+.mobile-pedals-group {
+  display: flex;
+  gap: 12px;
+}
+
+.pedal-btn {
+  width: 64px;
+  height: 90px;
+  border-radius: 22px;
+  font-size: 11px;
+}
+
+.pedal-gas {
+  background: linear-gradient(135deg, rgba(0, 184, 148, 0.25) 0%, rgba(0, 184, 148, 0.45) 100%);
+  border-color: var(--success-green);
+  color: #55efc4;
+}
+
+.pedal-brake {
+  background: linear-gradient(135deg, rgba(214, 48, 49, 0.25) 0%, rgba(214, 48, 49, 0.45) 100%);
+  border-color: var(--danger-red);
+  color: #ff7675;
+}
+
+/* Garage Card Grid */
+.garage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.vehicle-card {
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vehicle-card:hover, .vehicle-card.selected {
+  border-color: var(--safety-yellow);
+  background: rgba(253, 203, 110, 0.12);
+  transform: translateY(-2px);
+}
+
+.vehicle-card.locked {
+  opacity: 0.5;
+  filter: grayscale(0.8);
+}
+
+@media (max-width: 768px) {
+  .mission-tracker { min-width: 190px; padding: 6px 12px; }
+  .mission-title { font-size: 13px; }
+  .telemetry-card { padding: 4px 8px; min-width: 60px; }
+  .telemetry-value { font-size: 16px; }
+  .virtual-joystick-base { width: 100px; height: 100px; }
+  .virtual-joystick-thumb { width: 40px; height: 40px; top: 30px; left: 30px; }
+  .garage-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Penalty Kick - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(39, 174, 96, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>⚽</span>
+        <span id="score-val">0 Goals</span>
+      </div>
+      <div class="clay-pill">
+        <span>🥅</span>
+        <span id="shots-val">5 Shots Left</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">⚽ 🥅 🧤</div>
+        <h1 style="color: #27ae60; font-size: 28px;">Penalty Kick</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Swipe forward toward the goal net! Curve your kick to beat the clay goalkeeper!</p>
+        <button id="btn-start" class="clay-btn">KICK OFF ▶</button>
+      </div>
+    </div>
+
+    <!-- Result Screen -->
+    <div id="result-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🏆 ⚽ 🎉</div>
+        <h1 style="color: #27ae60; font-size: 28px;" id="result-title">MATCH FINISHED!</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;" id="result-desc">Great penalty shootout!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin: 12px 0;">
+          <div style="font-size: 24px; font-weight: 700; color: #27ae60;" id="final-goals">0 / 5 Goals</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">SHOOT AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      kick() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(180, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(70, this.ctx.currentTime + 0.1);
+        g.gain.setValueAtTime(0.4, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.12);
+      }
+      goal() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [440, 554, 659, 880].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.06);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.06 + 0.16);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.06); o.stop(now + idx * 0.06 + 0.18);
+        });
+      }
+      save() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(120, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(40, this.ctx.currentTime + 0.2);
+        g.gain.setValueAtTime(0.35, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.22);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.22);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    let gameState = 'START';
+    let goals = 0;
+    let shotsLeft = 5;
+
+    // Ball state
+    const BALL_START = { x: 240, y: 580, r: 20 };
+    let ball = {
+      x: BALL_START.x,
+      y: BALL_START.y,
+      r: BALL_START.r,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      z: 1,
+      inFlight: false,
+      resolved: false
+    };
+
+    // Goalkeeper
+    let keeper = {
+      x: 240,
+      y: 280,
+      vx: 0,
+      diving: false
+    };
+
+    // Goal Post bounds
+    const GOAL = {
+      x: 90,
+      y: 190,
+      w: 300,
+      h: 130
+    };
+
+    let swipeStart = { x: 0, y: 0, time: 0 };
+
+    function initGame() {
+      goals = 0;
+      shotsLeft = 5;
+      resetShot();
+      updateHUD();
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('result-screen').classList.add('hidden');
+    }
+
+    function resetShot() {
+      ball.x = BALL_START.x;
+      ball.y = BALL_START.y;
+      ball.r = BALL_START.r;
+      ball.vx = 0;
+      ball.vy = 0;
+      ball.z = 1;
+      ball.inFlight = false;
+      ball.resolved = false;
+
+      keeper.x = 240;
+      keeper.diving = false;
+      keeper.vx = 0;
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').innerText = `${goals} Goals`;
+      document.getElementById('shots-val').innerText = `${shotsLeft} Shots Left`;
+    }
+
+    // Swipe Kick Input
+    canvas.addEventListener('pointerdown', (e) => {
+      if (gameState !== 'PLAYING' || ball.inFlight) return;
+      const rect = canvas.getBoundingClientRect();
+      swipeStart = {
+        x: (e.clientX - rect.left) * (W / rect.width),
+        y: (e.clientY - rect.top) * (H / rect.height),
+        time: Date.now()
+      };
+    });
+
+    canvas.addEventListener('pointerup', (e) => {
+      if (gameState !== 'PLAYING' || ball.inFlight) return;
+      const rect = canvas.getBoundingClientRect();
+      const endX = (e.clientX - rect.left) * (W / rect.width);
+      const endY = (e.clientY - rect.top) * (H / rect.height);
+      const dt = Math.max(50, Date.now() - swipeStart.time);
+
+      const dx = endX - swipeStart.x;
+      const dy = endY - swipeStart.y;
+
+      if (dy < -40) { // Swiped upwards toward goal
+        sound.kick();
+        ball.vx = (dx / dt) * 16;
+        ball.vy = (dy / dt) * 16;
+        ball.inFlight = true;
+
+        // Keeper dive AI
+        const diveTargets = [GOAL.x + 40, GOAL.x + GOAL.w / 2, GOAL.x + GOAL.w - 40];
+        const chosenTarget = diveTargets[Math.floor(Math.random() * diveTargets.length)];
+        keeper.vx = (chosenTarget - keeper.x) * 0.12;
+        keeper.diving = true;
+      }
+    });
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function drawField() {
+      // Grass pitch
+      ctx.fillStyle = '#2ecc71';
+      ctx.fillRect(0, 0, W, H);
+
+      // Penalty box lines
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.rect(50, 260, 380, 400);
+      ctx.stroke();
+
+      // Penalty Spot
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(240, 580, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Goal Net Mesh
+      ctx.fillStyle = '#eef2f7';
+      ctx.fillRect(GOAL.x, GOAL.y, GOAL.w, GOAL.h);
+
+      ctx.strokeStyle = 'rgba(160, 180, 205, 0.4)';
+      ctx.lineWidth = 2;
+      for (let x = GOAL.x; x <= GOAL.x + GOAL.w; x += 15) {
+        ctx.beginPath(); ctx.moveTo(x, GOAL.y); ctx.lineTo(x, GOAL.y + GOAL.h); ctx.stroke();
+      }
+      for (let y = GOAL.y; y <= GOAL.y + GOAL.h; y += 15) {
+        ctx.beginPath(); ctx.moveTo(GOAL.x, y); ctx.lineTo(GOAL.x + GOAL.w, y); ctx.stroke();
+      }
+
+      // Goal Post (Clay White Bars)
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 10;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(GOAL.x, GOAL.y + GOAL.h);
+      ctx.lineTo(GOAL.x, GOAL.y);
+      ctx.lineTo(GOAL.x + GOAL.w, GOAL.y);
+      ctx.lineTo(GOAL.x + GOAL.w, GOAL.y + GOAL.h);
+      ctx.stroke();
+    }
+
+    function drawKeeper() {
+      ctx.save();
+      ctx.translate(keeper.x, keeper.y);
+
+      // Keeper shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+      ctx.beginPath();
+      ctx.ellipse(0, 26, 22, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Clay Body (Jersey)
+      ctx.fillStyle = '#f39c12';
+      ctx.beginPath();
+      ctx.roundRect(-14, -20, 28, 40, 10);
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = '#f5cd79';
+      ctx.beginPath();
+      ctx.arc(0, -28, 12, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Gloves
+      ctx.fillStyle = '#3498db';
+      ctx.beginPath();
+      ctx.arc(-20, -10, 8, 0, Math.PI * 2);
+      ctx.arc(20, -10, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawBall() {
+      ctx.save();
+      ctx.translate(ball.x, ball.y);
+
+      // Scale perspective with distance
+      const r = ball.r * ball.z;
+
+      // Shadow
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.beginPath();
+      ctx.ellipse(0, r + 4, r * 0.9, r * 0.35, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Clay Football
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.2)';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.arc(0, 0, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Black Pentagons
+      ctx.fillStyle = '#2d3436';
+      ctx.beginPath();
+      ctx.arc(0, 0, r * 0.35, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function loop() {
+      drawField();
+
+      if (gameState === 'PLAYING') {
+        if (keeper.diving) {
+          keeper.x += keeper.vx;
+          keeper.x = Math.max(GOAL.x + 30, Math.min(GOAL.x + GOAL.w - 30, keeper.x));
+        }
+
+        if (ball.inFlight) {
+          ball.x += ball.vx;
+          ball.y += ball.vy;
+          ball.z = Math.max(0.55, ball.z - 0.015);
+
+          // Check outcome once ball reaches goal line
+          if (ball.y <= GOAL.y + 35 && !ball.resolved) {
+            ball.resolved = true;
+            ball.inFlight = false;
+
+            // Keeper save check
+            if (Math.abs(ball.x - keeper.x) < 42) {
+              sound.save();
+            } else if (ball.x >= GOAL.x && ball.x <= GOAL.x + GOAL.w) {
+              sound.goal();
+              goals++;
+            }
+
+            shotsLeft--;
+            updateHUD();
+
+            setTimeout(() => {
+              if (shotsLeft > 0) {
+                resetShot();
+              } else {
+                gameState = 'OVER';
+                document.getElementById('final-goals').innerText = `${goals} / 5 Goals`;
+                document.getElementById('result-screen').classList.remove('hidden');
+              }
+            }, 1000);
+          }
+        }
+      }
+
+      drawKeeper();
+      drawBall();
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

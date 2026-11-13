@@ -1,0 +1,1730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Precision 3D Car Parking Master</title>
+  <!-- Three.js r128 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --clay-bg: #e8eff9;
+      --clay-card: #ffffff;
+      --primary: #0984e3;
+      --primary-gradient: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      --accent-green: #00b894;
+      --accent-red: #d63031;
+      --accent-yellow: #fdcb6e;
+      --text-dark: #2d3436;
+      --text-muted: #636e72;
+      --clay-shadow: 8px 12px 24px rgba(160, 185, 215, 0.45), -5px -5px 14px #ffffff;
+      --clay-inset: inset 2px 2px 5px rgba(255, 255, 255, 0.8), inset -2px -2px 5px rgba(160, 185, 215, 0.25);
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #d4e2f2;
+      font-family: var(--font-main);
+      color: var(--text-dark);
+      touch-action: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* Screen Flash on Collision */
+    #damage-flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(214, 48, 49, 0.5) 0%, transparent 80%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.08s ease-out;
+      z-index: 5;
+    }
+
+    .clay-box {
+      background: var(--clay-card);
+      border-radius: 18px;
+      border: 3px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+    }
+
+    /* In-Game HUD */
+    #hud-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .hud-metrics {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .hud-chip {
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--text-dark);
+    }
+
+    .hud-chip span.val {
+      color: var(--primary);
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .hud-top-right {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hud-btn {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      border-radius: 14px;
+      background: var(--clay-card);
+      color: var(--text-dark);
+      font-size: 17px;
+      box-shadow: var(--clay-shadow);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .hud-btn:active {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+    }
+
+    /* Parking Radar Sensor */
+    .parking-sensor-gauge {
+      position: absolute;
+      top: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 5px;
+      min-width: 240px;
+      pointer-events: none;
+    }
+
+    .sensor-meter-title {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      background: rgba(255, 255, 255, 0.7);
+      padding: 2px 10px;
+      border-radius: 10px;
+    }
+
+    .sensor-bars-row {
+      display: flex;
+      gap: 5px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .sensor-block {
+      flex: 1;
+      height: 10px;
+      border-radius: 6px;
+      background: #dfe6e9;
+      border: 2px solid #ffffff;
+      box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.15);
+      transition: background 0.08s ease;
+    }
+
+    .sensor-block.green { background: #00b894; box-shadow: 0 0 10px #00b894; }
+    .sensor-block.yellow { background: #fdcb6e; box-shadow: 0 0 10px #fdcb6e; }
+    .sensor-block.red { background: #d63031; box-shadow: 0 0 12px #d63031; animation: blinkAlert 0.25s infinite alternate; }
+
+    @keyframes blinkAlert {
+      from { opacity: 0.6; }
+      to { opacity: 1; }
+    }
+
+    .target-status-pill {
+      background: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 14px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      box-shadow: var(--clay-shadow);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .target-status-pill.aligned {
+      color: #00b894;
+      background: #e6f9f4;
+      border-color: #00b894;
+      box-shadow: 0 0 16px rgba(0, 184, 148, 0.5);
+    }
+
+    /* Toast */
+    #park-toast {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      font-size: 22px;
+      font-weight: 900;
+      color: #2d3436;
+      background: #ffffff;
+      padding: 10px 24px;
+      border-radius: 24px;
+      border: 3px solid #00b894;
+      box-shadow: 0 10px 30px rgba(0, 184, 148, 0.35);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 15;
+    }
+
+    /* Mobile Controls (Ergonomic Phone Layout) */
+    #mobile-controls {
+      position: absolute;
+      bottom: 12px;
+      left: 0;
+      width: 100%;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: auto;
+      z-index: 12;
+      touch-action: none;
+    }
+
+    .steering-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .pedal-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 12px;
+    }
+
+    .clay-touch-btn {
+      width: 66px;
+      height: 66px;
+      border-radius: 22px;
+      background: #ffffff;
+      border: 3px solid #ffffff;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      box-shadow: var(--clay-shadow);
+      cursor: pointer;
+      touch-action: none;
+      transition: transform 0.08s ease, background 0.08s ease;
+    }
+
+    .clay-touch-btn:active, .clay-touch-btn.pressed {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+      background: #eef3f9;
+    }
+
+    .pedal-btn {
+      width: 68px;
+      height: 96px;
+      border-radius: 24px;
+      font-size: 12px;
+      letter-spacing: 1px;
+    }
+
+    .pedal-gas {
+      background: linear-gradient(135deg, #ebfaf3 0%, #d5f6e8 100%);
+      color: #00b894;
+      border-color: #a8ebd3;
+    }
+
+    .pedal-gas:active, .pedal-gas.pressed {
+      background: #b5efd8;
+    }
+
+    .pedal-brake {
+      background: linear-gradient(135deg, #fdf1f1 0%, #fbdede 100%);
+      color: #d63031;
+      border-color: #f7bcbc;
+    }
+
+    .pedal-brake:active, .pedal-brake.pressed {
+      background: #f8c2c2;
+    }
+
+    /* Gear Shift Lever */
+    .shifter-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 6px;
+      border: 3px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+      gap: 4px;
+      margin-bottom: 6px;
+      touch-action: none;
+    }
+
+    .gear-btn {
+      width: 44px;
+      height: 40px;
+      border-radius: 12px;
+      border: none;
+      font-size: 16px;
+      font-weight: 900;
+      color: #b2bec3;
+      background: transparent;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      touch-action: none;
+    }
+
+    .gear-btn.active {
+      background: var(--primary-gradient);
+      color: #ffffff;
+      box-shadow: 0 4px 10px rgba(9, 132, 227, 0.4);
+    }
+
+    /* Screen Overlays */
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(212, 226, 242, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .screen-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .menu-dialog {
+      width: min(500px, 94vw);
+      padding: 30px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .game-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: #e8f0fe;
+      border: 2px solid #ffffff;
+      color: var(--primary);
+      box-shadow: 4px 6px 12px rgba(160, 185, 215, 0.3);
+    }
+
+    .game-logo {
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 900;
+      color: #2d3436;
+      line-height: 1.1;
+    }
+
+    .menu-btn {
+      width: 100%;
+      max-width: 290px;
+      padding: 14px 22px;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 6px 10px 20px rgba(9, 132, 227, 0.35);
+      touch-action: manipulation;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 8px 14px 24px rgba(9, 132, 227, 0.45);
+    }
+
+    .menu-btn.btn-secondary {
+      background: #ffffff;
+      color: var(--text-dark);
+      box-shadow: var(--clay-shadow);
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      font-size: 13px;
+      background: #f1f6fc;
+      padding: 14px;
+      border-radius: 16px;
+      border: 2px solid #ffffff;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 2px solid #e1ebf7;
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--primary);
+    }
+
+    .stars-row {
+      font-size: 38px;
+      letter-spacing: 4px;
+      color: #ffd32a;
+      text-shadow: 0 4px 10px rgba(255, 211, 42, 0.4);
+    }
+
+    .level-select-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      width: 100%;
+    }
+
+    .level-card {
+      aspect-ratio: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      background: #ffffff;
+      border: 3px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+      font-weight: 900;
+      font-size: 16px;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .level-card.active {
+      background: var(--primary-gradient);
+      color: #fff;
+    }
+
+    @media (max-width: 650px) {
+      .controls-grid { grid-template-columns: 1fr; }
+      .parking-sensor-gauge { min-width: 190px; top: 62px; }
+      .hud-chip { padding: 4px 10px; font-size: 11px; }
+      .hud-chip span.val { font-size: 13px; }
+      .pedal-btn { width: 58px; height: 86px; }
+      .clay-touch-btn { width: 58px; height: 58px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Canvas Mount Point -->
+  <div id="canvas-container"></div>
+  <div id="damage-flash"></div>
+  <div id="park-toast">PERFECTLY PARKED!</div>
+
+  <!-- In-Game HUD -->
+  <div id="hud-layer">
+    <div class="hud-top">
+      <div class="hud-metrics">
+        <div class="hud-chip clay-box">
+          LVL <span id="hud-level" class="val">1</span>
+        </div>
+        <div class="hud-chip clay-box">
+          CRASH: <span id="hud-crashes" class="val" style="color: var(--accent-red);">0/3</span>
+        </div>
+        <div class="hud-chip clay-box">
+          <span id="hud-time" class="val">00:00</span>
+        </div>
+      </div>
+
+      <div class="hud-top-right">
+        <button id="btn-cam-switch" class="hud-btn" title="Camera View">🎥</button>
+        <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause-game" class="hud-btn" title="Menu">⏸</button>
+      </div>
+    </div>
+
+    <!-- Parking Proximity Radar & Alignment Indicator -->
+    <div class="parking-sensor-gauge">
+      <div class="sensor-meter-title">PARKING RADAR</div>
+      <div class="sensor-bars-row">
+        <div id="sensor-1" class="sensor-block"></div>
+        <div id="sensor-2" class="sensor-block"></div>
+        <div id="sensor-3" class="sensor-block"></div>
+        <div id="sensor-4" class="sensor-block"></div>
+        <div id="sensor-5" class="sensor-block"></div>
+      </div>
+      <div id="target-pill" class="target-status-pill">
+        <span>📍 SEEKING BAY</span>
+      </div>
+    </div>
+
+    <!-- On-Screen Steering & Pedals (Optimized for Mobile/Touch) -->
+    <div id="mobile-controls">
+      <!-- Steering Buttons -->
+      <div class="steering-group">
+        <div id="btn-touch-left" class="clay-touch-btn">◀<br/>LEFT</div>
+        <div id="btn-touch-right" class="clay-touch-btn">▶<br/>RIGHT</div>
+      </div>
+
+      <!-- Gear Shift Lever (D/R) -->
+      <div class="shifter-box">
+        <button id="btn-gear-d" class="gear-btn active">D</button>
+        <button id="btn-gear-r" class="gear-btn">R</button>
+      </div>
+
+      <!-- Pedals (Brake & Throttle) -->
+      <div class="pedal-group">
+        <div id="btn-touch-brake" class="clay-touch-btn pedal-btn pedal-brake">🛑<br/>BRAKE</div>
+        <div id="btn-touch-gas" class="clay-touch-btn pedal-btn pedal-gas">⚡<br/>GAS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Menu Screen -->
+  <div id="screen-main-menu" class="screen-overlay">
+    <div class="menu-dialog clay-box">
+      <div>
+        <div class="game-badge">3D DRIVING SIMULATOR • GAME #26</div>
+        <h1 class="game-logo">Car Parking 3D<br/>Master</h1>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 4px;">Precision bay, parallel & tight lot parking</p>
+      </div>
+
+      <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5; max-width: 380px;">
+        Maneuver smoothly, avoid curbs & luxury cars, listen to parking proximity sonar, and park inside the glowing bay!
+      </p>
+
+      <button id="btn-play-game" class="menu-btn">START PARKING</button>
+      <button id="btn-open-levels" class="menu-btn btn-secondary">SELECT LEVEL</button>
+      <button id="btn-open-controls" class="menu-btn btn-secondary">HOW TO PLAY</button>
+    </div>
+  </div>
+
+  <!-- Level Select Modal -->
+  <div id="screen-levels" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <h2 style="color: var(--text-dark);">PARKING CHALLENGES</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">Choose a parking scenario to tackle:</p>
+
+      <div class="level-select-grid">
+        <div class="level-card active" data-lvl="1">1<br/><span style="font-size:10px; font-weight:600;">EASY</span></div>
+        <div class="level-card" data-lvl="2">2<br/><span style="font-size:10px; font-weight:600;">REVERSE</span></div>
+        <div class="level-card" data-lvl="3">3<br/><span style="font-size:10px; font-weight:600;">PARALLEL</span></div>
+        <div class="level-card" data-lvl="4">4<br/><span style="font-size:10px; font-weight:600;">SLALOM</span></div>
+        <div class="level-card" data-lvl="5">5<br/><span style="font-size:10px; font-weight:600;">EXPERT</span></div>
+      </div>
+
+      <button id="btn-close-levels" class="menu-btn">RETURN</button>
+    </div>
+  </div>
+
+  <!-- Controls Manual Screen -->
+  <div id="screen-controls" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <h2 style="color: var(--text-dark);">DRIVING MANUAL</h2>
+
+      <div class="controls-grid">
+        <div class="control-row">
+          <span class="badge">W / ▲ / GAS</span>
+          <span>Drive Forward</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">S / ▼ / BRAKE</span>
+          <span>Brake / Stop</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">A / D / ◀ ▶</span>
+          <span>Steer Left / Right</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">R / Gear Btn</span>
+          <span>Toggle Reverse Gear</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">SPACE</span>
+          <span>Handbrake</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">🎥 / C</span>
+          <span>Switch Camera View</span>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: var(--text-muted); line-height: 1.5; text-align: left;">
+        &bull; <strong>Parking Radar:</strong> Beeps faster as you get closer to obstacles.<br/>
+        &bull; <strong>Alignment:</strong> Align car straight inside the green box to finish!<br/>
+        &bull; <strong>Collisions:</strong> 3 crashes will fail the parking license test.
+      </p>
+
+      <button id="btn-close-controls" class="menu-btn">GOT IT</button>
+    </div>
+  </div>
+
+  <!-- Level Success / Win Screen -->
+  <div id="screen-win" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <div class="stars-row">★★★</div>
+      <h2 style="color: var(--accent-green); font-size: 28px;">PARKING PERFECT!</h2>
+      <p style="color: var(--text-muted); font-size: 14px;">Vehicle safely and accurately secured inside the bay!</p>
+
+      <div style="background: #f1f6fc; padding: 14px 24px; border-radius: 16px; width: 100%; display: flex; justify-content: space-around;">
+        <div>TIME: <strong id="win-time" style="color: var(--primary);">00:15</strong></div>
+        <div>ACCURACY: <strong style="color: var(--accent-green);">98%</strong></div>
+      </div>
+
+      <button id="btn-next-level" class="menu-btn">NEXT CHALLENGE ▶</button>
+      <button id="btn-replay-level" class="menu-btn btn-secondary">RETRY LEVEL</button>
+      <button id="btn-win-menu" class="menu-btn btn-secondary">MAIN MENU</button>
+    </div>
+  </div>
+
+  <!-- Level Failed Screen -->
+  <div id="screen-fail" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <div style="font-size: 40px;">💥</div>
+      <h2 style="color: var(--accent-red); font-size: 26px;">TOO MANY CRASHES!</h2>
+      <p style="color: var(--text-muted); font-size: 14px;">The vehicle exceeded allowed collision limits (3/3).</p>
+
+      <button id="btn-retry-failed" class="menu-btn">TRY AGAIN</button>
+      <button id="btn-fail-menu" class="menu-btn btn-secondary">MAIN MENU</button>
+    </div>
+  </div>
+
+  <!-- GAME JAVASCRIPT -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================================
+       1. PROCEDURAL SOUND SYNTHESIZER
+       ========================================================================== */
+    class ParkingAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        this.engineOsc = null;
+        this.engineGain = null;
+        this.engineFilter = null;
+        this.lastSensorBeepTime = 0;
+      }
+
+      init() {
+        if (this.ctx) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          return;
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        this.ctx = new AudioCtx();
+
+        this.engineOsc = this.ctx.createOscillator();
+        this.engineOsc.type = 'triangle';
+        this.engineOsc.frequency.setValueAtTime(38, this.ctx.currentTime);
+
+        this.engineFilter = this.ctx.createBiquadFilter();
+        this.engineFilter.type = 'lowpass';
+        this.engineFilter.frequency.setValueAtTime(140, this.ctx.currentTime);
+
+        this.engineGain = this.ctx.createGain();
+        this.engineGain.gain.setValueAtTime(0.04, this.ctx.currentTime);
+
+        this.engineOsc.connect(this.engineFilter);
+        this.engineFilter.connect(this.engineGain);
+        this.engineGain.connect(this.ctx.destination);
+        this.engineOsc.start();
+      }
+
+      updateEngine(speedRatio, isAccelerating) {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const baseFreq = 38 + Math.abs(speedRatio) * 60 + (isAccelerating ? 25 : 0);
+        this.engineOsc.frequency.setTargetAtTime(baseFreq, now, 0.08);
+        this.engineFilter.frequency.setTargetAtTime(120 + Math.abs(speedRatio) * 200, now, 0.08);
+      }
+
+      playGearClick() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(520, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + 0.06);
+        gain.gain.setValueAtTime(0.12, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.08);
+      }
+
+      playSensorBeep(urgency) {
+        if (!this.ctx || this.muted || urgency <= 0.15) return;
+        const now = performance.now();
+        const interval = Math.max(90, 600 * (1 - urgency));
+        if (now - this.lastSensorBeepTime > interval) {
+          this.lastSensorBeepTime = now;
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(urgency > 0.8 ? 1600 : 1200, this.ctx.currentTime);
+          gain.gain.setValueAtTime(0.1, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.06);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.07);
+        }
+      }
+
+      playCrash() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.35;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.25));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(450, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
+      playWinFanfare() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.26);
+        });
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        if (this.engineGain && this.ctx) {
+          this.engineGain.gain.setValueAtTime(this.muted ? 0 : 0.04, this.ctx.currentTime);
+        }
+        return this.muted;
+      }
+    }
+
+    const sound = new ParkingAudio();
+
+    /* ==========================================================================
+       2. THREE.JS SCENE SETUP & LIGHTING
+       ========================================================================== */
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0xd4e2f2);
+    scene.fog = new THREE.FogExp2(0xd4e2f2, 0.012);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 500);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.1;
+    container.appendChild(renderer.domElement);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0xb8c9dc, 1.0);
+    scene.add(hemiLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.3);
+    dirLight.position.set(45, 65, 35);
+    dirLight.castShadow = true;
+    dirLight.shadow.mapSize.width = 2048;
+    dirLight.shadow.mapSize.height = 2048;
+    dirLight.shadow.camera.near = 10;
+    dirLight.shadow.camera.far = 170;
+    const shadowDist = 45;
+    dirLight.shadow.camera.left = -shadowDist;
+    dirLight.shadow.camera.right = shadowDist;
+    dirLight.shadow.camera.top = shadowDist;
+    dirLight.shadow.camera.bottom = -shadowDist;
+    scene.add(dirLight);
+
+    /* ==========================================================================
+       3. ENHANCED CAR MODEL WITH HEADLIGHT BEAMS & PARTICLES
+       ========================================================================== */
+    function createCar() {
+      const car = new THREE.Group();
+
+      // Lower Body with clay bevel
+      const bodyMat = new THREE.MeshStandardMaterial({
+        color: 0x0984e3,
+        roughness: 0.35,
+        metalness: 0.35
+      });
+      const bodyGeo = new THREE.BoxGeometry(2.1, 0.65, 4.4);
+      const bodyMesh = new THREE.Mesh(bodyGeo, bodyMat);
+      bodyMesh.position.y = 0.65;
+      bodyMesh.castShadow = true;
+      bodyMesh.receiveShadow = true;
+      car.add(bodyMesh);
+
+      // Cabin / Roof
+      const cabinGeo = new THREE.BoxGeometry(1.65, 0.55, 2.3);
+      const cabinMat = new THREE.MeshStandardMaterial({
+        color: 0x222a35,
+        roughness: 0.1,
+        metalness: 0.8
+      });
+      const cabinMesh = new THREE.Mesh(cabinGeo, cabinMat);
+      cabinMesh.position.set(0, 1.15, -0.2);
+      cabinMesh.castShadow = true;
+      car.add(cabinMesh);
+
+      // Windows
+      const winMat = new THREE.MeshStandardMaterial({
+        color: 0x74b9ff,
+        roughness: 0.05,
+        metalness: 0.9,
+        transparent: true,
+        opacity: 0.85
+      });
+      const frontWin = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 0.4), winMat);
+      frontWin.position.set(0, 1.15, -1.36);
+      frontWin.rotation.y = Math.PI;
+      car.add(frontWin);
+
+      const rearWin = new THREE.Mesh(new THREE.PlaneGeometry(1.4, 0.4), winMat);
+      rearWin.position.set(0, 1.15, 0.96);
+      car.add(rearWin);
+
+      // Headlights & Light Cones
+      const headMat = new THREE.MeshBasicMaterial({ color: 0xfff9e6 });
+      const leftHead = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), headMat);
+      leftHead.position.set(-0.75, 0.65, -2.22);
+      const rightHead = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), headMat);
+      rightHead.position.set(0.75, 0.65, -2.22);
+      car.add(leftHead, rightHead);
+
+      // Projective Light Beam on the ground ahead of the car
+      const beamGeo = new THREE.PlaneGeometry(3.5, 9.0);
+      beamGeo.rotateX(-Math.PI / 2);
+      const beamMat = new THREE.MeshBasicMaterial({
+        color: 0xfffae0,
+        transparent: true,
+        opacity: 0.15,
+        depthWrite: false
+      });
+      const lightBeam = new THREE.Mesh(beamGeo, beamMat);
+      lightBeam.position.set(0, 0.04, -6.5);
+      car.add(lightBeam);
+
+      // Taillights
+      const tailMat = new THREE.MeshBasicMaterial({ color: 0xd63031 });
+      const leftTail = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
+      leftTail.position.set(-0.75, 0.65, 2.22);
+      const rightTail = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
+      rightTail.position.set(0.75, 0.65, 2.22);
+      car.add(leftTail, rightTail);
+      car.tailLights = [leftTail, rightTail];
+
+      // Wheels
+      const wheelGeo = new THREE.CylinderGeometry(0.38, 0.38, 0.28, 16);
+      wheelGeo.rotateZ(Math.PI / 2);
+      const wheelMat = new THREE.MeshStandardMaterial({ color: 0x1e272e, roughness: 0.8 });
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xdfe6e9, metalness: 0.8, roughness: 0.2 });
+
+      car.frontWheels = [];
+      car.rearWheels = [];
+
+      const wheelPositions = [
+        { x: -1.05, y: 0.38, z: -1.3, front: true },
+        { x: 1.05, y: 0.38, z: -1.3, front: true },
+        { x: -1.05, y: 0.38, z: 1.3, front: false },
+        { x: 1.05, y: 0.38, z: 1.3, front: false }
+      ];
+
+      wheelPositions.forEach(pos => {
+        const pivot = new THREE.Group();
+        pivot.position.set(pos.x, pos.y, pos.z);
+
+        const wMesh = new THREE.Mesh(wheelGeo, wheelMat);
+        wMesh.castShadow = true;
+        const rim = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.3, 10), rimMat);
+        rim.rotateZ(Math.PI / 2);
+
+        pivot.add(wMesh, rim);
+        car.add(pivot);
+
+        if (pos.front) car.frontWheels.push(pivot);
+        else car.rearWheels.push(pivot);
+      });
+
+      // Side mirrors
+      const mirrorMat = new THREE.MeshStandardMaterial({ color: 0x0984e3 });
+      const leftMirror = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.12, 0.15), mirrorMat);
+      leftMirror.position.set(-1.18, 0.95, -0.6);
+      const rightMirror = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.12, 0.15), mirrorMat);
+      rightMirror.position.set(1.18, 0.95, -0.6);
+      car.add(leftMirror, rightMirror);
+
+      return car;
+    }
+
+    const playerCar = createCar();
+    scene.add(playerCar);
+
+    /* ==========================================================================
+       4. DETAILED PARKING LOT SCENERY & PROPS
+       ========================================================================== */
+    const lotGroup = new THREE.Group();
+    scene.add(lotGroup);
+
+    let colliders = [];
+    let targetBay = { x: 0, z: 0, angle: 0, width: 2.6, length: 5.0 };
+    let parkingTargetMesh = null;
+
+    const groundMat = new THREE.MeshStandardMaterial({ color: 0x343a40, roughness: 0.85 });
+    const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const curbMat = new THREE.MeshStandardMaterial({ color: 0xced6e0, roughness: 0.8 });
+    const stopperMat = new THREE.MeshStandardMaterial({ color: 0xf1f2f6, roughness: 0.7 });
+
+    function createGround() {
+      const gGeo = new THREE.PlaneGeometry(160, 160);
+      gGeo.rotateX(-Math.PI / 2);
+      const ground = new THREE.Mesh(gGeo, groundMat);
+      ground.receiveShadow = true;
+      lotGroup.add(ground);
+
+      // Road markings (lane dashes & arrows)
+      for (let z = -40; z <= 40; z += 14) {
+        const arrow = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 3.0), lineMat);
+        arrow.rotation.x = -Math.PI / 2;
+        arrow.position.set(0, 0.02, z);
+        lotGroup.add(arrow);
+      }
+    }
+    createGround();
+
+    // Lampposts with warm glowing lamp heads
+    function createLamppost(x, z) {
+      const poleGeo = new THREE.CylinderGeometry(0.12, 0.14, 8.5, 8);
+      const poleMat = new THREE.MeshStandardMaterial({ color: 0x4b6584, roughness: 0.5 });
+      const pole = new THREE.Mesh(poleGeo, poleMat);
+      pole.position.set(x, 4.25, z);
+      pole.castShadow = true;
+      lotGroup.add(pole);
+
+      const lampHead = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.6), new THREE.MeshStandardMaterial({ color: 0x2f3542 }));
+      lampHead.position.set(x, 8.4, z);
+      lotGroup.add(lampHead);
+
+      const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), new THREE.MeshBasicMaterial({ color: 0xfffae0 }));
+      bulb.position.set(x, 8.2, z);
+      lotGroup.add(bulb);
+    }
+
+    // Potted Palm / Decorative Bush
+    function createPlanterBush(x, z) {
+      const pot = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.5, 0.8, 8), new THREE.MeshStandardMaterial({ color: 0xdfe4ea }));
+      pot.position.set(x, 0.4, z);
+      pot.castShadow = true;
+      lotGroup.add(pot);
+
+      const bushMat = new THREE.MeshStandardMaterial({ color: 0x2ed573, roughness: 0.8 });
+      for (let i = 0; i < 3; i++) {
+        const leaf = new THREE.Mesh(new THREE.SphereGeometry(0.55 - i * 0.1, 7, 7), bushMat);
+        leaf.position.set(x + (i === 1 ? 0.2 : -0.2), 0.9 + i * 0.35, z);
+        leaf.castShadow = true;
+        lotGroup.add(leaf);
+      }
+    }
+
+    function createParkedCar(x, z, angle, colorHex) {
+      const car = createCar();
+      car.children[0].material = new THREE.MeshStandardMaterial({ color: colorHex, roughness: 0.35 });
+      car.position.set(x, 0, z);
+      car.rotation.y = angle;
+      lotGroup.add(car);
+
+      colliders.push({
+        type: 'car',
+        x: x,
+        z: z,
+        radius: 2.2,
+        halfW: 1.15,
+        halfL: 2.3,
+        angle: angle
+      });
+    }
+
+    function createCurb(x, z, width, length) {
+      const curbGeo = new THREE.BoxGeometry(width, 0.4, length);
+      const curb = new THREE.Mesh(curbGeo, curbMat);
+      curb.position.set(x, 0.2, z);
+      curb.castShadow = true;
+      curb.receiveShadow = true;
+      lotGroup.add(curb);
+
+      colliders.push({
+        type: 'curb',
+        x: x,
+        z: z,
+        halfW: width / 2,
+        halfL: length / 2
+      });
+    }
+
+    // Concrete Wheel Stopper
+    function createWheelStopper(x, z, angle) {
+      const stopper = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.2, 0.3), stopperMat);
+      stopper.position.set(x, 0.1, z);
+      stopper.rotation.y = angle;
+      stopper.castShadow = true;
+      lotGroup.add(stopper);
+
+      colliders.push({
+        type: 'curb',
+        x: x,
+        z: z,
+        halfW: 0.9,
+        halfL: 0.25
+      });
+    }
+
+    function createTargetBayIndicator(x, z, angle) {
+      if (parkingTargetMesh) lotGroup.remove(parkingTargetMesh);
+
+      const group = new THREE.Group();
+      group.position.set(x, 0.05, z);
+      group.rotation.y = angle;
+
+      const borderMat = new THREE.MeshBasicMaterial({ color: 0x00b894 });
+      const w = 2.6;
+      const l = 5.2;
+
+      const lineLeft = new THREE.Mesh(new THREE.PlaneGeometry(0.2, l), borderMat);
+      lineLeft.rotation.x = -Math.PI / 2;
+      lineLeft.position.set(-w / 2, 0, 0);
+
+      const lineRight = new THREE.Mesh(new THREE.PlaneGeometry(0.2, l), borderMat);
+      lineRight.rotation.x = -Math.PI / 2;
+      lineRight.position.set(w / 2, 0, 0);
+
+      const lineBack = new THREE.Mesh(new THREE.PlaneGeometry(w, 0.2), borderMat);
+      lineBack.rotation.x = -Math.PI / 2;
+      lineBack.position.set(0, 0, l / 2);
+
+      const floorGlowMat = new THREE.MeshBasicMaterial({
+        color: 0x00b894,
+        transparent: true,
+        opacity: 0.22,
+        side: THREE.DoubleSide
+      });
+      const floorGlow = new THREE.Mesh(new THREE.PlaneGeometry(w, l), floorGlowMat);
+      floorGlow.rotation.x = -Math.PI / 2;
+
+      group.add(lineLeft, lineRight, lineBack, floorGlow);
+      lotGroup.add(group);
+      parkingTargetMesh = group;
+
+      targetBay = { x, z, angle, width: w, length: l };
+    }
+
+    /* ==========================================================================
+       5. LEVEL DEFINITIONS
+       ========================================================================== */
+    const LEVELS = [
+      {
+        name: 'Bay Parking 101',
+        spawn: { x: 0, z: 20, angle: Math.PI },
+        target: { x: 0, z: -4, angle: 0 },
+        setup: () => {
+          createCurb(-20, -4, 1, 26);
+          createCurb(20, -4, 1, 26);
+          createCurb(0, -9, 40, 1);
+          createLamppost(-10, -8);
+          createLamppost(10, -8);
+          createPlanterBush(-15, -7.5);
+          createPlanterBush(15, -7.5);
+          createWheelStopper(0, -6.2, 0);
+          createParkedCar(-3.3, -4, 0, 0xd63031);
+          createParkedCar(3.3, -4, 0, 0xfdcb6e);
+        }
+      },
+      {
+        name: 'Reverse Bay Master',
+        spawn: { x: 12, z: 9, angle: -Math.PI / 2 },
+        target: { x: -3.5, z: -5, angle: 0 },
+        setup: () => {
+          createCurb(0, -9.5, 42, 1);
+          createCurb(0, 19, 42, 1);
+          createLamppost(-12, 18);
+          createPlanterBush(6, 18);
+          createWheelStopper(-3.5, -7.2, 0);
+          createParkedCar(-7.2, -5, 0, 0x6c5ce7);
+          createParkedCar(0.2, -5, 0, 0x00b894);
+        }
+      },
+      {
+        name: 'Parallel Street Parking',
+        spawn: { x: 4.8, z: 14, angle: Math.PI },
+        target: { x: 0, z: 0, angle: Math.PI },
+        setup: () => {
+          createCurb(-3.2, 0, 0.8, 38);
+          createCurb(9.5, 0, 0.8, 38);
+          createLamppost(-2.5, -12);
+          createLamppost(-2.5, 12);
+          createPlanterBush(-2.5, 0);
+          createParkedCar(0, -7.2, Math.PI, 0x2d3436);
+          createParkedCar(0, 7.2, Math.PI, 0xe17055);
+        }
+      },
+      {
+        name: 'S-Curve Slalom Lot',
+        spawn: { x: -12, z: 24, angle: Math.PI },
+        target: { x: 10, z: -6, angle: 0 },
+        setup: () => {
+          createCurb(0, -11, 46, 1);
+          createCurb(-18, 10, 1, 30);
+          createCurb(20, 10, 1, 30);
+          createCurb(-2, 12, 16, 2);
+          createCurb(6, 0, 14, 2);
+          createLamppost(6, -10);
+          createPlanterBush(17, -9.5);
+          createWheelStopper(10, -8.2, 0);
+          createParkedCar(6.6, -6, 0, 0xd63031);
+          createParkedCar(13.4, -6, 0, 0x0984e3);
+        }
+      },
+      {
+        name: 'Rooftop Parking Pro',
+        spawn: { x: -10, z: 22, angle: -Math.PI / 4 },
+        target: { x: 0, z: 0, angle: -Math.PI / 2 },
+        setup: () => {
+          createCurb(0, -14, 40, 1);
+          createCurb(0, 26, 40, 1);
+          createCurb(-18, 6, 1, 42);
+          createCurb(18, 6, 1, 42);
+          createLamppost(-12, -13);
+          createLamppost(12, -13);
+          createWheelStopper(-2.2, 0, -Math.PI / 2);
+          createParkedCar(0, 3.8, -Math.PI / 2, 0xd63031);
+          createParkedCar(0, -3.8, -Math.PI / 2, 0xfdcb6e);
+        }
+      }
+    ];
+
+    let currentLevelIndex = 0;
+
+    function loadLevel(index) {
+      currentLevelIndex = index;
+      const lvl = LEVELS[index];
+
+      while (lotGroup.children.length > 1) {
+        lotGroup.remove(lotGroup.children[1]);
+      }
+      colliders = [];
+
+      lvl.setup();
+      createTargetBayIndicator(lvl.target.x, lvl.target.z, lvl.target.angle);
+
+      playerCar.position.set(lvl.spawn.x, 0, lvl.spawn.z);
+      playerCar.rotation.y = lvl.spawn.angle;
+
+      carPhysics.speed = 0;
+      carPhysics.steerAngle = 0;
+      carPhysics.gear = 'D';
+      carPhysics.crashes = 0;
+      carPhysics.parkTime = 0;
+      carPhysics.isParked = false;
+
+      updateGearUI();
+      document.getElementById('hud-level').innerText = index + 1;
+      document.getElementById('hud-crashes').innerText = `0/3`;
+    }
+
+    /* ==========================================================================
+       6. VEHICLE PHYSICS
+       ========================================================================== */
+    const carPhysics = {
+      speed: 0,
+      maxForwardSpeed: 10.5,
+      maxReverseSpeed: 5.2,
+      accel: 11.5,
+      brakeDecel: 19.0,
+      friction: 6.8,
+      steerAngle: 0,
+      maxSteer: 0.55,
+      steerSpeed: 2.3,
+      gear: 'D',
+      crashes: 0,
+      parkTime: 0,
+      isParked: false,
+      settledInBayTimer: 0
+    };
+
+    const input = {
+      gas: false,
+      brake: false,
+      steerLeft: false,
+      steerRight: false,
+      handbrake: false
+    };
+
+    function updateCarPhysics(delta) {
+      if (carPhysics.isParked) return;
+
+      carPhysics.parkTime += delta;
+      const minutes = Math.floor(carPhysics.parkTime / 60);
+      const seconds = Math.floor(carPhysics.parkTime % 60);
+      document.getElementById('hud-time').innerText = 
+        `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+      let targetSteer = 0;
+      if (input.steerLeft) targetSteer += carPhysics.maxSteer;
+      if (input.steerRight) targetSteer -= carPhysics.maxSteer;
+
+      carPhysics.steerAngle = THREE.MathUtils.lerp(carPhysics.steerAngle, targetSteer, delta * carPhysics.steerSpeed * 3);
+
+      playerCar.frontWheels.forEach(w => {
+        w.rotation.y = carPhysics.steerAngle;
+      });
+
+      const isReverse = carPhysics.gear === 'R';
+      let isAccelerating = false;
+
+      if (input.gas) {
+        isAccelerating = true;
+        carPhysics.speed = THREE.MathUtils.clamp(
+          carPhysics.speed + (isReverse ? -1 : 1) * carPhysics.accel * delta,
+          -carPhysics.maxReverseSpeed,
+          carPhysics.maxForwardSpeed
+        );
+      } else if (input.brake || input.handbrake) {
+        const decel = (input.handbrake ? carPhysics.brakeDecel * 1.5 : carPhysics.brakeDecel) * delta;
+        if (Math.abs(carPhysics.speed) <= decel) {
+          carPhysics.speed = 0;
+        } else {
+          carPhysics.speed -= Math.sign(carPhysics.speed) * decel;
+        }
+      } else {
+        const f = carPhysics.friction * delta;
+        if (Math.abs(carPhysics.speed) <= f) {
+          carPhysics.speed = 0;
+        } else {
+          carPhysics.speed -= Math.sign(carPhysics.speed) * f;
+        }
+      }
+
+      const lightsOn = input.brake || isReverse;
+      playerCar.tailLights.forEach(tl => {
+        tl.material.color.setHex(lightsOn ? 0xff0044 : 0x440011);
+      });
+
+      const wheelbase = 2.6;
+      if (Math.abs(carPhysics.speed) > 0.05) {
+        const turnRadius = wheelbase / Math.sin(carPhysics.steerAngle || 0.0001);
+        const angularVelocity = (carPhysics.speed / turnRadius);
+        playerCar.rotation.y += angularVelocity * delta;
+      }
+
+      const heading = playerCar.rotation.y;
+      const forwardX = Math.sin(heading);
+      const forwardZ = Math.cos(heading);
+
+      const nextX = playerCar.position.x - forwardX * (carPhysics.speed * delta);
+      const nextZ = playerCar.position.z - forwardZ * (carPhysics.speed * delta);
+
+      let collided = false;
+      const carRadius = 1.6;
+
+      for (let i = 0; i < colliders.length; i++) {
+        const c = colliders[i];
+        if (c.type === 'car') {
+          const dist = Math.hypot(nextX - c.x, nextZ - c.z);
+          if (dist < carRadius + 1.2) {
+            collided = true;
+            break;
+          }
+        } else if (c.type === 'curb') {
+          const nearestX = THREE.MathUtils.clamp(nextX, c.x - c.halfW, c.x + c.halfW);
+          const nearestZ = THREE.MathUtils.clamp(nextZ, c.z - c.halfL, c.z + c.halfL);
+          const dist = Math.hypot(nextX - nearestX, nextZ - nearestZ);
+          if (dist < 1.05) {
+            collided = true;
+            break;
+          }
+        }
+      }
+
+      if (collided) {
+        handleCollision();
+        carPhysics.speed = -carPhysics.speed * 0.4;
+      } else {
+        playerCar.position.x = nextX;
+        playerCar.position.z = nextZ;
+      }
+
+      const roll = (carPhysics.speed * delta * 2.5);
+      playerCar.frontWheels.forEach(w => { w.children[0].rotation.x += roll; });
+      playerCar.rearWheels.forEach(w => { w.children[0].rotation.x += roll; });
+
+      sound.updateEngine(carPhysics.speed / carPhysics.maxForwardSpeed, isAccelerating);
+      checkParkingRadarAndAlignment();
+    }
+
+    /* ==========================================================================
+       7. PARKING RADAR & ACCURACY
+       ========================================================================== */
+    function checkParkingRadarAndAlignment() {
+      let minObstacleDist = 999;
+      colliders.forEach(c => {
+        let d = 999;
+        if (c.type === 'car') {
+          d = Math.hypot(playerCar.position.x - c.x, playerCar.position.z - c.z) - 2.4;
+        } else if (c.type === 'curb') {
+          const nearestX = THREE.MathUtils.clamp(playerCar.position.x, c.x - c.halfW, c.x + c.halfW);
+          const nearestZ = THREE.MathUtils.clamp(playerCar.position.z, c.z - c.halfL, c.z + c.halfL);
+          d = Math.hypot(playerCar.position.x - nearestX, playerCar.position.z - nearestZ) - 1.1;
+        }
+        if (d < minObstacleDist) minObstacleDist = d;
+      });
+
+      const urgency = THREE.MathUtils.clamp(1.0 - (minObstacleDist / 5.0), 0, 1);
+      sound.playSensorBeep(urgency);
+
+      const bars = [
+        document.getElementById('sensor-1'),
+        document.getElementById('sensor-2'),
+        document.getElementById('sensor-3'),
+        document.getElementById('sensor-4'),
+        document.getElementById('sensor-5')
+      ];
+
+      bars.forEach((b, i) => {
+        b.className = 'sensor-block';
+        if (urgency > i * 0.2) {
+          if (i >= 4) b.classList.add('red');
+          else if (i >= 2) b.classList.add('yellow');
+          else b.classList.add('green');
+        }
+      });
+
+      const distToBay = Math.hypot(playerCar.position.x - targetBay.x, playerCar.position.z - targetBay.z);
+      
+      let angleDiff = Math.abs((playerCar.rotation.y - targetBay.angle) % (Math.PI * 2));
+      if (angleDiff > Math.PI) angleDiff = 2 * Math.PI - angleDiff;
+      let reverseAngleDiff = Math.abs(angleDiff - Math.PI);
+      const isAngleGood = Math.min(angleDiff, reverseAngleDiff) < 0.25;
+
+      const pill = document.getElementById('target-pill');
+
+      if (distToBay < 1.1 && isAngleGood) {
+        pill.classList.add('aligned');
+        pill.innerHTML = '<span>✅ ACCURATELY ALIGNED</span>';
+
+        if (Math.abs(carPhysics.speed) < 0.25) {
+          carPhysics.settledInBayTimer += 0.05;
+          if (carPhysics.settledInBayTimer >= 1.2) {
+            triggerLevelSuccess();
+          }
+        } else {
+          carPhysics.settledInBayTimer = 0;
+        }
+      } else {
+        pill.classList.remove('aligned');
+        pill.innerHTML = `<span>📍 DISTANCE: ${distToBay.toFixed(1)}M</span>`;
+        carPhysics.settledInBayTimer = 0;
+      }
+    }
+
+    function handleCollision() {
+      sound.playCrash();
+      const flash = document.getElementById('damage-flash');
+      flash.style.opacity = '1';
+      setTimeout(() => { flash.style.opacity = '0'; }, 150);
+
+      carPhysics.crashes++;
+      document.getElementById('hud-crashes').innerText = `${carPhysics.crashes}/3`;
+
+      if (carPhysics.crashes >= 3) {
+        triggerLevelFailed();
+      }
+    }
+
+    function triggerLevelSuccess() {
+      carPhysics.isParked = true;
+      sound.playWinFanfare();
+
+      const toast = document.getElementById('park-toast');
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, -50%) scale(1.1)';
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        document.getElementById('win-time').innerText = document.getElementById('hud-time').innerText;
+        document.getElementById('screen-win').classList.remove('hidden');
+      }, 1000);
+    }
+
+    function triggerLevelFailed() {
+      carPhysics.isParked = true;
+      setTimeout(() => {
+        document.getElementById('screen-fail').classList.remove('hidden');
+      }, 400);
+    }
+
+    /* ==========================================================================
+       8. CAMERA VIEWS
+       ========================================================================== */
+    const CAM_MODES = { CHASE: 'CHASE', TOP: 'TOP' };
+    let currentCamMode = CAM_MODES.CHASE;
+
+    function updateCamera(delta) {
+      if (currentCamMode === CAM_MODES.CHASE) {
+        const offsetDist = 8.5;
+        const offsetHeight = 4.2;
+        const targetX = playerCar.position.x + Math.sin(playerCar.rotation.y) * offsetDist;
+        const targetZ = playerCar.position.z + Math.cos(playerCar.rotation.y) * offsetDist;
+
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetX, delta * 5);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, playerCar.position.y + offsetHeight, delta * 5);
+        camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetZ, delta * 5);
+
+        camera.lookAt(playerCar.position.x, playerCar.position.y + 0.8, playerCar.position.z);
+      } else if (currentCamMode === CAM_MODES.TOP) {
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, playerCar.position.x, delta * 6);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, 22.0, delta * 6);
+        camera.position.z = THREE.MathUtils.lerp(camera.position.z, playerCar.position.z + 0.1, delta * 6);
+        camera.lookAt(playerCar.position.x, 0, playerCar.position.z);
+      }
+    }
+
+    /* ==========================================================================
+       9. INPUT CONTROLS & TOUCH ENGINE
+       ========================================================================== */
+    function setGear(g) {
+      if (carPhysics.gear !== g) {
+        carPhysics.gear = g;
+        sound.playGearClick();
+        updateGearUI();
+      }
+    }
+
+    function updateGearUI() {
+      document.getElementById('btn-gear-d').classList.toggle('active', carPhysics.gear === 'D');
+      document.getElementById('btn-gear-r').classList.toggle('active', carPhysics.gear === 'R');
+    }
+
+    window.addEventListener('keydown', (e) => {
+      sound.init();
+      switch (e.code) {
+        case 'KeyW':
+        case 'ArrowUp':
+          input.gas = true;
+          break;
+        case 'KeyS':
+        case 'ArrowDown':
+          input.brake = true;
+          break;
+        case 'KeyA':
+        case 'ArrowLeft':
+          input.steerLeft = true;
+          break;
+        case 'KeyD':
+        case 'ArrowRight':
+          input.steerRight = true;
+          break;
+        case 'Space':
+          e.preventDefault();
+          input.handbrake = true;
+          break;
+        case 'KeyR':
+          setGear(carPhysics.gear === 'D' ? 'R' : 'D');
+          break;
+        case 'KeyC':
+          currentCamMode = currentCamMode === CAM_MODES.CHASE ? CAM_MODES.TOP : CAM_MODES.CHASE;
+          break;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      switch (e.code) {
+        case 'KeyW':
+        case 'ArrowUp':
+          input.gas = false;
+          break;
+        case 'KeyS':
+        case 'ArrowDown':
+          input.brake = false;
+          break;
+        case 'KeyA':
+        case 'ArrowLeft':
+          input.steerLeft = false;
+          break;
+        case 'KeyD':
+        case 'ArrowRight':
+          input.steerRight = false;
+          break;
+        case 'Space':
+          input.handbrake = false;
+          break;
+      }
+    });
+
+    // Touch bindings with zero-lag touch-action manipulation
+    function bindTouch(id, onStart, onEnd) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+
+      const handleStart = (e) => {
+        if (e.cancelable) e.preventDefault();
+        sound.init();
+        btn.classList.add('pressed');
+        if (onStart) onStart();
+      };
+
+      const handleEnd = (e) => {
+        if (e.cancelable) e.preventDefault();
+        btn.classList.remove('pressed');
+        if (onEnd) onEnd();
+      };
+
+      btn.addEventListener('touchstart', handleStart, { passive: false });
+      btn.addEventListener('touchend', handleEnd, { passive: false });
+      btn.addEventListener('touchcancel', handleEnd, { passive: false });
+
+      btn.addEventListener('mousedown', handleStart);
+      btn.addEventListener('mouseup', handleEnd);
+      btn.addEventListener('mouseleave', handleEnd);
+    }
+
+    bindTouch('btn-touch-left', () => { input.steerLeft = true; }, () => { input.steerLeft = false; });
+    bindTouch('btn-touch-right', () => { input.steerRight = true; }, () => { input.steerRight = false; });
+    bindTouch('btn-touch-gas', () => { input.gas = true; }, () => { input.gas = false; });
+    bindTouch('btn-touch-brake', () => { input.brake = true; }, () => { input.brake = false; });
+
+    document.getElementById('btn-gear-d').addEventListener('click', () => setGear('D'));
+    document.getElementById('btn-gear-r').addEventListener('click', () => setGear('R'));
+
+    document.getElementById('btn-cam-switch').addEventListener('click', () => {
+      sound.init();
+      currentCamMode = currentCamMode === CAM_MODES.CHASE ? CAM_MODES.TOP : CAM_MODES.CHASE;
+    });
+
+    document.getElementById('btn-audio-toggle').addEventListener('click', () => {
+      sound.init();
+      const isMuted = sound.toggleMute();
+      document.getElementById('btn-audio-toggle').innerText = isMuted ? '🔇' : '🔊';
+    });
+
+    /* ==========================================================================
+       10. UI & SCREEN TRANSITIONS
+       ========================================================================== */
+    const screenMainMenu = document.getElementById('screen-main-menu');
+    const screenLevels = document.getElementById('screen-levels');
+    const screenControls = document.getElementById('screen-controls');
+    const screenWin = document.getElementById('screen-win');
+    const screenFail = document.getElementById('screen-fail');
+    const hudLayer = document.getElementById('hud-layer');
+
+    function startGame(lvlIndex = 0) {
+      sound.init();
+      loadLevel(lvlIndex);
+      screenMainMenu.classList.add('hidden');
+      screenLevels.classList.add('hidden');
+      screenControls.classList.add('hidden');
+      screenWin.classList.add('hidden');
+      screenFail.classList.add('hidden');
+      hudLayer.style.display = 'flex';
+    }
+
+    document.getElementById('btn-play-game').addEventListener('click', () => startGame(0));
+    document.getElementById('btn-open-levels').addEventListener('click', () => {
+      screenLevels.classList.remove('hidden');
+    });
+    document.getElementById('btn-close-levels').addEventListener('click', () => {
+      screenLevels.classList.add('hidden');
+    });
+    document.getElementById('btn-open-controls').addEventListener('click', () => {
+      screenControls.classList.remove('hidden');
+    });
+    document.getElementById('btn-close-controls').addEventListener('click', () => {
+      screenControls.classList.add('hidden');
+    });
+
+    document.querySelectorAll('.level-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const lvl = parseInt(card.dataset.lvl, 10) - 1;
+        document.querySelectorAll('.level-card').forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+        startGame(lvl);
+      });
+    });
+
+    document.getElementById('btn-next-level').addEventListener('click', () => {
+      const nextLvl = (currentLevelIndex + 1) % LEVELS.length;
+      startGame(nextLvl);
+    });
+    document.getElementById('btn-replay-level').addEventListener('click', () => startGame(currentLevelIndex));
+    document.getElementById('btn-retry-failed').addEventListener('click', () => startGame(currentLevelIndex));
+
+    document.getElementById('btn-win-menu').addEventListener('click', () => {
+      screenWin.classList.add('hidden');
+      hudLayer.style.display = 'none';
+      screenMainMenu.classList.remove('hidden');
+    });
+    document.getElementById('btn-fail-menu').addEventListener('click', () => {
+      screenFail.classList.add('hidden');
+      hudLayer.style.display = 'none';
+      screenMainMenu.classList.remove('hidden');
+    });
+
+    document.getElementById('btn-pause-game').addEventListener('click', () => {
+      hudLayer.style.display = 'none';
+      screenMainMenu.classList.remove('hidden');
+    });
+
+    /* ==========================================================================
+       11. MAIN LOOP & RESIZE
+       ========================================================================== */
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
+
+      updateCarPhysics(delta);
+      updateCamera(delta);
+
+      renderer.render(scene, camera);
+    }
+
+    loadLevel(0);
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+  })();
+  </script>
+</body>
+</html>

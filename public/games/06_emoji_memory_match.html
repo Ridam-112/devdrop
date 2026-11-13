@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Emoji Memory Match - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 16px;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      padding: 24px;
+      border: 4px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hud {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 18px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    /* Grid & 3D Clay Cards */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      width: 100%;
+      perspective: 1000px;
+    }
+    .card {
+      aspect-ratio: 1;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+    }
+    .card.flipped {
+      transform: rotateY(180deg);
+    }
+    .card-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 20px;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #ffffff;
+    }
+    .card-front {
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      box-shadow: 6px 8px 16px rgba(9, 132, 227, 0.3), inset 3px 3px 6px rgba(255, 255, 255, 0.6), inset -3px -3px 6px rgba(0, 0, 0, 0.15);
+      color: #ffffff;
+      font-size: 26px;
+    }
+    .card-back {
+      background: #ffffff;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.35), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.25);
+      transform: rotateY(180deg);
+      font-size: 38px;
+    }
+    .card.matched .card-back {
+      background: #e8f8f5;
+      border-color: #2ecc71;
+      animation: pulseMatch 0.5s ease;
+    }
+    @keyframes pulseMatch {
+      0% { transform: rotateY(180deg) scale(1); }
+      50% { transform: rotateY(180deg) scale(1.1); }
+      100% { transform: rotateY(180deg) scale(1); }
+    }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+      border-radius: 36px;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(9, 132, 227, 0.35), inset 2px 2px 4px #ffffff, inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🔄</span>
+        <span id="moves-val">0 Moves</span>
+      </div>
+      <div class="clay-pill">
+        <span>⏱️</span>
+        <span id="timer-val">0s</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- 4x4 Grid -->
+    <div class="grid" id="grid"></div>
+
+    <!-- Win Modal -->
+    <div id="win-modal" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 50px; margin-bottom: 6px;">🎉 🏆 🌟</div>
+        <h1 style="color: #0984e3; font-size: 28px;">PUZZLE SOLVED!</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Great memory! You matched all clay emoji pairs!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin: 12px 0;">
+          <div style="font-size: 18px; font-weight: 700; color: #2d3436;" id="win-stats">14 moves • 28s</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      flip() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(320, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(540, this.ctx.currentTime + 0.08);
+        g.gain.setValueAtTime(0.2, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.09);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.09);
+      }
+      match() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.06);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.06 + 0.15);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.06); o.stop(now + idx * 0.06 + 0.16);
+        });
+      }
+      win() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.50].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'square';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.2, now + idx * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+    }
+    const sound = new ClaySound();
+
+    const EMOJIS = ['🦊', '🐼', '🐨', '🦁', '🦄', '🐸', '🐙', '🦋'];
+    let cards = [];
+    let flippedCards = [];
+    let matchedPairs = 0;
+    let moves = 0;
+    let seconds = 0;
+    let timerInterval = null;
+
+    function initGame() {
+      const grid = document.getElementById('grid');
+      grid.innerHTML = '';
+      cards = [...EMOJIS, ...EMOJIS].sort(() => Math.random() - 0.5);
+      flippedCards = [];
+      matchedPairs = 0;
+      moves = 0;
+      seconds = 0;
+
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        seconds++;
+        document.getElementById('timer-val').innerText = `${seconds}s`;
+      }, 1000);
+
+      document.getElementById('moves-val').innerText = '0 Moves';
+      document.getElementById('timer-val').innerText = '0s';
+      document.getElementById('win-modal').classList.add('hidden');
+
+      cards.forEach((emoji, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.index = index;
+        card.dataset.emoji = emoji;
+
+        card.innerHTML = `
+          <div class="card-face card-front">❓</div>
+          <div class="card-face card-back">${emoji}</div>
+        `;
+
+        card.addEventListener('click', () => onCardClick(card));
+        grid.appendChild(card);
+      });
+    }
+
+    function onCardClick(card) {
+      if (card.classList.contains('flipped') || card.classList.contains('matched') || flippedCards.length >= 2) {
+        return;
+      }
+
+      card.classList.add('flipped');
+      sound.flip();
+      flippedCards.push(card);
+
+      if (flippedCards.length === 2) {
+        moves++;
+        document.getElementById('moves-val').innerText = `${moves} Moves`;
+        const [c1, c2] = flippedCards;
+
+        if (c1.dataset.emoji === c2.dataset.emoji) {
+          c1.classList.add('matched');
+          c2.classList.add('matched');
+          flippedCards = [];
+          matchedPairs++;
+          sound.match();
+
+          if (matchedPairs === EMOJIS.length) {
+            clearInterval(timerInterval);
+            sound.win();
+            setTimeout(() => {
+              document.getElementById('win-stats').innerText = `${moves} moves • ${seconds}s`;
+              document.getElementById('win-modal').classList.remove('hidden');
+            }, 600);
+          }
+        } else {
+          setTimeout(() => {
+            c1.classList.remove('flipped');
+            c2.classList.remove('flipped');
+            flippedCards = [];
+          }, 800);
+        }
+      }
+    }
+
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    initGame();
+  </script>
+</body>
+</html>

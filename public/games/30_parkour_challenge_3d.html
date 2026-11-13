@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>3D Sky Parkour Speedrun Challenge</title>
+  <!-- Three.js r128 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --clay-card: #ffffff;
+      --primary: #6c5ce7;
+      --primary-gradient: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      --accent-yellow: #fdcb6e;
+      --accent-green: #00b894;
+      --accent-red: #d63031;
+      --text-dark: #2d3436;
+      --clay-shadow: 8px 14px 28px rgba(0, 0, 0, 0.25), -4px -4px 12px rgba(255, 255, 255, 0.4);
+      --clay-inset: inset 2px 2px 5px rgba(255, 255, 255, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #74b9ff;
+      font-family: var(--font-main);
+      color: #fff;
+      touch-action: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .clay-box {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      border: 3px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+      color: var(--text-dark);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* HUD Layer */
+    #hud-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .hud-chip {
+      padding: 6px 14px;
+      display: inline-flex;
+      flex-direction: column;
+      min-width: 90px;
+    }
+
+    .hud-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #636e72;
+    }
+
+    .hud-val {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-cluster {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(30, 39, 46, 0.85);
+      padding: 6px 20px;
+      border-radius: 20px;
+      border: 2px solid var(--primary);
+      box-shadow: 0 4px 15px rgba(108, 92, 231, 0.4);
+    }
+
+    .timer-val {
+      font-size: 24px;
+      font-weight: 900;
+      color: #fff;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .checkpoint-badge {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--accent-yellow);
+    }
+
+    .hud-top-right {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hud-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--text-dark);
+      font-size: 18px;
+      box-shadow: var(--clay-shadow);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .hud-btn:active {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+    }
+
+    /* Mobile Controls */
+    #mobile-controls {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      width: 100%;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: auto;
+      z-index: 12;
+      touch-action: none;
+    }
+
+    .touch-btn {
+      width: 66px;
+      height: 66px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 3px solid #ffffff;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      box-shadow: var(--clay-shadow);
+      cursor: pointer;
+      touch-action: none;
+      transition: transform 0.08s ease;
+    }
+
+    .touch-btn:active, .touch-btn.pressed {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+      background: #eef2f7;
+    }
+
+    .btn-jump {
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+      color: #fff;
+      border-color: #d1d8e0;
+      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.5);
+      font-size: 14px;
+    }
+
+    .dpad-cluster {
+      display: grid;
+      grid-template-columns: repeat(3, 50px);
+      grid-template-rows: repeat(3, 50px);
+      gap: 6px;
+    }
+
+    .dpad-btn {
+      width: 50px;
+      height: 50px;
+      border-radius: 16px;
+      font-size: 16px;
+    }
+
+    /* Banner */
+    #toast-banner {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      font-size: 28px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+      padding: 10px 30px;
+      border-radius: 26px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 10px 35px rgba(0, 184, 148, 0.6);
+      opacity: 0;
+      transition: all 0.25s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 15;
+    }
+
+    /* Overlays */
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(10, 20, 45, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .screen-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .menu-dialog {
+      width: min(500px, 94vw);
+      padding: 34px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .game-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: #eceafc;
+      border: 2px solid #a29bfe;
+      color: #6c5ce7;
+    }
+
+    .game-logo {
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .menu-btn {
+      width: 100%;
+      max-width: 290px;
+      padding: 14px 24px;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 6px 10px 20px rgba(108, 92, 231, 0.4);
+      touch-action: manipulation;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 8px 14px 26px rgba(108, 92, 231, 0.55);
+    }
+
+    .menu-btn.btn-secondary {
+      background: #ffffff;
+      color: var(--text-dark);
+      box-shadow: var(--clay-shadow);
+    }
+
+    @media (max-width: 650px) {
+      .dpad-cluster { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(3, 44px); gap: 4px; }
+      .dpad-btn { width: 44px; height: 44px; }
+      .btn-jump { width: 68px; height: 68px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Canvas Mount Point -->
+  <div id="canvas-container"></div>
+  <div id="toast-banner">CHECKPOINT REACHED!</div>
+
+  <!-- In-Game HUD -->
+  <div id="hud-layer">
+    <div class="hud-top">
+      <div class="hud-chip clay-box">
+        <span class="hud-label">Falls</span>
+        <span id="hud-falls" class="hud-val">0</span>
+      </div>
+
+      <div class="timer-cluster">
+        <span id="hud-timer" class="timer-val">00:00.0</span>
+        <span id="hud-checkpoint" class="checkpoint-badge">START PLATFORM</span>
+      </div>
+
+      <div class="hud-chip clay-box">
+        <span class="hud-label">Progress</span>
+        <span id="hud-progress" class="hud-val">0%</span>
+      </div>
+
+      <div class="hud-top-right">
+        <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause-game" class="hud-btn" title="Menu">⏸</button>
+      </div>
+    </div>
+
+    <!-- Mobile Controls -->
+    <div id="mobile-controls">
+      <div class="dpad-cluster">
+        <div></div>
+        <div id="btn-touch-up" class="touch-btn dpad-btn">▲</div>
+        <div></div>
+        <div id="btn-touch-left" class="touch-btn dpad-btn">◀</div>
+        <div></div>
+        <div id="btn-touch-right" class="touch-btn dpad-btn">▶</div>
+        <div></div>
+        <div id="btn-touch-down" class="touch-btn dpad-btn">▼</div>
+        <div></div>
+      </div>
+
+      <div id="btn-touch-jump" class="touch-btn btn-jump">⏫<br/>JUMP</div>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="screen-main-menu" class="screen-overlay">
+    <div class="menu-dialog clay-box">
+      <div>
+        <div class="game-badge">3D SKY OBSTACLE • GAME #30</div>
+        <h1 class="game-logo">Sky Parkour<br/>Challenge 3D</h1>
+        <p style="font-size: 13px; color: #636e72; margin-top: 4px;">Leap across floating sky islands, moving blocks & reach the summit</p>
+      </div>
+
+      <p style="font-size: 14px; color: #57606f; line-height: 1.5; max-width: 380px;">
+        Test your platforming precision! Jump across floating clay blocks, navigate moving elevators, trigger checkpoints, and speedrun to the victory portal!
+      </p>
+
+      <button id="btn-play-game" class="menu-btn">START PARKOUR</button>
+
+      <div style="font-size: 12px; color: #636e72;">
+        PERSONAL BEST TIME: <strong id="menu-best-time" style="color: var(--primary);">--:--</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Victory Screen -->
+  <div id="screen-win" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <div style="font-size: 42px;">🏆</div>
+      <h2 style="color: var(--accent-green); font-size: 26px; text-transform: uppercase;">SUMMIT REACHED!</h2>
+      <p style="color: #636e72; font-size: 13px;">Parkour run completed successfully:</p>
+
+      <div style="background: #f1f6fc; padding: 14px 20px; border-radius: 16px; width: 100%; display: flex; justify-content: space-around;">
+        <div>TIME: <strong id="win-time" style="color: var(--primary);">00:45.2</strong></div>
+        <div>FALLS: <strong id="win-falls" style="color: var(--text-dark);">0</strong></div>
+      </div>
+
+      <button id="btn-replay-game" class="menu-btn">SPEEDRUN AGAIN</button>
+      <button id="btn-quit-to-menu" class="menu-btn btn-secondary">MAIN TERMINAL</button>
+    </div>
+  </div>
+
+  <!-- GAME SOURCE CODE -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================================
+       1. SOUND SYNTHESIZER (Web Audio API)
+       ========================================================================== */
+    class ParkourAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (this.ctx) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          return;
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        this.ctx = new AudioCtx();
+      }
+
+      playJump() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(220, now);
+        osc.frequency.exponentialRampToValueAtTime(540, now + 0.18);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.21);
+      }
+
+      playCheckpoint() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.08);
+          gain.gain.setValueAtTime(0.2, now + idx * 0.08);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.2);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.08);
+          osc.stop(now + idx * 0.08 + 0.21);
+        });
+      }
+
+      playFall() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(320, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.35);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.4);
+      }
+
+      playWin() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.09);
+          gain.gain.setValueAtTime(0.22, now + idx * 0.09);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.09 + 0.3);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.09);
+          osc.stop(now + idx * 0.09 + 0.31);
+        });
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
+      }
+    }
+
+    const sound = new ParkourAudio();
+
+    /* ==========================================================================
+       2. THREE.JS SCENE SETUP & ENVIRONMENT
+       ========================================================================== */
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x81ecec);
+    scene.fog = new THREE.FogExp2(0x81ecec, 0.008);
+
+    const camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 600);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    container.appendChild(renderer.domElement);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x74b9ff, 1.0);
+    scene.add(hemiLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
+    dirLight.position.set(30, 60, 40);
+    dirLight.castShadow = true;
+    scene.add(dirLight);
+
+    /* ==========================================================================
+       3. PARKOUR PLATFORMS, MOVING BLOCKS & CHECKPOINTS
+       ========================================================================== */
+    const platforms = [];
+    const movingBlocks = [];
+    const checkpoints = [];
+
+    const platMat = new THREE.MeshStandardMaterial({ color: 0x6c5ce7, roughness: 0.4 });
+    const bounceMat = new THREE.MeshStandardMaterial({ color: 0x00b894, roughness: 0.3 });
+    const checkMat = new THREE.MeshBasicMaterial({ color: 0x0984e3 });
+
+    function addPlatform(x, y, z, w, d, h = 1.0, isBounce = false) {
+      const geo = new THREE.BoxGeometry(w, h, d);
+      const mesh = new THREE.Mesh(geo, isBounce ? bounceMat : platMat);
+      mesh.position.set(x, y, z);
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+      scene.add(mesh);
+
+      const pData = { x, y, z, w, d, h, isBounce, mesh };
+      platforms.push(pData);
+      return pData;
+    }
+
+    function addMovingPlatform(x, y, z, w, d, axis, range, speed) {
+      const p = addPlatform(x, y, z, w, d, 1.0);
+      p.baseX = x;
+      p.baseY = y;
+      p.baseZ = z;
+      p.axis = axis; // 'x', 'y', or 'z'
+      p.range = range;
+      p.speed = speed;
+      movingBlocks.push(p);
+      return p;
+    }
+
+    function addCheckpoint(x, y, z, id, name) {
+      const pillar = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.3, 2.5, 8), checkMat);
+      pillar.position.set(x, y + 1.25, z);
+      scene.add(pillar);
+      checkpoints.push({ x, y, z, id, name, triggered: false, mesh: pillar });
+    }
+
+    // Build the Linear Sky Parkour Course (Starts at 0, goes forward along -Z)
+    function buildCourse() {
+      // 0. Start Platform
+      addPlatform(0, 0, 0, 8, 8, 1.2);
+      addCheckpoint(0, 0.6, 0, 0, 'START PLATFORM');
+
+      // 1. Basic Jumps
+      addPlatform(0, 1.0, -10, 4, 4);
+      addPlatform(0, 2.0, -18, 3.5, 3.5);
+      addPlatform(0, 3.0, -26, 3, 3);
+
+      // Checkpoint 1
+      addPlatform(0, 4.0, -35, 6, 6);
+      addCheckpoint(0, 4.6, -35, 1, 'CHECKPOINT 1');
+
+      // 2. Zig-Zag Islands
+      addPlatform(-5, 5.0, -44, 3, 3);
+      addPlatform(5, 6.0, -52, 3, 3);
+      addPlatform(-5, 7.0, -60, 3, 3);
+      addPlatform(0, 8.0, -68, 4, 4);
+
+      // Checkpoint 2
+      addPlatform(0, 9.0, -78, 6, 6);
+      addCheckpoint(0, 9.6, -78, 2, 'CHECKPOINT 2');
+
+      // 3. Moving Blocks Section
+      addMovingPlatform(0, 10.0, -88, 3.5, 3.5, 'x', 6.0, 1.8);
+      addPlatform(0, 11.0, -98, 3, 3);
+      addMovingPlatform(0, 12.0, -108, 3.5, 3.5, 'y', 3.0, 1.5);
+
+      // Checkpoint 3
+      addPlatform(0, 13.5, -118, 6, 6);
+      addCheckpoint(0, 14.1, -118, 3, 'CHECKPOINT 3');
+
+      // 4. Summit Finish
+      addPlatform(0, 15.0, -128, 2.5, 2.5);
+      addPlatform(0, 16.5, -137, 2.5, 2.5);
+
+      // Victory Summit Platform
+      const summit = addPlatform(0, 18.0, -148, 8, 8, 1.5, true);
+      // Victory portal ring
+      const portal = new THREE.Mesh(new THREE.TorusGeometry(2.0, 0.2, 8, 20), new THREE.MeshBasicMaterial({ color: 0x00b894 }));
+      portal.position.set(0, 20.0, -148);
+      scene.add(portal);
+    }
+    buildCourse();
+
+    /* ==========================================================================
+       4. PLAYER CHARACTER & CONTROLS
+       ========================================================================== */
+    function createPlayer() {
+      const group = new THREE.Group();
+      const body = new THREE.Mesh(new THREE.CylinderGeometry(0.4, 0.4, 1.5, 12), new THREE.MeshStandardMaterial({ color: 0xff4757 }));
+      body.position.y = 0.75;
+      body.castShadow = true;
+      group.add(body);
+      return group;
+    }
+
+    const player = createPlayer();
+    scene.add(player);
+
+    const playerPhysics = {
+      x: 0,
+      y: 1.0,
+      z: 0,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      isGrounded: true,
+      currentCheckpoint: { x: 0, y: 1.0, z: 0, name: 'START' }
+    };
+
+    const input = { up: false, down: false, left: false, right: false, jump: false };
+
+    window.addEventListener('keydown', (e) => {
+      sound.init();
+      switch (e.code) {
+        case 'KeyW': case 'ArrowUp': input.up = true; break;
+        case 'KeyS': case 'ArrowDown': input.down = true; break;
+        case 'KeyA': case 'ArrowLeft': input.left = true; break;
+        case 'KeyD': case 'ArrowRight': input.right = true; break;
+        case 'Space':
+          if (playerPhysics.isGrounded) {
+            playerPhysics.vy = 12.5;
+            playerPhysics.isGrounded = false;
+            sound.playJump();
+          }
+          break;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      switch (e.code) {
+        case 'KeyW': case 'ArrowUp': input.up = false; break;
+        case 'KeyS': case 'ArrowDown': input.down = false; break;
+        case 'KeyA': case 'ArrowLeft': input.left = false; break;
+        case 'KeyD': case 'ArrowRight': input.right = false; break;
+      }
+    });
+
+    // Mobile D-Pad & Jump
+    function bindTouch(id, onStart, onEnd) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+      const start = (e) => { if (e.cancelable) e.preventDefault(); sound.init(); btn.classList.add('pressed'); if (onStart) onStart(); };
+      const end = (e) => { if (e.cancelable) e.preventDefault(); btn.classList.remove('pressed'); if (onEnd) onEnd(); };
+      btn.addEventListener('touchstart', start, { passive: false });
+      btn.addEventListener('touchend', end, { passive: false });
+      btn.addEventListener('touchcancel', end, { passive: false });
+      btn.addEventListener('mousedown', start);
+      btn.addEventListener('mouseup', end);
+    }
+
+    bindTouch('btn-touch-up', () => { input.up = true; }, () => { input.up = false; });
+    bindTouch('btn-touch-down', () => { input.down = true; }, () => { input.down = false; });
+    bindTouch('btn-touch-left', () => { input.left = true; }, () => { input.left = false; });
+    bindTouch('btn-touch-right', () => { input.right = true; }, () => { input.right = false; });
+    bindTouch('btn-touch-jump', () => {
+      if (playerPhysics.isGrounded) {
+        playerPhysics.vy = 12.5;
+        playerPhysics.isGrounded = false;
+        sound.playJump();
+      }
+    });
+
+    /* ==========================================================================
+       5. GAME STATE, TIMERS & RESPAWN
+       ========================================================================== */
+    let isPlaying = false;
+    let startTime = 0;
+    let fallsCount = 0;
+
+    function startGame() {
+      sound.init();
+      isPlaying = true;
+      startTime = performance.now();
+      fallsCount = 0;
+
+      playerPhysics.currentCheckpoint = { x: 0, y: 1.0, z: 0, name: 'START' };
+      respawnPlayer();
+
+      document.getElementById('screen-main-menu').classList.add('hidden');
+      document.getElementById('screen-win').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'flex';
+    }
+
+    function respawnPlayer() {
+      playerPhysics.x = playerPhysics.currentCheckpoint.x;
+      playerPhysics.y = playerPhysics.currentCheckpoint.y + 1.2;
+      playerPhysics.z = playerPhysics.currentCheckpoint.z;
+      playerPhysics.vx = 0;
+      playerPhysics.vy = 0;
+      playerPhysics.vz = 0;
+      playerPhysics.isGrounded = true;
+      player.position.set(playerPhysics.x, playerPhysics.y, playerPhysics.z);
+    }
+
+    function triggerWin() {
+      isPlaying = false;
+      sound.playWin();
+
+      const elapsed = (performance.now() - startTime) / 1000;
+      const mins = Math.floor(elapsed / 60);
+      const secs = (elapsed % 60).toFixed(1);
+      const timeStr = `${mins.toString().padStart(2, '0')}:${secs.padStart(4, '0')}`;
+
+      document.getElementById('win-time').innerText = timeStr;
+      document.getElementById('win-falls').innerText = fallsCount;
+
+      const bestTime = localStorage.getItem('parkour_best_time');
+      if (!bestTime || elapsed < parseFloat(bestTime)) {
+        localStorage.setItem('parkour_best_time', elapsed.toString());
+      }
+
+      document.getElementById('screen-win').classList.remove('hidden');
+    }
+
+    function updatePhysics(delta) {
+      if (!isPlaying) return;
+
+      // Update moving blocks
+      const time = performance.now() / 1000;
+      movingBlocks.forEach(b => {
+        const offset = Math.sin(time * b.speed) * b.range;
+        if (b.axis === 'x') b.mesh.position.x = b.baseX + offset;
+        if (b.axis === 'y') b.mesh.position.y = b.baseY + offset;
+        if (b.axis === 'z') b.mesh.position.z = b.baseZ + offset;
+        b.x = b.mesh.position.x;
+        b.y = b.mesh.position.y;
+        b.z = b.mesh.position.z;
+      });
+
+      // Lateral movement
+      let moveX = 0;
+      let moveZ = 0;
+      if (input.up) moveZ -= 1;
+      if (input.down) moveZ += 1;
+      if (input.left) moveX -= 1;
+      if (input.right) moveX += 1;
+
+      const speed = 9.5;
+      if (moveX !== 0 || moveZ !== 0) {
+        const len = Math.hypot(moveX, moveZ);
+        playerPhysics.x += (moveX / len) * speed * delta;
+        playerPhysics.z += (moveZ / len) * speed * delta;
+      }
+
+      // Vertical Gravity
+      playerPhysics.vy -= 28.0 * delta;
+      playerPhysics.y += playerPhysics.vy * delta;
+
+      // Collision vs Platforms
+      let grounded = false;
+      const pRadius = 0.4;
+
+      for (let i = 0; i < platforms.length; i++) {
+        const p = platforms[i];
+        const halfW = p.w / 2;
+        const halfD = p.d / 2;
+        const topY = p.y + p.h / 2;
+
+        if (playerPhysics.x > p.x - halfW - pRadius && playerPhysics.x < p.x + halfW + pRadius &&
+            playerPhysics.z > p.z - halfD - pRadius && playerPhysics.z < p.z + halfD + pRadius) {
+          if (playerPhysics.y >= topY - 0.4 && playerPhysics.y <= topY + 0.6 && playerPhysics.vy <= 0) {
+            playerPhysics.y = topY;
+            playerPhysics.vy = 0;
+            grounded = true;
+            break;
+          }
+        }
+      }
+
+      playerPhysics.isGrounded = grounded;
+      player.position.set(playerPhysics.x, playerPhysics.y, playerPhysics.z);
+
+      // Check Checkpoints
+      checkpoints.forEach(c => {
+        if (!c.triggered && Math.hypot(playerPhysics.x - c.x, playerPhysics.z - c.z) < 2.0 && Math.abs(playerPhysics.y - c.y) < 2.5) {
+          c.triggered = true;
+          c.mesh.material = new THREE.MeshBasicMaterial({ color: 0x00b894 });
+          playerPhysics.currentCheckpoint = { x: c.x, y: c.y, z: c.z, name: c.name };
+          sound.playCheckpoint();
+
+          document.getElementById('hud-checkpoint').innerText = c.name;
+          const banner = document.getElementById('toast-banner');
+          banner.innerText = `${c.name} SAVED!`;
+          banner.style.opacity = '1';
+          banner.style.transform = 'translate(-50%, -50%) scale(1.1)';
+          setTimeout(() => { banner.style.opacity = '0'; banner.style.transform = 'translate(-50%, -50%) scale(0.7)'; }, 900);
+        }
+      });
+
+      // Check Fall into void
+      if (playerPhysics.y < -15.0) {
+        sound.playFall();
+        fallsCount++;
+        document.getElementById('hud-falls').innerText = fallsCount;
+        respawnPlayer();
+      }
+
+      // Check Summit Victory (-148z)
+      if (playerPhysics.z <= -146 && playerPhysics.y >= 17.5) {
+        triggerWin();
+      }
+
+      // Update Timer & Progress
+      const elapsed = (performance.now() - startTime) / 1000;
+      const mins = Math.floor(elapsed / 60);
+      const secs = (elapsed % 60).toFixed(1);
+      document.getElementById('hud-timer').innerText = `${mins.toString().padStart(2, '0')}:${secs.padStart(4, '0')}`;
+
+      const progress = Math.min(100, Math.floor((Math.abs(playerPhysics.z) / 148) * 100));
+      document.getElementById('hud-progress').innerText = `${progress}%`;
+
+      // Smooth Follow Camera
+      camera.position.x = THREE.MathUtils.lerp(camera.position.x, playerPhysics.x, delta * 6);
+      camera.position.y = THREE.MathUtils.lerp(camera.position.y, playerPhysics.y + 4.5, delta * 6);
+      camera.position.z = THREE.MathUtils.lerp(camera.position.z, playerPhysics.z + 8.5, delta * 8);
+      camera.lookAt(playerPhysics.x, playerPhysics.y + 1.2, playerPhysics.z - 5.0);
+    }
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
+      updatePhysics(delta);
+      renderer.render(scene, camera);
+    }
+
+    const clock = new THREE.Clock();
+    animate();
+
+    // UI Click Handlers
+    document.getElementById('btn-play-game').addEventListener('click', startGame);
+    document.getElementById('btn-replay-game').addEventListener('click', startGame);
+    document.getElementById('btn-quit-to-menu').addEventListener('click', () => {
+      document.getElementById('screen-win').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+    });
+
+    document.getElementById('btn-audio-toggle').addEventListener('click', () => {
+      sound.init();
+      const isMuted = sound.toggleMute();
+      document.getElementById('btn-audio-toggle').innerText = isMuted ? '🔇' : '🔊';
+    });
+
+    document.getElementById('btn-pause-game').addEventListener('click', () => {
+      isPlaying = false;
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+    });
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+  })();
+  </script>
+</body>
+</html>

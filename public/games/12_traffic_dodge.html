@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Traffic Dodge - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    /* Touch Steering Controls */
+    .touch-controls {
+      position: absolute;
+      bottom: 24px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .t-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 22px;
+      background: #ffffff;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      border: 2px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.1s;
+    }
+    .t-btn:active { transform: scale(0.92); }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(9, 132, 227, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="440" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🚗</span>
+        <span id="score-val">0m</span>
+      </div>
+      <div class="clay-pill">
+        <span>🪙</span>
+        <span id="coins-val">0</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- On-screen controls -->
+    <div class="touch-controls">
+      <div class="t-btn" id="btn-left">⬅️</div>
+      <div class="t-btn" id="btn-right">➡️</div>
+    </div>
+
+    <!-- Start / Crash Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🚙 🚚 🚗</div>
+        <h1 style="color: #0984e3; font-size: 28px;">Traffic Dodge</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Weave through high-speed highway traffic! Don't crash into incoming clay vehicles!</p>
+        <button id="btn-start" class="clay-btn">HIT THE ROAD ▶</button>
+      </div>
+    </div>
+
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🚙 🚗</div>
+        <h1 style="color: #ff5252; font-size: 28px;">HIGHWAY CRASH!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">You slammed into another vehicle!</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 22px; font-weight: 700; color: #0984e3;" id="final-dist">0m</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Distance</div>
+          </div>
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 22px; font-weight: 700; color: #f39c12;" id="best-dist">0m</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Best</div>
+          </div>
+        </div>
+        <button id="btn-restart" class="clay-btn">TRY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      coin() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, this.ctx.currentTime);
+        o.frequency.setValueAtTime(1320, this.ctx.currentTime + 0.05);
+        g.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.15);
+      }
+      crash() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(140, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.35);
+        g.gain.setValueAtTime(0.5, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.4);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 440;
+    const H = 720;
+
+    const LANES = [W * 0.2, W * 0.4, W * 0.6, W * 0.8];
+    let playerLane = 1;
+    let playerX = LANES[1];
+    let targetX = LANES[1];
+
+    let gameState = 'START';
+    let distance = 0;
+    let coins = 0;
+    let bestDist = parseInt(localStorage.getItem('traffic_dodge_best') || '0', 10);
+    let speed = 7;
+    let spawnTimer = 0;
+
+    let traffic = [];
+    let coinItems = [];
+    let roadStripeOffset = 0;
+
+    const VEHICLE_TYPES = [
+      { w: 32, h: 58, color: '#ff7675', name: 'car' },
+      { w: 34, h: 76, color: '#00cec9', name: 'truck' },
+      { w: 30, h: 54, color: '#feca57', name: 'cab' },
+      { w: 32, h: 60, color: '#a29bfe', name: 'van' }
+    ];
+
+    function initGame() {
+      playerLane = 1;
+      playerX = LANES[1];
+      targetX = LANES[1];
+      distance = 0;
+      coins = 0;
+      speed = 7;
+      traffic = [];
+      coinItems = [];
+      spawnTimer = 0;
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function moveLeft() {
+      if (playerLane > 0) {
+        playerLane--;
+        targetX = LANES[playerLane];
+      }
+    }
+
+    function moveRight() {
+      if (playerLane < 3) {
+        playerLane++;
+        targetX = LANES[playerLane];
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (gameState !== 'PLAYING') return;
+      if (e.key === 'ArrowLeft' || e.key === 'a') moveLeft();
+      if (e.key === 'ArrowRight' || e.key === 'd') moveRight();
+    });
+
+    document.getElementById('btn-left').addEventListener('click', moveLeft);
+    document.getElementById('btn-right').addEventListener('click', moveRight);
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function spawnTraffic() {
+      const lane = Math.floor(Math.random() * 4);
+      const type = VEHICLE_TYPES[Math.floor(Math.random() * VEHICLE_TYPES.length)];
+      traffic.push({
+        lane,
+        x: LANES[lane],
+        y: -100,
+        w: type.w,
+        h: type.h,
+        color: type.color,
+        vy: speed * 0.45 + Math.random() * 1.5
+      });
+
+      // Occasional coin
+      if (Math.random() < 0.45) {
+        const coinLane = (lane + 1 + Math.floor(Math.random() * 3)) % 4;
+        coinItems.push({
+          x: LANES[coinLane],
+          y: -100,
+          r: 12,
+          collected: false
+        });
+      }
+    }
+
+    function drawClayVehicle(x, y, w, h, color, isPlayer = false) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Shadow
+      ctx.shadowColor = 'rgba(45, 52, 54, 0.4)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetY = 6;
+
+      // Clay Body
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(-w / 2, -h / 2, w, h, 8);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Windshield
+      ctx.fillStyle = '#dfe6e9';
+      ctx.beginPath();
+      ctx.roundRect(-w / 2 + 4, isPlayer ? -h / 2 + 10 : h / 2 - 20, w - 8, 12, 3);
+      ctx.fill();
+
+      // Headlights / taillights
+      ctx.fillStyle = isPlayer ? '#ffeaa7' : '#ff7675';
+      ctx.fillRect(-w / 2 + 2, isPlayer ? -h / 2 + 2 : h / 2 - 5, 5, 3);
+      ctx.fillRect(w / 2 - 7, isPlayer ? -h / 2 + 2 : h / 2 - 5, 5, 3);
+
+      ctx.restore();
+    }
+
+    function loop() {
+      // Highway surface
+      ctx.fillStyle = '#dfe6e9';
+      ctx.fillRect(0, 0, W, H);
+
+      // Road boundary
+      ctx.fillStyle = '#636e72';
+      ctx.fillRect(W * 0.08, 0, W * 0.84, H);
+
+      // Lane markings
+      roadStripeOffset = (roadStripeOffset + speed) % 40;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 4;
+      ctx.setLineDash([20, 20]);
+      ctx.lineDashOffset = -roadStripeOffset;
+
+      for (let i = 1; i < 4; i++) {
+        const lx = W * 0.08 + (W * 0.84 / 4) * i;
+        ctx.beginPath();
+        ctx.moveTo(lx, 0);
+        ctx.lineTo(lx, H);
+        ctx.stroke();
+      }
+      ctx.setLineDash([]);
+
+      if (gameState === 'PLAYING') {
+        distance += speed * 0.08;
+        speed = 7 + Math.min(distance / 250, 7);
+        document.getElementById('score-val').innerText = `${Math.floor(distance)}m`;
+        document.getElementById('coins-val').innerText = coins;
+
+        playerX += (targetX - playerX) * 0.25;
+
+        spawnTimer++;
+        if (spawnTimer > 45) {
+          spawnTimer = 0;
+          spawnTraffic();
+        }
+
+        // Update Traffic
+        for (let i = traffic.length - 1; i >= 0; i--) {
+          const v = traffic[i];
+          v.y += (speed - v.vy);
+
+          // Collision Check
+          if (Math.abs(v.x - playerX) < (v.w + 30) / 2 && Math.abs(v.y - (H - 100)) < (v.h + 56) / 2) {
+            sound.crash();
+            gameState = 'GAMEOVER';
+            if (distance > bestDist) {
+              bestDist = Math.floor(distance);
+              localStorage.setItem('traffic_dodge_best', bestDist);
+            }
+            document.getElementById('final-dist').innerText = `${Math.floor(distance)}m`;
+            document.getElementById('best-dist').innerText = `${bestDist}m`;
+            document.getElementById('gameover-screen').classList.remove('hidden');
+            return;
+          }
+
+          if (v.y > H + 120 || v.y < -200) traffic.splice(i, 1);
+        }
+
+        // Update Coins
+        for (let i = coinItems.length - 1; i >= 0; i--) {
+          const c = coinItems[i];
+          c.y += speed;
+
+          if (!c.collected && Math.abs(c.x - playerX) < 26 && Math.abs(c.y - (H - 100)) < 36) {
+            c.collected = true;
+            coins++;
+            sound.coin();
+          }
+
+          if (c.y > H + 50 || c.collected) coinItems.splice(i, 1);
+        }
+      }
+
+      // Draw Coins
+      coinItems.forEach(c => {
+        ctx.fillStyle = '#f1c40f';
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('🪙', c.x, c.y + 4);
+      });
+
+      // Draw Traffic Cars
+      traffic.forEach(v => drawClayVehicle(v.x, v.y, v.w, v.h, v.color, false));
+
+      // Draw Player Sports Car
+      drawClayVehicle(playerX, H - 100, 32, 58, '#0984e3', true);
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

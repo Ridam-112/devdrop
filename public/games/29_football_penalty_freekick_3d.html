@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>3D Football Penalty & Free Kick Master</title>
+  <!-- Three.js r128 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --clay-card: #ffffff;
+      --primary: #00b894;
+      --primary-gradient: linear-gradient(135deg, #00b894 0%, #55efc4 100%);
+      --accent-yellow: #fdcb6e;
+      --accent-red: #d63031;
+      --accent-blue: #0984e3;
+      --text-dark: #2d3436;
+      --clay-shadow: 8px 14px 28px rgba(0, 0, 0, 0.25), -4px -4px 12px rgba(255, 255, 255, 0.4);
+      --clay-inset: inset 2px 2px 5px rgba(255, 255, 255, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #1e3799;
+      font-family: var(--font-main);
+      color: #fff;
+      touch-action: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .clay-box {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      border: 3px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+      color: var(--text-dark);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* HUD Layer */
+    #hud-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .hud-chip {
+      padding: 6px 14px;
+      display: inline-flex;
+      flex-direction: column;
+      min-width: 85px;
+    }
+
+    .hud-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #636e72;
+    }
+
+    .hud-val {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-board {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .mode-badge {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 3px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--accent-yellow);
+      color: var(--accent-yellow);
+    }
+
+    .hud-top-right {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hud-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--text-dark);
+      font-size: 18px;
+      box-shadow: var(--clay-shadow);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .hud-btn:active {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+    }
+
+    /* Swipe / Kick Prompt */
+    #kick-prompt {
+      position: absolute;
+      bottom: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #ffffff;
+      padding: 10px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #fff;
+      pointer-events: none;
+      animation: pulsePrompt 1.4s infinite alternate;
+      white-space: nowrap;
+    }
+
+    @keyframes pulsePrompt {
+      from { transform: translateX(-50%) scale(0.96); opacity: 0.8; }
+      to { transform: translateX(-50%) scale(1.04); opacity: 1; }
+    }
+
+    /* Goal Announcement */
+    #goal-banner {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.6);
+      font-size: 42px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+      padding: 12px 36px;
+      border-radius: 32px;
+      border: 4px solid #ffffff;
+      box-shadow: 0 10px 40px rgba(0, 184, 148, 0.7);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+      z-index: 15;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    /* Overlays */
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(10, 20, 45, 0.85);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .screen-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .menu-dialog {
+      width: min(500px, 94vw);
+      padding: 34px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .game-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: #e8f9f2;
+      border: 2px solid #55efc4;
+      color: #00b894;
+    }
+
+    .game-logo {
+      font-size: clamp(28px, 6vw, 38px);
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .menu-btn {
+      width: 100%;
+      max-width: 290px;
+      padding: 14px 24px;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 6px 10px 20px rgba(0, 184, 148, 0.4);
+      touch-action: manipulation;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 8px 14px 26px rgba(0, 184, 148, 0.55);
+    }
+
+    .menu-btn.btn-secondary {
+      background: #ffffff;
+      color: var(--text-dark);
+      box-shadow: var(--clay-shadow);
+    }
+
+    .mode-selector-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .mode-card {
+      padding: 14px;
+      border-radius: 16px;
+      background: #f1f6fc;
+      border: 2px solid #ffffff;
+      cursor: pointer;
+      font-weight: 800;
+      color: var(--text-dark);
+      transition: all 0.15s ease;
+    }
+
+    .mode-card:hover, .mode-card.active {
+      background: var(--primary-gradient);
+      color: #fff;
+      border-color: #55efc4;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Canvas Mount Point -->
+  <div id="canvas-container"></div>
+  <div id="goal-banner">GOAL! ⚽</div>
+  <div id="kick-prompt">👆 SWIPE / FLICK UP TO KICK & CURVE!</div>
+
+  <!-- In-Game HUD -->
+  <div id="hud-layer">
+    <div class="hud-top">
+      <div class="hud-chip clay-box">
+        <span class="hud-label">Score</span>
+        <span id="hud-score" class="hud-val">0</span>
+      </div>
+
+      <div class="score-board">
+        <span id="hud-mode" class="mode-badge">PENALTY SHOOTOUT</span>
+        <span style="font-size: 12px; font-weight: 800; color: #fff;">STREAK: <strong id="hud-streak" style="color: var(--accent-yellow);">0</strong></span>
+      </div>
+
+      <div class="hud-chip clay-box">
+        <span class="hud-label">Kicks</span>
+        <span id="hud-kicks" class="hud-val">5/5</span>
+      </div>
+
+      <div class="hud-top-right">
+        <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause-game" class="hud-btn" title="Menu">⏸</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="screen-main-menu" class="screen-overlay">
+    <div class="menu-dialog clay-box">
+      <div>
+        <div class="game-badge">3D SPORTS ARENA • GAME #29</div>
+        <h1 class="game-logo">Football<br/>Penalty & Free Kick</h1>
+        <p style="font-size: 13px; color: #636e72; margin-top: 4px;">Swipe to aim, curl around the wall & beat the goalkeeper!</p>
+      </div>
+
+      <div class="mode-selector-grid">
+        <div id="mode-penalty" class="mode-card active">
+          <div style="font-size: 26px;">🎯</div>
+          <div>PENALTY</div>
+          <div style="font-size: 11px; opacity: 0.8;">1-on-1 vs Keeper</div>
+        </div>
+        <div id="mode-freekick" class="mode-card">
+          <div style="font-size: 26px;">🧱</div>
+          <div>FREE KICK</div>
+          <div style="font-size: 11px; opacity: 0.8;">Bend Past Wall</div>
+        </div>
+      </div>
+
+      <button id="btn-play-game" class="menu-btn">START MATCH</button>
+
+      <div style="font-size: 12px; color: #636e72;">
+        BEST STREAK: <strong id="menu-best-streak" style="color: var(--primary);">0</strong> | 
+        HIGH SCORE: <strong id="menu-best-score" style="color: var(--accent-yellow);">0</strong>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="screen-game-over" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <div style="font-size: 42px;">🏆</div>
+      <h2 style="color: var(--primary); font-size: 26px; text-transform: uppercase;">SESSION FINISHED</h2>
+      <p style="color: #636e72; font-size: 13px;">Final shootout statistics:</p>
+
+      <div style="background: #f1f6fc; padding: 14px 20px; border-radius: 16px; width: 100%; display: flex; justify-content: space-around;">
+        <div>GOALS: <strong id="go-goals" style="color: var(--primary);">0/5</strong></div>
+        <div>SCORE: <strong id="go-score" style="color: var(--accent-yellow);">0</strong></div>
+      </div>
+
+      <button id="btn-restart-game" class="menu-btn">SHOOT AGAIN</button>
+      <button id="btn-quit-to-menu" class="menu-btn btn-secondary">MAIN TERMINAL</button>
+    </div>
+  </div>
+
+  <!-- GAME SOURCE CODE -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================================
+       1. SOUND SYNTHESIZER (Web Audio API)
+       ========================================================================== */
+    class FootballAudio {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+      }
+
+      init() {
+        if (this.ctx) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          return;
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        this.ctx = new AudioCtx();
+      }
+
+      playKick() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(140, now);
+        osc.frequency.exponentialRampToValueAtTime(45, now + 0.15);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.16);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.17);
+      }
+
+      playPostClang() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1200, now);
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.36);
+      }
+
+      playGoalCheer() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        // Crowd roar noise burst
+        const bufferSize = this.ctx.sampleRate * 0.8;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.5));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(800, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.35, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.8);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        return this.muted;
+      }
+    }
+
+    const sound = new FootballAudio();
+
+    /* ==========================================================================
+       2. THREE.JS SCENE SETUP & STADIUM PITCH
+       ========================================================================== */
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0c1b33);
+    scene.fog = new THREE.FogExp2(0x0c1b33, 0.008);
+
+    const camera = new THREE.PerspectiveCamera(52, window.innerWidth / window.innerHeight, 0.1, 500);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.15;
+    container.appendChild(renderer.domElement);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x10ac84, 0.95);
+    scene.add(hemiLight);
+
+    const floodLight = new THREE.DirectionalLight(0xfffae0, 1.4);
+    floodLight.position.set(25, 45, 25);
+    floodLight.castShadow = true;
+    floodLight.shadow.mapSize.width = 1024;
+    floodLight.shadow.mapSize.height = 1024;
+    scene.add(floodLight);
+
+    /* ==========================================================================
+       3. PITCH, GOAL POSTS & STADIUM
+       ========================================================================== */
+    // Grass Pitch
+    const pitchGeo = new THREE.PlaneGeometry(80, 80);
+    pitchGeo.rotateX(-Math.PI / 2);
+    const pitchMat = new THREE.MeshStandardMaterial({ color: 0x10ac84, roughness: 0.8 });
+    const pitch = new THREE.Mesh(pitchGeo, pitchMat);
+    pitch.receiveShadow = true;
+    scene.add(pitch);
+
+    // Goal Frame Dimensions (Goal line is at z = -20)
+    const goalWidth = 7.32;
+    const goalHeight = 2.44;
+    const goalZ = -20;
+
+    const postMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 });
+    const postRadius = 0.08;
+
+    function createGoalFrame() {
+      const group = new THREE.Group();
+
+      // Left post
+      const leftPost = new THREE.Mesh(new THREE.CylinderGeometry(postRadius, postRadius, goalHeight, 12), postMat);
+      leftPost.position.set(-goalWidth / 2, goalHeight / 2, goalZ);
+      leftPost.castShadow = true;
+
+      // Right post
+      const rightPost = new THREE.Mesh(new THREE.CylinderGeometry(postRadius, postRadius, goalHeight, 12), postMat);
+      rightPost.position.set(goalWidth / 2, goalHeight / 2, goalZ);
+      rightPost.castShadow = true;
+
+      // Crossbar
+      const crossbar = new THREE.Mesh(new THREE.CylinderGeometry(postRadius, postRadius, goalWidth, 12), postMat);
+      crossbar.rotation.z = Math.PI / 2;
+      crossbar.position.set(0, goalHeight, goalZ);
+      crossbar.castShadow = true;
+
+      // Net Mesh Box
+      const netMat = new THREE.MeshBasicMaterial({ color: 0xffffff, wireframe: true, transparent: true, opacity: 0.35 });
+      const net = new THREE.Mesh(new THREE.BoxGeometry(goalWidth, goalHeight, 2.0), netMat);
+      net.position.set(0, goalHeight / 2, goalZ - 1.0);
+
+      group.add(leftPost, rightPost, crossbar, net);
+      return group;
+    }
+    scene.add(createGoalFrame());
+
+    // Penalty Spot & Box Lines
+    const lineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const penaltyLine = new THREE.Mesh(new THREE.CircleGeometry(0.2, 16), lineMat);
+    penaltyLine.rotation.x = -Math.PI / 2;
+    penaltyLine.position.set(0, 0.02, -9);
+    scene.add(penaltyLine);
+
+    /* ==========================================================================
+       4. FOOTBALL & GOALKEEPER & DEFENSIVE WALL
+       ========================================================================== */
+    // Football Mesh
+    const ballGeo = new THREE.SphereGeometry(0.24, 16, 16);
+    const ballMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
+    const ball = new THREE.Mesh(ballGeo, ballMat);
+    ball.castShadow = true;
+    scene.add(ball);
+
+    // Goalkeeper Model
+    function createKeeper() {
+      const group = new THREE.Group();
+
+      const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff9f43, roughness: 0.5 });
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.9, 0.4), bodyMat);
+      body.position.y = 1.1;
+      body.castShadow = true;
+      group.add(body);
+
+      const head = new THREE.Mesh(new THREE.SphereGeometry(0.22, 10, 10), new THREE.MeshStandardMaterial({ color: 0xffd32a }));
+      head.position.y = 1.75;
+      head.castShadow = true;
+      group.add(head);
+
+      // Arms
+      const armMat = new THREE.MeshStandardMaterial({ color: 0x10ac84 });
+      const leftArm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.7, 0.2), armMat);
+      leftArm.position.set(-0.5, 1.1, 0);
+      const rightArm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.7, 0.2), armMat);
+      rightArm.position.set(0.5, 1.1, 0);
+      group.add(leftArm, rightArm);
+
+      group.position.set(0, 0, goalZ + 0.5);
+      return group;
+    }
+
+    const keeper = createKeeper();
+    scene.add(keeper);
+
+    // Defensive Wall (for Free Kick Mode)
+    const wallGroup = new THREE.Group();
+    scene.add(wallGroup);
+
+    function setupDefensiveWall() {
+      while (wallGroup.children.length > 0) {
+        wallGroup.remove(wallGroup.children[0]);
+      }
+
+      if (currentMode === 'freekick') {
+        const wallMat = new THREE.MeshStandardMaterial({ color: 0xee5253 });
+        for (let i = -1.5; i <= 1.5; i += 1.0) {
+          const defender = new THREE.Mesh(new THREE.BoxGeometry(0.65, 1.85, 0.4), wallMat);
+          defender.position.set(i * 0.9, 0.92, -14);
+          defender.castShadow = true;
+          wallGroup.add(defender);
+        }
+      }
+    }
+
+    /* ==========================================================================
+       5. GAME LOGIC, KICKING PHYSICS & SWIPE DETECTION
+       ========================================================================== */
+    let currentMode = 'penalty'; // 'penalty' or 'freekick'
+    let kicksLeft = 5;
+    let score = 0;
+    let streak = 0;
+    let isBallInFlight = false;
+
+    const ballPhysics = {
+      x: 0,
+      y: 0.24,
+      z: -9,
+      vx: 0,
+      vy: 0,
+      vz: 0,
+      curveX: 0
+    };
+
+    function resetBall() {
+      isBallInFlight = false;
+      const spawnZ = currentMode === 'freekick' ? -5 : -9;
+      const spawnX = currentMode === 'freekick' ? (Math.random() - 0.5) * 6.0 : 0;
+
+      ballPhysics.x = spawnX;
+      ballPhysics.y = 0.24;
+      ballPhysics.z = spawnZ;
+      ballPhysics.vx = 0;
+      ballPhysics.vy = 0;
+      ballPhysics.vz = 0;
+      ballPhysics.curveX = 0;
+
+      ball.position.set(spawnX, 0.24, spawnZ);
+
+      keeper.position.set(0, 0, goalZ + 0.5);
+      setupDefensiveWall();
+
+      camera.position.set(spawnX, 1.8, spawnZ + 5.5);
+      camera.lookAt(0, 1.4, goalZ);
+    }
+
+    // Swipe / Touch flick detection
+    let touchStart = { x: 0, y: 0, time: 0 };
+
+    window.addEventListener('pointerdown', (e) => {
+      if (e.target.closest('#hud-layer') || e.target.closest('.screen-overlay')) return;
+      sound.init();
+      touchStart.x = e.clientX;
+      touchStart.y = e.clientY;
+      touchStart.time = performance.now();
+    });
+
+    window.addEventListener('pointerup', (e) => {
+      if (isBallInFlight || kicksLeft <= 0) return;
+      const deltaX = e.clientX - touchStart.x;
+      const deltaY = touchStart.y - e.clientY; // upward flick
+      const duration = (performance.now() - touchStart.time) / 1000;
+
+      if (deltaY > 30 && duration < 0.6) {
+        // Valid kick flick
+        kickBall(deltaX, deltaY, duration);
+      }
+    });
+
+    function kickBall(dx, dy, duration) {
+      isBallInFlight = true;
+      sound.playKick();
+
+      const speedFactor = THREE.MathUtils.clamp(dy / (duration * 600), 22, 38);
+      const angleH = (dx / window.innerWidth) * 1.8;
+
+      ballPhysics.vz = -speedFactor;
+      ballPhysics.vy = 6.5 + Math.min(dy * 0.04, 8.0);
+      ballPhysics.vx = angleH * 16.0;
+      ballPhysics.curveX = (dx / window.innerWidth) * 9.0; // curl in air
+
+      // Keeper AI Dive prediction
+      setTimeout(() => {
+        const diveTargets = [-goalWidth * 0.35, 0, goalWidth * 0.35];
+        const chosenDiveX = diveTargets[Math.floor(Math.random() * diveTargets.length)];
+        keeperDive(chosenDiveX);
+      }, 120);
+    }
+
+    function keeperDive(targetX) {
+      const startX = keeper.position.x;
+      let progress = 0;
+      const diveInterval = setInterval(() => {
+        progress += 0.08;
+        keeper.position.x = THREE.MathUtils.lerp(startX, targetX, progress);
+        keeper.position.y = Math.sin(progress * Math.PI) * 1.1; // dive jump
+        if (progress >= 1.0) clearInterval(diveInterval);
+      }, 20);
+    }
+
+    function updateBallPhysics(delta) {
+      if (!isBallInFlight) return;
+
+      // Gravity
+      ballPhysics.vy -= 16.0 * delta;
+
+      // Curl effect
+      ballPhysics.vx += ballPhysics.curveX * delta;
+
+      ballPhysics.x += ballPhysics.vx * delta;
+      ballPhysics.y += ballPhysics.vy * delta;
+      ballPhysics.z += ballPhysics.vz * delta;
+
+      // Ground bounce
+      if (ballPhysics.y < 0.24) {
+        ballPhysics.y = 0.24;
+        ballPhysics.vy = -ballPhysics.vy * 0.55;
+      }
+
+      ball.position.set(ballPhysics.x, ballPhysics.y, ballPhysics.z);
+
+      // Spin rotation
+      ball.rotation.x += delta * 18;
+      ball.rotation.y += delta * 12;
+
+      // Check wall collision (Free kick mode)
+      if (currentMode === 'freekick' && Math.abs(ballPhysics.z - (-14)) < 0.6) {
+        if (Math.abs(ballPhysics.x) < 1.6 && ballPhysics.y < 1.9) {
+          // Blocked by wall
+          sound.playPostClang();
+          isBallInFlight = false;
+          handleKickResult(false, 'BLOCKED BY WALL!');
+          return;
+        }
+      }
+
+      // Check Keeper Save
+      const distToKeeper = Math.hypot(ballPhysics.x - keeper.position.x, ballPhysics.y - (keeper.position.y + 1.0), ballPhysics.z - keeper.position.z);
+      if (distToKeeper < 0.9) {
+        sound.playPostClang();
+        isBallInFlight = false;
+        handleKickResult(false, 'SAVED BY KEEPER!');
+        return;
+      }
+
+      // Check Goal Line (z <= goalZ)
+      if (ballPhysics.z <= goalZ) {
+        isBallInFlight = false;
+        const inWidth = Math.abs(ballPhysics.x) < (goalWidth / 2 - 0.15);
+        const inHeight = ballPhysics.y > 0.2 && ballPhysics.y < goalHeight;
+
+        if (inWidth && inHeight) {
+          // GOAL!
+          sound.playGoalCheer();
+          handleKickResult(true, 'GOAL! ⚽');
+        } else if (Math.abs(ballPhysics.x) < goalWidth / 2 + 0.3 && Math.abs(ballPhysics.y - goalHeight) < 0.3) {
+          sound.playPostClang();
+          handleKickResult(false, 'HIT THE POST!');
+        } else {
+          handleKickResult(false, 'MISSED TARGET!');
+        }
+      }
+    }
+
+    function handleKickResult(isGoal, text) {
+      kicksLeft--;
+      document.getElementById('hud-kicks').innerText = `${kicksLeft}/5`;
+
+      const banner = document.getElementById('goal-banner');
+      banner.innerText = text;
+      banner.style.opacity = '1';
+      banner.style.transform = 'translate(-50%, -50%) scale(1.1)';
+
+      if (isGoal) {
+        streak++;
+        score += 100 * streak;
+      } else {
+        streak = 0;
+      }
+
+      document.getElementById('hud-score').innerText = score;
+      document.getElementById('hud-streak').innerText = streak;
+
+      setTimeout(() => {
+        banner.style.opacity = '0';
+        banner.style.transform = 'translate(-50%, -50%) scale(0.6)';
+
+        if (kicksLeft <= 0) {
+          triggerGameOver();
+        } else {
+          resetBall();
+        }
+      }, 1400);
+    }
+
+    function triggerGameOver() {
+      document.getElementById('go-goals').innerText = `${Math.floor(score / 100)}/5`;
+      document.getElementById('go-score').innerText = score;
+
+      const best = parseInt(localStorage.getItem('football_best_score') || '0', 10);
+      if (score > best) {
+        localStorage.setItem('football_best_score', score);
+      }
+      document.getElementById('screen-game-over').classList.remove('hidden');
+    }
+
+    function startMatch(mode) {
+      sound.init();
+      currentMode = mode;
+      kicksLeft = 5;
+      score = 0;
+      streak = 0;
+
+      document.getElementById('hud-mode').innerText = mode === 'penalty' ? 'PENALTY SHOOTOUT' : 'FREE KICK CHALLENGE';
+      document.getElementById('hud-score').innerText = '0';
+      document.getElementById('hud-streak').innerText = '0';
+      document.getElementById('hud-kicks').innerText = '5/5';
+
+      document.getElementById('screen-main-menu').classList.add('hidden');
+      document.getElementById('screen-game-over').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'flex';
+
+      resetBall();
+    }
+
+    // UI Click Handlers
+    document.getElementById('mode-penalty').addEventListener('click', () => {
+      document.getElementById('mode-penalty').classList.add('active');
+      document.getElementById('mode-freekick').classList.remove('active');
+    });
+    document.getElementById('mode-freekick').addEventListener('click', () => {
+      document.getElementById('mode-freekick').classList.add('active');
+      document.getElementById('mode-penalty').classList.remove('active');
+    });
+
+    document.getElementById('btn-play-game').addEventListener('click', () => {
+      const mode = document.getElementById('mode-freekick').classList.contains('active') ? 'freekick' : 'penalty';
+      startMatch(mode);
+    });
+
+    document.getElementById('btn-restart-game').addEventListener('click', () => startMatch(currentMode));
+    document.getElementById('btn-quit-to-menu').addEventListener('click', () => {
+      document.getElementById('screen-game-over').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+    });
+
+    document.getElementById('btn-audio-toggle').addEventListener('click', () => {
+      sound.init();
+      const isMuted = sound.toggleMute();
+      document.getElementById('btn-audio-toggle').innerText = isMuted ? '🔇' : '🔊';
+    });
+
+    document.getElementById('btn-pause-game').addEventListener('click', () => {
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+    });
+
+    /* ==========================================================================
+       6. MAIN ANIMATION LOOP
+       ========================================================================== */
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
+      updateBallPhysics(delta);
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+  })();
+  </script>
+</body>
+</html>

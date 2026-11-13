@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claymorphism Arcade Hub - 46 Games</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --clay-bg: #e8f0fe;
+      --clay-surface: #ffffff;
+      --clay-shadow: 10px 14px 28px rgba(160, 180, 205, 0.4), -6px -6px 20px #ffffff;
+      --clay-inset: inset 3px 3px 6px rgba(255, 255, 255, 0.8), inset -3px -3px 6px rgba(160, 180, 205, 0.25);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      color: #2c3e50;
+      padding: 32px 18px 60px;
+    }
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .badge {
+      display: inline-block;
+      background: #ffffff;
+      padding: 6px 18px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 700;
+      color: #0984e3;
+      box-shadow: 6px 8px 16px rgba(160, 180, 205, 0.4), var(--clay-inset);
+      border: 2px solid #ffffff;
+      margin-bottom: 12px;
+    }
+    h1 {
+      font-size: 40px;
+      font-weight: 700;
+      color: #2d3436;
+      margin-bottom: 8px;
+    }
+    p.sub {
+      color: #636e72;
+      font-size: 16px;
+    }
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+    .filter-btn {
+      background: #ffffff;
+      border: 2px solid #ffffff;
+      padding: 10px 22px;
+      border-radius: 24px;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      color: #636e72;
+      box-shadow: 6px 8px 16px rgba(160, 180, 205, 0.35), var(--clay-inset);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .filter-btn:hover {
+      transform: translateY(-2px);
+    }
+    .filter-btn.active {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      color: #ffffff;
+      box-shadow: 6px 10px 18px rgba(9, 132, 227, 0.35);
+    }
+    /* Games Grid */
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 22px;
+    }
+    .game-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 22px;
+      border: 3px solid #ffffff;
+      box-shadow: 12px 16px 30px rgba(160, 180, 205, 0.38), -8px -8px 20px #ffffff, var(--clay-inset);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s;
+    }
+    .game-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 16px 22px 35px rgba(160, 180, 205, 0.5), -10px -10px 25px #ffffff;
+    }
+    .card-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      background: #eef2f7;
+      box-shadow: inset 3px 3px 6px rgba(160, 180, 205, 0.4), inset -3px -3px 6px #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 14px;
+    }
+    .card-cat {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #0984e3;
+      margin-bottom: 4px;
+    }
+    .card-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #2d3436;
+      margin-bottom: 6px;
+    }
+    .card-desc {
+      font-size: 13px;
+      color: #636e72;
+      line-height: 1.4;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+    .play-link {
+      background: linear-gradient(135deg, #00b894 0%, #00cec9 100%);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 10px 24px;
+      border-radius: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 4px 6px 14px rgba(0, 184, 148, 0.35), inset 2px 2px 4px #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .play-link:hover {
+      transform: scale(1.05);
+      box-shadow: 6px 8px 18px rgba(0, 184, 148, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge">🎨 Claymorphism Game Collection</div>
+      <h1>Clay Arcade Hub</h1>
+      <p class="sub">46 Standalone HTML5 Games with tactile 3D clay visuals and procedural audio</p>
+    </header>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-cat="all">🎮 All Games (46)</button>
+      <button class="filter-btn" data-cat="arcade">💥 Arcade & Reflex</button>
+      <button class="filter-btn" data-cat="puzzle">🧩 Puzzle & Brain</button>
+      <button class="filter-btn" data-cat="sports">🏎️ Racing & Sports</button>
+      <button class="filter-btn" data-cat="casual">🎲 Casual & Platform</button>
+    </div>
+
+    <div class="games-grid" id="games-grid"></div>
+  </div>
+
+  <script>
+    const GAMES = [
+      // Arcade
+      { id: '01', title: 'Fruit Slice Master', cat: 'arcade', file: '01_fruit_slice_master.html', icon: '🍉', desc: 'Swipe your blade across juicy clay fruits and slice combos while dodging bombs!' },
+      { id: '02', title: 'Endless Runner', cat: 'arcade', file: '02_endless_runner.html', icon: '🦕', desc: 'Dodge clay obstacles across 3 lanes, jump over hurdles, and collect shiny coins!' },
+      { id: '03', title: 'Balloon Pop', cat: 'arcade', file: '03_balloon_pop.html', icon: '🎈', desc: 'Pop floating clay balloons before they escape into the sky!' },
+      { id: '04', title: 'Brick Breaker', cat: 'arcade', file: '04_brick_breaker.html', icon: '🧱', desc: 'Bounce the clay ball off your paddle and smash through colorful clay bricks!' },
+      { id: '05', title: 'Color Switch', cat: 'arcade', file: '05_color_switch.html', icon: '🎨', desc: 'Tap to bounce through spinning clay rings matching your ball color!' },
+
+      // Puzzle
+      { id: '06', title: 'Emoji Memory Match', cat: 'puzzle', file: '06_emoji_memory_match.html', icon: '🦁', desc: 'Flip 3D clay cards and match cute emoji pairs in minimum moves!' },
+      { id: '07', title: 'Block Puzzle', cat: 'puzzle', file: '07_block_puzzle.html', icon: '🧩', desc: 'Drag and drop clay polyomino shapes onto the 8x8 grid to clear full lines!' },
+      { id: '08', title: 'Number Merge', cat: 'puzzle', file: '08_number_merge.html', icon: '🔢', desc: 'Drop numbers into columns to merge matching clay blocks into 2048!' },
+      { id: '09', title: 'Maze Escape', cat: 'puzzle', file: '09_maze_escape.html', icon: '🚪', desc: 'Roll your clay marble through procedurally generated labyrinths to reach the exit!' },
+      { id: '10', title: '2048 Number Puzzle', cat: 'puzzle', file: '10_2048_puzzle.html', icon: '🎲', desc: 'Swipe clay number tiles in 4 directions to merge and unlock the 2048 tile!' },
+
+      // Racing / Sports
+      { id: '11', title: 'Mini Car Racing', cat: 'sports', file: '11_mini_car_racing.html', icon: '🏎️', desc: 'Drift and steer your micro racecar around the clay circuit track to beat lap records!' },
+      { id: '12', title: 'Traffic Dodge', cat: 'sports', file: '12_traffic_dodge.html', icon: '🚙', desc: 'Weave through rush hour highway traffic and collect coins at high speed!' },
+      { id: '13', title: 'Basketball Shot', cat: 'sports', file: '13_basketball_shot.html', icon: '🏀', desc: 'Drag back to aim and shoot clay basketballs into the moving hoop!' },
+      { id: '14', title: 'Penalty Kick', cat: 'sports', file: '14_penalty_kick.html', icon: '⚽', desc: 'Swipe to curve and kick football shots past the animated clay goalkeeper!' },
+      { id: '15', title: 'Downhill Bike', cat: 'sports', file: '15_downhill_bike.html', icon: '🚵', desc: 'Race down rolling clay hills, balance bike tilt in mid-air, and pull backflips!' },
+
+      // Casual & Platform
+      { id: '16', title: 'Stickman Jump', cat: 'casual', file: '16_stickman_jump.html', icon: '🧗', desc: 'Bounce continuously upwards on bouncy clay platforms and spring pads!' },
+      { id: '17', title: 'One-Tap Platformer', cat: 'casual', file: '17_one_tap_platformer.html', icon: '🏃', desc: 'Auto-running platformer where you tap to jump, double jump, and collect gems!' },
+      { id: '18', title: 'Bubble Shooter', cat: 'casual', file: '18_bubble_shooter.html', icon: '🫧', desc: 'Aim your clay cannon to match 3 or more colored bubbles and pop the ceiling!' },
+      { id: '19', title: 'Whack-a-Mole', cat: 'casual', file: '19_whack_a_mole.html', icon: '🔨', desc: 'Bonk mischievous clay moles popping out of grass holes within 30 seconds!' },
+      { id: '20', title: 'Fishing Mini Game', cat: 'casual', file: '20_fishing_mini_game.html', icon: '🎣', desc: 'Cast your bobber into the lake and balance the reel meter to land prize fish!' },
+      { id: '21', title: 'Tower Stack', cat: 'casual', file: '21_tower_stack.html', icon: '🏢', desc: 'Stack moving clay blocks to construct a towering skyscraper into the clouds!' },
+      { id: '22', title: 'Jigsaw Puzzle', cat: 'casual', file: '22_jigsaw_puzzle.html', icon: '🖼️', desc: 'Slide adjacent clay pieces into the empty slot to assemble numbers 1 to 8!' },
+      { id: '23', title: 'Simon Memory', cat: 'casual', file: '23_simon_memory.html', icon: '💡', desc: 'Repeat the growing musical light sequence on 4 tactile clay pads!' },
+      { id: '24', title: 'Tic-Tac-Toe', cat: 'casual', file: '24_tic_tac_toe.html', icon: '❌', desc: 'Classic 3x3 clay board game vs smart AI or 2-player pass & play local!' },
+      { id: '25', title: 'SkyRoad Rush 3D', cat: 'sports', file: '25_skyroad_rush_3d.html', icon: '🚀', desc: 'Hypersonic 3D racer! Weave through traffic, leap hurdles, hit boost pads and take flight!' },
+      { id: '26', title: 'Car Parking 3D', cat: 'sports', file: '26_car_parking_3d.html', icon: '🅿️', desc: 'Precision 3D car parking simulator! Maneuver into bays, listen to proximity radar, and avoid collisions!' },
+      { id: '27', title: 'Moto Traffic Rider 3D', cat: 'sports', file: '27_bike_traffic_rider.html', icon: '🏍️', desc: 'Hypersonic highway superbike racing! Weave through rush-hour traffic, score near misses, and pull wheelies!' },
+      { id: '28', title: 'Zombie Survival 3D', cat: 'arcade', file: '28_zombie_survival_3d.html', icon: '🧟', desc: 'Survive endless waves of zombies! Collect weapons, medkits, ammo crates and fight brutal boss tanks!' },
+      { id: '29', title: 'Football Penalty Master', cat: 'sports', file: '29_football_penalty_freekick_3d.html', icon: '⚽', desc: '3D Penalty & Free Kick simulator! Swipe to curve shots past the wall and beat goalkeeper AI!' },
+      { id: '30', title: 'Sky Parkour Challenge', cat: 'casual', file: '30_parkour_challenge_3d.html', icon: '🧗', desc: 'Speedrun across floating sky islands, moving elevators and obstacles to reach the summit portal!' },
+      { id: '31', title: 'Cyber Shooting Arena', cat: 'arcade', file: '31_shooting_arena_3d.html', icon: '🤖', desc: 'High-octane 3D bot deathmatch! Out-strafe tactical enemy AI bots with Blasters, Plasma & Railguns!' },
+      { id: '32', title: 'Airport Ground Crew 3D', cat: 'sports', file: '32_airport_ground_crew_3d.html', icon: '✈️', desc: 'Full 3D airport turnaround simulation! Drive baggage tugs, guide passenger airliners, load cargo containers, and refuel aircraft.' },
+      { id: '33', title: 'Sumo Push Clash 2D', cat: 'arcade', file: '33_sumo_push_battle.html', icon: '🤼', desc: 'Fast-paced claymorphism Sumo push battle! Tap spacebar on desktop or rapid-tap the clay pad on mobile to push the opponent out!' },
+      { id: '34', title: 'Flight Pitch Master 2D', cat: 'sports', file: '34_plane_takeoff_landing_2d.html', icon: '🛫', desc: 'Precision 2D plane takeoff & landing simulator! Master the exact flare pitch angle (+3° to +6°) for perfect butter landings!' },
+      { id: '35', title: 'Head Football 2D', cat: 'sports', file: '35_2d_football_champions.html', icon: '⚽', desc: '1v1 Side-view Big Head Soccer! Jump high, head the ball into the net, kick, and unleash Super Fireball shots!' },
+      { id: '36', title: 'One-Tap Cricket 2D', cat: 'sports', file: '36_cricket_timing_master_2d.html', icon: '🏏', desc: 'Classic One-Tap Timing Cricket! Press Space or tap screen as ball hits the fixed sweet-spot to hit 6s, 4s, 2s & 1s!' },
+      { id: '37', title: 'Speed Math Duel 2D', cat: 'puzzle', file: '37_speed_math_duel.html', icon: '🔢', desc: 'Fast calculation exam! Play Solo Blitz or 2-Player Head-to-Head Duel on the same screen with touch or keyboard!' },
+      { id: '38', title: 'Tug of War 2D', cat: 'arcade', file: '38_tug_of_war_2d.html', icon: '💪', desc: 'Epic Claymorphic Tug of War! Pull the braided rope, unleash Heave-Ho power surges, and drag the opponent into the mud pit!' },
+      { id: '39', title: 'Beyblade Spin Battle 2D', cat: 'arcade', file: '39_beyblade_spin_battle_2d.html', icon: '🌀', desc: 'Epic Beyblade dish clashes! Ripcord launches, spin RPM physics, special dashes, and explosive Burst Finishes!' },
+      { id: '40', title: 'Spider-Man 3D: Web Avenue Rush', cat: 'arcade', file: '40_spiderman_web_swing_2d.html', icon: '🕷️', desc: '3D Skyscraper Avenue Web Swinging! Steer with Left & Right web pulls to avoid crashing into walls and maintain the ultimate center speed combo!' },
+      { id: '41', title: 'Crazy Delivery Rider 3D', cat: 'sports', file: '41_crazy_delivery_rider_3d.html', icon: '🛵', desc: 'Zomato, Swiggy & Blinkit Delivery Rush! Dodge crazy traffic, overtake autos & buses, and deliver orders before the bomb timer blasts the bike with funny meme sounds!' },
+      { id: '42', title: 'No Brakes Desi Bus Driver 3D', cat: 'arcade', file: '42_no_brakes_desi_bus_driver_3d.html', icon: '🚌', desc: 'Unstoppable runaway Indian bus mayhem! Foot brakes are dead — 2-wheel handbrake drifts, smashing fruit thelas, toll gates, and honking musical air horns to trigger Bollywood Chaos Mode!' },
+      { id: '43', title: 'Local Train Door Jammer 3D', cat: 'arcade', file: '43_local_train_door_jammer_3d.html', icon: '🚆', desc: 'Peak office hour suburban train madness! Hang from the footboard, duck under electric poles, push off chaiwalas, elbow pushing crowds, and survive the 3-second stampede at Howrah/Sealdah!' },
+      { id: '44', title: 'Election Mayhem: Voting Battle', cat: 'arcade', file: '44_election_mayhem_voting_battle.html', icon: '🗳️', desc: 'Modi, Didi, Rahul, Kejriwal, Lalu, Tharoor, Yogi & Nitish election clash! 7 state crises (highways, hospitals, kisan, power, flood, TET teachers, 5G smart city), twisted bureaucratic dilemmas, newspaper headlines, Arnab TV debates with meme soundboard & EVM vote counting!' },
+      { id: '45', title: 'Parliament Kaand 3D', cat: 'arcade', file: '45_parliament_kaand_3d.html', icon: '🏛️', desc: '3D Indian Parliament comedy chaos simulator! Semicircular legislative chamber, Speaker dais, flying paper aeroplanes, wooden desk thumping, decorum vs chaos meter, and ragdoll MPs!' },
+      { id: '46', title: 'Sledge Rider 3D', cat: 'sports', file: '46_sledge_rider_3d.html', icon: '🛷', desc: 'Extreme downhill snow sledding! Carve through snowy mountain slopes, jump high off wooden ramps, dodge pine trees & rocks, collect coins, and perform epic airtime!' }
+    ];
+
+    const gridEl = document.getElementById('games-grid');
+
+    function renderGames(filter = 'all') {
+      gridEl.innerHTML = '';
+      const list = filter === 'all' ? GAMES : GAMES.filter(g => g.cat === filter);
+
+      list.forEach(g => {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.innerHTML = `
+          <div class="card-icon">${g.icon}</div>
+          <div class="card-cat">${g.cat}</div>
+          <div class="card-title">${g.id}. ${g.title}</div>
+          <div class="card-desc">${g.desc}</div>
+          <a class="play-link" href="${g.file}" target="_blank">PLAY NOW ▶</a>
+        `;
+        gridEl.appendChild(card);
+      });
+    }
+
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderGames(btn.dataset.cat);
+      });
+    });
+
+    renderGames();
+  </script>
+</body>
+</html>

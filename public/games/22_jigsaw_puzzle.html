@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Jigsaw Puzzle - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 440px;
+      max-width: 96vw;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      padding: 24px 20px;
+      border: 4px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .hud {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+    }
+    /* 3x3 Puzzle Board */
+    #board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      aspect-ratio: 1;
+      background: #eef2f7;
+      border-radius: 28px;
+      padding: 12px;
+      box-shadow: inset 4px 4px 10px rgba(160, 180, 205, 0.45), inset -4px -4px 10px #ffffff;
+    }
+    .piece {
+      border-radius: 20px;
+      background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+      box-shadow: 6px 8px 16px rgba(9, 132, 227, 0.35), inset 3px 3px 6px rgba(255, 255, 255, 0.6), inset -3px -3px 6px rgba(0, 0, 0, 0.15);
+      border: 2px solid #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      transition: transform 0.12s ease;
+    }
+    .piece:active { transform: scale(0.94); }
+    .piece.empty {
+      background: transparent;
+      box-shadow: none;
+      border: none;
+      cursor: default;
+    }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.9);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+      border-radius: 36px;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(9, 132, 227, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🔄</span>
+        <span id="moves-val">0 Moves</span>
+      </div>
+      <div class="clay-pill">
+        <span>⏱️</span>
+        <span id="timer-val">0s</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- 3x3 Puzzle Board -->
+    <div id="board"></div>
+
+    <div style="margin-top: 16px; color: #8395a7; font-size: 14px; font-weight: 600;">
+      Slide adjacent clay pieces into the empty slot in order (1 to 8)!
+    </div>
+
+    <!-- Win Modal -->
+    <div id="win-modal" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 50px; margin-bottom: 6px;">🎉 🏆 🧩</div>
+        <h1 style="color: #0984e3; font-size: 28px;">PUZZLE COMPLETED!</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">You arranged all clay puzzle pieces in perfect order!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin: 12px 0;">
+          <div style="font-size: 20px; font-weight: 700; color: #0984e3;" id="win-stats">24 moves • 35s</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      slide() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(320, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(180, this.ctx.currentTime + 0.08);
+        g.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.09);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.09);
+      }
+      win() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.08);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.08 + 0.2);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.08); o.stop(now + idx * 0.08 + 0.22);
+        });
+      }
+    }
+    const sound = new ClaySound();
+
+    let tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0]; // 0 is empty slot
+    let moves = 0;
+    let seconds = 0;
+    let timerId = null;
+
+    const PIECE_EMOJIS = {
+      1: '1️⃣', 2: '2️⃣', 3: '3️⃣',
+      4: '4️⃣', 5: '5️⃣', 6: '6️⃣',
+      7: '7️⃣', 8: '8️⃣'
+    };
+
+    function shuffle() {
+      // Perform random valid moves from solved state to guarantee solvability
+      for (let i = 0; i < 120; i++) {
+        const emptyIdx = tiles.indexOf(0);
+        const validMoves = getAdjacentIndices(emptyIdx);
+        const chosen = validMoves[Math.floor(Math.random() * validMoves.length)];
+        tiles[emptyIdx] = tiles[chosen];
+        tiles[chosen] = 0;
+      }
+    }
+
+    function getAdjacentIndices(idx) {
+      const r = Math.floor(idx / 3);
+      const c = idx % 3;
+      const res = [];
+      if (r > 0) res.push((r - 1) * 3 + c);
+      if (r < 2) res.push((r + 1) * 3 + c);
+      if (c > 0) res.push(r * 3 + (c - 1));
+      if (c < 2) res.push(r * 3 + (c + 1));
+      return res;
+    }
+
+    function renderBoard() {
+      const boardEl = document.getElementById('board');
+      boardEl.innerHTML = '';
+
+      tiles.forEach((val, idx) => {
+        const p = document.createElement('div');
+        if (val === 0) {
+          p.className = 'piece empty';
+        } else {
+          p.className = 'piece';
+          p.innerText = val;
+          p.addEventListener('click', () => onPieceClick(idx));
+        }
+        boardEl.appendChild(p);
+      });
+    }
+
+    function onPieceClick(idx) {
+      const emptyIdx = tiles.indexOf(0);
+      const adj = getAdjacentIndices(idx);
+
+      if (adj.includes(emptyIdx)) {
+        // Swap with empty
+        tiles[emptyIdx] = tiles[idx];
+        tiles[idx] = 0;
+        moves++;
+        sound.slide();
+        document.getElementById('moves-val').innerText = `${moves} Moves`;
+        renderBoard();
+        checkWin();
+      }
+    }
+
+    function checkWin() {
+      const isSolved = tiles.slice(0, 8).every((val, idx) => val === idx + 1);
+      if (isSolved) {
+        clearInterval(timerId);
+        sound.win();
+        document.getElementById('win-stats').innerText = `${moves} moves • ${seconds}s`;
+        document.getElementById('win-modal').classList.remove('hidden');
+      }
+    }
+
+    function initGame() {
+      tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+      moves = 0;
+      seconds = 0;
+      shuffle();
+
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        seconds++;
+        document.getElementById('timer-val').innerText = `${seconds}s`;
+      }, 1000);
+
+      document.getElementById('moves-val').innerText = '0 Moves';
+      document.getElementById('timer-val').innerText = '0s';
+      document.getElementById('win-modal').classList.add('hidden');
+
+      renderBoard();
+    }
+
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    initGame();
+  </script>
+</body>
+</html>

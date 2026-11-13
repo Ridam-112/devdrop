@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>3D Aviation & Naval Hub — Localhost 3000</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:#070d18;color:#f8fafc;font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 20px;
+    background-image:radial-gradient(ellipse at 50% 0%, #1e293b 0%, #070d18 70%);
+  }
+  .header{text-align:center;max-width:750px;margin-bottom:40px}
+  .badge{
+    display:inline-block;padding:6px 14px;border-radius:20px;font-size:11px;font-weight:700;
+    letter-spacing:2px;background:rgba(56,189,248,0.15);color:#38bdf8;border:1px solid rgba(56,189,248,0.3);
+    margin-bottom:15px;
+  }
+  h1{font-size:32px;font-weight:900;letter-spacing:1px;margin-bottom:10px;color:#fff}
+  p.subtitle{font-size:14px;color:#94a3b8;line-height:1.6}
+
+  .grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:25px;width:100%;max-width:1150px;margin-bottom:40px;
+  }
+  .card{
+    background:rgba(15,23,42,0.75);border:1px solid rgba(255,255,255,0.12);
+    border-radius:18px;overflow:hidden;backdrop-filter:blur(12px);
+    display:flex;flex-direction:column;transition:all .3s ease;
+    box-shadow:0 12px 30px rgba(0,0,0,0.4);text-decoration:none;color:inherit;
+  }
+  .card:hover{
+    transform:translateY(-6px);border-color:#38bdf8;
+    box-shadow:0 20px 40px rgba(56,189,248,0.25);
+  }
+  .card-header{
+    height:130px;display:flex;align-items:center;justify-content:center;
+    position:relative;overflow:hidden;
+  }
+  .card-1 .card-header{background:linear-gradient(135deg,#ff7b18 0%,#1e293b 100%)}
+  .card-2 .card-header{background:linear-gradient(135deg,#059669 0%,#0f172a 100%)}
+  .card-3 .card-header{background:linear-gradient(135deg,#0284c7 0%,#09101b 100%)}
+  .card-icon{font-size:55px;filter:drop-shadow(0 6px 15px rgba(0,0,0,0.5))}
+
+  .card-body{padding:24px;flex:1;display:flex;flex-direction:column}
+  .card-title{font-size:20px;font-weight:800;margin-bottom:8px;color:#f1f5f9}
+  .card-desc{font-size:12.5px;color:#94a3b8;line-height:1.6;margin-bottom:20px;flex:1}
+
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:20px}
+  .tag{
+    font-size:10px;font-weight:600;padding:4px 9px;border-radius:6px;
+    background:rgba(255,255,255,0.06);color:#cbd5e1;border:1px solid rgba(255,255,255,0.08);
+  }
+
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    width:100%;padding:12px;border-radius:10px;font-size:12px;font-weight:700;
+    letter-spacing:1px;text-align:center;text-decoration:none;transition:all .2s;
+  }
+  .card-1 .btn{background:#ff7b18;color:#fff}
+  .card-1 .btn:hover{background:#ea580c;box-shadow:0 0 15px rgba(255,123,24,0.5)}
+  .card-2 .btn{background:#10b981;color:#04131f}
+  .card-2 .btn:hover{background:#059669;color:#fff;box-shadow:0 0 15px rgba(16,185,129,0.5)}
+  .card-3 .btn{background:#0284c7;color:#fff}
+  .card-3 .btn:hover{background:#0369a1;box-shadow:0 0 15px rgba(2,132,199,0.5)}
+
+  .footer{text-align:center;font-size:12px;color:#64748b;margin-top:auto}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">STANDALONE 3D SIMULATION SUITE · LOCALHOST:3000</div>
+  <h1>MILITARY & NAVAL 3D SHOWCASE</h1>
+  <p class="subtitle">
+    High-fidelity interactive 3D WebGL environments featuring authentic aircraft engineering, realistic procedural landscapes, and naval flight deck simulations.
+  </p>
+</div>
+
+<div class="grid">
+  <!-- Card 0: Dogfight Arena Game -->
+  <div class="card card-0" style="grid-column: 1 / -1; background: linear-gradient(135deg, rgba(30,15,20,0.85) 0%, rgba(10,18,30,0.85) 100%); border-color: rgba(239,68,68,0.4);">
+    <div class="card-header" style="background: linear-gradient(135deg, #ef4444 0%, #1e1b4b 100%); height: 150px;">
+      <div class="card-icon">⚔️</div>
+    </div>
+    <div class="card-body">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+        <h2 class="card-title" style="font-size: 24px; color: #f87171;">AeroStrike 3D &bull; Tejas vs Su-30MKI Dogfight</h2>
+        <span class="tag" style="background:rgba(239,68,68,0.2);color:#fca5a5;border-color:#ef4444;font-size:11px">★ 3D AIR COMBAT GAME</span>
+      </div>
+      <p class="card-desc" style="font-size: 13.5px;">
+        Engage in intense air-to-air dogfights across the combined <strong>Riverbend Airbase Runway</strong> and <strong>Ocean CVN Carrier</strong> map! Choose to pilot either the ultra-agile <strong>HAL Tejas LCA</strong> or the heavy dual-thrust <strong>Sukhoi Su-30MKI</strong> with canards. Features rapid-fire 23mm/30mm cannon tracers, heat-seeking Fox-2 AAM missiles, countermeasure flares, real-time tactical radar minimap, and reactive enemy Ace AI!
+      </p>
+      <div class="tags">
+        <span class="tag">🔥 Flyable Tejas & Su-30MKI</span>
+        <span class="tag">🎯 23mm/30mm Vulcan Cannon</span>
+        <span class="tag">🚀 Fox-2 Heat-Seeking Missiles</span>
+        <span class="tag">✨ Decoy Flares</span>
+        <span class="tag">🏝️ Runway & Carrier Map</span>
+        <span class="tag">📡 Radar Minimap & HUD</span>
+      </div>
+      <a href="/dogfight_game.html" class="btn" style="background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff;font-size:14px;padding:14px;box-shadow:0 0 20px rgba(239,68,68,0.5)">
+        PLAY DOGFIGHT GAME NOW &rarr;
+      </a>
+    </div>
+  </div>
+
+  <!-- Card 1: Tejas -->
+  <div class="card card-1">
+    <div class="card-header">
+      <div class="card-icon">🛩️</div>
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">HAL Tejas LCA Mk-1</h2>
+      <p class="card-desc">
+        Light Combat Aircraft with interactive <strong>Take Off & Landing</strong> animations, working afterburner reheat flames, cockpit canopy, and IAF air superiority markings.
+      </p>
+      <div class="tags">
+        <span class="tag">🛫 Takeoff Sim</span>
+        <span class="tag">🛬 Landing Sim</span>
+        <span class="tag">PBR Materials</span>
+        <span class="tag">Jet Audio</span>
+      </div>
+      <a href="/tejas_3d.html" class="btn">LAUNCH TEJAS 3D &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Card 2: Riverbend Airstrip -->
+  <div class="card card-2">
+    <div class="card-header">
+      <div class="card-icon">🏝️</div>
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">Riverbend Airstrip</h2>
+      <p class="card-desc">
+        Expansive 3D flight game environment with tarmac runway, taxiways, hangars, glass-cab control tower, flowing river with bridge, and rolling terrain.
+      </p>
+      <div class="tags">
+        <span class="tag">Flight Game Map</span>
+        <span class="tag">Procedural River</span>
+        <span class="tag">Hangars & Tower</span>
+        <span class="tag">Day / Night</span>
+      </div>
+      <a href="/riverbend_airstrip_3d.html" class="btn">LAUNCH AIRSTRIP 3D &rarr;</a>
+    </div>
+  </div>
+
+  <!-- Card 3: Aircraft Carrier -->
+  <div class="card card-3">
+    <div class="card-header">
+      <div class="card-icon">🚢</div>
+    </div>
+    <div class="card-body">
+      <h2 class="card-title">CVN Aircraft Carrier</h2>
+      <p class="card-desc">
+        Detailed modern nuclear aircraft carrier flight deck with island superstructure, phased array radar masts, parked deck fighter jets, and undulating ocean waves.
+      </p>
+      <div class="tags">
+        <span class="tag">Naval Flight Deck</span>
+        <span class="tag">Animated Ocean</span>
+        <span class="tag">Deck Jets</span>
+        <span class="tag">Sunset / Night</span>
+      </div>
+      <a href="/carrier_3d_model.html" class="btn">LAUNCH CARRIER 3D &rarr;</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Running live on <strong>http://localhost:3000/</strong> &bull; Complete standalone offline-ready WebGL 3D system
+</div>
+
+</body>
+</html>

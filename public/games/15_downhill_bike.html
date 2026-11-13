@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Downhill Bike - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    /* Controls */
+    .touch-controls {
+      position: absolute;
+      bottom: 24px;
+      left: 0; right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 24px;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .t-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 22px;
+      background: #ffffff;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      border: 2px solid #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: transform 0.1s;
+    }
+    .t-btn:active { transform: scale(0.92); }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #e17055 0%, #d63031 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(214, 48, 49, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🚴</span>
+        <span id="dist-val">0m</span>
+      </div>
+      <div class="clay-pill">
+        <span>⭐</span>
+        <span id="stunt-val">0 Flips</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- On-screen controls -->
+    <div class="touch-controls">
+      <div style="display: flex; gap: 12px;">
+        <div class="t-btn" id="btn-tilt-left">🔄</div>
+        <div class="t-btn" id="btn-tilt-right">🔃</div>
+      </div>
+      <div style="display: flex; gap: 12px;">
+        <div class="t-btn" id="btn-brake">🛑</div>
+        <div class="t-btn" id="btn-gas">⚡</div>
+      </div>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🚵 ⛰️ 💨</div>
+        <h1 style="color: #e17055; font-size: 28px;">Downhill Bike</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Race down rolling clay hills! Balance your bike in the air and stick the landing!</p>
+        <button id="btn-start" class="clay-btn">RIDE NOW ▶</button>
+      </div>
+    </div>
+
+    <!-- Crash Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🤕 🚲</div>
+        <h1 style="color: #ff5252; font-size: 28px;">WIPEOUT!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">You landed upside-down on the clay trail!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin-bottom: 16px;">
+          <div style="font-size: 24px; font-weight: 700; color: #e17055;" id="final-dist">0m</div>
+          <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Distance Traveled</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">RIDE AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      stunt() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.2, now + idx * 0.05);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.05 + 0.12);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.05); o.stop(now + idx * 0.05 + 0.13);
+        });
+      }
+      crash() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(140, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.35);
+        g.gain.setValueAtTime(0.5, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.4);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    let gameState = 'START';
+    let distance = 0;
+    let flips = 0;
+
+    // Bike Physics State
+    let bike = {
+      x: 200,
+      y: 350,
+      vx: 0,
+      vy: 0,
+      angle: 0,
+      vAngle: 0,
+      wheelDist: 28,
+      wheelR: 11,
+      isGrounded: false
+    };
+
+    let totalRotationInAir = 0;
+    let keys = {};
+
+    function getTerrainHeight(worldX) {
+      // Smooth clay rolling hills function
+      return 450 + Math.sin(worldX * 0.005) * 80 + Math.cos(worldX * 0.012) * 50;
+    }
+
+    function initGame() {
+      distance = 0;
+      flips = 0;
+      bike.x = 200;
+      bike.y = getTerrainHeight(200) - 40;
+      bike.vx = 2;
+      bike.vy = 0;
+      bike.angle = 0;
+      bike.vAngle = 0;
+      totalRotationInAir = 0;
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    window.addEventListener('keydown', (e) => { keys[e.key] = true; });
+    window.addEventListener('keyup', (e) => { keys[e.key] = false; });
+
+    const bindTouch = (id, key) => {
+      const el = document.getElementById(id);
+      el.addEventListener('touchstart', (e) => { e.preventDefault(); keys[key] = true; });
+      el.addEventListener('touchend', (e) => { e.preventDefault(); keys[key] = false; });
+    };
+    bindTouch('btn-gas', 'ArrowRight');
+    bindTouch('btn-brake', 'ArrowLeft');
+    bindTouch('btn-tilt-left', 'ArrowUp');
+    bindTouch('btn-tilt-right', 'ArrowDown');
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function loop() {
+      ctx.fillStyle = '#e8f0fe';
+      ctx.fillRect(0, 0, W, H);
+
+      const camX = bike.x - 140;
+
+      // Draw Rolling Clay Terrain
+      ctx.fillStyle = '#1dd1a1';
+      ctx.beginPath();
+      ctx.moveTo(0, H);
+      for (let sx = 0; sx <= W; sx += 8) {
+        const h = getTerrainHeight(camX + sx);
+        ctx.lineTo(sx, h);
+      }
+      ctx.lineTo(W, H);
+      ctx.closePath();
+      ctx.fill();
+
+      // Terrain Clay highlight ridge
+      ctx.strokeStyle = '#55efc4';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      for (let sx = 0; sx <= W; sx += 8) {
+        const h = getTerrainHeight(camX + sx);
+        if (sx === 0) ctx.moveTo(sx, h);
+        else ctx.lineTo(sx, h);
+      }
+      ctx.stroke();
+
+      if (gameState === 'PLAYING') {
+        distance = Math.max(distance, Math.floor(bike.x / 10));
+        document.getElementById('dist-val').innerText = `${distance}m`;
+        document.getElementById('stunt-val').innerText = `${flips} Flips`;
+
+        // Physics controls
+        if (keys['ArrowRight'] || keys['d']) bike.vx += 0.22;
+        if (keys['ArrowLeft'] || keys['a']) bike.vx -= 0.15;
+        if (keys['ArrowUp'] || keys['w']) bike.vAngle -= 0.04;
+        if (keys['ArrowDown'] || keys['s']) bike.vAngle += 0.04;
+
+        bike.vy += 0.35; // Gravity
+        bike.vx *= 0.985;
+        bike.vAngle *= 0.95;
+
+        bike.x += bike.vx;
+        bike.y += bike.vy;
+        bike.angle += bike.vAngle;
+
+        // Ground collision calculation based on wheels
+        const rearX = bike.x - Math.cos(bike.angle) * bike.wheelDist;
+        const frontX = bike.x + Math.cos(bike.angle) * bike.wheelDist;
+        const rearGround = getTerrainHeight(rearX);
+        const frontGround = getTerrainHeight(frontX);
+        const avgGround = (rearGround + frontGround) / 2;
+
+        if (bike.y >= avgGround - bike.wheelR) {
+          bike.y = avgGround - bike.wheelR;
+          bike.vy = 0;
+
+          // Align angle with hill slope
+          const slopeAngle = Math.atan2(frontGround - rearGround, bike.wheelDist * 2);
+          const angleDiff = Math.abs(bike.angle - slopeAngle);
+
+          // If upside down on landing = CRASH!
+          if (angleDiff > Math.PI * 0.65) {
+            sound.crash();
+            gameState = 'GAMEOVER';
+            document.getElementById('final-dist').innerText = `${distance}m`;
+            document.getElementById('gameover-screen').classList.remove('hidden');
+            return;
+          }
+
+          bike.angle += (slopeAngle - bike.angle) * 0.25;
+          bike.vx += Math.sin(slopeAngle) * 0.4; // Downhill roll momentum
+
+          if (!bike.isGrounded) {
+            bike.isGrounded = true;
+            if (Math.abs(totalRotationInAir) >= Math.PI * 1.8) {
+              flips++;
+              sound.stunt();
+            }
+            totalRotationInAir = 0;
+          }
+        } else {
+          bike.isGrounded = false;
+          totalRotationInAir += bike.vAngle;
+        }
+      }
+
+      // Draw Clay Bike & Rider
+      const drawX = bike.x - camX;
+      const drawY = bike.y;
+
+      ctx.save();
+      ctx.translate(drawX, drawY);
+      ctx.rotate(bike.angle);
+
+      // Bike Frame
+      ctx.strokeStyle = '#e17055';
+      ctx.lineWidth = 5;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-bike.wheelDist, 0);
+      ctx.lineTo(0, -14);
+      ctx.lineTo(bike.wheelDist, 0);
+      ctx.lineTo(6, -18);
+      ctx.lineTo(-bike.wheelDist, 0);
+      ctx.stroke();
+
+      // Front & Rear Clay Wheels
+      [-bike.wheelDist, bike.wheelDist].forEach(wx => {
+        ctx.fillStyle = '#2d3436';
+        ctx.beginPath();
+        ctx.arc(wx, 0, bike.wheelR, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#dfe6e9';
+        ctx.beginPath();
+        ctx.arc(wx, 0, 4, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Rider Clay Figure
+      ctx.fillStyle = '#0984e3';
+      ctx.beginPath();
+      ctx.roundRect(-6, -26, 12, 14, 4);
+      ctx.fill();
+
+      // Helmet Head
+      ctx.fillStyle = '#f1c40f';
+      ctx.beginPath();
+      ctx.arc(0, -32, 8, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

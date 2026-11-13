@@ -1,0 +1,1420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tug of War Champions 2D - 1 & 2 Player Clash</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=JetBrains+Mono:wght@700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --clay-bg: #e2eafc;
+      --clay-surface: #ffffff;
+      --clay-shadow: 10px 14px 28px rgba(160, 180, 205, 0.45), -8px -8px 20px #ffffff;
+      --clay-inset: inset 3px 3px 6px rgba(255, 255, 255, 0.8), inset -3px -3px 6px rgba(160, 180, 205, 0.25);
+      --p1-blue: #0984e3;
+      --p1-light: #74b9ff;
+      --p2-red: #d63031;
+      --p2-light: #ff7675;
+      --gold: #f39c12;
+      --accent: #6c5ce7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      background: linear-gradient(135deg, #dbe7f6 0%, #c8daf2 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      color: #2d3436;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      padding: 10px;
+    }
+
+    /* Top Bar Navigation */
+    .top-nav {
+      position: fixed;
+      top: 12px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .nav-btn {
+      pointer-events: auto;
+      background: #ffffff;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      color: #2d3436;
+      cursor: pointer;
+      box-shadow: 6px 8px 18px rgba(160, 180, 205, 0.4), inset 2px 2px 4px #ffffff;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+
+    .nav-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 8px 12px 22px rgba(160, 180, 205, 0.5);
+    }
+    .nav-btn:active {
+      transform: translateY(1px);
+    }
+
+    .nav-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    /* Main Container */
+    .game-wrapper {
+      width: 100%;
+      max-width: 960px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Top Score / Status HUD Bar */
+    .match-hud {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 12px 24px;
+      box-shadow: var(--clay-shadow);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 3px solid #ffffff;
+    }
+
+    .team-hud {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .team-hud.p1 {
+      color: var(--p1-blue);
+    }
+    .team-hud.p2 {
+      color: var(--p2-red);
+      flex-direction: row-reverse;
+    }
+
+    .rounds-dots {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      box-shadow: var(--clay-inset);
+      transition: background 0.3s ease;
+    }
+    .dot.won-p1 {
+      background: var(--p1-blue);
+      box-shadow: 0 0 8px rgba(9, 132, 227, 0.6);
+    }
+    .dot.won-p2 {
+      background: var(--p2-red);
+      box-shadow: 0 0 8px rgba(214, 48, 49, 0.6);
+    }
+
+    .center-announcer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .heave-surge-pill {
+      background: #f1f5f9;
+      color: #64748b;
+      padding: 4px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      box-shadow: var(--clay-inset);
+      transition: all 0.25s ease;
+    }
+
+    .heave-surge-pill.surge-active {
+      background: #10b981;
+      color: #ffffff;
+      animation: surgePulse 0.4s infinite alternate ease-in-out;
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.65);
+    }
+
+    @keyframes surgePulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+
+    .round-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #2d3436;
+    }
+
+    /* Game Canvas Container */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      aspect-ratio: 16 / 9;
+      max-height: 520px;
+      background: #ffffff;
+      border-radius: 36px;
+      box-shadow: var(--clay-shadow);
+      border: 4px solid #ffffff;
+      overflow: hidden;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Mobile / Touch Pull Controls */
+    .touch-controls {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .touch-controls.mode-1p {
+      grid-template-columns: 1fr;
+    }
+
+    .touch-controls.mode-1p .pull-pad.p2-pad {
+      display: none;
+    }
+
+    .touch-controls.mode-1p .pull-pad.p1-pad {
+      padding: 22px 14px;
+      background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
+      border: 3px solid #93c5fd;
+    }
+
+    .pull-pad {
+      background: #ffffff;
+      border: 3px solid transparent;
+      border-radius: 26px;
+      padding: 16px 12px;
+      box-shadow: var(--clay-shadow);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      transition: transform 0.08s ease, box-shadow 0.08s ease;
+      touch-action: manipulation;
+    }
+
+    .pull-pad.p1-pad {
+      border-color: #dbeafe;
+      color: var(--p1-blue);
+    }
+    .pull-pad.p2-pad {
+      border-color: #fee2e2;
+      color: var(--p2-red);
+    }
+
+    .pull-pad:active, .pull-pad.active {
+      transform: translateY(3px) scale(0.97);
+      box-shadow: 2px 4px 10px rgba(160, 180, 205, 0.4), var(--clay-inset);
+    }
+
+    .pad-title {
+      font-size: 20px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pad-hint {
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    /* Start / Config Menu Overlay */
+    .menu-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 16px;
+      overflow-y: auto;
+    }
+
+    .menu-box {
+      background: #ffffff;
+      width: 100%;
+      max-width: 490px;
+      border-radius: 32px;
+      padding: 28px 24px;
+      box-shadow: 0 16px 36px rgba(15, 23, 42, 0.35);
+      border: 3px solid #ffffff;
+      text-align: center;
+      margin: auto;
+    }
+
+    .countdown-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 80px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      z-index: 40;
+      pointer-events: none;
+      display: none;
+      animation: popCount 0.4s ease-out;
+    }
+
+    @keyframes popCount {
+      0% { transform: translate(-50%, -50%) scale(0.4); opacity: 0; }
+      70% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+    }
+
+    .menu-tag {
+      display: inline-block;
+      background: #eef2ff;
+      color: var(--accent);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 800;
+      margin-bottom: 8px;
+      box-shadow: var(--clay-inset);
+    }
+
+    h1.game-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+    p.game-sub {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .config-label {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #94a3b8;
+      text-align: left;
+      margin: 12px 0 6px 4px;
+    }
+
+    .toggle-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .toggle-row.three-col {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .clay-btn {
+      background: #f8fafc;
+      border: 2px solid transparent;
+      padding: 10px 8px;
+      border-radius: 18px;
+      cursor: pointer;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #475569;
+      box-shadow: 4px 6px 14px rgba(180, 195, 215, 0.3), var(--clay-inset);
+      transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .clay-btn .icon {
+      font-size: 20px;
+    }
+
+    .clay-btn.active {
+      background: #ffffff;
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 6px 8px 18px rgba(108, 92, 231, 0.25), inset 0 0 0 2px var(--accent);
+    }
+
+    .start-clash-btn {
+      width: 100%;
+      margin-top: 18px;
+      background: linear-gradient(135deg, #0984e3 0%, #6c5ce7 100%);
+      border: none;
+      color: white;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      padding: 14px;
+      border-radius: 22px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(9, 132, 227, 0.4), inset 2px 2px 4px rgba(255, 255, 255, 0.4);
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .start-clash-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(9, 132, 227, 0.5);
+    }
+    .start-clash-btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Round Winner / Match Over Modal */
+    .round-modal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: #ffffff;
+      border-radius: 32px;
+      padding: 28px 24px;
+      width: 90%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.25);
+      border: 3px solid #ffffff;
+      z-index: 60;
+      display: none;
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .round-modal.show {
+      display: block;
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-trophy {
+      font-size: 56px;
+      margin-bottom: 8px;
+    }
+    .modal-title {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .modal-sub {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+    }
+    .btn-act {
+      flex: 1;
+      padding: 12px;
+      border-radius: 16px;
+      border: none;
+      font-family: 'Fredoka', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn-blue {
+      background: var(--p1-blue);
+      color: white;
+    }
+    .btn-gray {
+      background: #e2e8f0;
+      color: #334155;
+    }
+
+    @media (max-width: 600px) {
+      .match-hud {
+        padding: 8px 14px;
+      }
+      .team-hud {
+        font-size: 16px;
+      }
+      .pad-title {
+        font-size: 17px;
+      }
+      .pad-hint {
+        font-size: 11px;
+      }
+      h1.game-title {
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+  <div class="top-nav">
+    <a href="arcade_hub.html" class="nav-btn">
+      <span>◀</span> Hub
+    </a>
+    <div class="nav-group">
+      <button id="sound-btn" class="nav-btn">
+        🔊 Sound: ON
+      </button>
+    </div>
+  </div>
+
+  <div class="game-wrapper">
+
+    <!-- Top Match HUD -->
+    <div class="match-hud">
+      <div class="team-hud p1">
+        <span>🟦 BLUE</span>
+        <div class="rounds-dots">
+          <div class="dot" id="p1-r1"></div>
+          <div class="dot" id="p1-r2"></div>
+        </div>
+      </div>
+
+      <div class="center-announcer">
+        <div class="heave-surge-pill" id="heave-pill">⚡ TAP RAPIDLY!</div>
+        <div class="round-title" id="round-display">Round 1 (Best of 3)</div>
+      </div>
+
+      <div class="team-hud p2">
+        <span id="p2-name-label">RED 🟥</span>
+        <div class="rounds-dots">
+          <div class="dot" id="p2-r1"></div>
+          <div class="dot" id="p2-r2"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arena Canvas -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="960" height="540"></canvas>
+      <div class="countdown-overlay" id="countdown-overlay">3</div>
+
+      <!-- Round Modal -->
+      <div class="round-modal" id="round-modal">
+        <div class="modal-trophy" id="modal-icon">🏆</div>
+        <h2 class="modal-title" id="modal-title">Blue Team Wins Round!</h2>
+        <p class="modal-sub" id="modal-sub">Opponent pulled headfirst into the mud pit!</p>
+        <div class="action-row">
+          <button class="btn-act btn-gray" id="modal-menu-btn">Menu</button>
+          <button class="btn-act btn-blue" id="modal-next-btn">Next Round ▶</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Touch / Click Rapid Pull Pads -->
+    <div class="touch-controls mode-1p" id="touch-controls">
+      <div class="pull-pad p1-pad" id="p1-tap-pad">
+        <div class="pad-title" id="p1-pad-title">🟦 TAP RAPIDLY TO PULL!</div>
+        <div class="pad-hint" id="p1-pad-hint">Mash anywhere or press Spacebar / A to heave!</div>
+      </div>
+      <div class="pull-pad p2-pad" id="p2-tap-pad">
+        <div class="pad-title" id="p2-pad-title">🟥 PULL! [L / Enter]</div>
+        <div class="pad-hint" id="p2-pad-hint">Tap rapidly to heave!</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Start Menu Modal (Fixed Overlay) -->
+  <div class="menu-overlay" id="menu-overlay">
+    <div class="menu-box">
+      <div class="menu-tag">💪 CLAYMOPRHIC MASH & RHYTHM</div>
+      <h1 class="game-title">Tug of War 2D</h1>
+      <p class="game-sub">Pull the braided rope and heave the opponent into the mud pit!</p>
+
+      <div class="config-label">Select Game Mode</div>
+      <div class="toggle-row">
+        <button class="clay-btn active" data-type="mode" data-val="1p" id="mode-1p-btn">
+          <span class="icon">👤</span>
+          <span>1 Player (vs Bot)</span>
+        </button>
+        <button class="clay-btn" data-type="mode" data-val="2p" id="mode-2p-btn">
+          <span class="icon">⚔️</span>
+          <span>2 Player Local Duel</span>
+        </button>
+      </div>
+
+      <div class="config-label" id="diff-label">Bot Difficulty (Single Player)</div>
+      <div class="toggle-row three-col" id="diff-row">
+        <button class="clay-btn active" data-type="diff" data-val="easy">
+          <span class="icon">🌱</span>
+          <span>Rookie</span>
+        </button>
+        <button class="clay-btn" data-type="diff" data-val="normal">
+          <span class="icon">⚡</span>
+          <span>Pro</span>
+        </button>
+        <button class="clay-btn" data-type="diff" data-val="beast">
+          <span class="icon">🔥</span>
+          <span>Titan</span>
+        </button>
+      </div>
+
+      <button id="start-btn" class="start-clash-btn">
+        <span>👤</span> START SINGLE PLAYER (VS BOT)
+      </button>
+    </div>
+  </div>
+
+  </div>
+
+  <script>
+    /* =========================================================
+       AUDIO SYNTHESIZER (Web Audio API)
+       ========================================================= */
+    class SoundEngine {
+      constructor() {
+        this.ctx = null;
+        this.enabled = true;
+      }
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) this.ctx = new AudioContext();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+      playPull(freq = 140) {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(freq * 0.7, this.ctx.currentTime + 0.08);
+          gain.gain.setValueAtTime(0.18, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.08);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.08);
+        } catch(e) {}
+      }
+      whistle() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(1800, this.ctx.currentTime);
+          osc.frequency.setValueAtTime(2200, this.ctx.currentTime + 0.1);
+          gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.35);
+        } catch(e) {}
+      }
+      heaveSurge() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(440, this.ctx.currentTime);
+          osc.frequency.exponentialRampToValueAtTime(880, this.ctx.currentTime + 0.2);
+          gain.gain.setValueAtTime(0.25, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.25);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start();
+          osc.stop(this.ctx.currentTime + 0.25);
+        } catch(e) {}
+      }
+      splash() {
+        if (!this.enabled) return;
+        this.init();
+        if (!this.ctx) return;
+        try {
+          // Noise buffer for mud splash
+          const bufferSize = this.ctx.sampleRate * 0.4;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (this.ctx.sampleRate * 0.1));
+          }
+          const noise = this.ctx.createBufferSource();
+          noise.buffer = buffer;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.setValueAtTime(600, this.ctx.currentTime);
+          const gain = this.ctx.createGain();
+          gain.gain.setValueAtTime(0.35, this.ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.4);
+          noise.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.ctx.destination);
+          noise.start();
+        } catch(e) {}
+      }
+      win() {
+        const notes = [440, 554.37, 659.25, 880];
+        notes.forEach((freq, idx) => {
+          setTimeout(() => this.playPull(freq), idx * 120);
+        });
+      }
+      blip() {
+        this.playPull(300);
+      }
+    }
+    const audio = new SoundEngine();
+
+    /* =========================================================
+       CANVAS & GAME ENGINE
+       ========================================================= */
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const config = {
+      mode: '1p', // '1p' or '2p'
+      diff: 'easy', // 'easy', 'normal', 'beast'
+      winOffset: 160, // distance in pixels to drag center ribbon for victory
+      maxRounds: 3
+    };
+
+    const gameState = {
+      active: false,
+      roundOver: false,
+      round: 1,
+      p1RoundsWon: 0,
+      p2RoundsWon: 0,
+
+      ropeOffset: 0, // 0 is perfect center, negative is P1 pull (left), positive is P2 pull (right)
+      ropeVel: 0,
+      p1Power: 0,
+      p2Power: 0,
+
+      // Surge Rhythm (HEAVE-HO window)
+      surgeActive: false,
+      surgeTimer: 0,
+      nextSurgeTimer: 3000,
+
+      // Characters
+      p1Tilt: 0,
+      p2Tilt: 0,
+      splashParticles: [],
+      dustParticles: [],
+      confetti: []
+    };
+
+    // Bot AI Parameters
+    const BOT_LEVELS = {
+      easy: { tapInterval: 320, variance: 90, force: 11, surgeReaction: 0.6 },
+      normal: { tapInterval: 220, variance: 60, force: 13, surgeReaction: 0.85 },
+      beast: { tapInterval: 140, variance: 40, force: 15, surgeReaction: 1.0 }
+    };
+    let botTimer = 0;
+
+    // DOM Elements
+    const menuOverlay = document.getElementById('menu-overlay');
+    const roundModal = document.getElementById('round-modal');
+    const modalIcon = document.getElementById('modal-icon');
+    const modalTitle = document.getElementById('modal-title');
+    const modalSub = document.getElementById('modal-sub');
+    const modalNextBtn = document.getElementById('modal-next-btn');
+    const heavePill = document.getElementById('heave-pill');
+    const roundDisplay = document.getElementById('round-display');
+    const p2NameLabel = document.getElementById('p2-name-label');
+    const p2PadTitle = document.getElementById('p2-pad-title');
+    const p2PadHint = document.getElementById('p2-pad-hint');
+    const soundBtn = document.getElementById('sound-btn');
+    const startBtn = document.getElementById('start-btn');
+
+    const p1R1 = document.getElementById('p1-r1');
+    const p1R2 = document.getElementById('p1-r2');
+    const p2R1 = document.getElementById('p2-r1');
+    const p2R2 = document.getElementById('p2-r2');
+
+    const p1TapPad = document.getElementById('p1-tap-pad');
+    const p2TapPad = document.getElementById('p2-tap-pad');
+    const countdownEl = document.getElementById('countdown-overlay');
+    const touchControls = document.getElementById('touch-controls');
+    const p1PadTitle = document.getElementById('p1-pad-title');
+    const p1PadHint = document.getElementById('p1-pad-hint');
+
+    // Menu Toggle Buttons
+    document.querySelectorAll('.clay-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        audio.blip();
+        const type = btn.getAttribute('data-type');
+        const val = btn.getAttribute('data-val');
+
+        document.querySelectorAll(`.clay-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        config[type] = val;
+
+        if (type === 'mode') {
+          const isBot = val === '1p';
+          document.getElementById('diff-label').style.display = isBot ? 'block' : 'none';
+          document.getElementById('diff-row').style.display = isBot ? 'grid' : 'none';
+          p2NameLabel.innerText = isBot ? `BOT (${config.diff.toUpperCase()}) 🤖` : 'RED 🟥';
+          startBtn.innerHTML = isBot 
+            ? '<span>👤</span> START SINGLE PLAYER (VS BOT)' 
+            : '<span>⚔️</span> START 2-PLAYER DUEL';
+        }
+      });
+    });
+
+    // Sound toggle
+    soundBtn.addEventListener('click', () => {
+      audio.enabled = !audio.enabled;
+      soundBtn.innerText = audio.enabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+      if (audio.enabled) audio.blip();
+    });
+
+    startBtn.addEventListener('click', () => {
+      audio.init();
+      audio.blip();
+      startMatch();
+    });
+
+    function startMatch() {
+      gameState.round = 1;
+      gameState.p1RoundsWon = 0;
+      gameState.p2RoundsWon = 0;
+      updateRoundDots();
+      menuOverlay.style.display = 'none';
+
+      // Setup Controls according to mode
+      const isBot = config.mode === '1p';
+      if (isBot) {
+        touchControls.classList.add('mode-1p');
+        p2NameLabel.innerText = `BOT (${config.diff.toUpperCase()}) 🤖`;
+        p1PadTitle.innerText = '🟦 TAP RAPIDLY TO PULL!';
+        p1PadHint.innerText = 'Mash anywhere or press Spacebar / A / W to heave!';
+      } else {
+        touchControls.classList.remove('mode-1p');
+        p2NameLabel.innerText = 'RED 🟥';
+        p1PadTitle.innerText = '🟦 P1 PULL! [A / Space]';
+        p1PadHint.innerText = 'Player 1: Mash to heave!';
+        p2PadTitle.innerText = '🟥 P2 PULL! [L / Enter]';
+        p2PadHint.innerText = 'Player 2: Mash to heave!';
+      }
+
+      startRound();
+    }
+
+    function startRound() {
+      gameState.active = false; // pause for 3-2-1 countdown
+      gameState.roundOver = false;
+      gameState.ropeOffset = 0;
+      gameState.ropeVel = 0;
+      gameState.p1Power = 0;
+      gameState.p2Power = 0;
+      gameState.splashParticles = [];
+      gameState.dustParticles = [];
+      gameState.confetti = [];
+      gameState.surgeActive = false;
+      gameState.surgeTimer = 0;
+      gameState.nextSurgeTimer = Date.now() + 3500 + Math.random() * 2000;
+
+      roundModal.classList.remove('show');
+      heavePill.classList.remove('surge-active');
+      heavePill.innerText = 'GET READY...';
+      roundDisplay.innerText = `Round ${gameState.round} (Best of 3)`;
+
+      runCountdown();
+    }
+
+    function runCountdown() {
+      let count = 3;
+      countdownEl.innerText = count;
+      countdownEl.style.color = '#ffffff';
+      countdownEl.style.display = 'block';
+      audio.playPull(350);
+
+      const countInterval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownEl.innerText = count;
+          audio.playPull(350 + (3 - count) * 80);
+        } else if (count === 0) {
+          countdownEl.innerText = 'PULL!';
+          countdownEl.style.color = '#10b981';
+          audio.whistle();
+          gameState.active = true;
+          heavePill.innerText = '⚡ TAP RAPIDLY!';
+        } else {
+          clearInterval(countInterval);
+          countdownEl.style.display = 'none';
+        }
+      }, 700);
+    }
+
+    function updateRoundDots() {
+      p1R1.className = 'dot' + (gameState.p1RoundsWon >= 1 ? ' won-p1' : '');
+      p1R2.className = 'dot' + (gameState.p1RoundsWon >= 2 ? ' won-p1' : '');
+      p2R1.className = 'dot' + (gameState.p2RoundsWon >= 1 ? ' won-p2' : '');
+      p2R2.className = 'dot' + (gameState.p2RoundsWon >= 2 ? ' won-p2' : '');
+    }
+
+    /* =========================================================
+       PULL MECHANICS & INPUT
+       ========================================================= */
+    function applyPull(player) {
+      if (!gameState.active || gameState.roundOver) return;
+
+      const surgeMult = gameState.surgeActive ? 2.3 : 1.0;
+      const baseForce = 9.5;
+
+      if (player === 1) {
+        gameState.ropeVel -= baseForce * surgeMult;
+        gameState.p1Power = Math.min(1.5, gameState.p1Power + 0.35);
+        audio.playPull(150 + Math.random() * 40);
+        addDust(350 + gameState.ropeOffset, 395, -1);
+      } else {
+        gameState.ropeVel += baseForce * surgeMult;
+        gameState.p2Power = Math.min(1.5, gameState.p2Power + 0.35);
+        audio.playPull(130 + Math.random() * 40);
+        addDust(610 + gameState.ropeOffset, 395, 1);
+      }
+    }
+
+    // Input Listeners
+    p1TapPad.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      p1TapPad.classList.add('active');
+      applyPull(1);
+      setTimeout(() => p1TapPad.classList.remove('active'), 90);
+    });
+
+    p2TapPad.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      if (config.mode === '1p') return; // Bot plays in 1P mode
+      p2TapPad.classList.add('active');
+      applyPull(2);
+      setTimeout(() => p2TapPad.classList.remove('active'), 90);
+    });
+
+    // Click / Touch directly on canvas in 1P mode
+    canvas.addEventListener('pointerdown', (e) => {
+      if (config.mode === '1p' && gameState.active && !gameState.roundOver) {
+        e.preventDefault();
+        p1TapPad.classList.add('active');
+        applyPull(1);
+        setTimeout(() => p1TapPad.classList.remove('active'), 80);
+      }
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (!gameState.active || gameState.roundOver) return;
+
+      // P1 Keys: A, W, Space
+      if (e.code === 'KeyA' || e.code === 'KeyW' || e.code === 'Space') {
+        e.preventDefault();
+        p1TapPad.classList.add('active');
+        applyPull(1);
+        setTimeout(() => p1TapPad.classList.remove('active'), 80);
+      }
+
+      // P2 Keys: L, Up Arrow, Enter (in 2-Player mode)
+      if (config.mode === '2p' && (e.code === 'KeyL' || e.code === 'ArrowUp' || e.code === 'Enter')) {
+        e.preventDefault();
+        p2TapPad.classList.add('active');
+        applyPull(2);
+        setTimeout(() => p2TapPad.classList.remove('active'), 80);
+      }
+    });
+
+    /* =========================================================
+       PARTICLE SYSTEMS
+       ========================================================= */
+    function addDust(x, y, dir) {
+      for (let i = 0; i < 4; i++) {
+        gameState.dustParticles.push({
+          x: x + (Math.random() - 0.5) * 40,
+          y: y + (Math.random() - 0.5) * 10,
+          vx: dir * (Math.random() * 3 + 1),
+          vy: -(Math.random() * 2 + 0.5),
+          radius: Math.random() * 5 + 3,
+          alpha: 0.8
+        });
+      }
+    }
+
+    function triggerMudSplash(x) {
+      audio.splash();
+      for (let i = 0; i < 45; i++) {
+        gameState.splashParticles.push({
+          x: x + (Math.random() - 0.5) * 80,
+          y: 400,
+          vx: (Math.random() - 0.5) * 12,
+          vy: -(Math.random() * 12 + 4),
+          radius: Math.random() * 7 + 4,
+          color: Math.random() > 0.4 ? '#603813' : '#8B5A2B',
+          alpha: 1
+        });
+      }
+    }
+
+    function triggerConfetti() {
+      const colors = ['#0984e3', '#74b9ff', '#6c5ce7', '#00b894', '#fdcb6e', '#ff7675'];
+      for (let i = 0; i < 70; i++) {
+        gameState.confetti.push({
+          x: canvas.width / 2 + (Math.random() - 0.5) * 300,
+          y: canvas.height * 0.35,
+          vx: (Math.random() - 0.5) * 14,
+          vy: -(Math.random() * 14 + 2),
+          size: Math.random() * 8 + 6,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          rot: Math.random() * 360,
+          vrot: (Math.random() - 0.5) * 10,
+          alpha: 1
+        });
+      }
+    }
+
+    /* =========================================================
+       UPDATE & PHYSICS
+       ========================================================= */
+    let lastTime = performance.now();
+
+    function update() {
+      const now = performance.now();
+      const dt = Math.min(0.05, (now - lastTime) / 1000);
+      lastTime = now;
+
+      if (gameState.active && !gameState.roundOver) {
+        // Surge Rhythm Scheduler
+        if (!gameState.surgeActive && now > gameState.nextSurgeTimer) {
+          gameState.surgeActive = true;
+          gameState.surgeTimer = now + 1600; // 1.6s window
+          heavePill.classList.add('surge-active');
+          heavePill.innerText = '🔥 HEAVE-HO! 2.5X POWER!';
+          audio.heaveSurge();
+        } else if (gameState.surgeActive && now > gameState.surgeTimer) {
+          gameState.surgeActive = false;
+          gameState.nextSurgeTimer = now + 3500 + Math.random() * 2500;
+          heavePill.classList.remove('surge-active');
+          heavePill.innerText = '⚡ TAP RAPIDLY!';
+        }
+
+        // Bot Pull AI
+        if (config.mode === '1p') {
+          botTimer += dt * 1000;
+          const botCfg = BOT_LEVELS[config.diff];
+          const targetInterval = gameState.surgeActive ? (botCfg.tapInterval * 0.7) : botCfg.tapInterval;
+          if (botTimer >= targetInterval + (Math.random() - 0.5) * botCfg.variance) {
+            botTimer = 0;
+            // Bot pulls
+            const surgeMult = gameState.surgeActive ? 2.1 : 1.0;
+            gameState.ropeVel += (botCfg.force + (Math.random() * 2 - 1)) * surgeMult;
+            gameState.p2Power = Math.min(1.5, gameState.p2Power + 0.35);
+            addDust(610 + gameState.ropeOffset, 395, 1);
+          }
+        }
+
+        // Rope Physics: Friction and Spring Damping
+        const friction = 3.8;
+        gameState.ropeVel -= gameState.ropeVel * friction * dt;
+        gameState.ropeOffset += gameState.ropeVel * dt * 15;
+
+        // Character Power decay
+        gameState.p1Power = Math.max(0, gameState.p1Power - dt * 1.5);
+        gameState.p2Power = Math.max(0, gameState.p2Power - dt * 1.5);
+
+        // Check Victory Threshold
+        if (gameState.ropeOffset <= -config.winOffset) {
+          // Player 1 wins!
+          endRound(1);
+        } else if (gameState.ropeOffset >= config.winOffset) {
+          // Player 2 / Bot wins!
+          endRound(2);
+        }
+      }
+
+      // Update Particles
+      for (let i = gameState.dustParticles.length - 1; i >= 0; i--) {
+        const p = gameState.dustParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.alpha -= dt * 2.2;
+        if (p.alpha <= 0) gameState.dustParticles.splice(i, 1);
+      }
+
+      for (let i = gameState.splashParticles.length - 1; i >= 0; i--) {
+        const p = gameState.splashParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 30 * dt; // gravity
+        p.alpha -= dt * 1.5;
+        if (p.alpha <= 0 || p.y > 450) gameState.splashParticles.splice(i, 1);
+      }
+
+      for (let i = gameState.confetti.length - 1; i >= 0; i--) {
+        const p = gameState.confetti[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 20 * dt;
+        p.rot += p.vrot;
+        p.alpha -= dt * 0.9;
+        if (p.alpha <= 0 || p.y > canvas.height) gameState.confetti.splice(i, 1);
+      }
+
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    function endRound(winner) {
+      gameState.roundOver = true;
+      audio.win();
+
+      if (winner === 1) {
+        gameState.p1RoundsWon++;
+        triggerMudSplash(560);
+      } else {
+        gameState.p2RoundsWon++;
+        triggerMudSplash(400);
+      }
+
+      triggerConfetti();
+      updateRoundDots();
+
+      const matchWon = gameState.p1RoundsWon >= 2 || gameState.p2RoundsWon >= 2;
+
+      setTimeout(() => {
+        if (winner === 1) {
+          modalIcon.innerText = '🏆';
+          modalTitle.innerText = matchWon ? 'BLUE TEAM CHAMPIONS!' : 'Blue Team Takes Round!';
+          modalTitle.style.color = 'var(--p1-blue)';
+          modalSub.innerText = matchWon ? 'Decisive Victory! The ultimate Tug of War Champions!' : 'Opponent tumbled headfirst into the mud pit!';
+        } else {
+          modalIcon.innerText = config.mode === '1p' ? '🤖' : '👑';
+          const p2Name = config.mode === '1p' ? 'Bot' : 'Red Team';
+          modalTitle.innerText = matchWon ? `${p2Name.toUpperCase()} CHAMPIONS!` : `${p2Name} Takes Round!`;
+          modalTitle.style.color = 'var(--p2-red)';
+          modalSub.innerText = matchWon ? 'Crushed under Titan pulling power!' : 'Blue team slipped and splashed into the mud pit!';
+        }
+
+        modalNextBtn.innerText = matchWon ? 'Play Again 🔁' : 'Next Round ▶';
+        roundModal.classList.add('show');
+      }, 700);
+    }
+
+    modalNextBtn.addEventListener('click', () => {
+      audio.blip();
+      if (gameState.p1RoundsWon >= 2 || gameState.p2RoundsWon >= 2) {
+        startMatch();
+      } else {
+        gameState.round++;
+        startRound();
+      }
+    });
+
+    document.getElementById('modal-menu-btn').addEventListener('click', () => {
+      audio.blip();
+      roundModal.classList.remove('show');
+      menuOverlay.style.display = 'flex';
+      gameState.active = false;
+    });
+
+    /* =========================================================
+       DRAWING & RENDERING
+       ========================================================= */
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const w = canvas.width;
+      const h = canvas.height;
+      const groundY = 400;
+      const centerX = w / 2;
+      const ropeX = centerX + gameState.ropeOffset;
+
+      // 1. Sky & Sun Gradient
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, groundY);
+      skyGrad.addColorStop(0, '#bae6fd');
+      skyGrad.addColorStop(1, '#e0f2fe');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, w, groundY);
+
+      // Distant crowd bleachers / clay bushes
+      ctx.fillStyle = '#86efac';
+      for (let i = 0; i < 8; i++) {
+        ctx.beginPath();
+        ctx.arc(i * 140 + 40, groundY - 20, 65, Math.PI, 0);
+        ctx.fill();
+      }
+
+      // 2. Ground & Mud Pit
+      // Left turf
+      ctx.fillStyle = '#4ade80';
+      ctx.fillRect(0, groundY, centerX - 90, h - groundY);
+      // Right turf
+      ctx.fillRect(centerX + 90, groundY, w - (centerX + 90), h - groundY);
+
+      // Turf edge shadow
+      ctx.fillStyle = '#22c55e';
+      ctx.fillRect(0, groundY, w, 12);
+
+      // Mud Pit in Center
+      const mudGrad = ctx.createRadialGradient(centerX, groundY + 35, 10, centerX, groundY + 35, 100);
+      mudGrad.addColorStop(0, '#54300d');
+      mudGrad.addColorStop(0.8, '#784315');
+      mudGrad.addColorStop(1, '#96561b');
+      ctx.fillStyle = mudGrad;
+
+      ctx.beginPath();
+      ctx.ellipse(centerX, groundY + 30, 95, 34, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // White Foul / Win Threshold Lines
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = '#ffffff';
+      ctx.setLineDash([8, 6]);
+      // Left threshold
+      ctx.beginPath();
+      ctx.moveTo(centerX - config.winOffset, groundY - 10);
+      ctx.lineTo(centerX - config.winOffset, groundY + 50);
+      ctx.stroke();
+
+      // Right threshold
+      ctx.beginPath();
+      ctx.moveTo(centerX + config.winOffset, groundY - 10);
+      ctx.lineTo(centerX + config.winOffset, groundY + 50);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // 3. Characters Pulling
+      // Player 1 Team (Blue) - 3 Pullers
+      const p1BaseX = ropeX - 160;
+      const p1Lean = -0.38 - gameState.p1Power * 0.12; // leaning back to left
+      for (let i = 0; i < 3; i++) {
+        drawClayPuller(p1BaseX - i * 65, groundY - 5, p1Lean, '#0984e3', '#74b9ff', 'Blue', i);
+      }
+
+      // Player 2 Team (Red) - 3 Pullers
+      const p2BaseX = ropeX + 160;
+      const p2Lean = 0.38 + gameState.p2Power * 0.12; // leaning back to right
+      for (let i = 0; i < 3; i++) {
+        drawClayPuller(p2BaseX + i * 65, groundY - 5, p2Lean, '#d63031', '#ff7675', 'Red', i);
+      }
+
+      // 4. The Braided Tension Rope
+      const ropeY = groundY - 55;
+      const p1AnchorX = p1BaseX - 130;
+      const p2AnchorX = p2BaseX + 130;
+
+      // Realistic tension sag
+      const tensionSag = Math.max(4, 26 - Math.abs(gameState.ropeVel) * 0.4);
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(p1AnchorX, ropeY);
+      ctx.quadraticCurveTo(ropeX, ropeY + tensionSag, p2AnchorX, ropeY);
+      ctx.lineWidth = 14;
+      ctx.strokeStyle = '#d97706'; // braided rope golden-brown
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Braided coil highlights
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#fef3c7';
+      ctx.setLineDash([12, 10]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // 5. Center Red Marker Ribbon / Flag
+      const flagX = ropeX;
+      const flagY = ropeY + tensionSag * 0.5;
+
+      ctx.save();
+      ctx.fillStyle = '#dc2626';
+      ctx.beginPath();
+      ctx.arc(flagX, flagY, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Hanging ribbons
+      ctx.beginPath();
+      ctx.moveTo(flagX - 5, flagY);
+      ctx.lineTo(flagX - 14, flagY + 36);
+      ctx.lineTo(flagX, flagY + 28);
+      ctx.lineTo(flagX + 14, flagY + 36);
+      ctx.lineTo(flagX + 5, flagY);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // 6. Draw Dust Particles
+      for (const p of gameState.dustParticles) {
+        ctx.fillStyle = `rgba(203, 213, 225, ${p.alpha})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      // 7. Draw Mud Splash Particles
+      for (const p of gameState.splashParticles) {
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = p.alpha;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1.0;
+      }
+
+      // 8. Draw Victory Confetti
+      for (const p of gameState.confetti) {
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate((p.rot * Math.PI) / 180);
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.7);
+        ctx.restore();
+      }
+    }
+
+    /* Clay Puller Character Drawing */
+    function drawClayPuller(x, y, leanAngle, mainColor, lightColor, team, idx) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.rotate(leanAngle);
+
+      // Feet / Boots
+      ctx.fillStyle = '#334155';
+      ctx.beginPath();
+      ctx.roundRect(-22, -12, 22, 14, 6);
+      ctx.roundRect(4, -12, 22, 14, 6);
+      ctx.fill();
+
+      // Clay Pants / Legs
+      ctx.fillStyle = '#1e293b';
+      ctx.beginPath();
+      ctx.roundRect(-16, -42, 14, 34, 6);
+      ctx.roundRect(4, -42, 14, 34, 6);
+      ctx.fill();
+
+      // Clay Body / Jersey
+      ctx.fillStyle = mainColor;
+      ctx.beginPath();
+      ctx.roundRect(-18, -84, 38, 44, 16);
+      ctx.fill();
+
+      // Jersey Number
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 15px Fredoka, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(`${idx + 1}`, 1, -56);
+
+      // Arms gripping rope
+      ctx.fillStyle = '#fed7aa'; // skin tone
+      ctx.beginPath();
+      ctx.arc(-8, -62, 9, 0, Math.PI * 2);
+      ctx.arc(10, -62, 9, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Head
+      ctx.fillStyle = '#fed7aa';
+      ctx.beginPath();
+      ctx.arc(1, -104, 19, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Headband
+      ctx.fillStyle = lightColor;
+      ctx.fillRect(-18, -114, 38, 8);
+
+      // Clay Eyes straining
+      ctx.fillStyle = '#1e293b';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      if (team === 'Blue') {
+        // Looking focused right
+        ctx.arc(6, -103, 3, 0, Math.PI * 2);
+        ctx.arc(14, -103, 3, 0, Math.PI * 2);
+      } else {
+        // Looking focused left
+        ctx.arc(-14, -103, 3, 0, Math.PI * 2);
+        ctx.arc(-6, -103, 3, 0, Math.PI * 2);
+      }
+      ctx.fill();
+
+      // Sweat drops when pulling hard
+      if ((team === 'Blue' && gameState.p1Power > 0.4) || (team === 'Red' && gameState.p2Power > 0.4)) {
+        ctx.fillStyle = '#38bdf8';
+        ctx.beginPath();
+        ctx.arc(team === 'Blue' ? -12 : 12, -120, 4, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    // Start Animation Loop
+    requestAnimationFrame(update);
+
+  </script>
+</body>
+</html>

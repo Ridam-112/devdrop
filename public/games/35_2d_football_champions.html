@@ -1,0 +1,1624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Head Football 2D - Big Head Soccer Champions</title>
+  <style>
+    :root {
+      --clay-bg: #e0f2fe;
+      --clay-card: #ffffff;
+      --clay-dark: #0f172a;
+      --clay-blue: #0284c7;
+      --clay-sky: #38bdf8;
+      --clay-green: #10b981;
+      --clay-red: #ef4444;
+      --clay-gold: #f59e0b;
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
+      font-family: var(--font-main);
+      color: var(--clay-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Claymorphism Elevation Styling */
+    .clay-card {
+      background: var(--clay-card);
+      border-radius: 20px;
+      box-shadow: 
+        8px 8px 18px rgba(160, 185, 205, 0.45),
+        -6px -6px 14px rgba(255, 255, 255, 0.95),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.8),
+        inset -2px -2px 5px rgba(160, 185, 205, 0.25);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+    }
+
+    .clay-btn {
+      background: linear-gradient(145deg, #38bdf8, #0284c7);
+      color: #ffffff;
+      font-weight: 900;
+      border: none;
+      border-radius: 18px;
+      padding: 10px 18px;
+      font-size: 14px;
+      letter-spacing: 0.8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-shadow: 
+        6px 6px 14px rgba(2, 132, 199, 0.35),
+        -5px -5px 12px rgba(255, 255, 255, 0.9),
+        inset 2px 2px 4px rgba(255, 255, 255, 0.5);
+      transition: all 0.08s ease;
+      touch-action: manipulation;
+    }
+
+    .clay-btn:active, .clay-btn.active {
+      transform: scale(0.94);
+      box-shadow: 
+        2px 2px 6px rgba(2, 132, 199, 0.45),
+        inset 3px 3px 6px rgba(0, 70, 120, 0.4);
+    }
+
+    .btn-jump {
+      background: linear-gradient(145deg, #34d399, #059669);
+      box-shadow: 6px 6px 16px rgba(5, 150, 105, 0.35), -5px -5px 12px rgba(255, 255, 255, 0.9);
+    }
+
+    .btn-kick {
+      background: linear-gradient(145deg, #f87171, #dc2626);
+      box-shadow: 6px 6px 16px rgba(220, 38, 38, 0.35), -5px -5px 12px rgba(255, 255, 255, 0.9);
+    }
+
+    .btn-super {
+      background: linear-gradient(145deg, #fbbf24, #d97706);
+      box-shadow: 6px 6px 16px rgba(217, 119, 6, 0.35), -5px -5px 12px rgba(255, 255, 255, 0.9);
+    }
+
+    /* Top Match Header HUD */
+    #top-hud {
+      width: 100%;
+      max-width: 900px;
+      padding: 6px 12px 2px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      gap: 8px;
+    }
+
+    .score-board {
+      flex: 1;
+      max-width: 480px;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      gap: 10px;
+      font-weight: 900;
+      margin: 0 auto;
+    }
+
+    .team-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+    }
+
+    .score-readout {
+      font-size: 24px;
+      letter-spacing: 2px;
+      color: #0f172a;
+      background: #e2e8f0;
+      padding: 2px 14px;
+      border-radius: 12px;
+      box-shadow: inset 2px 2px 4px rgba(0,0,0,0.15);
+    }
+
+    .match-clock {
+      font-size: 13px;
+      font-weight: 900;
+      color: #dc2626;
+      background: #fee2e2;
+      padding: 4px 10px;
+      border-radius: 10px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Super Power Gauge */
+    .super-bar-wrap {
+      width: 100%;
+      max-width: 900px;
+      padding: 0 16px 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      z-index: 10;
+    }
+
+    .power-gauge {
+      flex: 1;
+      height: 10px;
+      background: #cbd5e1;
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: inset 1px 1px 3px rgba(0,0,0,0.25);
+      position: relative;
+    }
+
+    .power-gauge-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #f59e0b, #ef4444);
+      border-radius: 6px;
+      transition: width 0.1s linear;
+    }
+
+    /* Main Match Canvas Viewport */
+    #pitch-wrap {
+      flex: 1;
+      width: 100%;
+      max-width: 960px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #bae6fd;
+    }
+
+    #game-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Goal Banner */
+    #goal-banner {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      padding: 16px 44px;
+      border-radius: 28px;
+      font-size: clamp(32px, 8vw, 56px);
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #ffffff;
+      background: linear-gradient(135deg, #f59e0b, #ef4444);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+      border: 4px solid #ffffff;
+      z-index: 25;
+      pointer-events: none;
+      white-space: nowrap;
+      transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      text-shadow: 0 3px 6px rgba(0,0,0,0.4);
+    }
+
+    #goal-banner.show {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Mobile Side-View Touch Controls */
+    #mobile-controls {
+      width: 100%;
+      max-width: 900px;
+      padding: 4px 14px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .dpad-cluster {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-cluster {
+      display: flex;
+      gap: 10px;
+    }
+
+    .touch-btn {
+      width: 66px;
+      height: 66px;
+      border-radius: 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+      padding: 0;
+    }
+
+    .touch-btn span:first-child {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .touch-btn span:last-child {
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    /* Modals & Menus */
+    .clay-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 14px;
+      opacity: 1;
+      transition: opacity 0.2s ease;
+    }
+
+    .clay-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .modal-box {
+      width: min(540px, 95vw);
+      padding: 24px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      max-height: 92vh;
+      overflow-y: auto;
+    }
+
+    .star-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      margin: 6px 0;
+    }
+
+    .star-card {
+      padding: 8px 4px;
+      border-radius: 14px;
+      border: 2px solid transparent;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 800;
+      background: #f1f5f9;
+      transition: all 0.1s ease;
+    }
+
+    .star-card.selected {
+      border-color: #0284c7;
+      background: #e0f2fe;
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+    }
+
+    .star-avatar {
+      font-size: 32px;
+      line-height: 1;
+    }
+
+    @media (max-width: 600px) {
+      .touch-btn { width: 58px; height: 58px; border-radius: 18px; }
+      .touch-btn span:first-child { font-size: 18px; }
+      .score-board { padding: 4px 8px; font-size: 12px; }
+      .score-readout { font-size: 20px; padding: 1px 8px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Match Header HUD -->
+  <div id="top-hud">
+    <div class="score-board clay-card">
+      <div class="team-badge" id="hud-p1">
+        <span id="hud-p1-avatar" style="font-size: 20px;">🧔🏻</span>
+        <span id="hud-p1-name">LEO</span>
+      </div>
+
+      <div class="score-readout" id="hud-score">0 - 0</div>
+
+      <div class="team-badge" id="hud-p2">
+        <span id="hud-p2-name">CRIS</span>
+        <span id="hud-p2-avatar" style="font-size: 20px;">🤴🏻</span>
+      </div>
+
+      <div class="match-clock" id="hud-clock">60s</div>
+    </div>
+
+    <div style="display: flex; gap: 6px;">
+      <button id="btn-sound" class="clay-btn" style="padding: 6px 10px;">🔊</button>
+      <button id="btn-pause" class="clay-btn" style="padding: 6px 10px;">⏸️</button>
+    </div>
+  </div>
+
+  <!-- Super Power Shot Gauges -->
+  <div class="super-bar-wrap">
+    <div style="display: flex; align-items: center; gap: 4px; flex: 1;">
+      <span style="font-size: 10px; font-weight: 900; color: #38bdf8;">⚡ SUPER:</span>
+      <div class="power-gauge">
+        <div id="p1-power-fill" class="power-gauge-fill"></div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 4px; flex: 1;">
+      <div class="power-gauge">
+        <div id="p2-power-fill" class="power-gauge-fill" style="background: linear-gradient(90deg, #ec4899, #8b5cf6);"></div>
+      </div>
+      <span style="font-size: 10px; font-weight: 900; color: #ec4899;">AI ⚡</span>
+    </div>
+  </div>
+
+  <!-- Main Match Canvas Viewport (Bright Stadium) -->
+  <div id="pitch-wrap">
+    <canvas id="game-canvas"></canvas>
+    <div id="goal-banner">⚽ GOAAAAL! ⚽</div>
+  </div>
+
+  <!-- On-Screen Mobile Controls -->
+  <div id="mobile-controls">
+    <!-- Movement D-Pad (Left / Right) -->
+    <div class="dpad-cluster">
+      <button id="btn-move-left" class="clay-btn touch-btn">
+        <span>◀</span>
+        <span>LEFT [A]</span>
+      </button>
+      <button id="btn-move-right" class="clay-btn touch-btn">
+        <span>▶</span>
+        <span>RIGHT [D]</span>
+      </button>
+    </div>
+
+    <!-- Actions (Jump & Head / Low Kick / Super Fireball) -->
+    <div class="action-cluster">
+      <button id="btn-action-jump" class="clay-btn btn-jump touch-btn">
+        <span>▲</span>
+        <span>JUMP [W]</span>
+      </button>
+
+      <button id="btn-action-kick" class="clay-btn btn-kick touch-btn">
+        <span>👟</span>
+        <span>KICK [SPACE]</span>
+      </button>
+
+      <button id="btn-action-super" class="clay-btn btn-super touch-btn">
+        <span>🔥</span>
+        <span>SUPER [K]</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Menu Modal -->
+  <div id="modal-menu" class="clay-overlay">
+    <div class="modal-box clay-card">
+      <div style="font-size: 46px;">⚽👦🏻🥅</div>
+      <h1 style="font-size: 24px; font-weight: 900; color: #0f172a;">BIG HEAD FOOTBALL 2D</h1>
+      <p style="font-size: 12px; font-weight: 700; color: #64748b;">
+        Huge Bobble Heads, giant headers &amp; blazing supersonic kicks!
+      </p>
+
+      <!-- Pick Your Player -->
+      <div style="width: 100%; text-align: left;">
+        <span style="font-size: 11px; font-weight: 800; color: #64748b;">SELECT YOUR PLAYER:</span>
+        <div class="star-grid" id="p1-picker">
+          <div class="star-card selected" data-id="LEO">
+            <span class="star-avatar">🧔🏻</span>
+            <span>LEO (ARG)</span>
+          </div>
+          <div class="star-card" data-id="CRIS">
+            <span class="star-avatar">🤴🏻</span>
+            <span>CRIS (POR)</span>
+          </div>
+          <div class="star-card" data-id="NEY">
+            <span class="star-avatar">👱🏽</span>
+            <span>NEY (BRA)</span>
+          </div>
+          <div class="star-card" data-id="KYLIAN">
+            <span class="star-avatar">🧑🏾</span>
+            <span>KYLIAN (FRA)</span>
+          </div>
+          <div class="star-card" data-id="JUDE">
+            <span class="star-avatar">👦🏽</span>
+            <span>JUDE (ENG)</span>
+          </div>
+          <div class="star-card" data-id="LAMINE">
+            <span class="star-avatar">🧒🏾</span>
+            <span>LAMINE (ESP)</span>
+          </div>
+          <div class="star-card" data-id="ERLING">
+            <span class="star-avatar">👱🏻‍♂️</span>
+            <span>ERLING (NOR)</span>
+          </div>
+          <div class="star-card" data-id="THOMAS">
+            <span class="star-avatar">👨🏻</span>
+            <span>THOMAS (GER)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pick Opponent -->
+      <div style="width: 100%; text-align: left;">
+        <span style="font-size: 11px; font-weight: 800; color: #64748b;">OPPONENT:</span>
+        <div class="star-grid" id="p2-picker">
+          <div class="star-card" data-id="LEO"><span class="star-avatar">🧔🏻</span><span>LEO</span></div>
+          <div class="star-card selected" data-id="CRIS"><span class="star-avatar">🤴🏻</span><span>CRIS</span></div>
+          <div class="star-card" data-id="NEY"><span class="star-avatar">👱🏽</span><span>NEY</span></div>
+          <div class="star-card" data-id="KYLIAN"><span class="star-avatar">🧑🏾</span><span>KYLIAN</span></div>
+          <div class="star-card" data-id="JUDE"><span class="star-avatar">👦🏽</span><span>JUDE</span></div>
+          <div class="star-card" data-id="LAMINE"><span class="star-avatar">🧒🏾</span><span>LAMINE</span></div>
+          <div class="star-card" data-id="ERLING"><span class="star-avatar">👱🏻‍♂️</span><span>ERLING</span></div>
+          <div class="star-card" data-id="THOMAS"><span class="star-avatar">👨🏻</span><span>THOMAS</span></div>
+        </div>
+      </div>
+
+      <!-- Start Match -->
+      <button id="btn-start-match" class="clay-btn" style="width: 100%; font-size: 16px; padding: 12px; margin-top: 4px;">
+        ⚽ PLAY HEAD FOOTBALL!
+      </button>
+
+      <div style="font-size: 11px; color: #64748b; line-height: 1.4;">
+        Desktop: <b>[A / D]</b> Move • <b>[W / Up]</b> JUMP &amp; HEAD • <b>[Space / J]</b> KICK • <b>[K]</b> SUPER SHOT<br />
+        Mobile: Touch Jump, Kick &amp; Left/Right buttons
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div id="modal-result" class="clay-overlay hidden">
+    <div class="modal-box clay-card">
+      <div id="res-trophy" style="font-size: 52px;">🏆</div>
+      <h2 id="res-title" style="font-size: 24px; font-weight: 900; color: #0f172a;">MATCH FINISHED!</h2>
+      <p id="res-desc" style="font-size: 13px; font-weight: 700; color: #64748b;">Awesome 1v1 Big-Head Soccer contest!</p>
+
+      <div style="font-size: 32px; font-weight: 900; color: #0284c7; margin: 4px 0;" id="res-final-score">
+        LEO 3 - 2 CRIS
+      </div>
+
+      <button id="btn-restart-match" class="clay-btn" style="width: 100%; font-size: 16px; padding: 12px; margin-top: 6px;">
+        PLAY AGAIN 🔄
+      </button>
+    </div>
+  </div>
+
+  <script>
+    /* ==========================================================================
+       1. SYNTHESIZED WEB AUDIO (WHISTLE, HEAD BALL, KICK, CROSSBAR PING, GOAL)
+       ========================================================================== */
+    class HeadFootballAudio {
+      constructor() {
+        this.ctx = null;
+        this.isMuted = false;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioCtxClass();
+        }
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      toggleMute() {
+        this.isMuted = !this.isMuted;
+        return this.isMuted;
+      }
+
+      playWhistle() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(2600, now);
+        osc.frequency.setValueAtTime(2850, now + 0.1);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.35);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.35);
+      }
+
+      playHeadHit() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(340, now);
+        osc.frequency.exponentialRampToValueAtTime(100, now + 0.14);
+
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.14);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.14);
+      }
+
+      playKick() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(190, now);
+        osc.frequency.exponentialRampToValueAtTime(50, now + 0.12);
+
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.12);
+      }
+
+      playCrossbarPing() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1950, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.28);
+
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.28);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.28);
+      }
+
+      playSuperShot() {
+        if (this.isMuted) return;
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(500, now);
+        osc.frequency.exponentialRampToValueAtTime(80, now + 0.45);
+
+        gain.gain.setValueAtTime(0.65, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.45);
+      }
+
+      playGoalCheer() {
+        if (this.isMuted) return;
+        this.init();
+        this.playWhistle();
+
+        const now = this.ctx.currentTime;
+        [440, 554, 659, 880].forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.1);
+          gain.gain.setValueAtTime(0.35, now + idx * 0.1);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.1 + 0.45);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.1);
+          osc.stop(now + idx * 0.1 + 0.45);
+        });
+      }
+    }
+
+    const audio = new HeadFootballAudio();
+
+    /* ==========================================================================
+       2. CHARACTERS (BIG HEAD EDITION: RADIUS 52PX!)
+       ========================================================================== */
+    const CHARACTERS = {
+      LEO:    { name: 'LEO', avatar: '🧔🏻', headR: 52, skin: '#fed7aa', hair: '#451a03', jersey: '#38bdf8', shorts: '#1e3a8a', boot: '#facc15', beard: true },
+      CRIS:   { name: 'CRIS', avatar: '🤴🏻', headR: 52, skin: '#fed7aa', hair: '#0f172a', jersey: '#dc2626', shorts: '#15803d', boot: '#ec4899', headband: true },
+      NEY:    { name: 'NEY', avatar: '👱🏽', headR: 52, skin: '#fcd34d', hair: '#fef08a', jersey: '#facc15', shorts: '#1d4ed8', boot: '#10b981', headband: true },
+      KYLIAN: { name: 'KYLIAN', avatar: '🧑🏾', headR: 52, skin: '#d97706', hair: '#1e293b', jersey: '#1e3a8a', shorts: '#ffffff', boot: '#f59e0b' },
+      JUDE:   { name: 'JUDE', avatar: '👦🏽', headR: 52, skin: '#b45309', hair: '#0f172a', jersey: '#ffffff', shorts: '#1e3a8a', boot: '#38bdf8' },
+      LAMINE: { name: 'LAMINE', avatar: '🧒🏾', headR: 52, skin: '#d97706', hair: '#0f172a', jersey: '#b91c1c', shorts: '#1e3a8a', boot: '#facc15' },
+      ERLING: { name: 'ERLING', avatar: '👱🏻‍♂️', headR: 54, skin: '#fed7aa', hair: '#fef08a', jersey: '#0284c7', shorts: '#ffffff', boot: '#ef4444' },
+      THOMAS: { name: 'THOMAS', avatar: '👨🏻', headR: 52, skin: '#fed7aa', hair: '#78350f', jersey: '#ffffff', shorts: '#000000', boot: '#000000' }
+    };
+
+    let selectedP1 = 'LEO';
+    let selectedP2 = 'CRIS';
+
+    /* ==========================================================================
+       3. 2D SIDE-VIEW PHYSICS ENGINE (PROPORTIONS SCALED UP)
+       ========================================================================== */
+    const canvas = document.getElementById('game-canvas');
+    const ctx = canvas.getContext('2d');
+
+    const PITCH_W = 1000;
+    const PITCH_H = 550;
+    const GROUND_Y = 460;
+    const GRAVITY = 0.62;
+
+    // Bigger Goals to fit giant players & ball
+    const GOAL_WIDTH = 110;
+    const GOAL_HEIGHT = 215;
+    const CROSSBAR_Y = GROUND_Y - GOAL_HEIGHT;
+
+    let isMatchActive = false;
+    let matchTimer = 60;
+    let score = { p1: 0, p2: 0 };
+    let isGoalScored = false;
+    let goalFreezeTimer = 0;
+
+    // BIGGER FOOTBALL (Radius 26px!)
+    let ball = {
+      x: PITCH_W / 2,
+      y: GROUND_Y - 220,
+      vx: 0,
+      vy: 0,
+      r: 26, // Big & prominent football!
+      rotation: 0,
+      isSuper: false,
+      superTimer: 0
+    };
+
+    // BIG PLAYERS (Body + Giant Bobble Head)
+    let p1 = {
+      x: 240,
+      y: GROUND_Y,
+      vx: 0,
+      vy: 0,
+      speed: 6.6,
+      jumpForce: -15.5, // Giant leap!
+      isGrounded: true,
+      kickAngle: 0,
+      isKicking: false,
+      kickTimer: 0,
+      power: 0,
+      facing: 1,
+      char: CHARACTERS.LEO
+    };
+
+    let p2 = {
+      x: PITCH_W - 240,
+      y: GROUND_Y,
+      vx: 0,
+      vy: 0,
+      speed: 6.2,
+      jumpForce: -15.2,
+      isGrounded: true,
+      kickAngle: 0,
+      isKicking: false,
+      kickTimer: 0,
+      power: 0,
+      facing: -1,
+      char: CHARACTERS.CRIS
+    };
+
+    function resetPositions() {
+      p1.x = 240;
+      p1.y = GROUND_Y;
+      p1.vx = 0;
+      p1.vy = 0;
+      p1.isGrounded = true;
+      p1.isKicking = false;
+
+      p2.x = PITCH_W - 240;
+      p2.y = GROUND_Y;
+      p2.vx = 0;
+      p2.vy = 0;
+      p2.isGrounded = true;
+      p2.isKicking = false;
+
+      ball.x = PITCH_W / 2;
+      ball.y = GROUND_Y - 200;
+      ball.vx = (Math.random() - 0.5) * 3;
+      ball.vy = -5;
+      ball.isSuper = false;
+    }
+
+    /* ==========================================================================
+       4. CONTROLS (DESKTOP KEYBOARD + MOBILE TOUCH)
+       ========================================================================== */
+    let keys = {};
+
+    window.addEventListener('keydown', (e) => {
+      keys[e.code] = true;
+      audio.init();
+
+      if (e.code === 'KeyW' || e.code === 'ArrowUp') {
+        playerJump(p1);
+      }
+      if (e.code === 'Space' || e.code === 'KeyJ') {
+        playerKick(p1);
+      }
+      if (e.code === 'KeyK') {
+        triggerSuperShot(p1);
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      keys[e.code] = false;
+    });
+
+    // Mobile Action Listeners
+    let touchLeft = false;
+    let touchRight = false;
+
+    const btnLeft = document.getElementById('btn-move-left');
+    const btnRight = document.getElementById('btn-move-right');
+    const btnJump = document.getElementById('btn-action-jump');
+    const btnKick = document.getElementById('btn-action-kick');
+    const btnSuper = document.getElementById('btn-action-super');
+
+    btnLeft.addEventListener('pointerdown', (e) => { e.preventDefault(); touchLeft = true; btnLeft.classList.add('active'); audio.init(); });
+    btnLeft.addEventListener('pointerup', () => { touchLeft = false; btnLeft.classList.remove('active'); });
+    btnLeft.addEventListener('pointercancel', () => { touchLeft = false; btnLeft.classList.remove('active'); });
+
+    btnRight.addEventListener('pointerdown', (e) => { e.preventDefault(); touchRight = true; btnRight.classList.add('active'); audio.init(); });
+    btnRight.addEventListener('pointerup', () => { touchRight = false; btnRight.classList.remove('active'); });
+    btnRight.addEventListener('pointercancel', () => { touchRight = false; btnRight.classList.remove('active'); });
+
+    btnJump.addEventListener('pointerdown', (e) => { e.preventDefault(); playerJump(p1); btnJump.classList.add('active'); audio.init(); });
+    btnJump.addEventListener('pointerup', () => btnJump.classList.remove('active'));
+
+    btnKick.addEventListener('pointerdown', (e) => { e.preventDefault(); playerKick(p1); btnKick.classList.add('active'); audio.init(); });
+    btnKick.addEventListener('pointerup', () => btnKick.classList.remove('active'));
+
+    btnSuper.addEventListener('pointerdown', (e) => { e.preventDefault(); triggerSuperShot(p1); btnSuper.classList.add('active'); audio.init(); });
+    btnSuper.addEventListener('pointerup', () => btnSuper.classList.remove('active'));
+
+    function playerJump(p) {
+      if (p.isGrounded) {
+        p.vy = p.jumpForce;
+        p.isGrounded = false;
+      }
+    }
+
+    function playerKick(p) {
+      p.isKicking = true;
+      p.kickTimer = 0.22;
+      audio.playKick();
+
+      // Check foot collision with ball (scaled for larger body)
+      const footX = p.x + p.facing * 36;
+      const footY = p.y - 14;
+      const dist = Math.hypot(footX - ball.x, footY - ball.y);
+
+      if (dist < ball.r + 38) {
+        ball.vx = p.facing * (15 + Math.random() * 4);
+        ball.vy = -8 - Math.random() * 5;
+        p.power = Math.min(1.0, p.power + 0.25);
+      }
+    }
+
+    function triggerSuperShot(p) {
+      if (p.power >= 1.0) {
+        p.power = 0;
+        ball.isSuper = true;
+        ball.superTimer = 1.8;
+        ball.vx = p.facing * 26; // Blazing supersonic fireball!
+        ball.vy = -3;
+        audio.playSuperShot();
+      }
+    }
+
+    /* ==========================================================================
+       5. SIMULATION PHYSICS & AI
+       ========================================================================== */
+    function updatePhysics(dt) {
+      if (!isMatchActive) return;
+
+      document.getElementById('p1-power-fill').style.width = `${p1.power * 100}%`;
+      document.getElementById('p2-power-fill').style.width = `${p2.power * 100}%`;
+
+      if (isGoalScored) {
+        goalFreezeTimer -= dt;
+        if (goalFreezeTimer <= 0) {
+          isGoalScored = false;
+          document.getElementById('goal-banner').classList.remove('show');
+          resetPositions();
+        }
+        return;
+      }
+
+      // Match Countdown
+      matchTimer -= dt;
+      if (matchTimer <= 0) {
+        matchTimer = 0;
+        document.getElementById('hud-clock').innerText = '0s';
+        endMatch();
+        return;
+      }
+      document.getElementById('hud-clock').innerText = `${Math.ceil(matchTimer)}s`;
+
+      // 1. Update Player 1 (User)
+      let moveDir = 0;
+      if (keys['KeyA'] || keys['ArrowLeft'] || touchLeft) moveDir -= 1;
+      if (keys['KeyD'] || keys['ArrowRight'] || touchRight) moveDir += 1;
+
+      p1.vx = moveDir * p1.speed;
+      p1.x += p1.vx;
+
+      p1.vy += GRAVITY;
+      p1.y += p1.vy;
+      if (p1.y >= GROUND_Y) {
+        p1.y = GROUND_Y;
+        p1.vy = 0;
+        p1.isGrounded = true;
+      }
+      p1.x = Math.max(GOAL_WIDTH + 30, Math.min(PITCH_W - GOAL_WIDTH - 30, p1.x));
+
+      if (p1.isKicking) {
+        p1.kickTimer -= dt;
+        p1.kickAngle = Math.sin((0.22 - p1.kickTimer) / 0.22 * Math.PI) * 1.35;
+        if (p1.kickTimer <= 0) {
+          p1.isKicking = false;
+          p1.kickAngle = 0;
+        }
+      }
+
+      // 2. Update Player 2 (AI Bot)
+      updatePlayer2AI(dt);
+
+      p2.vy += GRAVITY;
+      p2.y += p2.vy;
+      if (p2.y >= GROUND_Y) {
+        p2.y = GROUND_Y;
+        p2.vy = 0;
+        p2.isGrounded = true;
+      }
+      p2.x = Math.max(GOAL_WIDTH + 30, Math.min(PITCH_W - GOAL_WIDTH - 30, p2.x));
+
+      if (p2.isKicking) {
+        p2.kickTimer -= dt;
+        p2.kickAngle = Math.sin((0.22 - p2.kickTimer) / 0.22 * Math.PI) * 1.35;
+        if (p2.kickTimer <= 0) {
+          p2.isKicking = false;
+          p2.kickAngle = 0;
+        }
+      }
+
+      // 3. Update Ball Physics
+      updateBall(dt);
+
+      // 4. BIG HEAD BALL COLLISIONS (HEADER STRIKES!)
+      handleHeadCollision(p1);
+      handleHeadCollision(p2);
+
+      // 5. Body Collisions
+      handleBodyCollision(p1);
+      handleBodyCollision(p2);
+
+      // 6. Check Goals
+      checkGoals();
+    }
+
+    function updatePlayer2AI(dt) {
+      p2.power = Math.min(1.0, p2.power + dt * 0.08);
+
+      if (p2.power >= 1.0 && Math.hypot(p2.x - ball.x, p2.y - ball.y) < 220) {
+        triggerSuperShot(p2);
+      }
+
+      const targetX = Math.max(PITCH_W / 2 + 30, Math.min(PITCH_W - GOAL_WIDTH - 40, ball.x + 45));
+      const dx = targetX - p2.x;
+
+      if (Math.abs(dx) > 10) {
+        p2.vx = Math.sign(dx) * p2.speed;
+        p2.x += p2.vx;
+      } else {
+        p2.vx = 0;
+      }
+
+      // AI Jumps to Header the ball
+      const headDistX = Math.abs(p2.x - ball.x);
+      const headDistY = (p2.y - 95) - ball.y;
+
+      if (headDistX < 75 && headDistY > 20 && headDistY < 140 && ball.vy > -2) {
+        playerJump(p2);
+      }
+
+      // AI Kicks when ball is near feet
+      if (Math.hypot(p2.x - 30 - ball.x, p2.y - 15 - ball.y) < 55 && !p2.isKicking) {
+        playerKick(p2);
+      }
+    }
+
+    function updateBall(dt) {
+      if (ball.isSuper) {
+        ball.superTimer -= dt;
+        if (ball.superTimer <= 0) ball.isSuper = false;
+      }
+
+      ball.vy += ball.isSuper ? GRAVITY * 0.4 : GRAVITY;
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      ball.rotation += ball.vx * 0.06;
+      ball.vx *= 0.993;
+
+      // Ground Bounce
+      if (ball.y + ball.r >= GROUND_Y) {
+        ball.y = GROUND_Y - ball.r;
+        ball.vy = -ball.vy * 0.74;
+        if (Math.abs(ball.vy) < 1.0) ball.vy = 0;
+      }
+
+      // Ceiling Bounce
+      if (ball.y - ball.r <= 20) {
+        ball.y = 20 + ball.r;
+        ball.vy = -ball.vy * 0.8;
+      }
+
+      // Crossbars & Net Walls
+      handleGoalPostCollision(GOAL_WIDTH, CROSSBAR_Y, true);
+      handleGoalPostCollision(PITCH_W - GOAL_WIDTH, CROSSBAR_Y, false);
+    }
+
+    function handleGoalPostCollision(postX, crossbarY, isLeftGoal) {
+      const distCrossbar = Math.hypot(ball.x - postX, ball.y - crossbarY);
+      if (distCrossbar < ball.r + 10) {
+        audio.playCrossbarPing();
+        const angle = Math.atan2(ball.y - crossbarY, ball.x - postX);
+        const speed = Math.hypot(ball.vx, ball.vy);
+        ball.vx = Math.cos(angle) * (speed + 2.5);
+        ball.vy = Math.sin(angle) * (speed + 2.5);
+      }
+
+      // Back of net boundary
+      if (isLeftGoal && ball.x - ball.r < 15) {
+        ball.x = 15 + ball.r;
+        ball.vx = -ball.vx * 0.5;
+      }
+      if (!isLeftGoal && ball.x + ball.r > PITCH_W - 15) {
+        ball.x = PITCH_W - 15 - ball.r;
+        ball.vx = -ball.vx * 0.5;
+      }
+    }
+
+    // BIG HEAD COLLISION (HEADER POWER!)
+    function handleHeadCollision(p) {
+      const headCenterX = p.x;
+      const headCenterY = p.y - 95; // Giant Bobble Head Center
+      const headRadius = p.char.headR; // 52px-54px!
+
+      const dx = ball.x - headCenterX;
+      const dy = ball.y - headCenterY;
+      const dist = Math.hypot(dx, dy);
+
+      if (dist < ball.r + headRadius) {
+        audio.playHeadHit();
+        p.power = Math.min(1.0, p.power + 0.2);
+
+        const normalX = dx / dist;
+        const normalY = dy / dist;
+
+        ball.x = headCenterX + normalX * (ball.r + headRadius);
+        ball.y = headCenterY + normalY * (ball.r + headRadius);
+
+        // Powerful header strike!
+        const headerPower = p.isGrounded ? 13 : 17;
+        const targetDirX = p.facing;
+
+        ball.vx = (normalX * 7) + (targetDirX * headerPower * 0.85);
+        ball.vy = (normalY * 8) - (p.isGrounded ? 5 : 9);
+
+        p.x -= normalX * 2.5;
+      }
+    }
+
+    function handleBodyCollision(p) {
+      const bodyX = p.x;
+      const bodyY = p.y - 38;
+      const bodyW = 34;
+      const bodyH = 46;
+
+      if (ball.x + ball.r > bodyX - bodyW / 2 &&
+          ball.x - ball.r < bodyX + bodyW / 2 &&
+          ball.y + ball.r > bodyY - bodyH / 2 &&
+          ball.y - ball.r < bodyY + bodyH / 2) {
+        ball.vx = p.facing * 8;
+        ball.vy = -5;
+      }
+    }
+
+    function checkGoals() {
+      if (isGoalScored) return;
+
+      if (ball.x < GOAL_WIDTH - 20 && ball.y > CROSSBAR_Y) {
+        score.p2++;
+        triggerGoal('p2');
+      }
+      else if (ball.x > PITCH_W - GOAL_WIDTH + 20 && ball.y > CROSSBAR_Y) {
+        score.p1++;
+        triggerGoal('p1');
+      }
+    }
+
+    function triggerGoal(scoringPlayer) {
+      isGoalScored = true;
+      goalFreezeTimer = 2.4;
+      ball.vx = 0;
+      ball.vy = 0;
+
+      document.getElementById('hud-score').innerText = `${score.p1} - ${score.p2}`;
+      const banner = document.getElementById('goal-banner');
+      banner.innerText = scoringPlayer === 'p1' ? `⚽ GOAAAL! ${p1.char.name} SCORES! ⚽` : `⚽ GOAL FOR ${p2.char.name}! ⚽`;
+      banner.classList.add('show');
+
+      audio.playGoalCheer();
+    }
+
+    /* ==========================================================================
+       6. 2D CANVAS DRAWING (BRIGHT HIGH-CONTRAST STADIUM & GIANT BOBBLE HEADS)
+       ========================================================================== */
+    function drawStadium() {
+      // 1. Bright Sunny Stadium Sky (Contrasts sharply with all player jerseys)
+      const skyGrad = ctx.createLinearGradient(0, 0, 0, GROUND_Y);
+      skyGrad.addColorStop(0, '#38bdf8');
+      skyGrad.addColorStop(0.55, '#bae6fd');
+      skyGrad.addColorStop(1, '#e0f2fe');
+      ctx.fillStyle = skyGrad;
+      ctx.fillRect(0, 0, PITCH_W, PITCH_H);
+
+      // Fluffy White Clouds in Sky
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.85)';
+      [180, 520, 840].forEach((cx, idx) => {
+        ctx.beginPath();
+        ctx.ellipse(cx, 60 + idx * 15, 60, 22, 0, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 2. High-Tech Bright Stadium Stands with Cheering Spectators
+      const standsY = 160;
+      const standsH = GROUND_Y - standsY;
+
+      // Concrete Grandstand Terraces
+      ctx.fillStyle = '#cbd5e1';
+      ctx.fillRect(0, standsY, PITCH_W, standsH);
+
+      // Colorful Spectator Rows
+      for (let sy = standsY + 12; sy < GROUND_Y - 45; sy += 24) {
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(0, sy + 6, PITCH_W, 3);
+
+        for (let sx = 20; sx < PITCH_W - 20; sx += 18) {
+          ctx.fillStyle = (sx % 4 === 0) ? '#ef4444' : (sx % 3 === 0) ? '#38bdf8' : (sx % 5 === 0) ? '#facc15' : '#ffffff';
+          ctx.beginPath();
+          ctx.arc(sx, sy, 5.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Stadium LED Advertising Ribbon Banner
+      const adY = GROUND_Y - 42;
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(0, adY, PITCH_W, 36);
+      ctx.fillStyle = '#facc15';
+      ctx.font = '900 13px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('⭐ HEAD FOOTBALL 2026 WORLD CUP • PLAY NOW! ⭐', PITCH_W / 2, adY + 23);
+
+      // Stadium Floodlight Towers
+      [100, PITCH_W - 100].forEach(lx => {
+        ctx.fillStyle = '#94a3b8';
+        ctx.fillRect(lx - 5, 20, 10, 140);
+        ctx.fillStyle = '#fef08a';
+        ctx.beginPath();
+        ctx.arc(lx, 16, 14, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // 3. Vibrant Emerald Green Pitch Turf
+      ctx.fillStyle = '#16a34a';
+      ctx.fillRect(0, GROUND_Y, PITCH_W, PITCH_H - GROUND_Y);
+
+      // Alternating Striped Mowing Pattern
+      ctx.fillStyle = '#15803d';
+      for (let gx = 0; gx < PITCH_W; gx += 80) {
+        ctx.fillRect(gx, GROUND_Y, 40, PITCH_H - GROUND_Y);
+      }
+
+      // Pitch Baseline
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 5;
+      ctx.beginPath();
+      ctx.moveTo(0, GROUND_Y);
+      ctx.lineTo(PITCH_W, GROUND_Y);
+      ctx.stroke();
+
+      // Halfway Line
+      ctx.beginPath();
+      ctx.moveTo(PITCH_W / 2, GROUND_Y);
+      ctx.lineTo(PITCH_W / 2, GROUND_Y - 45);
+      ctx.stroke();
+
+      // Center Circle Segment
+      ctx.beginPath();
+      ctx.arc(PITCH_W / 2, GROUND_Y, 70, Math.PI, 0);
+      ctx.stroke();
+
+      // 4. Shiny High-Visibility 2D Goal Posts
+      drawSideGoal(0, CROSSBAR_Y, GOAL_WIDTH, GOAL_HEIGHT, true);
+      drawSideGoal(PITCH_W - GOAL_WIDTH, CROSSBAR_Y, GOAL_WIDTH, GOAL_HEIGHT, false);
+    }
+
+    function drawSideGoal(x, y, w, h, isLeft) {
+      // Net Mesh Pattern
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+      ctx.fillRect(x, y, w, h);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+      ctx.lineWidth = 1.5;
+      for (let nx = x; nx <= x + w; nx += 12) {
+        ctx.beginPath(); ctx.moveTo(nx, y); ctx.lineTo(nx, y + h); ctx.stroke();
+      }
+      for (let ny = y; ny <= y + h; ny += 12) {
+        ctx.beginPath(); ctx.moveTo(x, ny); ctx.lineTo(x + w, ny); ctx.stroke();
+      }
+
+      // High-Contrast Solid White Posts & Crossbar with Shadows
+      ctx.save();
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.35)';
+      ctx.shadowBlur = 8;
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 8;
+      ctx.strokeRect(x, y, w, h);
+      ctx.restore();
+
+      // Golden Post Caps
+      ctx.fillStyle = '#facc15';
+      ctx.beginPath();
+      ctx.arc(isLeft ? x + w : x, y, 7, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // DRAW GIANT CARTOON BOBBLE-HEAD PLAYER WITH WHITE RIM HIGHLIGHTS
+    function drawHeadPlayer(p, isP1 = true) {
+      ctx.save();
+      ctx.translate(p.x, p.y);
+
+      // 1. High-Contrast White Rim Glow & Ground Shadow
+      ctx.save();
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+      ctx.beginPath();
+      ctx.ellipse(0, 0, 38, 12, 0, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      // 2. Overhead Player Identifier Pill (YOU vs AI)
+      ctx.save();
+      const pillY = -168;
+      ctx.fillStyle = isP1 ? '#0284c7' : '#dc2626';
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.roundRect(-38, pillY, 76, 22, 11);
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = '#ffffff';
+      ctx.font = '900 11px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(isP1 ? 'YOU 👑' : 'AI 🤖', 0, pillY + 15);
+
+      // Pulsing Indicator Arrow
+      ctx.fillStyle = isP1 ? '#facc15' : '#ef4444';
+      ctx.beginPath();
+      ctx.moveTo(0, pillY + 25);
+      ctx.lineTo(-6, pillY + 20);
+      ctx.lineTo(6, pillY + 20);
+      ctx.closePath();
+      ctx.fill();
+      ctx.restore();
+
+      // 3. Player Body (Jersey)
+      ctx.save();
+      // White outline backing so player pops out against any background!
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 7;
+      ctx.strokeRect(-18, -60, 36, 44);
+
+      // Jersey
+      ctx.fillStyle = p.char.jersey;
+      ctx.fillRect(-18, -60, 36, 44);
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 3.5;
+      ctx.strokeRect(-18, -60, 36, 44);
+
+      // Shorts
+      ctx.fillStyle = p.char.shorts;
+      ctx.fillRect(-18, -26, 36, 18);
+      ctx.strokeRect(-18, -26, 36, 18);
+      ctx.restore();
+
+      // 4. Kicking Foot / Cleat (Big and Animated!)
+      ctx.save();
+      ctx.translate(p.facing * 12, -10);
+      ctx.rotate(p.facing * p.kickAngle);
+
+      // White cleat backing
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.roundRect(-6, -8, 34 * p.facing, 18, 6);
+      ctx.stroke();
+
+      // Cleat
+      ctx.fillStyle = p.char.boot;
+      ctx.beginPath();
+      ctx.roundRect(-6, -8, 34 * p.facing, 18, 6);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 3;
+      ctx.stroke();
+
+      // Studs on bottom of cleat
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(p.facing * 4, 10, 5, 4);
+      ctx.fillRect(p.facing * 18, 10, 5, 4);
+      ctx.restore();
+
+      // 5. GIANT BOBBLE HEAD (RADIUS: 52px!)
+      ctx.save();
+      const headY = -95;
+      ctx.translate(0, headY);
+
+      // White Pop Outline around head
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 8;
+      ctx.beginPath();
+      ctx.arc(0, 0, p.char.headR + 1, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Skin Base
+      ctx.fillStyle = p.char.skin;
+      ctx.beginPath();
+      ctx.arc(0, 0, p.char.headR, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 4;
+      ctx.stroke();
+
+      // Hair
+      ctx.fillStyle = p.char.hair;
+      ctx.beginPath();
+      ctx.arc(0, -10, p.char.headR + 2, Math.PI * 0.88, Math.PI * 2.12);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+
+      // Headband (if applicable)
+      if (p.char.headband) {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(-p.char.headR + 4, -28, (p.char.headR - 4) * 2, 10);
+        ctx.strokeStyle = '#0f172a';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(-p.char.headR + 4, -28, (p.char.headR - 4) * 2, 10);
+      }
+
+      // Beard (for Leo)
+      if (p.char.beard) {
+        ctx.fillStyle = '#451a03';
+        ctx.beginPath();
+        ctx.arc(p.facing * 8, 22, 24, 0, Math.PI * 0.9);
+        ctx.fill();
+      }
+
+      // GIANT EXPRESSIVE CARTOON EYE
+      const eyeX = p.facing * 20;
+      const eyeY = -4;
+
+      // Sclera
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(eyeX, eyeY, 14, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      // Pupil looking towards ball!
+      const angleToBall = Math.atan2(ball.y - (p.y + headY), ball.x - p.x);
+      ctx.fillStyle = '#0f172a';
+      ctx.beginPath();
+      ctx.arc(eyeX + Math.cos(angleToBall) * 6, eyeY + Math.sin(angleToBall) * 4, 6.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Pupil Catchlight Shine
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(eyeX + Math.cos(angleToBall) * 6 - 2, eyeY + Math.sin(angleToBall) * 4 - 2, 2.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eyebrow
+      ctx.strokeStyle = p.char.hair;
+      ctx.lineWidth = 4.5;
+      ctx.beginPath();
+      ctx.moveTo(eyeX - 14 * p.facing, eyeY - 18);
+      ctx.lineTo(eyeX + 14 * p.facing, eyeY - 15);
+      ctx.stroke();
+
+      // Expressive Mouth (Opens wide on jump / kick!)
+      ctx.fillStyle = (p.isKicking || !p.isGrounded) ? '#ef4444' : '#0f172a';
+      ctx.beginPath();
+      if (p.isKicking || !p.isGrounded) {
+        // Open screaming mouth "😮"
+        ctx.arc(eyeX - 6 * p.facing, 26, 9, 0, Math.PI * 2);
+      } else {
+        // Big confident smile
+        ctx.arc(eyeX - 6 * p.facing, 22, 10, 0, Math.PI * 0.9);
+      }
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 2.5;
+      ctx.stroke();
+
+      ctx.restore(); // Head restore
+      ctx.restore(); // Player restore
+    }
+
+    // DRAW GIANT SOCCER BALL (RADIUS: 26PX!)
+    function drawBall() {
+      ctx.save();
+      ctx.translate(ball.x, ball.y);
+
+      // Blazing Fireball Effect
+      if (ball.isSuper) {
+        ctx.save();
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.45)';
+        ctx.beginPath();
+        ctx.arc(0, 0, ball.r + 22, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.8)';
+        ctx.beginPath();
+        ctx.arc(0, 0, ball.r + 12, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Ball Shadow on Ground
+      const shadowAlpha = Math.max(0.1, 0.5 - (GROUND_Y - ball.y) / 450);
+      ctx.fillStyle = `rgba(0, 0, 0, ${shadowAlpha})`;
+      ctx.beginPath();
+      ctx.ellipse(0, GROUND_Y - ball.y, ball.r * 1.3, 8, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      // White outline pop halo
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.arc(0, 0, ball.r + 1, 0, Math.PI * 2);
+      ctx.stroke();
+
+      // Football Body
+      ctx.rotate(ball.rotation);
+      ctx.fillStyle = ball.isSuper ? '#ef4444' : '#ffffff';
+      ctx.beginPath();
+      ctx.arc(0, 0, ball.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#0f172a';
+      ctx.lineWidth = 3.5;
+      ctx.stroke();
+
+      // Classic Soccer Pentagons (Scaled up for 26px radius)
+      ctx.fillStyle = ball.isSuper ? '#facc15' : '#0f172a';
+      // Center Pentagon
+      ctx.beginPath();
+      ctx.arc(0, 0, 7.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 5 Outer Pentagons
+      for (let i = 0; i < 5; i++) {
+        const ang = (i * Math.PI * 2 / 5);
+        ctx.beginPath();
+        ctx.arc(Math.cos(ang) * 15, Math.sin(ang) * 15, 5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      ctx.restore();
+    }
+
+    /* ==========================================================================
+       7. RENDER LOOP & RESIZE
+       ========================================================================== */
+    function handleResize() {
+      const rect = document.getElementById('pitch-wrap').getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+    }
+    window.addEventListener('resize', handleResize);
+
+    let lastTime = performance.now();
+
+    function gameLoop(now) {
+      requestAnimationFrame(gameLoop);
+      const dt = Math.min((now - lastTime) / 1000, 0.1);
+      lastTime = now;
+
+      // Update Simulation
+      updatePhysics(dt);
+
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const w = canvas.width / dpr;
+      const h = canvas.height / dpr;
+
+      ctx.save();
+      ctx.scale(dpr, dpr);
+
+      // Fit virtual pitch
+      const scaleX = w / PITCH_W;
+      const scaleY = h / PITCH_H;
+      const scale = Math.min(scaleX, scaleY);
+
+      const offsetX = (w - PITCH_W * scale) / 2;
+      const offsetY = (h - PITCH_H * scale) / 2;
+
+      ctx.translate(offsetX, offsetY);
+      ctx.scale(scale, scale);
+
+      // Draw Bright Stadium & Pitch
+      drawStadium();
+
+      // Draw Giant Bobble-Head Players
+      drawHeadPlayer(p1, true);
+      drawHeadPlayer(p2, false);
+
+      // Draw Big Football
+      drawBall();
+
+      ctx.restore();
+    }
+
+    /* ==========================================================================
+       8. LIFECYCLE & MENU TRIGGERS
+       ========================================================================== */
+    function startMatch() {
+      score = { p1: 0, p2: 0 };
+      matchTimer = 60;
+      isGoalScored = false;
+      isMatchActive = true;
+
+      p1.char = CHARACTERS[selectedP1];
+      p2.char = CHARACTERS[selectedP2];
+      p1.power = 0;
+      p2.power = 0;
+
+      document.getElementById('hud-p1-avatar').innerText = p1.char.avatar;
+      document.getElementById('hud-p1-name').innerText = p1.char.name;
+      document.getElementById('hud-p2-avatar').innerText = p2.char.avatar;
+      document.getElementById('hud-p2-name').innerText = p2.char.name;
+      document.getElementById('hud-score').innerText = '0 - 0';
+      document.getElementById('hud-clock').innerText = '60s';
+
+      document.getElementById('modal-menu').classList.add('hidden');
+      document.getElementById('modal-result').classList.add('hidden');
+
+      resetPositions();
+      audio.init();
+      audio.playWhistle();
+    }
+
+    function endMatch() {
+      isMatchActive = false;
+      audio.playWhistle();
+
+      const resModal = document.getElementById('modal-result');
+      const resTrophy = document.getElementById('res-trophy');
+      const resTitle = document.getElementById('res-title');
+      const resDesc = document.getElementById('res-desc');
+      const resScore = document.getElementById('res-final-score');
+
+      resScore.innerText = `${p1.char.name} ${score.p1} - ${score.p2} ${p2.char.name}`;
+
+      if (score.p1 > score.p2) {
+        resTrophy.innerText = '🏆🥇';
+        resTitle.innerText = 'VICTORY!';
+        resDesc.innerText = `Sensational match! ${p1.char.name} wins the Big Head Soccer clash!`;
+      } else if (score.p1 < score.p2) {
+        resTrophy.innerText = '💔🥈';
+        resTitle.innerText = 'DEFEAT!';
+        resDesc.innerText = `${p2.char.name} was too strong with those headers. Try again!`;
+      } else {
+        resTrophy.innerText = '🤝⚽';
+        resTitle.innerText = 'DRAW!';
+        resDesc.innerText = 'An electrifying contest ends in a hard-fought draw!';
+      }
+
+      resModal.classList.remove('hidden');
+    }
+
+    function setupStarPicker(containerId, isP1 = true) {
+      const container = document.getElementById(containerId);
+      container.querySelectorAll('.star-card').forEach(card => {
+        card.onclick = () => {
+          container.querySelectorAll('.star-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          const id = card.dataset.id;
+          if (isP1) selectedP1 = id;
+          else selectedP2 = id;
+        };
+      });
+    }
+    setupStarPicker('p1-picker', true);
+    setupStarPicker('p2-picker', false);
+
+    document.getElementById('btn-start-match').onclick = startMatch;
+    document.getElementById('btn-restart-match').onclick = startMatch;
+
+    document.getElementById('btn-pause').onclick = () => {
+      isMatchActive = !isMatchActive;
+      document.getElementById('btn-pause').innerText = isMatchActive ? '⏸️' : '▶️';
+    };
+
+    document.getElementById('btn-sound').onclick = () => {
+      const isMuted = audio.toggleMute();
+      document.getElementById('btn-sound').innerText = isMuted ? '🔇' : '🔊';
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      handleResize();
+      requestAnimationFrame(gameLoop);
+    });
+  </script>
+</body>
+</html>

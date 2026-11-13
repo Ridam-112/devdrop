@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Basketball Shot - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: crosshair;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    /* Modal */
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(211, 84, 0, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🏀</span>
+        <span id="score-val">0</span>
+      </div>
+      <div class="clay-pill" id="balls-left">
+        <span>🏀</span><span>🏀</span><span>🏀</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🏀 🎯 ⛹️</div>
+        <h1 style="color: #d35400; font-size: 28px;">Basketball Shot</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Drag back to aim and shoot the clay basketball into the moving hoop!</p>
+        <button id="btn-start" class="clay-btn">PLAY NOW ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🏀</div>
+        <h1 style="color: #ff5252; font-size: 28px;">OUT OF BALLS!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">Great shooting attempt!</p>
+        <div style="background: #f0f4f9; padding: 10px; border-radius: 16px; margin-bottom: 16px;">
+          <div style="font-size: 26px; font-weight: 700; color: #d35400;" id="final-score">0</div>
+          <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Final Score</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">TRY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      bounce() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(220, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(110, this.ctx.currentTime + 0.08);
+        g.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.1);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.1);
+      }
+      swish() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        [523.25, 659.25, 783.99].forEach((f, idx) => {
+          const o = this.ctx.createOscillator();
+          const g = this.ctx.createGain();
+          o.type = 'sine';
+          o.frequency.value = f;
+          g.gain.setValueAtTime(0.25, now + idx * 0.06);
+          g.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.06 + 0.14);
+          o.connect(g); g.connect(this.ctx.destination);
+          o.start(now + idx * 0.06); o.stop(now + idx * 0.06 + 0.15);
+        });
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    let gameState = 'START';
+    let score = 0;
+    let ballsLeft = 3;
+    let bestScore = parseInt(localStorage.getItem('clay_basket_best') || '0', 10);
+
+    // Ball state
+    const BALL_RADIUS = 18;
+    const START_POS = { x: 120, y: 560 };
+    let ball = {
+      x: START_POS.x,
+      y: START_POS.y,
+      vx: 0,
+      vy: 0,
+      inFlight: false,
+      scored: false
+    };
+
+    // Hoop state
+    let hoop = {
+      x: 360,
+      y: 240,
+      w: 64,
+      rimRadius: 5,
+      dir: 1,
+      speed: 1.2
+    };
+
+    let isAiming = false;
+    let dragStart = { x: 0, y: 0 };
+    let dragCurrent = { x: 0, y: 0 };
+
+    function initGame() {
+      score = 0;
+      ballsLeft = 3;
+      resetBall();
+      updateHUD();
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function resetBall() {
+      ball.x = START_POS.x;
+      ball.y = START_POS.y;
+      ball.vx = 0;
+      ball.vy = 0;
+      ball.inFlight = false;
+      ball.scored = false;
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').innerText = score;
+      const ballsEl = document.getElementById('balls-left');
+      ballsEl.innerHTML = '';
+      for (let i = 0; i < ballsLeft; i++) {
+        ballsEl.innerHTML += '<span>🏀</span>';
+      }
+    }
+
+    // Aim & Shoot Input
+    function onPointerDown(e) {
+      if (gameState !== 'PLAYING' || ball.inFlight) return;
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (e.clientX - rect.left) * (W / rect.width);
+      const clickY = (e.clientY - rect.top) * (H / rect.height);
+
+      if (Math.hypot(clickX - ball.x, clickY - ball.y) < BALL_RADIUS * 2.5) {
+        isAiming = true;
+        dragStart = { x: clickX, y: clickY };
+        dragCurrent = { x: clickX, y: clickY };
+      }
+    }
+
+    function onPointerMove(e) {
+      if (!isAiming) return;
+      const rect = canvas.getBoundingClientRect();
+      dragCurrent.x = (e.clientX - rect.left) * (W / rect.width);
+      dragCurrent.y = (e.clientY - rect.top) * (H / rect.height);
+    }
+
+    function onPointerUp() {
+      if (!isAiming) return;
+      isAiming = false;
+      const dx = dragStart.x - dragCurrent.x;
+      const dy = dragStart.y - dragCurrent.y;
+      const power = Math.min(Math.hypot(dx, dy) * 0.16, 22);
+      const angle = Math.atan2(dy, dx);
+
+      if (power > 3) {
+        ball.vx = Math.cos(angle) * power;
+        ball.vy = Math.sin(angle) * power;
+        ball.inFlight = true;
+      }
+    }
+
+    canvas.addEventListener('mousedown', onPointerDown);
+    window.addEventListener('mousemove', onPointerMove);
+    window.addEventListener('mouseup', onPointerUp);
+
+    canvas.addEventListener('touchstart', (e) => { if (e.touches[0]) onPointerDown(e.touches[0]); });
+    window.addEventListener('touchmove', (e) => { if (e.touches[0]) onPointerMove(e.touches[0]); });
+    window.addEventListener('touchend', onPointerUp);
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function drawHoop() {
+      ctx.save();
+      // Backboard
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.roundRect(hoop.x + hoop.w - 4, hoop.y - 70, 12, 100, 4);
+      ctx.fill();
+
+      // Red inner square
+      ctx.strokeStyle = '#e74c3c';
+      ctx.lineWidth = 3;
+      ctx.strokeRect(hoop.x + hoop.w - 18, hoop.y - 45, 14, 30);
+
+      // Rim
+      ctx.strokeStyle = '#e67e22';
+      ctx.lineWidth = 6;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(hoop.x, hoop.y);
+      ctx.lineTo(hoop.x + hoop.w, hoop.y);
+      ctx.stroke();
+
+      // Net
+      ctx.strokeStyle = 'rgba(200, 214, 229, 0.7)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(hoop.x, hoop.y);
+      ctx.lineTo(hoop.x + 12, hoop.y + 45);
+      ctx.lineTo(hoop.x + hoop.w - 12, hoop.y + 45);
+      ctx.lineTo(hoop.x + hoop.w, hoop.y);
+      ctx.stroke();
+
+      ctx.restore();
+    }
+
+    function loop() {
+      ctx.fillStyle = '#fbfdff';
+      ctx.fillRect(0, 0, W, H);
+
+      // Move hoop after score > 4
+      if (gameState === 'PLAYING' && score >= 4) {
+        hoop.y += hoop.speed * hoop.dir;
+        if (hoop.y > 340 || hoop.y < 160) hoop.dir *= -1;
+      }
+
+      drawHoop();
+
+      // Aiming trajectory line
+      if (isAiming) {
+        ctx.save();
+        const dx = dragStart.x - dragCurrent.x;
+        const dy = dragStart.y - dragCurrent.y;
+        const power = Math.min(Math.hypot(dx, dy) * 0.16, 22);
+        const angle = Math.atan2(dy, dx);
+        const simVx = Math.cos(angle) * power;
+        const simVy = Math.sin(angle) * power;
+
+        ctx.fillStyle = 'rgba(230, 126, 34, 0.4)';
+        let sx = ball.x;
+        let sy = ball.y;
+        let svx = simVx;
+        let svy = simVy;
+
+        for (let i = 0; i < 20; i++) {
+          svy += 0.45;
+          sx += svx;
+          sy += svy;
+          if (i % 2 === 0) {
+            ctx.beginPath();
+            ctx.arc(sx, sy, 4, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+        ctx.restore();
+      }
+
+      // Ball Physics
+      if (ball.inFlight) {
+        ball.vy += 0.45;
+        ball.x += ball.vx;
+        ball.y += ball.vy;
+
+        // Bounce off backboard
+        if (ball.x + BALL_RADIUS >= hoop.x + hoop.w - 4 && ball.x - BALL_RADIUS <= hoop.x + hoop.w + 12 &&
+            ball.y >= hoop.y - 70 && ball.y <= hoop.y + 30) {
+          ball.vx = -Math.abs(ball.vx) * 0.7;
+          sound.bounce();
+        }
+
+        // Rim Bounces (Front lip & back lip)
+        if (Math.hypot(ball.x - hoop.x, ball.y - hoop.y) < BALL_RADIUS + 4) {
+          ball.vy = -Math.abs(ball.vy) * 0.6;
+          ball.vx = -1.5;
+          sound.bounce();
+        }
+
+        // Scoring Check (passes downwards through hoop)
+        if (!ball.scored && ball.vy > 0 &&
+            ball.x > hoop.x + 8 && ball.x < hoop.x + hoop.w - 8 &&
+            ball.y >= hoop.y && ball.y <= hoop.y + 18) {
+          ball.scored = true;
+          score++;
+          sound.swish();
+          updateHUD();
+        }
+
+        // Ball out of bounds / floor
+        if (ball.y > H + 40 || ball.x < -40 || ball.x > W + 40) {
+          if (!ball.scored) {
+            ballsLeft--;
+            updateHUD();
+            if (ballsLeft <= 0) {
+              gameState = 'GAMEOVER';
+              document.getElementById('final-score').innerText = score;
+              document.getElementById('gameover-screen').classList.remove('hidden');
+            }
+          }
+          resetBall();
+        }
+      }
+
+      // Draw Clay Basketball
+      ctx.save();
+      ctx.shadowColor = 'rgba(211, 84, 0, 0.4)';
+      ctx.shadowBlur = 10;
+      ctx.fillStyle = '#e67e22';
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, BALL_RADIUS, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      // Seams
+      ctx.strokeStyle = '#2c3e50';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.arc(ball.x, ball.y, BALL_RADIUS, -0.6, 0.6);
+      ctx.stroke();
+
+      // Highlight
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+      ctx.beginPath();
+      ctx.arc(ball.x - 5, ball.y - 5, 4, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>

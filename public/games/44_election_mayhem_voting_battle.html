@@ -1,0 +1,3125 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <!-- Three.js 3D Engine -->
+  <script src="spiderman_game/js/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Election Mayhem: মন্ত্রী মশাইয়ের তহবিল ও কাটমানি যুদ্ধ 🗳️</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700;800&family=Hind+Siliguri:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #f97316;
+      --secondary: #10b981;
+      --navy: #0f172a;
+      --gold: #facc15;
+      --danger: #ef4444;
+      --clay-bg: rgba(30, 41, 59, 0.9);
+      --card-border: 2px solid rgba(255, 255, 255, 0.15);
+      --clay-shadow: 0 14px 34px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+      background: radial-gradient(circle at 50% 15%, #1e293b 0%, #090d16 100%);
+      font-family: 'Hind Siliguri', 'Fredoka', sans-serif;
+      color: #f8fafc;
+      position: fixed;
+    }
+
+    .screen-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Breaking News Ticker */
+    .news-ticker {
+      height: 38px;
+      background: linear-gradient(90deg, #dc2626 0%, #991b1b 100%);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      padding: 0 14px;
+      font-weight: 700;
+      font-size: 14px;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+      border-bottom: 2px solid #facc15;
+      flex-shrink: 0;
+    }
+    .news-label {
+      background: #facc15;
+      color: #000;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-weight: 800;
+      margin-right: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .news-text {
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      animation: tickerRoll 24s linear infinite;
+    }
+    @keyframes tickerRoll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    /* Top App Header with Live Political Telemetry */
+    .app-header {
+      padding: 8px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 90;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .logo-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 18px;
+      font-weight: 800;
+      color: #facc15;
+      text-shadow: 0 2px 8px rgba(250, 204, 21, 0.4);
+    }
+    .hud-stats {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: rgba(30, 41, 59, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .stat-pill.fund { color: #38bdf8; }
+    .stat-pill.pocket { color: #facc15; }
+    .stat-pill.approval { color: #4ade80; }
+    .stat-pill.ed { color: #f87171; }
+
+    /* Screen Views */
+    .view-panel {
+      position: absolute;
+      top: 88px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 16px 16px 32px;
+      overflow-y: auto;
+      z-index: 10;
+    }
+    .view-panel.active {
+      display: flex;
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Common Buttons */
+    .btn-action {
+      background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+      color: #fff;
+      border: none;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-family: inherit;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(249, 115, 22, 0.4), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-action:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 28px rgba(249, 115, 22, 0.55);
+    }
+    .btn-action:active { transform: translateY(1px); }
+    .btn-action.green {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      box-shadow: 0 10px 24px rgba(16, 185, 129, 0.4);
+    }
+
+    /* --- SCREEN 1: LEADER SELECTION --- */
+    .select-title {
+      text-align: center;
+      margin-bottom: 16px;
+    }
+    .select-title h1 {
+      font-size: 30px;
+      font-weight: 800;
+      color: #facc15;
+      text-shadow: 0 3px 12px rgba(250, 204, 21, 0.4);
+      margin-bottom: 4px;
+    }
+    .select-title p {
+      color: #cbd5e1;
+      font-size: 14px;
+      max-width: 700px;
+    }
+
+    .roster-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      width: 100%;
+      max-width: 1250px;
+      margin-bottom: 24px;
+    }
+    .leader-card {
+      background: rgba(30, 41, 59, 0.7);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 16px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: var(--clay-shadow);
+      position: relative;
+    }
+    .leader-card:hover {
+      transform: translateY(-5px);
+      border-color: #facc15;
+      background: rgba(51, 65, 85, 0.9);
+      box-shadow: 0 16px 36px rgba(250, 204, 21, 0.25);
+    }
+    .leader-card.selected {
+      border-color: #f97316;
+      background: linear-gradient(145deg, rgba(249, 115, 22, 0.15), rgba(30, 41, 59, 0.95));
+      box-shadow: 0 0 0 3px #f97316, 0 18px 36px rgba(249, 115, 22, 0.4);
+    }
+    .avatar-wrapper {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #334155, #1e293b);
+      border: 3px solid #facc15;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
+      position: relative;
+    }
+    .party-symbol {
+      position: absolute;
+      bottom: -3px;
+      right: -3px;
+      background: #0f172a;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      font-size: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .leader-name { font-size: 19px; font-weight: 800; color: #fff; }
+    .leader-tagline { font-size: 13px; font-weight: 600; color: #facc15; margin-bottom: 6px; }
+    .leader-quote { font-size: 12px; color: #94a3b8; font-style: italic; min-height: 32px; }
+
+    /* --- SCREEN 2: 3D CHARACTER + CRISIS STAGE & 2x2 CHOICES --- */
+    .dilemma-stage-container {
+      width: 100%;
+      max-width: 1150px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 0 auto;
+      max-height: calc(100vh - 110px);
+    }
+
+    /* Top Stage (Split: Left 3D Character, Right Crisis & Fund) */
+    .dilemma-top-stage {
+      display: flex;
+      gap: 14px;
+      width: 100%;
+      align-items: stretch;
+    }
+
+    /* 3D Politician Box */
+    .character-3d-box {
+      width: 270px;
+      flex-shrink: 0;
+      background: linear-gradient(145deg, rgba(30, 41, 59, 0.95), rgba(15, 23, 42, 0.95));
+      border: 2px solid rgba(250, 204, 21, 0.45);
+      border-radius: 18px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .char-stage-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 3px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: #facc15;
+      font-weight: 800;
+      z-index: 2;
+    }
+    .canvas-3d-wrapper {
+      width: 100%;
+      height: 155px;
+      position: relative;
+      cursor: grab;
+      border-radius: 10px;
+    }
+    .canvas-3d-wrapper canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+    }
+    .char-stage-speech {
+      background: rgba(15, 23, 42, 0.92);
+      border: 1.5px solid rgba(56, 189, 248, 0.5);
+      border-radius: 10px;
+      padding: 5px 10px;
+      font-size: 12px;
+      color: #e2e8f0;
+      text-align: center;
+      width: 100%;
+      line-height: 1.3;
+      z-index: 2;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      min-height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Right Panel (Fund Strip + Crisis Box) */
+    .crisis-right-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    /* Fund Compact Strip */
+    .fund-compact-strip {
+      background: linear-gradient(135deg, #065f46 0%, #047857 100%);
+      border: 2px solid #34d399;
+      border-radius: 14px;
+      padding: 8px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 6px 18px rgba(5, 150, 105, 0.3);
+    }
+    .fund-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .fund-icon-pulse {
+      font-size: 24px;
+      animation: bounce 1.4s infinite;
+    }
+    .fund-compact-title {
+      font-size: 15.5px;
+      font-weight: 800;
+      color: #fff;
+    }
+    .fund-compact-source {
+      font-size: 11px;
+      color: #a7f3d0;
+    }
+    .fund-compact-budget {
+      font-size: 18px;
+      font-weight: 900;
+      color: #facc15;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(250, 204, 21, 0.4);
+      white-space: nowrap;
+    }
+
+    /* Crisis Compact Box */
+    .crisis-compact-box {
+      background: rgba(30, 41, 59, 0.95);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 10px 14px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--clay-shadow);
+    }
+    .crisis-compact-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 5px;
+      flex-wrap: wrap;
+    }
+    .crisis-pill-badge {
+      background: #dc2626;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .crisis-compact-heading {
+      font-size: 16.5px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    .crisis-compact-text {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.38;
+      background: rgba(15, 23, 42, 0.6);
+      padding: 8px 12px;
+      border-radius: 10px;
+      border-left: 3px solid #ef4444;
+      margin-bottom: 6px;
+    }
+    .dilemma-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .toolbar-hint {
+      font-size: 13px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+    .btn-decoder-compact {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      padding: 4px 12px;
+      border-radius: 16px;
+      font-size: 11px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .btn-decoder-compact:hover {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+
+    /* --- BOTTOM STAGE: 2x2 GRID (Left/Right, Top/Bottom) --- */
+    .choices-2x2-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-rows: auto auto;
+      gap: 10px;
+      width: 100%;
+    }
+    .choice-card-compact {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1.5px solid rgba(255, 255, 255, 0.14);
+      border-radius: 14px;
+      padding: 9px 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+      min-height: 80px;
+    }
+    .choice-card-compact:hover {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      background: rgba(30, 41, 59, 0.98);
+      box-shadow: 0 6px 16px rgba(250, 204, 21, 0.2);
+    }
+    .choice-tag-compact {
+      font-size: 22px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .choice-body-compact {
+      flex: 1;
+      min-width: 0;
+    }
+    .choice-clause-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.18);
+      color: #38bdf8;
+      margin-bottom: 2px;
+    }
+    .choice-title-compact {
+      font-size: 13px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.3;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .choice-detail-compact {
+      font-size: 11.5px;
+      color: #94a3b8;
+      line-height: 1.35;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .choice-secret-audit-compact {
+      display: none;
+      margin-top: 6px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px dashed #38bdf8;
+      animation: fadeIn 0.2s ease-in;
+    }
+    .choice-card-compact.revealed .choice-secret-audit-compact {
+      display: block;
+    }
+
+    /* Decoder Button */
+    .decoder-bar {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 8px;
+    }
+    .btn-decoder {
+      background: rgba(56, 189, 248, 0.15);
+      border: 1px solid #38bdf8;
+      color: #38bdf8;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+    .btn-decoder:hover {
+      background: #38bdf8;
+      color: #0f172a;
+    }
+
+    /* Outcome Modal Overlay (Centered & High Polish) */
+    .outcome-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 180;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .outcome-modal-backdrop.active {
+      display: flex;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .outcome-modal {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 3px solid #facc15;
+      border-radius: 24px;
+      padding: 24px;
+      width: 100%;
+      max-width: 540px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .outcome-visual-card {
+      width: 100%;
+      height: 120px;
+      border-radius: 14px;
+      background: #020617;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 52px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    }
+    .outcome-title { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+    .outcome-desc { font-size: 14px; color: #cbd5e1; margin-bottom: 16px; line-height: 1.5; }
+    .outcome-stat-row {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+    .outcome-stat-item strong { display: block; font-size: 16px; }
+
+    /* --- SCREEN 3: POLITICAL JHOGRA / TV DEBATE BATTLE --- */
+    .debate-arena {
+      width: 100%;
+      max-width: 1080px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .studio-header {
+      background: linear-gradient(90deg, #1e1b4b 0%, #312e81 100%);
+      padding: 10px 18px;
+      border-radius: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 2px solid #6366f1;
+      box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .anchor-badge { font-weight: 800; color: #facc15; font-size: 15px; }
+    .anchor-speech {
+      background: #facc15;
+      color: #000;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+    }
+
+    .studio-panels {
+      display: grid;
+      grid-template-columns: 1fr 120px 1fr;
+      gap: 14px;
+      align-items: stretch;
+      min-height: 240px;
+    }
+    @media (max-width: 768px) {
+      .studio-panels { grid-template-columns: 1fr; }
+    }
+    .tv-panel {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 3px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--clay-shadow);
+    }
+    .tv-panel.player-panel { border-color: #10b981; }
+    .tv-panel.opp-panel { border-color: #ef4444; }
+    .tv-live-tag {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #dc2626;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .jhogra-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: #334155;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      border: 3px solid #fff;
+    }
+    .jhogra-avatar.speaking {
+      animation: jhograShake 0.15s infinite;
+    }
+    @keyframes jhograShake {
+      0% { transform: rotate(-3deg) scale(1.05); }
+      50% { transform: rotate(3deg) scale(1.08); }
+      100% { transform: rotate(-3deg) scale(1.05); }
+    }
+    .speech-bubble {
+      background: #fff;
+      color: #0f172a;
+      padding: 10px 16px;
+      border-radius: 18px;
+      font-weight: 700;
+      font-size: 14px;
+      margin-top: 8px;
+      max-width: 95%;
+      position: relative;
+      border: 2px solid #000;
+    }
+
+    .battle-center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .vs-badge {
+      background: #ef4444;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 900;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid #fff;
+      box-shadow: 0 0 16px rgba(239, 68, 68, 0.6);
+    }
+    .decibel-meter {
+      height: 110px;
+      width: 22px;
+      background: #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    .decibel-fill {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 45%;
+      background: linear-gradient(0deg, #10b981 0%, #facc15 60%, #ef4444 100%);
+      transition: height 0.2s ease;
+    }
+
+    /* Jhogra Action Buttons */
+    
+    /* Newspaper Clipping in Modal */
+    .newspaper-clip {
+      width: 100%;
+      background: #fef3c7;
+      color: #0f172a;
+      border: 2px solid #b45309;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+      transform: rotate(-0.5deg);
+      text-align: left;
+    }
+    .newspaper-topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1.5px solid #d97706;
+      padding-bottom: 4px;
+      margin-bottom: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #78350f;
+      letter-spacing: 0.5px;
+    }
+    .newspaper-tag {
+      background: #dc2626;
+      color: #fff;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 900;
+    }
+    .newspaper-headline {
+      font-family: 'Hind Siliguri', 'Times New Roman', serif;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.35;
+      color: #1c1917;
+    }
+
+    /* Live Meme Soundboard Bar */
+    .meme-soundboard {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(250, 204, 21, 0.3);
+      border-radius: 12px;
+      padding: 6px 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .soundboard-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    .btn-soundboard {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-soundboard:hover {
+      background: #facc15;
+      color: #0f172a;
+      transform: scale(1.04);
+    }
+
+    .jhogra-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      width: 100%;
+    }
+    .btn-jhogra {
+      background: rgba(30, 41, 59, 0.95);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      border-radius: 16px;
+      padding: 12px 14px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: var(--clay-shadow);
+      transition: all 0.15s ease;
+    }
+    .btn-jhogra:hover {
+      transform: translateY(-2px);
+      border-color: #facc15;
+      background: rgba(51, 65, 85, 0.95);
+    }
+    .btn-jhogra.special {
+      background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+      border-color: #a78bfa;
+    }
+
+    /* --- SCREEN 4: EVM COUNTING & GRAND VICTORY --- */
+    .evm-box {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 3px solid #475569;
+      border-radius: 26px;
+      padding: 24px;
+      width: 100%;
+      max-width: 600px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .evm-display {
+      background: #020617;
+      border: 2px solid #334155;
+      border-radius: 14px;
+      padding: 12px 24px;
+      width: 100%;
+      margin-bottom: 18px;
+      font-family: 'Courier New', monospace;
+      color: #22c55e;
+      font-size: 26px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.8);
+    }
+    .evm-candidates {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .evm-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 8px 16px;
+    }
+    .evm-btn-press {
+      background: #0284c7;
+      color: #fff;
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.5);
+      cursor: pointer;
+    }
+    .evm-lamp {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #ef4444;
+      box-shadow: 0 0 10px #ef4444;
+    }
+    .evm-lamp.green {
+      background: #22c55e;
+      box-shadow: 0 0 14px #22c55e;
+    }
+
+    /* Confetti Canvas */
+    #confettiCanvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 150;
+    }
+
+    /* Meme Popup FX */
+    .meme-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+    }
+    .meme-text-popup {
+      font-size: 46px;
+      font-weight: 900;
+      color: #facc15;
+      text-shadow: 0 0 20px #000, 4px 4px 0 #ef4444, -4px -4px 0 #3b82f6;
+      transform: scale(0) rotate(-15deg);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      text-align: center;
+    }
+    .meme-text-popup.show {
+      transform: scale(1.1) rotate(4deg);
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="screen-container">
+    <!-- Breaking News Ticker -->
+    <div class="news-ticker">
+      <div class="news-label">🚨 ব্রেকিং নিউজ</div>
+      <div class="news-text">
+        সরকার থেকে হাজার হাজার কোটি টাকার ফাণ্ড বরাদ্দ! • রাজ্যে রাস্তা, হাসপাতাল, কৃষক রেশন ও বন্যার ভয়াবহ সংকট • মন্ত্রী মশাই টাকা নিজের পকেটে ভরবেন নাকি আসল কাজ করবেন? • সতর্ক থাকুন: প্যাঁচালো কথার ফাঁদে পা দিলে ইডি ডাকবে!
+      </div>
+    </div>
+
+    <!-- Live Political Telemetry Header -->
+    <header class="app-header">
+      <div class="logo-badge">
+        <span>🗳️</span> ELECTION MAYHEM: মন্ত্রী মশাইয়ের তহবিল
+      </div>
+      <div class="hud-stats">
+        <div class="stat-pill fund">
+          <span>🏛️ সরকারি ফাণ্ড:</span> <strong id="hudFund">₹০ কোটি</strong>
+        </div>
+        <div class="stat-pill pocket">
+          <span>💼 সুইস ব্যাঙ্ক:</span> <strong id="hudPocket">₹০ কোটি</strong>
+        </div>
+        <div class="stat-pill approval">
+          <span>⭐ জনসমর্থন:</span> <strong id="hudApproval">50%</strong>
+        </div>
+        <div class="stat-pill ed">
+          <span>🚨 ইডির ভয়:</span> <strong id="hudEdRisk">10%</strong>
+        </div>
+      </div>
+    </header>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 1: CHOOSE YOUR MINISTER / LEADER -->
+    <!-- ============================================== -->
+    <section id="viewSelect" class="view-panel active">
+      <div class="select-title">
+        <h1>মন্ত্রী মশাই নির্বাচন করুন</h1>
+        <p>আপনার পছন্দের রাজনৈতিক নেতা বেছে নিন। সরকার থেকে টাকা আসবে, রাজ্যের অভাব মেটাতে আসল কাজ করবেন নাকি প্যাঁচালো কথার ফাঁদে টাকা পকেটে ভরবেন?</p>
+      </div>
+
+      <div class="roster-grid" id="rosterGrid">
+        <!-- Roster injected by JS -->
+      </div>
+
+      <button id="btnStartGame" class="btn-action green" style="font-size: 18px; padding: 14px 40px;">
+        <span>🚀 সরকারে যোগ দিন ও ফাণ্ড পান (TAKE OATH & GET FUNDS)</span>
+      </button>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 2: 5 FUND DILEMMAS & STATE CRISIS -->
+    <!-- ============================================== -->
+    <section id="viewDilemmas" class="view-panel">
+      <div class="dilemma-stage-container">
+        <!-- Top Stage: 3D Politician on Left, Problem / Crisis & Fund on Right -->
+        <div class="dilemma-top-stage">
+          
+          <!-- 3D Politician Podium & Live Avatar Box -->
+          <div class="character-3d-box">
+            <div class="char-stage-badge" id="charStageBadge">
+              <span id="charPartySymbol">🌱</span>
+              <strong id="charStageName">মমতা বন্দ্যোপাধ্যায়</strong>
+            </div>
+            <div id="character3DCanvasContainer" class="canvas-3d-wrapper"></div>
+            <div class="char-stage-speech" id="charStageSpeech">
+              "খেলা হবে! দেখা যাক ফান্ডের টাকায় কী কাজ হয়!"
+            </div>
+          </div>
+
+          <!-- Problem & Government Fund Panel (Right) -->
+          <div class="crisis-right-panel">
+            <!-- Fund Release Strip -->
+            <div class="fund-compact-strip">
+              <div class="fund-strip-left">
+                <span class="fund-icon-pulse">💰</span>
+                <div>
+                  <div class="fund-compact-title" id="fundTitle">১. ন্যাশনাল হাইওয়ে ও এক্সপ্রেসওয়ে ফান্ড</div>
+                  <div class="fund-compact-source">কেন্দ্রীয় সরকারি অর্থ বরাদ্দ অনুমোদিত</div>
+                </div>
+              </div>
+              <div class="fund-compact-budget" id="fundAmountText">বাজেট: ₹৮০০ কোটি</div>
+            </div>
+
+            <!-- Crisis Compact Box -->
+            <div class="crisis-compact-box">
+              <div class="crisis-compact-header">
+                <span class="crisis-pill-badge">🚨 রাজ্যের জরুরি সংকট</span>
+                <h2 class="crisis-compact-heading" id="crisisName">রাস্তায় চাঁদের মতো গর্ত! বাস উল্টে খাদ্দে!</h2>
+              </div>
+              <div class="crisis-compact-text" id="crisisDetails">
+                রাজ্যের প্রধান হাইওয়েতে বড় বড় গর্তের কারণে প্রতিনিয়ত বাস উল্টে যাচ্ছে! অ্যাম্বুলেন্স পৌঁছানোর আগেই চাকা ফেটে খাদ্দে পড়ার উপক্রম! সাধারণ মানুষ ক্ষোভে ফুঁসছে!
+              </div>
+              <div class="dilemma-toolbar">
+                <div class="toolbar-hint">🤔 প্যাঁচালো ভাষা সাবধানে বাছুন (Top-Left, Top-Right, Bottom-Left, Bottom-Right):</div>
+                <button class="btn-decoder-compact" id="btnDecodeFinePrint" onclick="toggleFinePrintDecoder()">
+                  <span>🔍 আমলাতান্ত্রিক ফাইল অডিটর (DECODE)</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Stage: 4 Options in 2x2 Grid (Left/Right, Top/Bottom) -->
+        <div class="choices-2x2-grid" id="choicesGrid">
+          <!-- 4 compact dilemma choices injected per task -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 3: POLITICAL JHOGRA / TV DEBATE BATTLE -->
+    <!-- ============================================== -->
+    <section id="viewDebate" class="view-panel">
+      <div class="debate-arena">
+        <div class="studio-header">
+          <div class="anchor-badge">
+            <span>📺</span> প্রাইমটাইম ডিবেট — সঞ্চালক: অর্ণব গোস্বামী
+          </div>
+          <div class="anchor-speech" id="anchorText">
+            "দ্যা নেশন ওয়ান্টস টু নো! ফাণ্ডের টাকার হিসাব দিন!"
+          </div>
+        </div>
+
+        <div class="studio-panels">
+          <!-- Player TV Box -->
+          <div class="tv-panel player-panel">
+            <div class="tv-live-tag">LIVE</div>
+            <div class="jhogra-avatar" id="playerDebateAvatar"></div>
+            <h3 id="playerDebateName" style="color: #4ade80; font-size: 18px;">নমো</h3>
+            <div class="speech-bubble" id="playerBubble">"আমরা কাজ করেছি! রিপোর্ট কার্ড দেখুন!"</div>
+          </div>
+
+          <!-- Center VS Meter -->
+          <div class="battle-center">
+            <div class="vs-badge">VS</div>
+            <div class="decibel-meter">
+              <div class="decibel-fill" id="debateMeterFill"></div>
+            </div>
+            <span style="font-size: 11px; font-weight: 800; color: #facc15;">ঝগড়ার ঝাঁঝ</span>
+          </div>
+
+          <!-- Opponent TV Box -->
+          <div class="tv-panel opp-panel">
+            <div class="tv-live-tag">LIVE</div>
+            <div class="jhogra-avatar" id="oppDebateAvatar"></div>
+            <h3 id="oppDebateName" style="color: #f87171; font-size: 18px;">বিরোধী নেতা</h3>
+            <div class="speech-bubble" id="oppBubble">"সব টাকা নিজের পকেটে ভরেছেন! কাটমানির জবাব দিন!"</div>
+          </div>
+        </div>
+
+        
+        <!-- Live Interactive Meme Soundboard Bar -->
+        <div class="meme-soundboard">
+          <div class="soundboard-label">🔊 মিম সাউন্ডবোর্ড:</div>
+          <button class="btn-soundboard" onclick="sound.speakText('দ্যা নেশন ওয়ান্টস টু নো!'); sound.playGavel();">
+            📢 অর্ণব: "Nation Wants to Know!"
+          </button>
+          <button class="btn-soundboard" onclick="sound.playAirhorn();">
+            🎺 এয়ারহর্ন ব্লাস্ট
+          </button>
+          <button class="btn-soundboard" onclick="sound.playVineBoom();">
+            💥 ভাইন বুম
+          </button>
+          <button class="btn-soundboard" onclick="sound.playLaughTrack(); sound.playSlap();">
+            👏 ঠোক্কো তালি!
+          </button>
+        </div>
+
+        <!-- Interactive Jhogra Response Buttons -->
+        <div class="jhogra-actions">
+          <button class="btn-jhogra" onclick="triggerJhograMove('fact')">
+            <span style="font-size: 20px;">📜</span>
+            <span>১. কাজের অডিট রিপোর্ট দেখাও!</span>
+            <small style="color: #94a3b8; font-size: 11px;">(Fact Check Slap)</small>
+          </button>
+
+          <button class="btn-jhogra" onclick="triggerJhograMove('meme')">
+            <span style="font-size: 20px;">📢</span>
+            <span id="memeSloganBtn">২. "কা কা ছি ছি!"</span>
+            <small style="color: #94a3b8; font-size: 11px;">(Meme Shout + Airhorn)</small>
+          </button>
+
+          <button class="btn-jhogra" onclick="triggerJhograMove('mic')">
+            <span style="font-size: 20px;">🎤</span>
+            <span>৩. মাইক ড্রপ থাপ্পড় মারো!</span>
+            <small style="color: #94a3b8; font-size: 11px;">(Mic Drop Bang)</small>
+          </button>
+
+          <button class="btn-jhogra special" onclick="triggerJhograMove('special')">
+            <span style="font-size: 20px;">⚡</span>
+            <span id="specialMoveBtn">৪. মাস্টারস্ট্রোক অ্যাটাক!</span>
+            <small style="color: #facc15; font-size: 11px;">(ULTRAPOWER FINISHER!)</small>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================== -->
+    <!-- SCREEN 4: EVM COUNTING & GRAND VICTORY -->
+    <!-- ============================================== -->
+    <section id="viewVictory" class="view-panel">
+      <div class="evm-box">
+        <h2 style="color: #facc15; font-size: 26px; margin-bottom: 6px;">🗳️ ভারত নির্বাচন কমিশন</h2>
+        <p style="color: #cbd5e1; font-size: 14px; margin-bottom: 16px;">ইভিএম ভোট গণনা ও মহাবিজয় ফলাফল</p>
+
+        <div class="evm-display" id="evmCounter">
+          VOTES: 000,000
+        </div>
+
+        <div class="evm-candidates" id="evmRows">
+          <!-- Rows injected dynamically -->
+        </div>
+
+        <div id="victoryCelebration" style="display: none; margin-top: 14px; width: 100%;">
+          <div id="winnerAvatarBox" style="width: 90px; height: 90px; margin: 0 auto 10px; border-radius: 50%; border: 4px solid #facc15; box-shadow: 0 0 24px rgba(250, 204, 21, 0.6); display: flex; align-items: center; justify-content: center; background: #334155;"></div>
+          <h1 id="victoryTitle" style="color: #4ade80; font-size: 26px; margin-bottom: 4px;">🎉 বিপুল ভোটে জয়যুক্ত! 🎉</h1>
+          <p id="victorySubtitle" style="color: #facc15; font-size: 15px; margin-bottom: 10px;">জনগণের সমর্থনে গঠিত হলো নতুন সরকার!</p>
+          
+          <div style="background: rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 12px; margin-bottom: 16px; font-size: 13px; color: #cbd5e1; text-align: left; line-height: 1.6;">
+            <div>🏆 <strong>চূড়ান্ত খেতাব:</strong> <span id="honoraryTitle" style="color: #38bdf8;">জনগণের মহান সেবক</span></div>
+            <div>💼 <strong>সুইস ব্যাংকের গোপন তহবিল:</strong> <span id="finalPocketMoney" style="color: #facc15;">₹০ কোটি</span></div>
+            <div>🚨 <strong>ইডির চার্জশিট স্ট্যাটাস:</strong> <span id="finalEdStatus" style="color: #4ade80;">ক্লিন চিট (কোনো দুর্নীতি মেলেনি)</span></div>
+          </div>
+
+          <button class="btn-action green" onclick="restartElection()">
+            <span>🔄 অন্য নেতা নিয়ে আবার খেলুন (PLAY AGAIN)</span>
+          </button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Centered Outcome Modal Overlay -->
+  <div class="outcome-modal-backdrop" id="outcomeModalBackdrop">
+    <div class="outcome-modal">
+      <div class="outcome-visual-card" id="outcomeVisualIcon">🛣️✨</div>
+      <div class="outcome-title" id="outcomeModalTitle">সিদ্ধান্ত কার্যকর হয়েছে!</div>
+      <div class="outcome-desc" id="outcomeModalDesc"></div>
+
+        <!-- Satirical Newspaper Front Page Clipping -->
+        <div class="newspaper-clip" id="newspaperClip">
+          <div class="newspaper-topbar">
+            <span>📰 দ্য মর্নিং টেলিগ্রাফ • তাজা খবর</span>
+            <span class="newspaper-tag">🚨 ব্রেকিং হেডলাইন</span>
+          </div>
+          <div class="newspaper-headline" id="outcomeNewspaperHeadline">"রাস্তা না বানিয়ে ভাইয়ের অ্যাকাউন্টে ৫০০ কোটি!"</div>
+        </div>
+
+      
+      <div class="outcome-stat-row">
+        <div class="outcome-stat-item">
+          <span>ভোট প্রভাব</span>
+          <strong id="outcomeStatVotes" style="color: #38bdf8;">+120,000</strong>
+        </div>
+        <div class="outcome-stat-item">
+          <span>জনসমর্থন</span>
+          <strong id="outcomeStatApproval" style="color: #4ade80;">+25%</strong>
+        </div>
+        <div class="outcome-stat-item">
+          <span>সুইস ব্যাংক</span>
+          <strong id="outcomeStatPocket" style="color: #facc15;">₹০ কোটি</strong>
+        </div>
+        <div class="outcome-stat-item">
+          <span>ইডির ঝুঁকি</span>
+          <strong id="outcomeStatEd" style="color: #f87171;">-10%</strong>
+        </div>
+      </div>
+
+      <button class="btn-action green" id="btnNextDilemmaModal" style="width: 100%; justify-content: center;">
+        <span>পরবর্তী সরকারি ফান্ড ও সংকটে যান ➡️</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Emergency ED / CBI Raid Modal -->
+  <div class="outcome-modal-backdrop" id="edRaidModalBackdrop">
+    <div class="outcome-modal" style="border-color: #ef4444; max-width: 480px;">
+      <div style="font-size: 54px; margin-bottom: 6px; animation: bounce 0.8s infinite;">🚨🚔</div>
+      <div style="color: #ef4444; font-size: 24px; font-weight: 900; margin-bottom: 4px;">ইডির আচমকা তল্লাশি!</div>
+      <div style="color: #facc15; font-size: 14px; margin-bottom: 14px; line-height: 1.4;">
+        সিবিআই অফিসার বেল বাজাচ্ছেন! খাটের নিচে থাকা কোটি টাকার ক্যাশ দ্রুত সরান!
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; margin-bottom: 12px;">
+        <button class="choice-card" onclick="handleEdRaidAction('tank')">
+          <span style="font-size: 24px;">🚿</span>
+          <div style="text-align: left;">
+            <div style="font-size: 14px; font-weight: 800; color: #fff;">ছাদের জলের ট্যাঙ্কে ফেলে দিন!</div>
+            <small style="color: #94a3b8;">নোট ভিজে যাবে কিন্তু তল্লাশিতে মিলবে না</small>
+          </div>
+        </button>
+        <button class="choice-card" onclick="handleEdRaidAction('neighbour')">
+          <span style="font-size: 24px;">🧱</span>
+          <div style="text-align: left;">
+            <div style="font-size: 14px; font-weight: 800; color: #fff;">পাশের বাড়ির পাঁচিলে ছুড়ে মারুন!</div>
+            <small style="color: #94a3b8;">পড়শি হয়তো রেখে দেবে, কিন্তু পুলিশ দেখতে পারে</small>
+          </div>
+        </button>
+        <button class="choice-card" onclick="handleEdRaidAction('press')">
+          <span style="font-size: 24px;">🎤</span>
+          <div style="text-align: left;">
+            <div style="font-size: 14px; font-weight: 800; color: #fff;">"এ টাকা বিরোধীদের চক্রান্ত" বলে প্রেস ডাকুন!</div>
+            <small style="color: #94a3b8;">টিভি ক্যামেরার সামনে কান্নাকাটি ও সমবেদনা</small>
+          </div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meme Screen Flash Overlay -->
+  <div class="meme-overlay" id="memeOverlay">
+    <div class="meme-text-popup" id="memeTextPopup">🔥 খেলা হবে! 🔥</div>
+  </div>
+
+  <!-- Confetti Canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <script>
+    /* ============================================================
+       AUDIO & MEME SOUND SYNTHESIS ENGINE (Web Audio API)
+       ============================================================ */
+    class AudioMemeEngine {
+      constructor() {
+        this.ctx = null;
+      }
+
+      init() {
+        if (!this.ctx) {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AudioContext();
+        }
+        if (this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+      }
+
+      playAirhorn() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const freqs = [466.16, 466.16, 466.16, 466.16, 622.25];
+        const times = [0, 0.12, 0.24, 0.36, 0.48];
+
+        freqs.forEach((f, i) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(f, now + times[i]);
+          gain.gain.setValueAtTime(0.35, now + times[i]);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + times[i] + 0.14);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + times[i]);
+          osc.stop(now + times[i] + 0.15);
+        });
+      }
+
+      playVineBoom() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(130, now);
+        osc.frequency.exponentialRampToValueAtTime(25, now + 0.8);
+
+        gain.gain.setValueAtTime(0.7, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.9);
+
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.9);
+      }
+
+      playGavel() {
+        this.init();
+        const now = this.ctx.currentTime;
+        [0, 0.18].forEach(offset => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(180, now + offset);
+          osc.frequency.exponentialRampToValueAtTime(40, now + offset + 0.12);
+          gain.gain.setValueAtTime(0.6, now + offset);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + offset + 0.14);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + offset);
+          osc.stop(now + offset + 0.15);
+        });
+      }
+
+      playSlap() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(60, now + 0.18);
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      playSiren() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(650, now);
+        osc.frequency.linearRampToValueAtTime(950, now + 0.35);
+        osc.frequency.linearRampToValueAtTime(650, now + 0.7);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.75);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.75);
+      }
+
+      playEVMBeep() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(1480, now);
+        gain.gain.setValueAtTime(0.4, now);
+        gain.gain.setValueAtTime(0.4, now + 0.65);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.7);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.72);
+      }
+
+      playKaChing() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(987.77, now);
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1318.51, now + 0.08);
+
+        gain.gain.setValueAtTime(0.3, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+
+        osc1.start(now);
+        osc1.stop(now + 0.45);
+        osc2.start(now + 0.08);
+        osc2.stop(now + 0.45);
+      }
+
+      playCelebration() {
+        this.init();
+        const now = this.ctx.currentTime;
+        const notes = [523.25, 659.25, 783.99, 1046.50];
+        notes.forEach((freq, idx) => {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, now + idx * 0.14);
+          gain.gain.setValueAtTime(0.35, now + idx * 0.14);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + idx * 0.14 + 0.35);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + idx * 0.14);
+          osc.stop(now + idx * 0.14 + 0.38);
+        });
+      }
+
+      
+      playLaughTrack() {
+        this.init();
+        const now = this.ctx.currentTime;
+        for (let i = 0; i < 7; i++) {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(320 + (i % 2 === 0 ? 80 : 0), now + i * 0.11);
+          osc.frequency.exponentialRampToValueAtTime(200, now + i * 0.11 + 0.08);
+          gain.gain.setValueAtTime(0.25, now + i * 0.11);
+          gain.gain.exponentialRampToValueAtTime(0.01, now + i * 0.11 + 0.09);
+          osc.connect(gain);
+          gain.connect(this.ctx.destination);
+          osc.start(now + i * 0.11);
+          osc.stop(now + i * 0.11 + 0.1);
+        }
+      }
+
+      speakText(text, lang = 'bn-IN') {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = lang;
+          utter.rate = 1.05;
+          utter.pitch = 1.1;
+          window.speechSynthesis.speak(utter);
+        }
+      }
+    }
+
+    const sound = new AudioMemeEngine();
+
+    /* ============================================================
+       POLITICAL LEADERS ROSTER
+       ============================================================ */
+    const LEADERS = [
+      {
+        id: 'modi',
+        name: 'নরেন্দ্র মোদী',
+        alias: 'নমো (56-Inch Chanakya)',
+        symbol: '🪷',
+        tagline: 'মাস্টারস্ট্রোক ও বিশ্বগুরু মিশন',
+        quote: '"ভাইয়ো অউর বহেনো! সবকা সাথ, সবকা বিকাশ!"',
+        speechQuote: 'ভাইয়ো অউর বহেনো! সবকা সাথ সবকা বিকাশ!',
+        color: '#f97316',
+        specialMove: '৫৬-ইঞ্চি মাস্টারস্ট্রোক!',
+        memeSlogan: '"মিত্রোঁ! মাস্টারস্ট্রোক!"',
+        svgAvatar: createModiSVG()
+      },
+      {
+        id: 'didi',
+        name: 'মমতা বন্দ্যোপাধ্যায়',
+        alias: 'দিদি (Street Fighter)',
+        symbol: '🌱',
+        tagline: 'খেলা হবে! লক্ষ্মীর ভাণ্ডার!',
+        quote: '"খেলা হবে! কা কা ছি ছি! হুশিয়ার!"',
+        speechQuote: 'খেলা হবে! কা কা ছি ছি!',
+        color: '#10b981',
+        specialMove: 'খেলা হবে ফুটবল ব্লাস্ট!',
+        memeSlogan: '"কা কা ছি ছি!"',
+        svgAvatar: createDidiSVG()
+      },
+      {
+        id: 'rahul',
+        name: 'রাহুল গান্ধী',
+        alias: 'রাগা (Mohabbat Ki Dukaan)',
+        symbol: '✋',
+        tagline: 'খট-খট স্কিম ও একতার বার্তা',
+        quote: '"ডরো মত! খট-খট-খট করে টাকা ঢুকবে!"',
+        speechQuote: 'খট খট খট করে টাকা ঢুকবে!',
+        color: '#0284c7',
+        specialMove: 'খট-খট মানি শাওয়ার!',
+        memeSlogan: '"খট-খট টাকা!"',
+        svgAvatar: createRahulSVG()
+      },
+      {
+        id: 'kejriwal',
+        name: 'অরবিন্দ কেজরিওয়াল',
+        alias: 'মাফলারম্যান (Freebie King)',
+        symbol: '🧹',
+        tagline: 'মুফত বিজলি, পানি ও মহল্লা ক্লিনিক',
+        quote: '"ইয়ে সব মিলে মিলিভগত হ্যায় জি!"',
+        speechQuote: 'সব মিলে মিলিভগত হ্যায় জি! মুফত বিজলি!',
+        color: '#f59e0b',
+        specialMove: 'মুফত বিজলি শকওয়েভ!',
+        memeSlogan: '"মিলিভগত হ্যায় জি!"',
+        svgAvatar: createKejriSVG()
+      },
+      {
+        id: 'lalu',
+        name: 'লালু প্রসাদ যাদব',
+        alias: 'বিহারের কিং (Charisma King)',
+        symbol: '🏮',
+        tagline: 'জব তক সমোসা মে আলু রহেগা',
+        quote: '"বুঝেছিস বাবুয়া! ধুর বুড়বক!"',
+        speechQuote: 'বুঝেছিস বাবুয়া! ধুর বুড়বক!',
+        color: '#84cc16',
+        specialMove: 'দেশি লাঠি-চার্জ পঞ্চ!',
+        memeSlogan: '"ধুর বুড়বক!"',
+        svgAvatar: createLaluSVG()
+      },
+      {
+        id: 'tharoor',
+        name: 'শশী থারুর',
+        alias: 'ডিকশনারি সম্রাট (Oxford Boy)',
+        symbol: '📖',
+        tagline: 'Exasperating Farrago of Distortions',
+        quote: '"Preposterous and sesquipedalian discourse!"',
+        speechQuote: 'Exasperating farrago of distortions!',
+        color: '#8b5cf6',
+        specialMove: 'অক্সফোর্ড ডিকশনারি স্টান!',
+        memeSlogan: '"Exasperating!"',
+        svgAvatar: createTharoorSVG()
+      },
+      {
+        id: 'yogi',
+        name: 'যোগী আদিত্যনাথ',
+        alias: 'বুলডোজার বাবা (Action Hero)',
+        symbol: '🚜',
+        tagline: 'আইন নিজের হাতে নিলে গাড়ি কিন্তু উল্টাবে!',
+        quote: '"অপরাধীদের মাফ করা হবে না! বুলডোজার প্রস্তুত!"',
+        speechQuote: 'অপরাধীদের বাড়ি গুঁড়িয়ে দিতে বুলডোজার প্রস্তুত!',
+        color: '#ea580c',
+        specialMove: 'বুলডোজার সুপার ক্র্যাশ পঞ্চ!',
+        memeSlogan: '"বুলডোজার চলবে!"',
+        svgAvatar: createYogiSVG()
+      },
+      {
+        id: 'nitish',
+        name: 'নীতিশ কুমার',
+        alias: 'পাল্টু কুমার (U-Turn Master)',
+        symbol: '🏹',
+        tagline: 'জোট যেটাই হোক, কুরসি কিন্তু আমারই!',
+        quote: '"আমি নীতি আর ন্যায়ের সাথে আছি, তাই ডিগবাজি খাই!"',
+        speechQuote: 'আমি নীতি আর ন্যায়ের সাথে আছি, তাই ডিগবাজি খাই!',
+        color: '#059669',
+        specialMove: '১৮০ ডিগ্রি ডিগবাজি জাম্প!',
+        memeSlogan: '"ডিগবাজি জিন্দাবাদ!"',
+        svgAvatar: createNitishSVG()
+      },
+    ];
+
+    /* SVGs for Avatars */
+    function createModiSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#fed7aa"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#f97316"/>
+        <path d="M42 76 Q50 78 58 76 L62 100 L38 100 Z" fill="#ffffff" stroke="#16a34a" stroke-width="2"/>
+        <circle cx="50" cy="46" r="26" fill="#fde68a"/>
+        <path d="M24 44 Q22 24 50 22 Q78 24 76 44 Q78 68 50 74 Q22 68 24 44 Z" fill="none" stroke="#f8fafc" stroke-width="6"/>
+        <path d="M30 52 Q50 74 70 52 Q66 76 50 78 Q34 76 30 52 Z" fill="#f8fafc"/>
+        <circle cx="42" cy="42" r="6" fill="none" stroke="#0f172a" stroke-width="2.2"/>
+        <circle cx="58" cy="42" r="6" fill="none" stroke="#0f172a" stroke-width="2.2"/>
+        <line x1="48" y1="42" x2="52" y2="42" stroke="#0f172a" stroke-width="2.5"/>
+        <circle cx="42" cy="42" r="2" fill="#000"/><circle cx="58" cy="42" r="2" fill="#000"/>
+        <path d="M46 54 Q50 58 54 54" stroke="#000" stroke-width="2" fill="none"/>
+      </svg>`;
+    }
+    function createDidiSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#bbf7d0"/>
+        <path d="M22 88 Q50 66 78 88 L78 100 L22 100 Z" fill="#ffffff"/>
+        <path d="M30 80 Q50 64 70 80" stroke="#16a34a" stroke-width="4" fill="none"/>
+        <path d="M24 44 Q22 18 50 18 Q78 18 76 44 L72 68 L28 68 Z" fill="#ffffff" stroke="#16a34a" stroke-width="3"/>
+        <circle cx="50" cy="46" r="22" fill="#fde68a"/>
+        <circle cx="50" cy="28" r="8" fill="#1e293b"/>
+        <ellipse cx="43" cy="44" rx="3.5" ry="4" fill="#000"/><ellipse cx="57" cy="44" rx="3.5" ry="4" fill="#000"/>
+        <path d="M50 44 L48 50 L52 50" stroke="#000" stroke-width="1.8" fill="none"/>
+        <path d="M42 56 Q50 64 58 56" stroke="#b91c1c" stroke-width="2.5" fill="none"/>
+      </svg>`;
+    }
+    function createRahulSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#bae6fd"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#ffffff"/>
+        <circle cx="50" cy="84" r="5" fill="#0284c7"/>
+        <circle cx="50" cy="46" r="24" fill="#fde68a"/>
+        <path d="M26 38 Q24 20 50 18 Q76 20 74 38 Q66 22 50 24 Q34 22 26 38 Z" fill="#1e293b"/>
+        <circle cx="43" cy="42" r="3" fill="#000"/><circle cx="57" cy="42" r="3" fill="#000"/>
+        <path d="M43 54 Q50 62 57 54" stroke="#000" stroke-width="2.5" fill="none"/>
+      </svg>`;
+    }
+    function createKejriSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#fef08a"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#1d4ed8"/>
+        <circle cx="50" cy="46" r="23" fill="#fde68a"/>
+        <path d="M24 44 Q22 22 50 22 Q78 22 76 44 L72 64 Q50 74 28 64 Z" fill="none" stroke="#78350f" stroke-width="9"/>
+        <path d="M38 52 Q50 56 62 52 Q50 50 38 52 Z" fill="#1e293b"/>
+        <rect x="36" y="38" width="11" height="9" rx="2" fill="none" stroke="#000" stroke-width="2"/>
+        <rect x="53" y="38" width="11" height="9" rx="2" fill="none" stroke="#000" stroke-width="2"/>
+        <line x1="47" y1="42" x2="53" y2="42" stroke="#000" stroke-width="2"/>
+      </svg>`;
+    }
+    function createLaluSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#d9f99d"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#ffffff"/>
+        <path d="M24 88 L38 68 L48 100 Z" fill="#15803d"/>
+        <circle cx="50" cy="46" r="25" fill="#fde68a"/>
+        <path d="M26 36 Q28 18 50 20 Q72 18 74 36" fill="none" stroke="#e2e8f0" stroke-width="7"/>
+        <ellipse cx="43" cy="44" rx="3.5" ry="2.5" fill="#000"/><ellipse cx="57" cy="44" rx="3.5" ry="2.5" fill="#000"/>
+        <path d="M42 54 Q50 66 58 54 Z" fill="#991b1b"/>
+      </svg>`;
+    }
+    
+    function createYogiSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#ffedd5"/>
+        <path d="M20 88 Q50 68 80 88 L80 100 L20 100 Z" fill="#ea580c"/>
+        <path d="M40 76 Q50 78 60 76 L64 100 L36 100 Z" fill="#f97316"/>
+        <circle cx="50" cy="46" r="25" fill="#fed7aa"/>
+        <rect x="47" y="27" width="6" height="12" rx="3" fill="#dc2626"/>
+        <line x1="43" y1="33" x2="57" y2="33" stroke="#facc15" stroke-width="2"/>
+        <circle cx="24" cy="48" r="3" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+        <circle cx="76" cy="48" r="3" fill="#facc15" stroke="#ca8a04" stroke-width="1"/>
+        <ellipse cx="42" cy="44" rx="3.5" ry="3" fill="#000"/><ellipse cx="58" cy="44" rx="3.5" ry="3" fill="#000"/>
+        <path d="M44 56 Q50 54 56 56" stroke="#000" stroke-width="2.5" fill="none"/>
+      </svg>`;
+    }
+    function createNitishSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#dcfce7"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#ffffff"/>
+        <path d="M30 84 Q50 74 70 84 L72 100 L28 100 Z" fill="#059669"/>
+        <circle cx="50" cy="46" r="24" fill="#fde68a"/>
+        <path d="M25 38 Q30 22 50 24 Q70 22 75 38 Q74 26 50 28 Q26 26 25 38 Z" fill="#94a3b8"/>
+        <rect x="36" y="38" width="11" height="8" rx="2" fill="none" stroke="#334155" stroke-width="1.8"/>
+        <rect x="53" y="38" width="11" height="8" rx="2" fill="none" stroke="#334155" stroke-width="1.8"/>
+        <line x1="47" y1="42" x2="53" y2="42" stroke="#334155" stroke-width="1.8"/>
+        <circle cx="41.5" cy="42" r="2" fill="#000"/><circle cx="58.5" cy="42" r="2" fill="#000"/>
+        <path d="M38 52 Q50 56 62 52 Q50 50 38 52 Z" fill="#e2e8f0" stroke="#cbd5e1" stroke-width="1"/>
+        <path d="M44 57 Q52 61 58 56" stroke="#000" stroke-width="2" fill="none"/>
+      </svg>`;
+    }
+
+    function createTharoorSVG() {
+      return `<svg viewBox="0 0 100 100" width="75" height="75">
+        <circle cx="50" cy="50" r="46" fill="#e9d5ff"/>
+        <path d="M22 88 Q50 68 78 88 L78 100 L22 100 Z" fill="#312e81"/>
+        <circle cx="50" cy="46" r="23" fill="#fde68a"/>
+        <path d="M26 34 Q32 16 54 18 Q74 18 74 38 Q64 24 46 26 Z" fill="#1e293b"/>
+        <ellipse cx="43" cy="43" rx="3" ry="3.5" fill="#000"/><ellipse cx="57" cy="43" rx="3" ry="3.5" fill="#000"/>
+        <path d="M44 54 Q50 60 58 53" stroke="#000" stroke-width="2.2" fill="none"/>
+      </svg>`;
+    }
+
+    /* ============================================================
+       5 GOVERNMENT FUNDS & STATE CRISIS DILEMMAS
+       (Featuring Twisted Bureaucratic Wording & Cut-Money Traps)
+       ============================================================ */
+    const DILEMMAS = [
+      {
+        id: 'road',
+        fundTitle: '১. ন্যাশনাল হাইওয়ে ও এক্সপ্রেসওয়ে ফান্ড',
+        fundAmount: 800,
+        crisisName: 'রাস্তায় চাঁদের মতো গর্ত! বাস উল্টে খাদ্দে!',
+        crisisDesc: 'রাজ্যের প্রধান এক্সপ্রেসওয়েতে বড় বড় গর্তে প্রতিদিন গাড়ি দুর্ঘটনা ঘটছে! অ্যাম্বুলেন্স উল্টে যাওয়ার উপক্রম, সাধারণ মানুষ ক্ষোভে ফুঁসছে!',
+        choices: [
+          {
+            tag: '🛠️',
+            clause: 'ধারা ৪(খ) — স্পেশাল এক্সিকিউটিভ অর্ডার',
+            title: 'যুদ্ধকালীন তৎপরতায় সরাসরি ই-টেন্ডার ও ওয়াটারপ্রুফ বিটুমিন পিচ ঢালাই',
+            detail: 'আমলাতান্ত্রিক ফাইলবাজি ও মধ্যস্বত্বভোগীদের এড়িয়ে সরাসরি মিলিটারি ইঞ্জিনিয়ারদের তত্ত্বাবধানে ৪৮ ঘণ্টার মধ্যে ওয়াটারপ্রুফ পিচ ঢালাই নিশ্চিতকরণ।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% আসল কাজ! কোনো কাটমানি নেই, জনগণ মসৃণ রাস্তা পাবে।',
+            visualIcon: '🛣️🚗✨',
+            type: 'GENUINE_WORK',
+            fundUsed: 800,
+            pocketGain: 0,
+            approvalChange: +22,
+            edChange: -10,
+            dialogue: 'রাস্তার কাজ শেষ! মসৃণ ৬-লেনের হাইওয়েতে হু হু করে গাড়ি ছুটছে!',
+            newspaperHeadline: '📰 "রাতারাতি চকচকে ৬-লেনের হাইওয়ে! বিরোধীদের মুখে কুলুপ, গতির ঝড়!"'
+          },
+          {
+            tag: '📜',
+            clause: 'বিজ্ঞপ্তি নং ১৭ — পাবলিক প্রাইভেট পার্টনারশিপ সমীক্ষা',
+            title: 'উচ্চপর্যায়ের ডিপিআর কনসালটেন্সি কমিটি ও তোরণ নির্মাণ প্রকল্প গ্রহণ',
+            detail: 'রাস্তা পিচ ঢালার পূর্বে ৫০ কোটি ব্যয়ে রঙিন ফিতা কাটার তোরণ বানিয়ে বাকি ৭৫০ কোটি টাকা ৫ বছর মেয়াদী স্টাডি কমিটিতে আটকে রাখা হোক।',
+            auditNote: '🔍 অডিট রিপোর্ট: আমলাতান্ত্রিক ফাঁদ! কোনো পিচ পড়বে না, স্রেফ ফিতা কাটা আর মিটিং হবে।',
+            visualIcon: '📁🕸️🕷️',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 400,
+            pocketGain: 150,
+            approvalChange: -12,
+            edChange: +15,
+            dialogue: '৫ বছর কেটে গেল! রাস্তা আগের মতোই ভাঙা, ফাইল টেবিলে ধুলো খাচ্ছে!',
+            newspaperHeadline: '📰 "ফিতা কাটতেই ৫০ কোটি খরচ! মূল কাজের ফাইল ধুলো খাচ্ছে লাল ফিতের বাঁধনে!"'
+          },
+          {
+            tag: '💼',
+            clause: 'তফসিল ৩ — আপৎকালীন একক কোটেশন ছাড়',
+            title: 'টাকাটা নিজের পকেটে ভরে সুইস ব্যাংকে জমা ও শ্যালকের সংস্থাকে দেওয়া',
+            detail: 'সরাসরি কাটমানি! ৫০০ কোটি টাকা দিয়ে সুইজারল্যান্ডে আলিশান ভিলা কিনুন এবং বাকি ৩০০ কোটিতে শ্যালককে মাটির প্রলেপ দিতে বলুন!',
+            auditNote: '🔍 অডিট রিপোর্ট: সরাসরি দুর্নীতি! শ্যালকের একাউন্টে টাকা ঢুকবে, ইডি নিশ্চিত রেড করবে।',
+            visualIcon: '💼💸🏰',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 800,
+            pocketGain: 500,
+            approvalChange: -35,
+            edChange: +40,
+            dialogue: 'পকেটে ৫০০ কোটি টাকা এলো! কিন্তু রাস্তায় মানুষ চটি ছুড়ছে ও বিক্ষোভ করছে!',
+            newspaperHeadline: '📰 "রাস্তা উধাও, ভাইয়ের একাউন্টে ৫০০ কোটি! ইডি অফিসে চা খাওয়ার ডাক!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'নির্দেশিকা নং ৯ — স্বেচ্ছাসেবী নাগরিক পরামর্শ',
+            title: 'পাবলিককে হেলমেট পরে হামাগুড়ি দিয়ে হাইওয়ে পারাপারের নির্দেশিকা',
+            detail: 'রাস্তা ভাঙা থাকলে দুর্ঘটনার কোনো দায় সরকারের নয়, তাই সকলকে হেলমেট পরে হামাগুড়ি দিয়ে সাবধানে যেতে নোটিশ জারি হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: চরম ভাঁওতাবাজি! হাসির খোরাক ছাড়া আর কিছুই নয়।',
+            visualIcon: '🤡🚑🦽',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 50,
+            pocketGain: 50,
+            approvalChange: -20,
+            edChange: +5,
+            dialogue: 'পাবলিক রেগে গিয়ে মন্ত্রীর কুশপুতুল পোড়াচ্ছে!',
+            newspaperHeadline: '📰 "হাইওয়েতে হামাগুড়ির সরকারি নিদান! হাসির খোরাক রাজ্য সরকার!"'
+          }
+        ]
+      },
+      {
+        id: 'hospital',
+        fundTitle: '২. সুপার স্পেশালিটি হাসপাতাল ও আইসিইউ ফান্ড',
+        fundAmount: 500,
+        crisisName: 'হাসপাতালে বেড নেই, অক্সিজেন নেই! মেঝেতে রোগী!',
+        crisisDesc: 'সরকারি হাসপাতালে একটাই অক্সিজেন সিলিন্ডার, ৩ জন রোগী টানাটানি করছে! ডাক্তারদের বেতন বাকি, ওষুধ না পেয়ে মানুষ হাহাকার করছে!',
+        choices: [
+          {
+            tag: '💼',
+            clause: 'তফসিল ৮ — জরুরি চিকিৎসা সামগ্রী প্রকিউরমেন্ট',
+            title: 'ওষুধের কন্ট্রাক্ট ভাইপোর সংস্থাকে দিয়ে মেয়াদোত্তীর্ণ ওষুধ সাপ্লাই ও টাকা লোটা',
+            detail: '৩৫০ কোটি টাকা সোজা ব্যক্তিগত অফশোর একাউন্টে চালান করে দিয়ে হাসপাতালে শুধু মেয়াদোত্তীর্ণ প্যারাসিটামল পাঠিয়ে দিন!',
+            auditNote: '🔍 অডিট রিপোর্ট: ভুয়া ফার্মেসি স্ক্যাম! ভাইপো লাভবান, রোগীদের জীবন বিপন্ন।',
+            visualIcon: '💼💊☠️',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 500,
+            pocketGain: 350,
+            approvalChange: -40,
+            edChange: +45,
+            dialogue: 'রোগীদের পরিবার ক্ষোভে ফেটে পড়ে হাসপাতালের কাচ ভেঙে দিল!',
+            newspaperHeadline: '📰 "মেয়াদোত্তীর্ণ ওষুধ কেলেঙ্কারি! ভাইপোর ফার্মেসিতে সিবিআই হানা!"'
+          },
+          {
+            tag: '🏥',
+            clause: 'ধারা ১২(ক) — সরাসরি প্রস্তুতকারক সরবরাহ চুক্তি',
+            title: 'সরাসরি প্রস্তুতকারক সংস্থা থেকে ৩০০০ আইসিইউ বেড ও সেন্ট্রাল পাইপলাইন স্থাপন',
+            detail: 'আমলাদের কাটমানি বন্ধ করে সরাসরি প্রস্তুতকারক থেকে বিশ্বমানের ভেন্টিলেটর, অক্সিজেন সিলিন্ডার ও বিনামূল্যে পূর্ণাঙ্গ ফার্মেসি কার্যকর করা।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% আসল স্বাস্থ্যসেবা! ৩০০০ রোগী নতুন জীবন পাবে।',
+            visualIcon: '🏥🛏️🩺',
+            type: 'GENUINE_WORK',
+            fundUsed: 500,
+            pocketGain: 0,
+            approvalChange: +25,
+            edChange: -12,
+            dialogue: 'হাসপাতাল আধুনিক হলো! রোগীরা বিনামূল্যে পূর্ণাঙ্গ চিকিৎসা পাচ্ছে!',
+            newspaperHeadline: '📰 "হাসপাতালে ৩০০০ বিশ্বমানের আইসিইউ বেড! বিনামূল্যে চিকিৎসায় স্বস্তি!"'
+          },
+          {
+            tag: '📜',
+            clause: 'প্রকল্প প্রস্তাব ৭ — আন্তর্জাতিক পরিবেশ সমীক্ষা',
+            title: 'ভেন্টিলেটরের বায়ুচাপ মূল্যায়নে মন্ত্রীদের সুইজারল্যান্ডে ২ মাসের স্টাডি ট্যুর',
+            detail: 'হাসপাতালে বেড পরে হবে, আগে ৫০ জন বিধায়ককে বিমানে ইউরোপ পাঠিয়ে বায়ুচাপ ও হাসপাতালের পরিবেশ প্রত্যক্ষ সমীক্ষা করানো হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: প্রমোদভ্রমণের ফন্দি! সরকারি টাকায় আল্পস পাহাড়ে ছুটি কাটানো।',
+            visualIcon: '✈️🏔️📸',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 250,
+            pocketGain: 120,
+            approvalChange: -15,
+            edChange: +18,
+            dialogue: 'নেতারা বিদেশে সেলফি তুলছে, হাসপাতালে রোগীদের কান্না থামছে না!',
+            newspaperHeadline: '📰 "ভেন্টিলেটর ছেড়ে আল্পসে বিধায়কদের স্নো-স্কিয়িং! ক্ষোভে ফুঁসছে রাজ্য!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'স্বাস্থ্য পরিপত্র — আয়ুর্বেদিক বায়ু থেরাপি',
+            title: 'রোগীদের হাসপাতালে না এসে পার্কে গিয়ে লম্বা শ্বাস নেওয়ার ফতোয়া',
+            detail: 'অক্সিজেন প্রকৃতির দান! তাই রোগীরা হাসপাতালে ভিড় না করে পার্কে গিয়ে অনুলোম-বিলোম করুক!',
+            auditNote: '🔍 অডিট রিপোর্ট: ভণ্ডামো! অসুস্থ মানুষকে অবহেলা করে মৃত্যুর মুখে ঠেলে দেওয়া।',
+            visualIcon: '🧘🌳💨',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 20,
+            pocketGain: 20,
+            approvalChange: -22,
+            edChange: +8,
+            dialogue: 'ডাক্তাররা ক্ষোভে দল বেঁধে গণ-ইস্তফা দিলেন!',
+            newspaperHeadline: '📰 "অক্সিজেনের বদলে পার্কে অনুলোম-বিলোমের ফতোয়া! ডাক্তারদের গণ-ইস্তফা!"'
+          }
+        ]
+      },
+      {
+        id: 'kisan',
+        fundTitle: '৩. খরা মোকাবিলা ও সরাসরি কৃষক সহায়তা ফান্ড',
+        fundAmount: 600,
+        crisisName: 'অনাবৃষ্টিতে ফসল শুকিয়ে কাঠ! কৃষকদের হাহাকার!',
+        crisisDesc: 'টানা ২ মাস বৃষ্টির অভাবে জমির ধান নষ্ট! ক্ষুব্ধ কৃষকরা রাস্তা আটকে ট্রাক্টর নিয়ে বসে পড়েছে, ঋণ মকুব ও আর্থিক ক্ষতিপূরণ চায়!',
+        choices: [
+          {
+            tag: '📜',
+            clause: 'বিজ্ঞপ্তি ৯২ — বেসরকারি শস্য বিমা অংশীদারিত্ব',
+            title: 'বেসরকারি ইন্স্যুরেন্স কোম্পানির সাথে চুক্তি যেখানে ক্লেইমে ২০০ পাতার ফর্ম লাগবে',
+            detail: '৪০০ কোটি টাকা বেসরকারি দালাল বিমা কোম্পানিকে দিয়ে দেওয়া হোক, যাতে কৃষকরা আবেদন করতেই না পেরে হতাশ হয়ে ঘরে ফিরে যায়!',
+            auditNote: '🔍 অডিট রিপোর্ট: দালালদের সুবিধা! কৃষকরা ১ টাকাও ক্ষতিপূরণ পাবে না।',
+            visualIcon: '📑✍️❌',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 400,
+            pocketGain: 150,
+            approvalChange: -14,
+            edChange: +16,
+            dialogue: 'কৃষকরা কোনো বিমার টাকাই পেল না, ঋণের দায়ে মাঠেই বসে রইল!',
+            newspaperHeadline: '📰 "২০০ পাতার বিমা ফর্মে নাকানি-চোবানি! হতাশায় মাথায় হাত কৃষকের!"'
+          },
+          {
+            tag: '🌾',
+            clause: 'ধারা ১৮ — প্রত্যক্ষ সুবিধা হস্তান্তর (DBT) নীতি',
+            title: 'আধার-সংযুক্ত প্রত্যক্ষ সুবিধা হস্তান্তর দ্বারা মধ্যস্বত্বভোগীহীন সরাসরি ব্যাংক ক্রেডিট',
+            detail: 'দালাল ও সিন্ডিকেট সম্পূর্ণ নির্মূল করে প্রতি ক্ষতিগ্রস্ত কৃষকের ব্যাংক অ্যাকাউন্টে এককালীন ₹২৫,০০০ জমা ও বিনামূল্যে সেচ ডিজেল বিতরণ।',
+            auditNote: '🔍 অডিট রিপোর্ট: সরাসরি কৃষকের একাউন্টে টাকা! উৎপাদন ঘুরে দাঁড়াবে।',
+            visualIcon: '🌾💰🚜',
+            type: 'GENUINE_WORK',
+            fundUsed: 600,
+            pocketGain: 0,
+            approvalChange: +24,
+            edChange: -10,
+            dialogue: 'কৃষকদের মুখে হাসি! অ্যাকাউন্টে সরাসরি ক্ষতিপূরণের টাকা ঢুকতেই মিষ্টি বিলি!',
+            newspaperHeadline: '📰 "সরাসরি একাউন্টে ঢুকলো ₹২৫,০০০! কৃষকের মুখে হাসি, ঋণমুক্ত চাষি!"'
+          },
+          {
+            tag: '💼',
+            clause: 'তফসিল ৫ — নীতি নির্ধারণী বিশেষ অধিবেশন',
+            title: 'ফাইভ-স্টার রিসর্টে কৃষি চিন্তন শিবির ও ৪০০ কোটি টাকা নেতার তহবিলে পাচার',
+            detail: 'কৃষকদের নামে ৪০০ কোটি নিজের ব্যক্তিগত একাউন্টে চালান করে বাকি টাকায় বিলাসবহুল হোটেলে নেতাদের কাভিয়ার ও কাজু পার্টির বিল মেটানো।',
+            auditNote: '🔍 অডিট রিপোর্ট: কৃষকের পেটে লাথি মেরে নেতাদের রাজকীয় ভোজ!',
+            visualIcon: '🏨🍾🦞',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 600,
+            pocketGain: 400,
+            approvalChange: -36,
+            edChange: +38,
+            dialogue: 'কৃষকদের ট্রাক্টর ব্যারিকেড ভেঙে মন্ত্রীর বাড়ির দিকে রওনা দিল!',
+            newspaperHeadline: '📰 "অনাহারের মাঝে ফাইভ-স্টারে কাভিয়ার পার্টি! মন্ত্রীর বাড়ি ঘেরাও ট্রাক্টরের!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'সংস্কৃতি নির্দেশিকা — ঐতিহ্যবাহী বৃষ্টি প্রার্থনা',
+            title: 'কৃষকদের আকাশে হাত তুলে সরকারি রেইন ড্যান্স (বৃষ্টি নাচ) করার সার্কুলার',
+            detail: 'বৃষ্টি আনতে কোনো টাকার প্রয়োজন নেই, সবাই মাঠে নেমে তাল মিলিয়ে নাচলেই মেঘ ডাকবে!',
+            auditNote: '🔍 অডিট রিপোর্ট: চরম প্রহসন!',
+            visualIcon: '💃🌧️🕺',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 30,
+            pocketGain: 30,
+            approvalChange: -18,
+            edChange: +5,
+            dialogue: 'কৃষকরা শুকনো ফসলের ছাই ছুড়ে মন্ত্রীর গাড়ি আটকে দিল!',
+            newspaperHeadline: '📰 "বৃষ্টি নামাতে সরকারি রেইন ড্যান্সের সার্কুলার! ছাই ছুড়ে বিক্ষোভ চাষিদের!"'
+          }
+        ]
+      },
+      {
+        id: 'power',
+        fundTitle: '৪. লোডশেডিং নির্মূল ও বিদ্যুৎ গ্রিড আধুনিকীকরণ',
+        fundAmount: 700,
+        crisisName: 'ভ্যাপসা গরমে দিনে ১৮ ঘণ্টা কারেন্ট অফ! ক্ষুব্ধ জনতা!',
+        crisisDesc: 'গ্রীষ্মের গরমে দিনে ১৮ ঘণ্টা লোডশেডিং! ফ্যান বন্ধ, পানীয় জল নেই! বিদ্যুৎ অফিসে পাবলিক পাথর ছুড়ছে ও অফিসারদের ঘেরাও করেছে!',
+        choices: [
+          {
+            tag: '💼',
+            clause: 'তফসিল ১১ — জরুরি স্পট-পাওয়ার পারচেজ চুক্তি',
+            title: 'বিদ্যুৎ মাফিয়াদের সাথে গোপন ডিল ও প্রতি ইউনিটে ₹৩ কমিশন সুইস ব্যাংকে রাখা',
+            detail: '৪৫০ কোটি টাকা নিজের ব্যক্তিগত তহবিলে সরিয়ে রেখে বাকি ২৫০ কোটিতে বাইরে থেকে মহার্ঘ্য কয়লা কেনার নামে কাটমানি তোলা।',
+            auditNote: '🔍 অডিট রিপোর্ট: বিদ্যুৎ মাফিয়া সিন্ডিকেট! বিল বাড়বে, লোডশেডিং কমবে না।',
+            visualIcon: '💼🔌💸',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 700,
+            pocketGain: 450,
+            approvalChange: -38,
+            edChange: +42,
+            dialogue: 'কারেন্ট তো এলোই না, ইলেকট্রিক বিলের বোঝা মানুষের মাথায় চাপল!',
+            newspaperHeadline: '📰 "অন্ধকারে রাজ্যবাসী, বিদ্যুৎ মাফিয়াদের সাথে নেতার গোপন কমিশন ফাঁস!"'
+          },
+          {
+            tag: '📜',
+            clause: 'পরিকল্পনা নং ৩৩ — পরিবেশবান্ধব কুটির শিল্প প্রকল্প',
+            title: 'ঘরে ঘরে মাটির প্রদীপ ও মন্ত্রীর ছবি আঁকা তালপাতার পাখা বিতরণ প্রকল্প',
+            detail: 'গ্রিড ঠিক করার দরকার নেই, ৩০০ কোটি টাকা ব্যয়ে নেতার ছবি সংবলিত তালপাতার পাখা বাড়ি বাড়ি বিলি করে পরিবেশবান্ধব ঘোষণা করা হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: আত্মপ্রচারের ফাঁদ! কারেন্টের সমস্যা ধামাচাপা দেওয়ার চেষ্টা।',
+            visualIcon: '🪭🪔🖼️',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 350,
+            pocketGain: 180,
+            approvalChange: -16,
+            edChange: +20,
+            dialogue: 'পাবলিক ক্ষুব্ধ হয়ে মন্ত্রীর ছবিওয়ালা তালপাতার পাখা ছুড়ে ফেলে দিল!',
+            newspaperHeadline: '📰 "লোডশেডিংয়ে নেতার ছবিওয়ালা তালপাতার পাখা বিতরণ! রাগে রাস্তায় ছুঁড়ল জনতা!"'
+          },
+          {
+            tag: '⚡',
+            clause: 'ধারা ৯(গ) — গ্রিড অটোমেশন ও সৌরশক্তি ইন্টিগ্রেশন',
+            title: 'সুপারক্রিটিক্যাল সোলার ও হাইব্রিড ব্যাটারি ব্যাকআপে সাবস্টেশন আধুনিকীকরণ',
+            detail: 'ট্রান্সমিশন লাইনের অপচয় শূন্যে নামিয়ে এনে আধুনিক সোলার ব্যাকআপ সহ ২৪x৭ অবিচ্ছিন্ন বিদ্যুৎ সরবরাহ নিশ্চিতকরণ।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% আসল গ্রিড সংস্কার! ২৪ ঘণ্টা আলো জ্বলবে।',
+            visualIcon: '☀️⚡💡',
+            type: 'GENUINE_WORK',
+            fundUsed: 700,
+            pocketGain: 0,
+            approvalChange: +26,
+            edChange: -12,
+            dialogue: 'গোটা রাজ্য আলোয় ঝলমল! লোডশেডিং চিরতরে বিদায় নিল!',
+            newspaperHeadline: '📰 "২৪x৭ নিরবচ্ছিন্ন বিদ্যুৎ! সোলার গ্রিডে বিপ্লব, ঝলমল করছে রাজ্য!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'পর্যটন পরিপত্র — নিশাচর প্রকৃতি দর্শন',
+            title: 'রাত আটটার পর গোটা রাজ্যে অন্ধকারের সৌন্দর্য উপভোগে "ডার্ক ট্যুরিজম" ঘোষণা',
+            detail: 'অন্ধকারেই নাকি মানসিক শান্তি বেশি মেলে! তাই আলো ছাড়াই সবাইকে মোমবাতি জ্বালিয়ে থাকতে সরকারি পুরস্কার দেওয়া হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: পাগল করা সরকারি ব্যাখ্যা!',
+            visualIcon: '🌑🕯️🦉',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 40,
+            pocketGain: 40,
+            approvalChange: -20,
+            edChange: +6,
+            dialogue: 'বিদ্যুৎ দফতরে তালা ঝুলিয়ে দিল ক্ষুব্ধ জনতা!',
+            newspaperHeadline: '📰 "অন্ধকারে মানসিক শান্তির ডার্ক ট্যুরিজম ঘোষণা! বিদ্যুৎ দফতরে তালা!"'
+          }
+        ]
+      },
+      {
+        id: 'flood',
+        fundTitle: '৫. বর্ষার বন্যা উদ্ধার ও নদী বাঁধ মেরামতি',
+        fundAmount: 900,
+        crisisName: 'নদীর বাঁধ ভেঙে জল ঢুকছে! গোটা গ্রাম জলের তলায়!',
+        crisisDesc: 'তিস্তা ও গঙ্গার বাঁধ ভেঙে নদীর জল ঢুকে লক্ষাধিক মানুষ গৃহহীন! মানুষ চালের ওপর আশ্রয় নিয়েছে, পর্যাপ্ত উদ্ধার বোট ও খাবারের সংকট!',
+        choices: [
+          {
+            tag: '🚤',
+            clause: 'ধারা ২১ — আপৎকালীন বিপর্যয় মোকাবিলা ও প্রতিরক্ষা সমন্বয়',
+            title: 'ভূগর্ভস্থ স্টিল-শীট পাইলিং, পলিমার জিও-ব্যাগ প্রাচীর ও এনডিআরএফ স্পিডবোট মোতায়েন',
+            detail: 'যুদ্ধকালীন তৎপরতায় নদী বাঁধ সংস্কার, ৫০টি মোটর চালিত রেসকিউ বোট এবং হেলিকপ্টার মারফত শুকনো খাবার ও ওষুধ এয়ারড্রপ।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% নিখুঁত দুর্যোগ মোকাবিলা! লক্ষাধিক প্রাণ বাঁচবে।',
+            visualIcon: '🚤🛡️🚁',
+            type: 'GENUINE_WORK',
+            fundUsed: 900,
+            pocketGain: 0,
+            approvalChange: +28,
+            edChange: -15,
+            dialogue: 'হাজার হাজার পরিবার উদ্ধার পেল! বাঁধ শক্ত করে জল আটকানো হলো!',
+            newspaperHeadline: '📰 "মিলিটারি গতিতে বাঁধ সংস্কার ও এয়ারড্রপ! বানের গ্রাস থেকে বাঁচল হাজারো প্রাণ!"'
+          },
+          {
+            tag: '📜',
+            clause: 'বিজ্ঞপ্তি ৪৪ — দীর্ঘমেয়াদী নদী শাসন সমীক্ষা',
+            title: '৩ বছর মেয়াদী হাইড্রোলজিক্যাল সার্ভে কমিটি গঠন ও বালির বদলে পলিথিন বস্তা ফেলা',
+            detail: 'বন্যা কেন হলো তা নিয়ে বিশেষজ্ঞদের দিয়ে ফাইল তৈরি হোক, ততদিনে সস্তা পলিথিনে মাটি ভরে বাঁধ আটকানোর নাটক করা হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: আইওয়াশ! বালির টাকার পুরোটাই সিন্ডিকেটের পকেটে যাবে।',
+            visualIcon: '🌊📄⏳',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 400,
+            pocketGain: 200,
+            approvalChange: -18,
+            edChange: +22,
+            dialogue: 'পলিথিনের বস্তা বানের জলে খড়কুটোর মতো ভেসে গেল!',
+            newspaperHeadline: '📰 "বালির বদলে সস্তা পলিথিনে বাঁধ রক্ষা! প্রথম ঢেউয়েই ভেসে গেল কোটি টাকার ভাঁওতা!"'
+          },
+          {
+            tag: '💼',
+            clause: 'তফসিল ১৪ — আপৎকালীন আকাশপথ পর্যবেক্ষণ যানবাহন',
+            title: 'ত্রাণের চাল কালোবাজারে বিক্রি ও ৬০০ কোটি টাকা দিয়ে নেতার জন্য প্রাইভেট জেট কেনা',
+            detail: 'বন্যার ত্রাণের টাকা থেকে ৬০০ কোটি সোজা ব্যক্তিগত অ্যাকাউন্টে পাঠিয়ে নতুন বিলাসবহুল বিমান কেনা হোক যাতে আকাশ থেকে বন্যা দেখা যায়!',
+            auditNote: '🔍 অডিট রিপোর্ট: মহা কেলেঙ্কারি! ত্রাণের চাল চুরি করে ব্যক্তিগত জেট কেনা।',
+            visualIcon: '🛩️💸🍾',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 900,
+            pocketGain: 600,
+            approvalChange: -45,
+            edChange: +50,
+            dialogue: 'টিভি ক্যামেরায় ত্রাণের চাল বিক্রির প্রমাণ ফাঁস হয়ে গেল!',
+            newspaperHeadline: '📰 "ত্রাণের চালে নতুন বিলাসবহুল প্রাইভেট বিমান! নেতার বিরুদ্ধে দেশজুড়ে ধিক্কার!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'ক্রীড়া নির্দেশিকা — প্রাকৃতিক জলকেলি ক্রীড়া',
+            title: 'জলবন্দি মানুষদের সাঁতার প্র্যাকটিস করে অলিম্পিকে গোল্ড মেডেল আনার আহ্বান',
+            detail: 'জল যখন উঠেই গেছে, তখন দুঃখ না করে সবাই ফ্রিস্টাইল সাঁতার শিখে ভারতকে মেডেল এনে দিক!',
+            auditNote: '🔍 অডিট রিপোর্ট: হৃদয়হীন উপহাস!',
+            visualIcon: '🏊‍♂️🥇🐸',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 50,
+            pocketGain: 50,
+            approvalChange: -25,
+            edChange: +8,
+            dialogue: 'মানুষ মন্ত্রীর কনভয়ের ওপর জল ছিটিয়ে দিল!',
+            newspaperHeadline: '📰 "বন্যায় অলিম্পিক সাঁতার শেখার নিদান! মন্ত্রীর কনভয়ে জল ছিটিয়ে ক্ষোভ প্রদর্শন!"'
+          }
+        ]
+      },
+      {
+        id: 'teacher',
+        fundTitle: '৬. প্রাথমিক শিক্ষা ও স্কুল মিড-ডে মিল সংস্কার',
+        fundAmount: 750,
+        crisisName: 'স্কুলে শিক্ষক নেই! মিড-ডে মিলে শুধুই নুন-ভাত!',
+        crisisDesc: 'গ্রামের স্কুলে একজন শিক্ষক ৪টি ক্লাস করাচ্ছেন! মিড-ডে মিলে ডিম বা দুধের দেখা নেই! যোগ্য চাকরিপ্রার্থীরা রাস্তায় বসে অনশন করছে!',
+        choices: [
+          {
+            tag: '🎓',
+            clause: 'ধারা ৩৩(ক) — মেধা তালিকা অনুযায়ী স্বচ্ছ ই-কাউন্সেলিং',
+            title: 'স্বচ্ছ মেরিট লিস্টে ২০,০০০ শিক্ষক নিয়োগ ও সেন্ট্রালাইজড পুষ্টিকর খাবার',
+            detail: 'কোনো কাটমানি ছাড়া মেধার ভিত্তিতে নিয়োগপত্র প্রদান এবং প্রতিটি স্কুলে সপ্তাহে ৩ দিন ডিম, ফল ও পুষ্টিকর খিচুড়ি নিশ্চিতকরণ।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% সততা! শিক্ষা ব্যবস্থা পুনরুজ্জীবিত হবে, ছাত্র-শিক্ষক উপকৃত।',
+            visualIcon: '🎓🍎📚',
+            type: 'GENUINE_WORK',
+            fundUsed: 750,
+            pocketGain: 0,
+            approvalChange: +26,
+            edChange: -12,
+            dialogue: '২০,০০০ যোগ্য শিক্ষক স্কুলে যোগ দিলেন! বাচ্চারা পুষ্টিকর গরম খাবার পাচ্ছে!',
+            newspaperHeadline: '📰 "২০,০০০ শিক্ষকের স্বচ্ছ নিয়োগ! শিশুদের পাতে পুষ্টিকর ডিম-খিচুড়ি!"'
+          },
+          {
+            tag: '📜',
+            clause: 'বিজ্ঞপ্তি ১০১ — নিয়োগ জটিলতা নিষ্পত্তি কমিশন',
+            title: 'অবসরপ্রাপ্ত বিচারপতি দিয়ে তদন্ত কমিটি গঠন ও ৫ বছর নিয়োগ স্থগিত রাখা',
+            detail: 'আদালতের গেরোয় মামলা আটকে রেখে কমিশনের নামে ৩০০ কোটি খরচ করা হোক, যাতে আন্দোলনরত প্রার্থীরা ক্লান্ত হয়ে বাড়ি ফিরে যায়।',
+            auditNote: '🔍 অডিট রিপোর্ট: আমলাতান্ত্রিক কালক্ষেপণ! যুবকদের ভবিষ্যৎ নিয়ে নোংরা খেলা।',
+            visualIcon: '⚖️📁⏳',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 350,
+            pocketGain: 150,
+            approvalChange: -15,
+            edChange: +16,
+            dialogue: 'বছরের পর বছর কেটে গেল! চাকরিপ্রার্থীদের চোখের জল শুকাল না!',
+            newspaperHeadline: '📰 "নিয়োগ আটকে ৫ বছর মেয়াদী তদন্ত কমিশন! রাজপথে আন্দোলনকারীদের চোখের জল!"'
+          },
+          {
+            tag: '💼',
+            clause: 'তফসিল ৯ — ব্যাকডোর রিক্রুটমেন্ট কোটা',
+            title: 'সাদা ওএমআর শিট জমা নিয়ে চাকরি বিক্রির সিন্ডিকেট ও ৫০০ কোটি লোপাট',
+            detail: 'প্রত্যেক অযোগ্য প্রার্থীর থেকে ₹১৫ লাখ নিয়ে চাকরি দিন এবং ৫০০ কোটি টাকা নিজের আত্মীয়দের ট্রাস্টে ট্রান্সফার করুন!',
+            auditNote: '🔍 অডিট রিপোর্ট: মেগা রিক্রুটমেন্ট স্ক্যাম! কোটি কোটি টাকার পাহাড় মিলবে নেতার ঘরে।',
+            visualIcon: '💼💵🔒',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 750,
+            pocketGain: 500,
+            approvalChange: -42,
+            edChange: +48,
+            dialogue: 'চাকরি বিক্রি করে পকেট ভরল! কিন্তু আদালতে এফআইআর দায়ের হলো!',
+            newspaperHeadline: '📰 "সাদা ওএমআরে চাকরি বিক্রির মহামারী! নেতার খাটের তলায় টাকার পাহাড়!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'পুষ্টি নির্দেশিকা — সৌরশক্তি পুষ্টি গ্রহণ',
+            title: 'ছাত্রদের মাঠে রোদে দাঁড়িয়ে ভিটামিন-ডি দিয়ে পেট ভরানোর নোটিশ জারি',
+            detail: 'খাবারের কোনো প্রয়োজন নেই, সূর্যরশ্মি ও নির্মল বায়ু গ্রহণ করলেই বাচ্চাদের পেটের খিদে মিটে যাবে বলে সার্কুলার দিন!',
+            auditNote: '🔍 অডিট রিপোর্ট: বিবেকহীন হাসির পাত্র!',
+            visualIcon: '☀️🍃🧘',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 30,
+            pocketGain: 30,
+            approvalChange: -22,
+            edChange: +6,
+            dialogue: 'অভিভাবকরা স্কুলে তালা মেরে হেডমাস্টারকে ঘেরাও করলেন!',
+            newspaperHeadline: '📰 "খাবারের বদলে রোদে দাঁড়িয়ে ফটোসিন্থেসিসের নিদান! ক্ষোভে ফেটে পড়লেন অভিভাবকরা!"'
+          }
+        ]
+      },
+      {
+        id: 'smart_city',
+        fundTitle: '৭. স্মার্ট সিটি ৫-জি ফাইবার ও আইটি হাব মিশন',
+        fundAmount: 650,
+        crisisName: 'ইন্টারনেট ড্রপ! রাজ্য ছেড়ে পালাচ্ছে আইটি কোম্পানি!',
+        crisisDesc: 'রাজ্যের তথ্যপ্রযুক্তি করিডোরে স্লো ইন্টারনেট ও বারবার ফাইবার কাট! বড় বড় টেক সংস্থা বেঙ্গালুরু-হায়দ্রাবাদ চলে যাওয়ার হুমকি দিচ্ছে!',
+        choices: [
+          {
+            tag: '🌐',
+            clause: 'ধারা ১৪ — গিগাবিট অপটিক্যাল ব্যাকবোন ও গ্রিন ডেটাসেন্টার',
+            title: 'ভূগর্ভস্থ হাইস্পিড অপটিক্যাল ফাইবার রিং ও তরুণদের জন্য ফ্রি ইনকিউবেশন হাব',
+            detail: 'সরাসরি বিশ্বমানের টেলিকম পরিকাঠামো গড়ে তুলে নতুন ৫০,০০০ স্টার্টআপ চাকরি ও আন্তর্জাতিক বিনিয়োগ নিশ্চিতকরণ।',
+            auditNote: '🔍 অডিট রিপোর্ট: ১০০% নিখুঁত হাইটেক আধুনিকীকরণ! রাজ্যে লক্ষাধিক চাকরি তৈরি হবে।',
+            visualIcon: '🌐💻🚀',
+            type: 'GENUINE_WORK',
+            fundUsed: 650,
+            pocketGain: 0,
+            approvalChange: +27,
+            edChange: -12,
+            dialogue: 'আইটি হাব দ্রুতগতিতে দৌড়াতে শুরু করল! নতুন কোম্পানিরা বিনিয়োগের চুক্তি সই করল!',
+            newspaperHeadline: '📰 "সুপারফাস্ট ৫-জি ও আইটি করিডোর! রাজ্যে ৫০,০০০ নতুন চাকরির সুযোগ!"'
+          },
+          {
+            tag: '📜',
+            clause: 'পরিপত্র ৭৫ — ব্র্যান্ডিং ও মহোৎসব মহোৎসব',
+            title: 'স্মার্ট সিটির ৫০ ফুট রঙিন তোরণ ও ২০ কোটি টাকার ব্যানার লাগিয়ে প্রচার',
+            detail: 'ইন্টারনেট পরে হবে, আগে শহরের মোড়ে মোড়ে নেতার রঙিন কাটআউট ও ফাইবার ছাড়া লোহার তোরণ বানিয়ে কৃতিত্ব জাহির করা হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: শুধুই ফাঁকা প্রচার! আসল স্পিড বাড়বে না।',
+            visualIcon: '🎪🪧📸',
+            type: 'BUREAUCRATIC_TRAP',
+            fundUsed: 300,
+            pocketGain: 140,
+            approvalChange: -14,
+            edChange: +18,
+            dialogue: 'ব্যানারে শহর ঢেকে গেল, কিন্তু ইন্টারনেট সেই ২জি স্পিডেই আটকে রইল!',
+            newspaperHeadline: '📰 "ইন্টারনেট নেই তো কী, মোড়ে মোড়ে ৫০ ফুটের কাটআউট! প্রচারেই বাজিমাত!"'
+          },
+          {
+            tag: '💼',
+            clause: 'তফসিল ২২ — বিশেষ একক ভেন্ডার লাইসেন্স',
+            title: '২০ বছর পুরোনো অকেজো রাউটার বসিয়ে ৪৫০ কোটি টাকা নিজের কোম্পানিতে পাচার',
+            detail: 'আমদানি করা ভাঙাচোরা যন্ত্রপাতি দিয়ে কাজ সেরে বাকি ৪৫০ কোটি টাকা বিদেশে বেনামী কোম্পানি খুলে ট্রান্সফার করা হোক!',
+            auditNote: '🔍 অডিট রিপোর্ট: সাইবার সিন্ডিকেট স্ক্যাম! অকেজো রাউটারে টাকা লুট।',
+            visualIcon: '💼📡💰',
+            type: 'CORRUPT_STEAL',
+            fundUsed: 650,
+            pocketGain: 450,
+            approvalChange: -38,
+            edChange: +44,
+            dialogue: 'রাউটার চালু করতেই ধোঁয়া বেরোল! আইটি কোম্পানিরা রাজ্য ছেড়ে পালিয়ে গেল!',
+            newspaperHeadline: '📰 "স্মার্ট সিটির নামে ২০ বছরের ভাঙা রাউটার! ৪৫০ কোটি বিদেশে পাচার!"'
+          },
+          {
+            tag: '🤡',
+            clause: 'টেলিকম নোটিশ — দেশীয় ঐতিহ্যবাহী বার্তাবাহক',
+            title: 'জরুরি ফাইলের জন্য পায়রা পালন ও পাহাড়ে ধোঁয়া উড়িয়ে বার্তা পাঠানোর প্রকল্প',
+            detail: 'ইন্টারনেট পশ্চিমা অপসংস্কৃতি! শান্তির প্রতীক পায়রা দিয়ে চিঠি পাঠালে কোনো হ্যাকিংয়ের ভয় থাকবে না!',
+            auditNote: '🔍 অডিট রিপোর্ট: মধ্যযুগীয় ভাঁওতাবাজি!',
+            visualIcon: '🕊️✉️💨',
+            type: 'FUNNY_NONSENSE',
+            fundUsed: 25,
+            pocketGain: 25,
+            approvalChange: -20,
+            edChange: +5,
+            dialogue: 'পায়রা সব উড়াল দিল, আইটি পার্কের কর্মীরা মাথায় হাত দিয়ে বসল!',
+            newspaperHeadline: '📰 "ইন্টারনেটের বদলে পায়রা দিয়ে ফাইল পাঠানোর ফরমান! বিশ্বজুড়ে হাসির ট্রোল!"'
+          }
+        ]
+      }
+    ];
+
+    /* ============================================================
+       GAME STATE
+       ============================================================ */
+    const gameState = {
+      selectedLeader: LEADERS[0],
+      opponentLeader: LEADERS[1],
+      totalVotes: 150000,
+      approvalRating: 50,
+      swissBankPocket: 0,
+      edRaidRisk: 10,
+      currentDilemmaIndex: 0,
+      historyLog: [],
+      debateDecibels: 40
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderRoster();
+    });
+
+    function renderRoster() {
+      const grid = document.getElementById('rosterGrid');
+      grid.innerHTML = '';
+
+      LEADERS.forEach((leader, index) => {
+        const card = document.createElement('div');
+        card.className = `leader-card ${index === 0 ? 'selected' : ''}`;
+        card.id = `card-${leader.id}`;
+        card.innerHTML = `
+          <div class="avatar-wrapper">
+            ${leader.svgAvatar}
+            <div class="party-symbol">${leader.symbol}</div>
+          </div>
+          <div class="leader-name">${leader.name}</div>
+          <div class="leader-tagline">${leader.alias}</div>
+          <div class="leader-quote">${leader.quote}</div>
+        `;
+
+        card.addEventListener('click', () => {
+          document.querySelectorAll('.leader-card').forEach(c => c.classList.remove('selected'));
+          card.classList.add('selected');
+          gameState.selectedLeader = leader;
+          gameState.opponentLeader = LEADERS.find(l => l.id !== leader.id) || LEADERS[1];
+          sound.playAirhorn();
+          sound.speakText(leader.speechQuote);
+        });
+
+        grid.appendChild(card);
+      });
+
+      document.getElementById('btnStartGame').addEventListener('click', () => {
+        sound.init();
+        sound.playVineBoom();
+        sound.speakText(gameState.selectedLeader.speechQuote);
+        showView('viewDilemmas');
+        loadDilemma(0);
+      });
+    }
+
+    function showView(viewId) {
+      document.querySelectorAll('.view-panel').forEach(v => v.classList.remove('active'));
+      const activeView = document.getElementById(viewId);
+      if (activeView) activeView.classList.add('active');
+    }
+
+    function updateHUD() {
+      document.getElementById('hudPocket').innerText = `₹${gameState.swissBankPocket} কোটি`;
+      document.getElementById('hudApproval').innerText = `${gameState.approvalRating}%`;
+      document.getElementById('hudEdRisk').innerText = `${gameState.edRaidRisk}%`;
+      
+      const edEl = document.getElementById('hudEdRisk');
+      if (gameState.edRaidRisk >= 60) {
+        edEl.style.color = '#ef4444';
+      } else if (gameState.edRaidRisk >= 30) {
+        edEl.style.color = '#facc15';
+      } else {
+        edEl.style.color = '#4ade80';
+      }
+    }
+
+    /* ============================================================
+       PHASE 2: DILEMMAS & DECISION LOGIC
+       ============================================================ */
+    
+    /* ============================================================
+       THREE.JS 3D POLITICIAN AVATAR ENGINE
+       ============================================================ */
+    let politician3D = {
+      renderer: null,
+      scene: null,
+      camera: null,
+      charObj: null,
+      animId: null,
+      time: 0,
+      reactionType: null,
+      reactionTimer: 0
+    };
+
+    function initPolitician3D(leader) {
+      const container = document.getElementById('character3DCanvasContainer');
+      if (!container) return;
+
+      container.innerHTML = '';
+      const w = container.clientWidth || 250;
+      const h = container.clientHeight || 155;
+
+      // Renderer
+      politician3D.renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      politician3D.renderer.setSize(w, h);
+      politician3D.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      politician3D.renderer.shadowMap.enabled = true;
+      container.appendChild(politician3D.renderer.domElement);
+
+      // Scene & Camera
+      politician3D.scene = new THREE.Scene();
+      politician3D.camera = new THREE.PerspectiveCamera(40, w / h, 0.1, 50);
+      politician3D.camera.position.set(0, 0.2, 5.2);
+      politician3D.camera.lookAt(0, -0.3, 0);
+
+      // Lighting
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.85);
+      politician3D.scene.add(ambLight);
+
+      const dirLight = new THREE.DirectionalLight(0xfff7ed, 1.2);
+      dirLight.position.set(3, 5, 4);
+      politician3D.scene.add(dirLight);
+
+      const rimLight = new THREE.PointLight(0x38bdf8, 0.9, 10);
+      rimLight.position.set(-3, 2, -2);
+      politician3D.scene.add(rimLight);
+
+      // Build Character Mesh
+      politician3D.charObj = build3DPoliticianMesh(leader.id);
+      politician3D.scene.add(politician3D.charObj.group);
+
+      // Update badge
+      document.getElementById('charPartySymbol').innerText = leader.symbol;
+      document.getElementById('charStageName').innerText = leader.name;
+
+      if (!politician3D.animId) {
+        animatePolitician3D();
+      }
+    }
+
+    function build3DPoliticianMesh(leaderId) {
+      const group = new THREE.Group();
+
+      // Podium & Dais
+      const podiumGeo = new THREE.CylinderGeometry(1.5, 1.7, 0.35, 20);
+      const podiumMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.35, metalness: 0.3 });
+      const podium = new THREE.Mesh(podiumGeo, podiumMat);
+      podium.position.y = -2.1;
+      group.add(podium);
+
+      const podiumRimGeo = new THREE.TorusGeometry(1.55, 0.07, 10, 24);
+      const goldMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, metalness: 0.85, roughness: 0.2 });
+      const podiumRim = new THREE.Mesh(podiumRimGeo, goldMat);
+      podiumRim.rotation.x = Math.PI / 2;
+      podiumRim.position.y = -1.92;
+      group.add(podiumRim);
+
+      // Dual Microphones
+      const micStandGeo = new THREE.CylinderGeometry(0.025, 0.025, 1.2, 8);
+      const chromeMat = new THREE.MeshStandardMaterial({ color: 0xcccccc, metalness: 0.9, roughness: 0.1 });
+      const micHeadGeo = new THREE.SphereGeometry(0.08, 8, 8);
+      const micHeadMat = new THREE.MeshStandardMaterial({ color: 0x1e293b, roughness: 0.8 });
+
+      [-0.26, 0.26].forEach(x => {
+        const stand = new THREE.Mesh(micStandGeo, chromeMat);
+        stand.position.set(x, -1.3, 0.55);
+        stand.rotation.x = -0.22;
+        group.add(stand);
+
+        const mic = new THREE.Mesh(micHeadGeo, micHeadMat);
+        mic.position.set(x, -0.72, 0.42);
+        group.add(mic);
+      });
+
+      // Palette config
+      let bodyColor = 0xffffff;
+      let accentColor = 0x10b981;
+      let skinColor = 0xfde047;
+      let hairColor = 0x1e293b;
+      let hasBeard = false;
+      let hasGlasses = false;
+      let hasScarf = false;
+      let hasTilak = false;
+      let hasSariDrape = false;
+      let hasMonkRobe = false;
+
+      if (leaderId === 'didi') {
+        bodyColor = 0xffffff;
+        accentColor = 0x16a34a;
+        skinColor = 0xfed7aa;
+        hairColor = 0x0f172a;
+        hasSariDrape = true;
+      } else if (leaderId === 'modi') {
+        bodyColor = 0xf97316;
+        accentColor = 0xffffff;
+        skinColor = 0xfed7aa;
+        hairColor = 0xf8fafc;
+        hasBeard = true;
+        hasGlasses = true;
+      } else if (leaderId === 'rahul') {
+        bodyColor = 0xffffff;
+        accentColor = 0x0284c7;
+        skinColor = 0xfde68a;
+        hairColor = 0x1e293b;
+      } else if (leaderId === 'yogi') {
+        bodyColor = 0xea580c;
+        accentColor = 0xf97316;
+        skinColor = 0xfed7aa;
+        hairColor = 0x000000;
+        hasTilak = true;
+        hasMonkRobe = true;
+      } else if (leaderId === 'kejriwal') {
+        bodyColor = 0x1e3a8a;
+        accentColor = 0x92400e;
+        skinColor = 0xfde68a;
+        hairColor = 0x1e293b;
+        hasScarf = true;
+        hasGlasses = true;
+      } else if (leaderId === 'lalu') {
+        bodyColor = 0xffffff;
+        accentColor = 0x15803d;
+        skinColor = 0xfed7aa;
+        hairColor = 0xcbd5e1;
+      } else if (leaderId === 'nitish') {
+        bodyColor = 0xffffff;
+        accentColor = 0x047857;
+        skinColor = 0xfed7aa;
+        hairColor = 0x94a3b8;
+        hasGlasses = true;
+      } else if (leaderId === 'tharoor') {
+        bodyColor = 0x312e81;
+        accentColor = 0x7c3aed;
+        skinColor = 0xfde68a;
+        hairColor = 0x0f172a;
+      }
+
+      // Torso
+      const bodyGeo = new THREE.CylinderGeometry(0.7, 0.88, 1.5, 14);
+      const bodyMat = new THREE.MeshStandardMaterial({ color: bodyColor, roughness: 0.65 });
+      const body = new THREE.Mesh(bodyGeo, bodyMat);
+      body.position.y = -1.0;
+      group.add(body);
+
+      // Jacket / Drape / Shawl
+      if (leaderId === 'modi' || leaderId === 'rahul' || leaderId === 'tharoor') {
+        const vestGeo = new THREE.CylinderGeometry(0.74, 0.92, 1.15, 14, 1, true, -Math.PI / 1.3, Math.PI * 1.5);
+        const vestMat = new THREE.MeshStandardMaterial({ color: accentColor, roughness: 0.5, side: THREE.DoubleSide });
+        const vest = new THREE.Mesh(vestGeo, vestMat);
+        vest.position.y = -0.9;
+        group.add(vest);
+      } else if (hasSariDrape) {
+        const palluGeo = new THREE.CylinderGeometry(0.35, 0.6, 1.45, 8);
+        const palluMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 });
+        const pallu = new THREE.Mesh(palluGeo, palluMat);
+        pallu.rotation.z = -0.3;
+        pallu.position.set(-0.35, -0.9, 0.1);
+        group.add(pallu);
+
+        const borderGeo = new THREE.TorusGeometry(0.82, 0.04, 8, 20);
+        const borderMat = new THREE.MeshStandardMaterial({ color: 0x16a34a });
+        const border = new THREE.Mesh(borderGeo, borderMat);
+        border.rotation.x = Math.PI / 2;
+        border.position.y = -1.65;
+        group.add(border);
+      } else if (hasMonkRobe) {
+        const stoleGeo = new THREE.TorusGeometry(0.78, 0.11, 8, 18);
+        const stoleMat = new THREE.MeshStandardMaterial({ color: 0xc2410c });
+        const stole = new THREE.Mesh(stoleGeo, stoleMat);
+        stole.rotation.x = Math.PI / 2.3;
+        stole.position.set(0, -0.85, 0);
+        group.add(stole);
+      } else if (leaderId === 'lalu' || leaderId === 'nitish') {
+        const shawlGeo = new THREE.CylinderGeometry(0.22, 0.32, 1.35, 8);
+        const shawlMat = new THREE.MeshStandardMaterial({ color: accentColor, roughness: 0.7 });
+        const shawl = new THREE.Mesh(shawlGeo, shawlMat);
+        shawl.rotation.z = 0.35;
+        shawl.position.set(0.45, -0.9, 0.15);
+        group.add(shawl);
+      }
+
+      // Neck & Scarf
+      const neckGeo = new THREE.CylinderGeometry(0.28, 0.32, 0.32, 10);
+      const skinMat = new THREE.MeshStandardMaterial({ color: skinColor, roughness: 0.7 });
+      const neck = new THREE.Mesh(neckGeo, skinMat);
+      neck.position.y = -0.05;
+      group.add(neck);
+
+      if (hasScarf) {
+        const scarfGeo = new THREE.TorusGeometry(0.44, 0.2, 10, 18);
+        const scarfMat = new THREE.MeshStandardMaterial({ color: 0x78350f, roughness: 0.8 });
+        const scarf = new THREE.Mesh(scarfGeo, scarfMat);
+        scarf.rotation.x = Math.PI / 2;
+        scarf.position.y = 0.0;
+        group.add(scarf);
+      }
+
+      // Head Group
+      const headGroup = new THREE.Group();
+      headGroup.position.y = 0.65;
+
+      const headGeo = new THREE.SphereGeometry(0.62, 18, 18);
+      const head = new THREE.Mesh(headGeo, skinMat);
+      headGroup.add(head);
+
+      // Hair & Facial Features
+      const hairMat = new THREE.MeshStandardMaterial({ color: hairColor, roughness: 0.8 });
+      if (leaderId === 'didi') {
+        const hairGeo = new THREE.SphereGeometry(0.65, 16, 16, 0, Math.PI * 2, 0, Math.PI / 1.7);
+        const hairMesh = new THREE.Mesh(hairGeo, hairMat);
+        hairMesh.position.set(0, 0.06, -0.05);
+        headGroup.add(hairMesh);
+
+        const bunGeo = new THREE.SphereGeometry(0.28, 10, 10);
+        const bun = new THREE.Mesh(bunGeo, hairMat);
+        bun.position.set(0, 0.08, -0.6);
+        headGroup.add(bun);
+      } else if (leaderId === 'yogi') {
+        const tilakGeo = new THREE.BoxGeometry(0.09, 0.28, 0.02);
+        const tilakMat = new THREE.MeshBasicMaterial({ color: 0xdc2626 });
+        const tilak = new THREE.Mesh(tilakGeo, tilakMat);
+        tilak.position.set(0, 0.24, 0.6);
+        headGroup.add(tilak);
+
+        const earringGeo = new THREE.TorusGeometry(0.07, 0.022, 6, 14);
+        [-0.62, 0.62].forEach(ex => {
+          const ring = new THREE.Mesh(earringGeo, goldMat);
+          ring.position.set(ex, -0.05, 0);
+          ring.rotation.y = Math.PI / 2;
+          headGroup.add(ring);
+        });
+      } else {
+        const hairGeo = new THREE.SphereGeometry(0.65, 16, 16, 0, Math.PI * 2, 0, Math.PI / 2.1);
+        const hair = new THREE.Mesh(hairGeo, hairMat);
+        hair.position.y = 0.1;
+        headGroup.add(hair);
+
+        if (leaderId === 'lalu') {
+          [-0.56, 0.56].forEach(sx => {
+            const sideGeo = new THREE.SphereGeometry(0.22, 8, 8);
+            const sideMesh = new THREE.Mesh(sideGeo, hairMat);
+            sideMesh.position.set(sx, 0.04, -0.1);
+            headGroup.add(sideMesh);
+          });
+        }
+      }
+
+      if (hasBeard) {
+        const beardGeo = new THREE.SphereGeometry(0.44, 12, 12, 0, Math.PI * 2, Math.PI / 2.5, Math.PI / 2);
+        const beardMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.8 });
+        const beard = new THREE.Mesh(beardGeo, beardMat);
+        beard.position.set(0, -0.2, 0.3);
+        headGroup.add(beard);
+      }
+
+      if (hasGlasses) {
+        const frameMat = new THREE.MeshStandardMaterial({ color: 0x0f172a, roughness: 0.3 });
+        const lensGeo = new THREE.TorusGeometry(0.13, 0.022, 6, 14);
+        [-0.2, 0.2].forEach(gx => {
+          const lens = new THREE.Mesh(lensGeo, frameMat);
+          lens.position.set(gx, 0.07, 0.59);
+          headGroup.add(lens);
+        });
+        const bridgeGeo = new THREE.BoxGeometry(0.14, 0.025, 0.02);
+        const bridge = new THREE.Mesh(bridgeGeo, frameMat);
+        bridge.position.set(0, 0.07, 0.6);
+        headGroup.add(bridge);
+      }
+
+      // Eyes
+      const eyeWhiteMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+      const pupilMat = new THREE.MeshBasicMaterial({ color: 0x0f172a });
+      [-0.19, 0.19].forEach(ex => {
+        const eyeWhiteGeo = new THREE.SphereGeometry(0.09, 8, 8);
+        const eye = new THREE.Mesh(eyeWhiteGeo, eyeWhiteMat);
+        eye.scale.z = 0.3;
+        eye.position.set(ex, 0.07, 0.56);
+        headGroup.add(eye);
+
+        const pupilGeo = new THREE.SphereGeometry(0.045, 6, 6);
+        const pupil = new THREE.Mesh(pupilGeo, pupilMat);
+        pupil.position.set(ex, 0.07, 0.59);
+        headGroup.add(pupil);
+      });
+
+      // Mouth
+      const mouthGeo = new THREE.TorusGeometry(0.11, 0.028, 6, 10, Math.PI);
+      const mouthMat = new THREE.MeshBasicMaterial({ color: 0x991b1b });
+      const mouth = new THREE.Mesh(mouthGeo, mouthMat);
+      mouth.rotation.x = Math.PI;
+      mouth.position.set(0, -0.2, 0.58);
+      headGroup.add(mouth);
+
+      group.add(headGroup);
+
+      // Arms & Hands
+      const armGeo = new THREE.CylinderGeometry(0.16, 0.14, 0.85, 8);
+      const leftArmGroup = new THREE.Group();
+      leftArmGroup.position.set(-0.85, -0.4, 0);
+      const leftArm = new THREE.Mesh(armGeo, bodyMat);
+      leftArm.position.y = -0.38;
+      leftArm.rotation.z = 0.22;
+      leftArmGroup.add(leftArm);
+      const handGeo = new THREE.SphereGeometry(0.16, 6, 6);
+      const leftHand = new THREE.Mesh(handGeo, skinMat);
+      leftHand.position.set(-0.12, -0.78, 0.12);
+      leftArmGroup.add(leftHand);
+      group.add(leftArmGroup);
+
+      const rightArmGroup = new THREE.Group();
+      rightArmGroup.position.set(0.85, -0.4, 0);
+      const rightArm = new THREE.Mesh(armGeo, bodyMat);
+      rightArm.position.y = -0.38;
+      rightArm.rotation.z = -0.22;
+      rightArmGroup.add(rightArm);
+      const rightHand = new THREE.Mesh(handGeo, skinMat);
+      rightHand.position.set(0.12, -0.78, 0.12);
+      rightArmGroup.add(rightHand);
+      group.add(rightArmGroup);
+
+      return {
+        group,
+        headGroup,
+        leftArmGroup,
+        rightArmGroup,
+        body
+      };
+    }
+
+    function animatePolitician3D() {
+      politician3D.animId = requestAnimationFrame(animatePolitician3D);
+      politician3D.time += 0.035;
+
+      const obj = politician3D.charObj;
+      if (!obj) return;
+
+      if (politician3D.reactionTimer > 0) {
+        politician3D.reactionTimer -= 0.035;
+        if (politician3D.reactionType === 'GENUINE_WORK') {
+          // Happy jump & wave both arms
+          obj.group.position.y = Math.sin(politician3D.time * 8) * 0.15;
+          obj.headGroup.rotation.y = Math.sin(politician3D.time * 6) * 0.2;
+          obj.leftArmGroup.rotation.z = 1.8 + Math.sin(politician3D.time * 10) * 0.4;
+          obj.rightArmGroup.rotation.z = -1.8 - Math.sin(politician3D.time * 10) * 0.4;
+        } else if (politician3D.reactionType === 'CORRUPT_STEAL') {
+          // Sneaky lean forward & rub hands
+          obj.group.position.y = -0.1;
+          obj.group.rotation.x = 0.15;
+          obj.headGroup.rotation.y = Math.sin(politician3D.time * 12) * 0.15;
+          obj.leftArmGroup.rotation.z = 0.8 + Math.sin(politician3D.time * 12) * 0.2;
+          obj.rightArmGroup.rotation.z = -0.8 - Math.sin(politician3D.time * 12) * 0.2;
+        } else {
+          // Confused shrug / head tilt
+          obj.headGroup.rotation.z = Math.sin(politician3D.time * 4) * 0.2;
+          obj.leftArmGroup.rotation.z = 0.6;
+          obj.rightArmGroup.rotation.z = -0.6;
+        }
+      } else {
+        // Natural Idle Animation (Breathing, head bobbing, slight swaying)
+        obj.group.position.y = 0;
+        obj.group.rotation.x = 0;
+        obj.headGroup.position.y = 0.65 + Math.sin(politician3D.time * 2.2) * 0.025;
+        obj.headGroup.rotation.y = Math.sin(politician3D.time * 1.2) * 0.1;
+        obj.headGroup.rotation.z = Math.sin(politician3D.time * 0.8) * 0.03;
+        obj.leftArmGroup.rotation.z = 0.2 + Math.sin(politician3D.time * 2) * 0.06;
+        obj.rightArmGroup.rotation.z = -0.2 - Math.sin(politician3D.time * 2) * 0.06;
+      }
+
+      politician3D.renderer.render(politician3D.scene, politician3D.camera);
+    }
+
+    function trigger3DReaction(type, speechText) {
+      politician3D.reactionType = type;
+      politician3D.reactionTimer = 2.0;
+
+      const speechEl = document.getElementById('charStageSpeech');
+      if (speechEl && speechText) {
+        speechEl.innerText = speechText;
+        speechEl.style.borderColor = (type === 'GENUINE_WORK' ? '#4ade80' : (type === 'CORRUPT_STEAL' ? '#ef4444' : '#facc15'));
+      }
+    }
+
+let isFinePrintDecoded = false;
+
+    function toggleFinePrintDecoder() {
+      sound.init();
+      sound.playSlap();
+      isFinePrintDecoded = !isFinePrintDecoded;
+
+      const cards = document.querySelectorAll('.choice-card-compact');
+      cards.forEach(card => {
+        if (isFinePrintDecoded) card.classList.add('revealed');
+        else card.classList.remove('revealed');
+      });
+
+      const btn = document.getElementById('btnDecodeFinePrint');
+      if (isFinePrintDecoded) {
+        btn.innerHTML = '<span>👁️ অডিট নোট লুকান (HIDE)</span>';
+        btn.style.background = '#38bdf8';
+        btn.style.color = '#0f172a';
+        showMemePopup('🔍 আমলাতান্ত্রিক গোপন ফাইল ফাঁস! 🔍');
+        trigger3DReaction('BUREAUCRATIC_TRAP', '"আমলাদের সব গোপন ফাইল ফাঁস হয়ে গেল!"');
+      } else {
+        btn.innerHTML = '<span>🔍 আমলাতান্ত্রিক ফাইল অডিটর (DECODE)</span>';
+        btn.style.background = 'rgba(56, 189, 248, 0.15)';
+        btn.style.color = '#38bdf8';
+      }
+    }
+
+    function loadDilemma(index) {
+      gameState.currentDilemmaIndex = index;
+      const d = DILEMMAS[index];
+
+      isFinePrintDecoded = false;
+      const btn = document.getElementById('btnDecodeFinePrint');
+      btn.innerHTML = '<span>🔍 আমলাতান্ত্রিক ফাইল অডিটর (DECODE)</span>';
+      btn.style.background = 'rgba(56, 189, 248, 0.15)';
+      btn.style.color = '#38bdf8';
+
+      document.getElementById('hudFund').innerText = `₹${d.fundAmount} কোটি`;
+      document.getElementById('fundTitle').innerText = d.fundTitle;
+      document.getElementById('fundAmountText').innerText = `বাজেট: ₹${d.fundAmount} কোটি`;
+      document.getElementById('crisisName').innerText = d.crisisName;
+      document.getElementById('crisisDetails').innerText = d.crisisDesc;
+
+      // Update 3D Character & Speech
+      initPolitician3D(gameState.selectedLeader);
+      const quotes = [
+        `"${gameState.selectedLeader.speechQuote}"`,
+        '"ফান্ডের টাকা হাতে এলো! কী সিদ্ধান্ত নেব?"',
+        '"প্যাঁচালো আমলাতান্ত্রিক ভাষা ভালো করে পড়ুন!"',
+        `"জনগণের উন্নয়ন নাকি নিজস্ব ব্যাংক তহবিল? সিদ্ধান্ত নিন!"`
+      ];
+      document.getElementById('charStageSpeech').innerText = quotes[index % quotes.length];
+      document.getElementById('charStageSpeech').style.borderColor = 'rgba(56, 189, 248, 0.5)';
+
+      // Close modals
+      document.getElementById('outcomeModalBackdrop').classList.remove('active');
+      document.getElementById('edRaidModalBackdrop').classList.remove('active');
+
+      // Render 4 choices in 2x2 Grid (Top-Left, Top-Right, Bottom-Left, Bottom-Right)
+      const choicesGrid = document.getElementById('choicesGrid');
+      choicesGrid.innerHTML = '';
+
+      d.choices.forEach((choice, cIdx) => {
+        const cCard = document.createElement('div');
+        cCard.className = 'choice-card-compact';
+        cCard.id = `choiceCard-${cIdx}`;
+        cCard.innerHTML = `
+          <div class="choice-tag-compact">${choice.tag}</div>
+          <div class="choice-body-compact">
+            <span class="choice-clause-tag">${choice.clause}</span>
+            <div class="choice-title-compact" title="${choice.title}">${choice.title}</div>
+            <div class="choice-detail-compact">${choice.detail}</div>
+            <div class="choice-secret-audit-compact">${choice.auditNote}</div>
+          </div>
+        `;
+
+        cCard.addEventListener('click', () => {
+          makeDecision(choice);
+        });
+
+        choicesGrid.appendChild(cCard);
+      });
+
+      updateHUD();
+    }
+
+    function makeDecision(choice) {
+      sound.init();
+      // Apply impacts
+      gameState.swissBankPocket += choice.pocketGain;
+      gameState.approvalRating = Math.max(5, Math.min(100, gameState.approvalRating + choice.approvalChange));
+      gameState.edRaidRisk = Math.max(0, Math.min(100, gameState.edRaidRisk + choice.edChange));
+      
+      let voteChange = 20000;
+      if (choice.type === 'GENUINE_WORK') {
+        voteChange = 120000;
+        sound.playKaChing();
+        trigger3DReaction('GENUINE_WORK', '"জনগণের মুখে হাসি ফুটল! দুর্দান্ত কাজ!"');
+      } else if (choice.type === 'CORRUPT_STEAL') {
+        voteChange = -40000;
+        sound.playSiren();
+        showMemePopup('🚨 ইডি ও সিবিআইয়ের নজর পড়ল! 🚨');
+        trigger3DReaction('CORRUPT_STEAL', '"পকেটে মাল ঢুকেছে! খবরদার কাউকে বলবেন না!"');
+      } else {
+        sound.playSlap();
+        trigger3DReaction('BUREAUCRATIC_TRAP', '"আমলাদের ফাইলে সব টাকা ধুলো খাচ্ছে!"');
+      }
+      gameState.totalVotes = Math.max(10000, gameState.totalVotes + voteChange);
+
+      gameState.historyLog.push({
+        dilemma: DILEMMAS[gameState.currentDilemmaIndex].fundTitle,
+        choiceTitle: choice.title,
+        type: choice.type
+      });
+
+      updateHUD();
+
+      // Show Centered Outcome Modal Overlay
+      const modal = document.getElementById('outcomeModalBackdrop');
+      document.getElementById('outcomeVisualIcon').innerText = choice.visualIcon;
+
+      const titleEl = document.getElementById('outcomeModalTitle');
+      if (choice.type === 'GENUINE_WORK') {
+        titleEl.innerText = '✅ জনসেবার সঠিক সিদ্ধান্ত!';
+        titleEl.style.color = '#4ade80';
+      } else if (choice.type === 'CORRUPT_STEAL') {
+        titleEl.innerText = '💼 টাকা পকেটে ভরলেন মন্ত্রী মশাই!';
+        titleEl.style.color = '#ef4444';
+      } else {
+        titleEl.innerText = '⚠️ প্যাঁচালো সিদ্ধান্তের ফাঁদ!';
+        titleEl.style.color = '#facc15';
+      }
+
+      document.getElementById('outcomeModalDesc').innerText = choice.dialogue;
+      document.getElementById('outcomeNewspaperHeadline').innerText = choice.newspaperHeadline || '📰 "ব্রেকিং নিউজ: মন্ত্রীর সিদ্ধান্তে সরগরম রাজ্য রাজনীতি!"';
+      document.getElementById('outcomeStatVotes').innerText = (voteChange >= 0 ? `+${voteChange.toLocaleString()}` : `${voteChange.toLocaleString()}`);
+      document.getElementById('outcomeStatVotes').style.color = voteChange >= 0 ? '#38bdf8' : '#ef4444';
+
+      document.getElementById('outcomeStatApproval').innerText = (choice.approvalChange >= 0 ? `+${choice.approvalChange}%` : `${choice.approvalChange}%`);
+      document.getElementById('outcomeStatApproval').style.color = choice.approvalChange >= 0 ? '#4ade80' : '#ef4444';
+
+      document.getElementById('outcomeStatPocket').innerText = `+₹${choice.pocketGain} কোটি`;
+      document.getElementById('outcomeStatPocket').style.color = choice.pocketGain > 0 ? '#facc15' : '#94a3b8';
+
+      document.getElementById('outcomeStatEd').innerText = (choice.edChange >= 0 ? `+${choice.edChange}%` : `${choice.edChange}%`);
+      document.getElementById('outcomeStatEd').style.color = choice.edChange > 0 ? '#ef4444' : '#4ade80';
+
+      modal.classList.add('active');
+
+      document.getElementById('btnNextDilemmaModal').onclick = () => {
+        modal.classList.remove('active');
+
+        // Check for Sudden ED Raid Event if risk is high
+        if (gameState.edRaidRisk >= 40 && !gameState.hasHadEdRaid && choice.pocketGain > 0) {
+          gameState.hasHadEdRaid = true;
+          sound.playSiren();
+          setTimeout(() => {
+            document.getElementById('edRaidModalBackdrop').classList.add('active');
+          }, 400);
+          return;
+        }
+
+        advanceToNextStep();
+      };
+    }
+
+    function handleEdRaidAction(action) {
+      sound.init();
+      document.getElementById('edRaidModalBackdrop').classList.remove('active');
+
+      if (action === 'tank') {
+        sound.playVineBoom();
+        const lost = Math.min(gameState.swissBankPocket, 100);
+        gameState.swissBankPocket -= lost;
+        gameState.edRaidRisk = Math.max(10, gameState.edRaidRisk - 25);
+        showMemePopup(`🚿 জলের ট্যাঙ্কে ₹${lost} কোটি নোট ভিজে নষ্ট! কিন্তু ইডি খালি হাতে ফিরল!`);
+        trigger3DReaction('CORRUPT_STEAL', '"জলের ট্যাঙ্কে নোট ভিজে নষ্ট হলেও গ্রেপ্তার এড়ালাম!"');
+      } else if (action === 'neighbour') {
+        sound.playSlap();
+        const lost = Math.min(gameState.swissBankPocket, 200);
+        gameState.swissBankPocket -= lost;
+        gameState.edRaidRisk = Math.max(10, gameState.edRaidRisk - 15);
+        showMemePopup(`🧱 পড়শির বাড়ি ব্যাগ ছুড়ে ₹${lost} কোটি খোয়ালেন! কিন্তু এফআইআর এড়ালেন!`);
+        trigger3DReaction('BUREAUCRATIC_TRAP', '"পড়শির বাড়ি ব্যাগ ছুড়ে বেঁচে গেলাম!"');
+      } else if (action === 'press') {
+        sound.playAirhorn();
+        gameState.approvalRating = Math.min(100, gameState.approvalRating + 12);
+        gameState.edRaidRisk = Math.min(100, gameState.edRaidRisk + 15);
+        showMemePopup('🎤 প্রেসের সামনে কান্নাকাটি! জনগণ সমবেদনা জানাল!');
+        trigger3DReaction('GENUINE_WORK', '"আমাদের বিরুদ্ধে মিথ্যা চক্রান্ত চলছে!"');
+      }
+
+      updateHUD();
+      setTimeout(advanceToNextStep, 1000);
+    }
+
+    function advanceToNextStep() {
+      if (gameState.currentDilemmaIndex < DILEMMAS.length - 1) {
+        loadDilemma(gameState.currentDilemmaIndex + 1);
+      } else {
+        sound.playAirhorn();
+        showMemePopup('🔥 ৫টি ফান্ডের কাজ শেষ! এবার টিভির ঝগড়া শুরু! 🔥');
+        setTimeout(() => {
+          startDebateBattle();
+        }, 1600);
+      }
+    }
+
+    function showMemePopup(text) {
+      const popup = document.getElementById('memeTextPopup');
+      popup.innerText = text;
+      popup.classList.add('show');
+      setTimeout(() => {
+        popup.classList.remove('show');
+      }, 1500);
+    }
+
+    /* ============================================================
+       PHASE 3: POLITICAL JHOGRA / TV DEBATE BATTLE
+       ============================================================ */
+    function startDebateBattle() {
+      showView('viewDebate');
+      gameState.debateDecibels = 45;
+
+      // Setup Player Panel
+      document.getElementById('playerDebateAvatar').innerHTML = gameState.selectedLeader.svgAvatar;
+      document.getElementById('playerDebateName').innerText = gameState.selectedLeader.name;
+      document.getElementById('memeSloganBtn').innerText = `২. ${gameState.selectedLeader.memeSlogan}`;
+      document.getElementById('specialMoveBtn').innerText = `৪. ${gameState.selectedLeader.specialMove}`;
+
+      // Setup Opponent Panel
+      document.getElementById('oppDebateAvatar').innerHTML = gameState.opponentLeader.svgAvatar;
+      document.getElementById('oppDebateName').innerText = gameState.opponentLeader.name;
+
+      // Dynamic Opponent Accusation based on corruption / decisions
+      let accusation = '"সব টাকা নিজের পকেটে ভরেছেন! কাটমানির জবাব দিন!"';
+      if (gameState.swissBankPocket > 500) {
+        accusation = `"সুইস ব্যাংকে ₹${gameState.swissBankPocket} কোটি টাকা কোথা থেকে এলো? ইডিকে উত্তর দিন!"`;
+      } else if (gameState.approvalRating > 75) {
+        accusation = '"এতো কাজ করে বিরোধীদের মুখ বন্ধ করা চলবে না! কাগজ দেখান!"';
+      }
+
+      document.getElementById('oppBubble').innerText = accusation;
+      sound.playGavel();
+      sound.speakText('দ্যা নেশন ওয়ান্টস টু নো! ফাণ্ডের টাকার হিসাব দিন!');
+      updateDebateMeter();
+    }
+
+    function triggerJhograMove(type) {
+      sound.init();
+      const player = gameState.selectedLeader;
+      const avatarEl = document.getElementById('playerDebateAvatar');
+      avatarEl.classList.add('speaking');
+      setTimeout(() => avatarEl.classList.remove('speaking'), 800);
+
+      if (type === 'fact') {
+        sound.playGavel();
+        if (gameState.swissBankPocket === 0) {
+          document.getElementById('playerBubble').innerText = 'আমরা পাই টু পাই হিসাব রেখেছি! শূন্য দুর্নীতি, ১০০% উন্নয়ন!';
+          showMemePopup('📜 ১০০% ক্লিন অডিট রিপোর্ট! 📜');
+          gameState.debateDecibels = Math.min(100, gameState.debateDecibels + 22);
+        } else {
+          document.getElementById('playerBubble').innerText = 'টাকা তো জনগণের জন্য খরচ হয়েছে! আমাদের বিরুদ্ধে গভীর চক্রান্ত!';
+          showMemePopup('🗣️ চক্রান্তের অভিযোগ! 🗣️');
+          gameState.debateDecibels = Math.min(100, gameState.debateDecibels + 12);
+        }
+      } else if (type === 'meme') {
+        sound.playAirhorn();
+        document.getElementById('playerBubble').innerText = player.quote;
+        sound.speakText(player.quote);
+        showMemePopup(`🔥 ${player.memeSlogan} 🔥`);
+        gameState.debateDecibels = Math.min(100, gameState.debateDecibels + 20);
+      } else if (type === 'mic') {
+        sound.playSlap();
+        sound.playVineBoom();
+        document.getElementById('playerBubble').innerText = 'মিথ্যা অপপ্রচার বন্ধ করুন! জনতা আমাদের সাথে আছে!';
+        showMemePopup('🎤 মাইক ড্রপ থাপ্পড়! 🎤');
+        gameState.debateDecibels = Math.min(100, gameState.debateDecibels + 18);
+      } else if (type === 'special') {
+        sound.playAirhorn();
+        sound.playVineBoom();
+        document.getElementById('playerBubble').innerText = `💥 ${player.specialMove}! বিরোধীরা কুপোকাত!`;
+        sound.speakText(`${player.specialMove}! জনতা জিন্দাবাদ!`);
+        showMemePopup(`⚡ ${player.specialMove} ⚡`);
+        gameState.debateDecibels = 100;
+      }
+
+      updateDebateMeter();
+
+      // Check Debate Win
+      if (gameState.debateDecibels >= 95) {
+        document.getElementById('oppBubble').innerText = 'ওরে বাবারে! হার মেনে নিলাম দাদা! আপনার সামনে দাঁড়ানো অসম্ভব!';
+        sound.playCelebration();
+        showMemePopup('🏆 ডিবেটে মহাজয়! বিরোধীরা কুপোকাত! 🏆');
+
+        setTimeout(() => {
+          startVictoryPhase();
+        }, 1800);
+      }
+    }
+
+    function updateDebateMeter() {
+      document.getElementById('debateMeterFill').style.height = `${gameState.debateDecibels}%`;
+    }
+
+    /* ============================================================
+       PHASE 4: EVM COUNTING & FINAL VERDICT
+       ============================================================ */
+    function startVictoryPhase() {
+      showView('viewVictory');
+      sound.playEVMBeep();
+
+      const evmRows = document.getElementById('evmRows');
+      evmRows.innerHTML = '';
+
+      [gameState.selectedLeader, gameState.opponentLeader].forEach((leader, idx) => {
+        const isWinner = idx === 0;
+        const row = document.createElement('div');
+        row.className = 'evm-row';
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:12px;">
+            <span style="font-size:22px;">${leader.symbol}</span>
+            <strong style="color:${leader.color}; font-size:16px;">${leader.name}</strong>
+          </div>
+          <div style="display:flex; align-items:center; gap:14px;">
+            <div class="evm-lamp ${isWinner ? 'green' : ''}"></div>
+            <button class="evm-btn-press" onclick="sound.playEVMBeep()">🔘</button>
+          </div>
+        `;
+        evmRows.appendChild(row);
+      });
+
+      let count = 0;
+      const targetVotes = gameState.totalVotes + (gameState.approvalRating * 25000);
+      const step = Math.ceil(targetVotes / 28);
+
+      const interval = setInterval(() => {
+        count = Math.min(targetVotes, count + step);
+        document.getElementById('evmCounter').innerText = `VOTES: ${count.toLocaleString()}`;
+        if (count >= targetVotes) {
+          clearInterval(interval);
+          sound.playCelebration();
+          triggerConfetti();
+
+          document.getElementById('winnerAvatarBox').innerHTML = gameState.selectedLeader.svgAvatar;
+          document.getElementById('victoryCelebration').style.display = 'block';
+          document.getElementById('victoryTitle').innerText = `🎉 ${gameState.selectedLeader.name} বিপুল ভোটে বিজয়ী! 🎉`;
+          document.getElementById('victorySubtitle').innerText = `মোট প্রাপ্ত ভোট: ${count.toLocaleString()} | জনতার রায় আপনার সাথে!`;
+
+          document.getElementById('finalPocketMoney').innerText = `₹${gameState.swissBankPocket} কোটি`;
+
+          // Evaluate Title & ED Status
+          if (gameState.swissBankPocket > 600) {
+            document.getElementById('honoraryTitle').innerText = 'সুইস ব্যাংকের কোটিপতি কাটমানি সম্রাট 🤑';
+            document.getElementById('finalEdStatus').innerText = '🚨 জামিন অযোগ্য ওয়ারেন্ট ও তিহাড় জেলের সমন!';
+            document.getElementById('finalEdStatus').style.color = '#ef4444';
+          } else if (gameState.swissBankPocket > 0) {
+            document.getElementById('honoraryTitle').innerText = 'কাজের ফাঁকে পকেট ভরানো বিচক্ষণ চাণক্য 💼';
+            document.getElementById('finalEdStatus').innerText = '⚠️ প্রাথমিক তদন্ত চলছে, ফাইল তলব করা হয়েছে';
+            document.getElementById('finalEdStatus').style.color = '#facc15';
+          } else {
+            document.getElementById('honoraryTitle').innerText = 'জনগণের নিঃস্বার্থ মহান সেবক ও মাস্টারস্ট্রোক ওস্তাদ 🌟';
+            document.getElementById('finalEdStatus').innerText = '✅ ১০০% ক্লিন চিট! কোনো দুর্নীতির চিহ্ন মেলেনি!';
+            document.getElementById('finalEdStatus').style.color = '#4ade80';
+          }
+
+          sound.speakText(`বিপুল ভোটে বিজয়ী হয়েছেন ${gameState.selectedLeader.name}! অভিনন্দন!`);
+        }
+      }, 25);
+    }
+
+    function restartElection() {
+      location.reload();
+    }
+
+    /* Confetti Particle Engine */
+    function triggerConfetti() {
+      const confCanvas = document.getElementById('confettiCanvas');
+      const cctx = confCanvas.getContext('2d');
+      confCanvas.width = window.innerWidth;
+      confCanvas.height = window.innerHeight;
+
+      const particles = [];
+      const colors = ['#f97316', '#10b981', '#facc15', '#0284c7', '#ef4444', '#a855f7'];
+
+      for (let i = 0; i < 180; i++) {
+        particles.push({
+          x: Math.random() * confCanvas.width,
+          y: Math.random() * confCanvas.height - confCanvas.height,
+          w: Math.random() * 12 + 6,
+          h: Math.random() * 8 + 4,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          vx: Math.random() * 4 - 2,
+          vy: Math.random() * 5 + 4,
+          rot: Math.random() * 360,
+          rotSpeed: Math.random() * 8 - 4
+        });
+      }
+
+      function loop() {
+        cctx.clearRect(0, 0, confCanvas.width, confCanvas.height);
+        particles.forEach(p => {
+          p.x += p.vx;
+          p.y += p.vy;
+          p.rot += p.rotSpeed;
+
+          cctx.save();
+          cctx.translate(p.x, p.y);
+          cctx.rotate((p.rot * Math.PI) / 180);
+          cctx.fillStyle = p.color;
+          cctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          cctx.restore();
+
+          if (p.y > confCanvas.height) {
+            p.y = -20;
+            p.x = Math.random() * confCanvas.width;
+          }
+        });
+        requestAnimationFrame(loop);
+      }
+      loop();
+    }
+  </script>
+</body>
+</html>

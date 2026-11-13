@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Crazy Delivery Rider 3D • Zomato, Swiggy & Blinkit Rush</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700;800&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet" />
+  <!-- Three.js Library -->
+  <script src="spiderman_game/js/three.min.js"></script>
+  <script>
+    if (typeof THREE === 'undefined') {
+      document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>');
+    }
+  </script>
+  <style>
+    :root {
+      --zomato-red: #ef4444;
+      --swiggy-orange: #f97316;
+      --blinkit-yellow: #facc15;
+      --clay-bg: rgba(15, 23, 42, 0.88);
+      --btn-shadow: 0 8px 18px rgba(0, 0, 0, 0.35), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: manipulation;
+    }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f172a;
+      font-family: 'Fredoka', cursive, system-ui, sans-serif;
+      position: fixed;
+    }
+    #gameCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+    .top-hud {
+      position: fixed;
+      top: 14px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 50;
+      pointer-events: none;
+      gap: 10px;
+    }
+    .hud-pill {
+      pointer-events: auto;
+      background: var(--clay-bg);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(12px);
+      padding: 8px 16px;
+      border-radius: 999px;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+    .order-card {
+      pointer-events: auto;
+      background: var(--clay-bg);
+      border: 2.5px solid #ffffff;
+      border-radius: 20px;
+      padding: 10px 18px;
+      backdrop-filter: blur(14px);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      min-width: 260px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    }
+    .status-badge {
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      background: #10b981;
+      text-transform: uppercase;
+    }
+    .order-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #facc15;
+    }
+    .timer-box {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .timer-val {
+      font-size: 24px;
+      font-weight: 900;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .timer-val.urgent {
+      color: #ef4444;
+      animation: timerPulse 0.4s infinite alternate;
+    }
+    @keyframes timerPulse {
+      0% { transform: scale(1); text-shadow: 0 0 5px #ef4444; }
+      100% { transform: scale(1.25); text-shadow: 0 0 20px #ef4444; }
+    }
+    .dist-txt {
+      font-size: 12px;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+    #appNotification {
+      position: fixed;
+      top: 205px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-30px);
+      background: #10b981;
+      color: #ffffff;
+      padding: 10px 24px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 15px;
+      border: 2px solid #ffffff;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+      z-index: 60;
+      opacity: 0;
+      transition: all 0.25s ease-out;
+      pointer-events: none;
+    }
+    #appNotification.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+    #comic-container {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 70;
+      overflow: hidden;
+    }
+    .comic-popup {
+      position: absolute;
+      font-size: 32px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      color: #facc15;
+      background: #ef4444;
+      padding: 8px 22px;
+      border-radius: 14px;
+      border: 3.5px solid #ffffff;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5), 0 0 25px #ef4444;
+      text-shadow: 2px 2px 0 #000, -2px -2px 0 #000;
+      transition: transform 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28), opacity 0.2s ease-out;
+      opacity: 0;
+    }
+    .bottom-hud {
+      position: fixed;
+      bottom: 20px;
+      left: 14px;
+      right: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      z-index: 50;
+      pointer-events: none;
+    }
+    .speedo-card {
+      pointer-events: auto;
+      background: var(--clay-bg);
+      border: 2.5px solid #ffffff;
+      border-radius: 24px;
+      padding: 10px 18px;
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.45);
+    }
+    .speedo-number {
+      font-size: 36px;
+      font-weight: 900;
+      font-family: 'JetBrains Mono', monospace;
+      color: #facc15;
+      line-height: 1;
+      transition: color 0.1s;
+    }
+    .speedo-number.overspeed {
+      color: #ef4444 !important;
+      text-shadow: 0 0 16px #ef4444;
+      animation: overspeedPulse 0.22s infinite alternate;
+    }
+    .speedo-card.overspeed-card {
+      border-color: #ef4444 !important;
+      box-shadow: 0 0 25px rgba(239, 68, 68, 0.8) !important;
+    }
+    @keyframes overspeedPulse {
+      from { transform: scale(1.0); }
+      to { transform: scale(1.12); }
+    }
+    .speedo-unit {
+      font-size: 11px;
+      font-weight: 800;
+      color: #94a3b8;
+      letter-spacing: 1px;
+    }
+    .nitro-track {
+      width: 100px;
+      height: 8px;
+      background: #334155;
+      border-radius: 999px;
+      margin-top: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .nitro-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8);
+      width: 100%;
+      box-shadow: 0 0 10px #38bdf8;
+      transition: width 0.1s linear;
+    }
+    .controls-group {
+      display: flex;
+      gap: 12px;
+      pointer-events: auto;
+    }
+    .ctrl-btn {
+      background: var(--clay-bg);
+      border: 2.5px solid #ffffff;
+      border-radius: 20px;
+      width: 66px;
+      height: 66px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 12px;
+      box-shadow: var(--btn-shadow);
+      cursor: pointer;
+      touch-action: none;
+      transition: all 0.1s ease;
+    }
+    .ctrl-btn:active { transform: scale(0.92); }
+    .ctrl-btn.gas { background: #16a34a; }
+    .ctrl-btn.brake { background: #dc2626; }
+    .ctrl-btn.nitro { background: #0284c7; }
+    .ctrl-btn.horn { background: #f59e0b; }
+    .btn-icon { font-size: 22px; line-height: 1; }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+    .modal-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 30px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      border: 4px solid #facc15;
+    }
+    .modal-title { font-size: 28px; font-weight: 900; color: #0f172a; text-transform: uppercase; }
+    .modal-subtitle { font-size: 14px; color: #64748b; margin-top: 4px; margin-bottom: 20px; font-weight: 600; }
+    .company-grid { display: grid; grid-template-columns: 1fr; gap: 12px; margin-bottom: 20px; }
+    .company-btn {
+      border: 3px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 14px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      background: #f8fafc;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+    .company-btn:hover { transform: translateY(-2px); border-color: #38bdf8; }
+    .company-btn.active { border-color: #ef4444; background: #fff1f2; }
+    .company-btn.zomato { border-left: 10px solid #ef4444; }
+    .company-btn.swiggy { border-left: 10px solid #f97316; }
+    .company-btn.blinkit { border-left: 10px solid #facc15; }
+    .comp-icon { font-size: 30px; }
+    .comp-name { font-size: 16px; font-weight: 800; color: #0f172a; }
+    .comp-desc { font-size: 12px; color: #64748b; font-weight: 500; }
+    .action-btn {
+      background: #ef4444;
+      color: #ffffff;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(239, 68, 68, 0.45);
+      transition: all 0.15s ease;
+      width: 100%;
+    }
+    .action-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(239, 68, 68, 0.6); }
+    .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+    .stat-box { background: #f8fafc; border-radius: 16px; padding: 12px; border: 2px solid #e2e8f0; }
+    .stat-box-label { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+    .stat-box-val { font-size: 22px; font-weight: 900; color: #0f172a; }
+
+    /* Turn-by-Turn GPS Navigation Banner */
+    .gps-nav-banner {
+      pointer-events: auto;
+      background: rgba(15, 23, 42, 0.94);
+      border: 2.5px solid #38bdf8;
+      border-radius: 999px;
+      padding: 6px 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 13px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
+      letter-spacing: 0.5px;
+    }
+    .gps-needle {
+      font-size: 20px;
+      color: #facc15;
+      display: inline-block;
+      transform-origin: center center;
+      transition: transform 0.12s cubic-bezier(0.2, 0.9, 0.3, 1);
+      text-shadow: 0 0 10px rgba(250, 204, 21, 0.7);
+    }
+    .radar-card {
+      pointer-events: auto;
+      background: var(--clay-bg);
+      border: 2px solid rgba(255, 255, 255, 0.85);
+      border-radius: 20px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(12px);
+    }
+    .radar-label {
+      font-size: 10px;
+      font-weight: 800;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
+    }
+
+    /* Garage Modal & Store */
+    .garage-modal-card {
+      max-width: 640px !important;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .garage-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .garage-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: #f8fafc;
+      border: 2.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 12px 16px;
+      transition: all 0.15s ease;
+    }
+    .garage-card:hover {
+      transform: translateY(-2px);
+      border-color: #94a3b8;
+    }
+    .garage-card.selected {
+      border-color: #10b981;
+      background: #f0fdf4;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+    }
+    .garage-card-icon {
+      font-size: 34px;
+      min-width: 46px;
+      text-align: center;
+    }
+    .garage-card-details {
+      flex: 1;
+      text-align: left;
+    }
+    .garage-card-name {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+    }
+    .garage-card-desc {
+      font-size: 12px;
+      color: #64748b;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+    .garage-card-stats {
+      font-size: 12px;
+      color: #0284c7;
+      font-weight: 700;
+      margin-top: 4px;
+    }
+    .garage-card-action {
+      min-width: 110px;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .garage-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 18px;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .garage-btn.equipped {
+      background: #10b981;
+      color: #ffffff;
+      cursor: default;
+    }
+    .garage-btn.select-btn {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .garage-btn.select-btn:hover {
+      background: #1d4ed8;
+      transform: scale(1.05);
+    }
+    .garage-btn.buy-btn {
+      background: #f59e0b;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    }
+    .garage-btn.buy-btn:hover {
+      background: #d97706;
+      transform: scale(1.05);
+    }
+
+    /* Garage Category Tabs */
+    .garage-tabs {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      margin-bottom: 8px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+    .garage-tab-btn {
+      background: #f1f5f9;
+      border: 2px solid #cbd5e1;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-weight: 800;
+      font-size: 13px;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .garage-tab-btn.active {
+      background: #ef4444;
+      color: #ffffff;
+      border-color: #ef4444;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+    }
+
+    /* Mud Splatter Screen Effect */
+    .mud-splatter-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 80;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+    .mud-splatter-overlay.active {
+      opacity: 1;
+    }
+    .mud-blot {
+      position: absolute;
+      background: radial-gradient(circle, #451a03 30%, #78350f 70%, transparent 90%);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      filter: blur(1.5px);
+    }
+    .mud-blot.b1 {
+      width: 140px;
+      height: 120px;
+      top: 25%;
+      left: 30%;
+      transform: rotate(25deg);
+    }
+    .mud-blot.b2 {
+      width: 180px;
+      height: 150px;
+      top: 40%;
+      left: 55%;
+      transform: rotate(-15deg);
+    }
+    .mud-blot.b3 {
+      width: 100px;
+      height: 90px;
+      top: 60%;
+      left: 35%;
+      transform: rotate(45deg);
+    }
+    .mud-wiper {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -20%;
+      width: 15px;
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.7);
+      opacity: 0;
+    }
+    .mud-splatter-overlay.active .mud-wiper {
+      opacity: 1;
+      animation: wiperSweep 1.6s ease-in-out forwards;
+    }
+    @keyframes wiperSweep {
+      0% { left: 0%; transform: rotate(-10deg); }
+      50% { left: 100%; transform: rotate(10deg); }
+      100% { left: 0%; transform: rotate(-10deg); }
+    }
+
+    /* Speed Trap Camera Flash */
+    .speed-flash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0;
+      transition: opacity 0.05s ease-out;
+    }
+    .speed-flash-overlay.flash {
+      opacity: 0.92;
+      transition: opacity 0.02s ease-in;
+    }
+  </style>
+</head>
+<body>
+  <div id="gameCanvas"></div>
+
+  <!-- Mud Splatter Overlay on Screen -->
+  <div id="mudSplatter" class="mud-splatter-overlay">
+    <div class="mud-blot b1"></div>
+    <div class="mud-blot b2"></div>
+    <div class="mud-blot b3"></div>
+    <div class="mud-wiper"></div>
+  </div>
+
+  <!-- Speed Trap Camera Flash Screen Overlay -->
+  <div id="speedFlashOverlay" class="speed-flash-overlay"></div>
+
+  <div class="top-hud">
+    <!-- Left Navigation, Camera/Weather & Mini-Map Radar -->
+    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start; pointer-events: none;">
+      <a href="arcade_hub.html" class="hud-pill" style="text-decoration: none;">
+        <span>🏠</span>
+        <span>Arcade Hub</span>
+      </a>
+      <div style="display: flex; gap: 6px;">
+        <button class="hud-pill" id="btnCam" style="cursor: pointer; padding: 6px 12px; font-size: 12px;" title="Camera Mode [C]">
+          <span>📹</span>
+          <span id="camModeTxt">CHASE</span>
+        </button>
+        <button class="hud-pill" id="btnWeather" style="cursor: pointer; padding: 6px 12px; font-size: 12px;" title="Weather [V]">
+          <span>🌤️</span>
+          <span id="weatherTxt">SUNNY</span>
+        </button>
+      </div>
+      <!-- Mini-Map GPS Radar (Flows cleanly below buttons without overlapping) -->
+      <div class="radar-card" id="radarCard">
+        <div class="radar-label">📡 GPS RADAR</div>
+        <canvas id="radarCanvas" width="96" height="96"></canvas>
+      </div>
+    </div>
+
+    <!-- Center: Order Tracking Card & Turn-by-Turn GPS Banner -->
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; pointer-events: none;">
+      <div class="order-card">
+        <div class="status-badge" id="orderStatusBadge">STEP 1: PICKUP ORDER</div>
+        <div class="order-title" id="orderItemTxt">Loading Next Order...</div>
+        <div class="timer-box">
+          <span>⏱️ BOMB TIMER:</span>
+          <span class="timer-val" id="timerVal">--s</span>
+        </div>
+        <div class="dist-txt" id="distVal">0m to Restaurant</div>
+      </div>
+
+      <!-- Turn-by-Turn GPS Navigation Banner (Stacked neatly below Order Card) -->
+      <div class="gps-nav-banner" id="gpsNavBanner" style="display: none;">
+        <div class="gps-needle" id="gpsNeedle">⬆</div>
+        <div class="gps-info">
+          <div id="gpsInstructionTxt">⬆ STRAIGHT AHEAD (65m)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Earnings, Garage & Meme Audio -->
+    <div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-end;">
+      <div class="hud-pill">
+        <span>💵</span>
+        <span id="cashVal" style="color: #4ade80;">₹0</span>
+      </div>
+      <div style="display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
+        <button class="hud-pill" id="btnRadio" style="cursor: pointer; background: #9333ea; padding: 6px 12px; font-size: 12px;" title="Delivery FM Radio [R]">
+          <span>📻</span>
+          <span id="radioStationTxt">FM Radio [R]</span>
+        </button>
+        <button class="hud-pill" id="btnGarage" style="cursor: pointer; background: #6366f1; padding: 6px 12px; font-size: 12px;" title="Vehicle Garage [G]">
+          <span>🏪</span>
+          <span>Garage [G]</span>
+        </button>
+        <button class="hud-pill" id="memeBgmBtn" style="cursor: pointer; padding: 6px 12px; font-size: 12px;">
+          <span>🎵</span>
+          <span>Meme Song</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div id="appNotification">📱 NEW ORDER RECEIVED!</div>
+  <div id="comic-container"></div>
+
+  <div class="bottom-hud">
+    <div class="controls-group">
+      <button class="ctrl-btn" id="btnLeft">
+        <span class="btn-icon">◀</span>
+        <span>LEFT</span>
+      </button>
+      <button class="ctrl-btn" id="btnRight">
+        <span class="btn-icon">▶</span>
+        <span>RIGHT</span>
+      </button>
+      <button class="ctrl-btn" id="btnDrift" style="background: #6366f1;">
+        <span class="btn-icon">💨</span>
+        <span>DRIFT</span>
+      </button>
+      <button class="ctrl-btn wheelie" id="btnWheelie" style="background: #e11d48;">
+        <span class="btn-icon">🔥</span>
+        <span>WHEELIE [F]</span>
+      </button>
+    </div>
+
+    <div class="speedo-card">
+      <div class="speedo-number" id="speedoVal">0</div>
+      <div class="speedo-unit">KM/H</div>
+      <div style="font-size: 10px; color: #facc15; font-weight: 800; margin-top: 1px;">⚡ LIMIT: 80 KM/H</div>
+      <div class="nitro-track" title="Nitro Boost Meter">
+        <div class="nitro-fill" id="nitroFill"></div>
+      </div>
+      <div style="font-size: 10px; color: #38bdf8; font-weight: 700; margin-top: 2px;">NITRO [SHIFT]</div>
+    </div>
+
+    <div class="controls-group">
+      <button class="ctrl-btn horn" id="btnHorn">
+        <span class="btn-icon">📢</span>
+        <span>HORN [H]</span>
+      </button>
+      <button class="ctrl-btn nitro" id="btnNitro">
+        <span class="btn-icon">⚡</span>
+        <span>NITRO</span>
+      </button>
+      <button class="ctrl-btn brake" id="btnBrake">
+        <span class="btn-icon">🛑</span>
+        <span>BRAKE</span>
+      </button>
+      <button class="ctrl-btn gas" id="btnGas">
+        <span class="btn-icon">🚀</span>
+        <span>GAS [W]</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="startModal">
+    <div class="modal-card">
+      <h1 class="modal-title">CRAZY DELIVERY RIDER 3D</h1>
+      <p class="modal-subtitle">Pick your company, beat the traffic & deliver before the bomb timer blasts!</p>
+
+      <div class="company-grid">
+        <div class="company-btn zomato active" data-company="ZOMATO">
+          <div class="comp-icon">🔴</div>
+          <div>
+            <div class="comp-name">Zomato Delivery Rider</div>
+            <div class="comp-desc">Signature Red Thermal Bag & 150cc Street Bike</div>
+          </div>
+        </div>
+
+        <div class="company-btn swiggy" data-company="SWIGGY">
+          <div class="comp-icon">🟠</div>
+          <div>
+            <div class="comp-name">Swiggy Instant Rider</div>
+            <div class="comp-desc">Signature Orange Bag & City Street Scooter</div>
+          </div>
+        </div>
+
+        <div class="company-btn blinkit" data-company="BLINKIT">
+          <div class="comp-icon">🟡</div>
+          <div>
+            <div class="comp-name">Blinkit 10-Minute Express</div>
+            <div class="comp-desc">Yellow Grocery Crate & Ultra-Fast E-Bike</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: #475569; margin-bottom: 16px; font-weight: 600;">
+        ⚠️ <b>Warning</b>: Overtake autos & buses closely for <b>+NITRO</b>! If time runs out, the bike <b>BLASTS</b>! 💥
+      </p>
+
+      <button class="action-btn" id="startBtn">START DELIVERIES! 🛵💨</button>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="gameOverModal" style="display: none;">
+    <div class="modal-card">
+      <h1 class="modal-title" style="color: var(--zomato-red);">💥 BIKE EXPLODED!</h1>
+      <p class="modal-subtitle">Delivery time expired or catastrophic crash!</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-box-label">Cash Tips Earned</div>
+          <div class="stat-box-val" id="finalCashVal" style="color: #16a34a;">₹0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Orders Delivered</div>
+          <div class="stat-box-val" id="finalOrdersVal">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Near-Miss Overtakes</div>
+          <div class="stat-box-val" id="finalOvertakesVal" style="color: #f59e0b;">0</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-box-label">Total Score</div>
+          <div class="stat-box-val" id="finalScoreVal">0</div>
+        </div>
+      </div>
+
+      <button class="action-btn" id="restartBtn">RIDE AGAIN 🔄</button>
+    </div>
+  </div>
+
+  <!-- Garage & Vehicle Upgrades Modal -->
+  <div class="modal-backdrop" id="garageModal" style="display: none;">
+    <div class="modal-card garage-modal-card">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <h1 class="modal-title" style="margin-bottom: 0;">🛵 RIDER'S GARAGE & STORE</h1>
+        <div class="hud-pill" style="font-size: 14px;">
+          <span>💵 CASH:</span>
+          <span id="garageCashVal" style="color: #4ade80;">₹0</span>
+        </div>
+      </div>
+      <p class="modal-subtitle">Upgrade from an eco-cycle to a 100cc Splendor, drift Auto, or 1300cc Hayabusa rocket!</p>
+
+      <!-- Garage Category Tabs -->
+      <div class="garage-tabs">
+        <button class="garage-tab-btn active" id="tabVehicles">🛵 VEHICLES & BIKES</button>
+        <button class="garage-tab-btn" id="tabBags">🎒 DELIVERY GEAR & BAGS</button>
+      </div>
+
+      <div class="garage-list" id="garageList">
+        <!-- Dynamically populated via DeliveryGame.updateGarageUI -->
+      </div>
+
+      <div style="margin-top: 16px; display: flex; gap: 10px; justify-content: flex-end;">
+        <button class="action-btn" id="closeGarageBtn" style="background: #334155; width: auto; padding: 10px 24px;">CLOSE [G]</button>
+      </div>
+    </div>
+  </div>
+
+  <div style="display: none;">
+    <span id="scoreVal">0</span>
+    <span id="ordersVal">0</span>
+  </div>
+
+  <script src="delivery_rider/js/sound.js"></script>
+  <script src="delivery_rider/js/city.js"></script>
+  <script src="delivery_rider/js/vehicle.js"></script>
+  <script src="delivery_rider/js/traffic.js"></script>
+  <script src="delivery_rider/js/game.js"></script>
+</body>
+</html>

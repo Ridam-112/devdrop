@@ -1,0 +1,80 @@
+:root {
+  --primary-yellow: #facc15;
+  --monsoon-blue: #0284c7;
+  --rain-dark: #090d16;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: var(--rain-dark);
+  font-family: 'Fredoka', cursive, system-ui, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+}
+
+#game-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  display: block;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7);
+}
+
+/* Portrait Warning on Mobile */
+#orientation-prompt {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(9, 13, 22, 0.95);
+  backdrop-filter: blur(12px);
+  z-index: 9999;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+}
+
+.prompt-card {
+  background: #1e293b;
+  border: 2px solid #38bdf8;
+  border-radius: 24px;
+  padding: 28px;
+  text-align: center;
+  color: #fff;
+  max-width: 360px;
+  box-shadow: 0 16px 36px rgba(0,0,0,0.6);
+}
+
+.prompt-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  animation: rotatePhone 2s infinite ease-in-out;
+}
+
+@keyframes rotatePhone {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
+@media (max-width: 900px) and (orientation: portrait) {
+  #orientation-prompt {
+    display: flex;
+  }
+}

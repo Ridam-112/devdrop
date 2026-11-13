@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Balloon Pop - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #2c3e50;
+    }
+    #game-container {
+      position: relative;
+      width: 460px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fdfefe;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 17px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 30px 24px;
+      border-radius: 34px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), -8px -8px 24px #ffffff,
+                  inset 4px 4px 8px #ffffff, inset -4px -4px 8px rgba(160, 178, 202, 0.25);
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 360px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #ff7675 0%, #e84393 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 18px;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 26px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(232, 67, 147, 0.35),
+                  inset 2px 2px 4px rgba(255, 255, 255, 0.6), inset -3px -3px 5px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 18px;
+    }
+    .clay-btn:hover { transform: translateY(-2px) scale(1.03); }
+    .clay-btn:active { transform: translateY(2px) scale(0.97); }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="460" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🎈</span>
+        <span id="score-val">0</span>
+      </div>
+      <div class="clay-pill" id="lives-val">
+        <span>❤️</span><span>❤️</span><span>❤️</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🎈 📍 ✨</div>
+        <h1 style="color: #e84393; font-size: 32px; font-weight: 700;">Balloon Pop</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Tap and pop the clay balloons before they float away! Don't touch the spiky black bombs!</p>
+        <button id="btn-start" class="clay-btn">START POPPING ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 🎈</div>
+        <h1 style="color: #ff5252; font-size: 30px; font-weight: 700;">GAME OVER</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">Too many balloons floated away!</p>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px;">
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #e84393;" id="final-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Score</div>
+          </div>
+          <div style="background: #f0f4f9; padding: 10px; border-radius: 16px;">
+            <div style="font-size: 24px; font-weight: 700; color: #f1c40f;" id="best-score">0</div>
+            <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Best</div>
+          </div>
+        </div>
+        <button id="btn-restart" class="clay-btn">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      pop() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(450, now);
+        o.frequency.exponentialRampToValueAtTime(80, now + 0.1);
+        g.gain.setValueAtTime(0.4, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.12);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.12);
+      }
+      boom() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const now = this.ctx.currentTime;
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(140, now);
+        o.frequency.exponentialRampToValueAtTime(30, now + 0.35);
+        g.gain.setValueAtTime(0.5, now);
+        g.gain.exponentialRampToValueAtTime(0.01, now + 0.4);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(now); o.stop(now + 0.4);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 460;
+    const H = 720;
+
+    let gameState = 'START';
+    let score = 0;
+    let lives = 3;
+    let bestScore = parseInt(localStorage.getItem('balloon_pop_best') || '0', 10);
+    let balloons = [];
+    let particles = [];
+    let spawnTimer = 0;
+
+    const COLORS = [
+      { fill: '#ff7675', glow: '#fab1a0', points: 1 },
+      { fill: '#74b9ff', glow: '#a29bfe', points: 1 },
+      { fill: '#55efc4', glow: '#81ecec', points: 1 },
+      { fill: '#ffeaa7', glow: '#fdcb6e', points: 2 },
+      { fill: '#fd79a8', glow: '#e84393', points: 1 }
+    ];
+
+    class Balloon {
+      constructor() {
+        this.isBomb = Math.random() < 0.18;
+        this.color = this.isBomb ? { fill: '#2d3436', glow: '#636e72', points: 0 } : COLORS[Math.floor(Math.random() * COLORS.length)];
+        this.r = 28 + Math.random() * 8;
+        this.x = 40 + Math.random() * (W - 80);
+        this.y = H + 50;
+        this.vy = -(2.2 + Math.random() * 2.5);
+        this.swaySpeed = 0.03 + Math.random() * 0.03;
+        this.swayAmp = 18 + Math.random() * 15;
+        this.swayOffset = Math.random() * Math.PI * 2;
+        this.baseX = this.x;
+        this.popped = false;
+      }
+      update() {
+        this.y += this.vy;
+        this.x = this.baseX + Math.sin(this.swayOffset) * this.swayAmp;
+        this.swayOffset += this.swaySpeed;
+      }
+      draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+
+        // String
+        ctx.strokeStyle = '#b2bec3';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(0, this.r * 1.15);
+        ctx.quadraticCurveTo(6, this.r * 1.5, 0, this.r * 1.9);
+        ctx.stroke();
+
+        // Balloon knot
+        ctx.fillStyle = this.color.fill;
+        ctx.beginPath();
+        ctx.moveTo(-4, this.r * 1.15);
+        ctx.lineTo(4, this.r * 1.15);
+        ctx.lineTo(0, this.r * 1.05);
+        ctx.fill();
+
+        // Clay Drop Shadow
+        ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+        ctx.shadowBlur = 12;
+        ctx.shadowOffsetY = 8;
+
+        // Clay Balloon Body
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.r * 0.88, this.r * 1.1, 0, 0, Math.PI * 2);
+        ctx.fillStyle = this.color.fill;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+        ctx.shadowOffsetY = 0;
+
+        // Clay Highlight Gradient
+        const grad = ctx.createRadialGradient(-this.r * 0.35, -this.r * 0.35, this.r * 0.1, 0, 0, this.r);
+        grad.addColorStop(0, 'rgba(255, 255, 255, 0.65)');
+        grad.addColorStop(0.5, 'rgba(255, 255, 255, 0.1)');
+        grad.addColorStop(1, 'rgba(0, 0, 0, 0.15)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, this.r * 0.88, this.r * 1.1, 0, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (this.isBomb) {
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 20px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('💣', 0, 7);
+        }
+
+        ctx.restore();
+      }
+    }
+
+    function spawnPopParticles(x, y, color) {
+      for (let i = 0; i < 16; i++) {
+        const ang = Math.random() * Math.PI * 2;
+        const spd = 2 + Math.random() * 5;
+        particles.push({
+          x, y,
+          vx: Math.cos(ang) * spd,
+          vy: Math.sin(ang) * spd,
+          r: 3 + Math.random() * 4,
+          color,
+          alpha: 1,
+          decay: 0.025
+        });
+      }
+    }
+
+    function initGame() {
+      score = 0;
+      lives = 3;
+      balloons = [];
+      particles = [];
+      spawnTimer = 0;
+      updateHUD();
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function gameOver() {
+      gameState = 'GAMEOVER';
+      if (score > bestScore) {
+        bestScore = score;
+        localStorage.setItem('balloon_pop_best', bestScore);
+      }
+      document.getElementById('final-score').innerText = score;
+      document.getElementById('best-score').innerText = bestScore;
+      document.getElementById('gameover-screen').classList.remove('hidden');
+    }
+
+    function updateHUD() {
+      document.getElementById('score-val').innerText = score;
+      const hearts = document.querySelectorAll('#lives-val span');
+      hearts.forEach((h, idx) => {
+        h.style.opacity = idx < lives ? '1' : '0.2';
+      });
+    }
+
+    function checkPop(x, y) {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = (x - rect.left) * (W / rect.width);
+      const clickY = (y - rect.top) * (H / rect.height);
+
+      for (let i = balloons.length - 1; i >= 0; i--) {
+        const b = balloons[i];
+        const dist = Math.hypot(clickX - b.x, clickY - b.y);
+        if (dist < b.r * 1.1) {
+          if (b.isBomb) {
+            sound.boom();
+            lives--;
+            updateHUD();
+            spawnPopParticles(b.x, b.y, '#e74c3c');
+            balloons.splice(i, 1);
+            if (lives <= 0) gameOver();
+          } else {
+            sound.pop();
+            score += b.color.points;
+            updateHUD();
+            spawnPopParticles(b.x, b.y, b.color.fill);
+            balloons.splice(i, 1);
+          }
+          break;
+        }
+      }
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+      if (gameState === 'PLAYING') checkPop(e.clientX, e.clientY);
+    });
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function loop() {
+      ctx.fillStyle = '#fdfefe';
+      ctx.fillRect(0, 0, W, H);
+
+      if (gameState === 'PLAYING') {
+        spawnTimer++;
+        if (spawnTimer > 42) {
+          spawnTimer = 0;
+          balloons.push(new Balloon());
+        }
+
+        for (let i = balloons.length - 1; i >= 0; i--) {
+          const b = balloons[i];
+          b.update();
+          b.draw();
+
+          // Escaped unpopped balloon
+          if (b.y < -60) {
+            if (!b.isBomb) {
+              lives--;
+              updateHUD();
+              if (lives <= 0) gameOver();
+            }
+            balloons.splice(i, 1);
+          }
+        }
+      }
+
+      // Particles
+      for (let i = particles.length - 1; i >= 0; i--) {
+        const p = particles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.15;
+        p.alpha -= p.decay;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, p.alpha);
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+        if (p.alpha <= 0) particles.splice(i, 1);
+      }
+
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

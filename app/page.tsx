@@ -32,7 +32,7 @@ import { HomeQuickTools } from "@/components/HomeQuickTools";
 export const metadata: Metadata = {
   title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite | DevDrop Online",
   description:
-    "Official DevDrop (devdrop.online) platform: 140+ free client-side developer tools, peer-to-peer file drop utilities, image compressor, background remover, QR code generator, PDF maker, and 24+ open-source HTML5 games. 100% private, zero logs.",
+    "Official DevDrop (devdrop.online) platform: 140+ free client-side developer tools, peer-to-peer file drop utilities, image compressor, background remover, QR code generator, PDF maker, and 70+ open-source HTML5 games. 100% private, zero logs.",
   keywords: [
     "DevDrop",
     "devdrop",
@@ -59,7 +59,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "DevDrop — Official #1 All-in-One Online Web Tools & Utilities Suite",
     description:
-      "100% private, client-side tools for file transfer, image compression, background removal, QR codes, PDFs, developer decoders, and 24+ open-source HTML5 games.",
+      "100% private, client-side tools for file transfer, image compression, background removal, QR codes, PDFs, developer decoders, and 70+ open-source HTML5 games.",
     url: "https://devdrop.online",
     siteName: "DevDrop",
     type: "website",
@@ -133,7 +133,7 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Compress images, remove photo backgrounds with AI, generate custom QR codes & barcodes, compile PDFs, format JSON, calculate loans, and play 24+ open-source HTML5 games.
+            Compress images, remove photo backgrounds with AI, generate custom QR codes & barcodes, compile PDFs, format JSON, calculate loans, and play 70+ open-source 3D and HTML5 browser games.
           </p>
 
           {/* Prominent Live Search Engine */}
@@ -269,10 +269,10 @@ export default function HomePage() {
                 <Gamepad2 className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-white mb-2">
-                4. 25+ Open-Source Games
+                4. 70+ Open-Source Games
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Enjoy open-source 3D flight simulators and HTML5 classics (Chaos Skies 3D, 2048, Cyber Snake, Space Defender, Tetris) with zero installs.
+                Enjoy 70+ open-source 3D flight simulators, clay arcade classics, sports games, and retro puzzles with zero installs.
               </p>
             </div>
           </div>
@@ -331,7 +331,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto px-6 py-4 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
                 >
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
-                  <span>Browse All 25+ Games</span>
+                  <span>Browse All 70+ Games</span>
                 </Link>
               </div>
             </div>
@@ -465,9 +465,9 @@ export default function HomePage() {
               </p>
             </div>
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
-              <span className="text-purple-400 font-bold text-sm font-mono block">24+ Open Source HTML5 Games</span>
+              <span className="text-purple-400 font-bold text-sm font-mono block">70+ Open Source HTML5 Games</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Take a quick productivity break with classic open-source games including 2048, SimCity (Micropolis), Space Defender, Cyber Snake, and Command & Conquer directly in your browser tab.
+                Take a quick productivity break with 70+ games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, Spider-Man 3D, 2048, and Space Defender directly in your browser.
               </p>
             </div>
           </div>
@@ -499,7 +499,7 @@ export default function HomePage() {
                 How does DevDrop compare to devdrop.in?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                While <span className="text-neutral-300 font-mono">devdrop.in</span> is an isolated single-function tool for transferring files between a phone and computer, <strong>DevDrop Online (devdrop.online)</strong> is a complete web utility powerhouse. DevDrop gives you file tools (PDF makers, photo-to-PDF, image compressors, background removers), QR code transfer tools, 140+ developer utilities, and 24+ games — all with 100% client-side privacy.
+                While <span className="text-neutral-300 font-mono">devdrop.in</span> is an isolated single-function tool for transferring files between a phone and computer, <strong>DevDrop Online (devdrop.online)</strong> is a complete web utility powerhouse. DevDrop gives you file tools (PDF makers, photo-to-PDF, image compressors, background removers), QR code transfer tools, 140+ developer utilities, and 70+ games — all with 100% client-side privacy.
               </p>
             </div>
 
@@ -562,7 +562,7 @@ export default function HomePage() {
                   "name": "How does DevDrop compare to devdrop.in?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "While devdrop.in is an isolated single-function tool for transferring files between a phone and computer, DevDrop Online (devdrop.online) is a complete web utility powerhouse featuring file tools, image compressors, PDF makers, QR generators, 140+ developer utilities, and 24+ games."
+                    "text": "While devdrop.in is an isolated single-function tool for transferring files between a phone and computer, DevDrop Online (devdrop.online) is a complete web utility powerhouse featuring file tools, image compressors, PDF makers, QR generators, 140+ developer utilities, and 70+ games."
                   }
                 },
                 {

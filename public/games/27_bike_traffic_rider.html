@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>Highway Moto Traffic Rider 3D - Ultimate Edition</title>
+  <!-- Three.js r128 CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <style>
+    :root {
+      --clay-card: #ffffff;
+      --primary: #ff4757;
+      --primary-gradient: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      --accent-yellow: #ffa502;
+      --accent-cyan: #00d2d3;
+      --accent-nitro: #0984e3;
+      --accent-green: #2ed573;
+      --text-dark: #2f3542;
+      --clay-shadow: 8px 14px 28px rgba(0, 0, 0, 0.35), -4px -4px 12px rgba(255, 255, 255, 0.4);
+      --clay-inset: inset 2px 2px 5px rgba(255, 255, 255, 0.7), inset -2px -2px 5px rgba(0, 0, 0, 0.2);
+      --font-main: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f141d;
+      font-family: var(--font-main);
+      color: #fff;
+      touch-action: none;
+    }
+
+    #canvas-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    #damage-flash {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(255, 71, 87, 0.7) 0%, transparent 80%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.08s ease-out;
+      z-index: 5;
+    }
+
+    #speed-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 4;
+    }
+
+    .clay-box {
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      border: 2px solid #ffffff;
+      box-shadow: var(--clay-shadow);
+      color: var(--text-dark);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    /* HUD Layer */
+    #hud-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+      pointer-events: none;
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 18px;
+    }
+
+    .hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      gap: 8px;
+    }
+
+    .hud-metrics {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .hud-card {
+      padding: 6px 14px;
+      display: inline-flex;
+      flex-direction: column;
+      min-width: 80px;
+    }
+
+    .hud-label {
+      font-size: 9px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #747d8c;
+    }
+
+    .hud-val {
+      font-size: 19px;
+      font-weight: 900;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .hud-top-right {
+      display: flex;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .hud-btn {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid #ffffff;
+      border-radius: 14px;
+      background: #ffffff;
+      color: var(--text-dark);
+      font-size: 18px;
+      box-shadow: var(--clay-shadow);
+      transition: all 0.15s ease;
+      touch-action: manipulation;
+    }
+
+    .hud-btn:active {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+    }
+
+    /* Digital Superbike Cluster Dashboard at Center-Top */
+    .cockpit-dashboard {
+      position: absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 6px 22px;
+      border-radius: 22px;
+      min-width: 170px;
+      background: rgba(18, 24, 38, 0.88);
+      border: 2px solid rgba(255, 71, 87, 0.7);
+      box-shadow: 0 4px 20px rgba(255, 71, 87, 0.4), inset 0 0 10px rgba(0, 0, 0, 0.6);
+    }
+
+    .rpm-bar-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+      margin-bottom: 4px;
+      overflow: hidden;
+    }
+
+    #rpm-bar-fill {
+      width: 20%;
+      height: 100%;
+      background: linear-gradient(90deg, #2ed573 0%, #ffa502 70%, #ff4757 100%);
+      transition: width 0.05s linear;
+    }
+
+    .speedo-row {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .speedo-num {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 14px var(--primary);
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .speedo-unit {
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--accent-yellow);
+    }
+
+    .gear-display {
+      font-size: 13px;
+      font-weight: 900;
+      color: var(--accent-cyan);
+      background: rgba(0, 210, 211, 0.15);
+      padding: 1px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--accent-cyan);
+      margin-left: 6px;
+    }
+
+    .wheelie-badge {
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      color: var(--accent-yellow);
+      margin-top: 2px;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      animation: pulseWheelie 0.35s infinite alternate;
+    }
+
+    @keyframes pulseWheelie {
+      from { transform: scale(0.95); filter: brightness(1); }
+      to { transform: scale(1.06); filter: brightness(1.4); }
+    }
+
+    /* Near-Miss Toast Popup */
+    #near-miss-toast {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.7);
+      font-size: 26px;
+      font-weight: 900;
+      color: #fff;
+      background: linear-gradient(135deg, #ffa502 0%, #ff4757 100%);
+      padding: 8px 26px;
+      border-radius: 26px;
+      border: 3px solid #ffffff;
+      box-shadow: 0 8px 30px rgba(255, 71, 87, 0.7);
+      opacity: 0;
+      transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 15;
+    }
+
+    /* Mobile Controls (Ergonomic Phone Layout) */
+    #mobile-controls {
+      position: absolute;
+      bottom: 14px;
+      left: 0;
+      width: 100%;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      pointer-events: auto;
+      z-index: 12;
+      touch-action: none;
+    }
+
+    .control-cluster {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .clay-touch-btn {
+      width: 66px;
+      height: 66px;
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 3px solid #ffffff;
+      color: var(--text-dark);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 13px;
+      box-shadow: var(--clay-shadow);
+      cursor: pointer;
+      touch-action: none;
+      transition: transform 0.08s ease, background 0.08s ease;
+    }
+
+    .clay-touch-btn:active, .clay-touch-btn.pressed {
+      transform: scale(0.92);
+      box-shadow: var(--clay-inset);
+      background: #f1f2f6;
+    }
+
+    .btn-throttle {
+      width: 72px;
+      height: 100px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+      color: #fff;
+      border-color: #ff9ff3;
+      box-shadow: 0 8px 24px rgba(255, 71, 87, 0.5);
+    }
+
+    .btn-brake {
+      width: 66px;
+      height: 84px;
+      border-radius: 24px;
+      background: #ffffff;
+      color: var(--primary);
+    }
+
+    .btn-wheelie {
+      background: linear-gradient(135deg, #ffa502 0%, #eccc68 100%);
+      color: #2f3542;
+      font-size: 11px;
+    }
+
+    .btn-nitro {
+      background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%);
+      color: #fff;
+      font-size: 11px;
+    }
+
+    .btn-horn {
+      background: linear-gradient(135deg, #00d2d3 0%, #70a1ff 100%);
+      color: #fff;
+      font-size: 11px;
+    }
+
+    /* Screen Overlays */
+    .screen-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(10, 15, 24, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      opacity: 1;
+      transition: opacity 0.3s ease;
+    }
+
+    .screen-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+      display: none;
+    }
+
+    .menu-dialog {
+      width: min(520px, 94vw);
+      padding: 34px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .game-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      background: #ffeaa7;
+      border: 2px solid #fdcb6e;
+      color: #d63031;
+    }
+
+    .game-logo {
+      font-size: clamp(30px, 7vw, 42px);
+      font-weight: 900;
+      color: var(--text-dark);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .menu-btn {
+      width: 100%;
+      max-width: 300px;
+      padding: 14px 24px;
+      border: 3px solid #ffffff;
+      border-radius: 20px;
+      background: var(--primary-gradient);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 6px 10px 20px rgba(255, 71, 87, 0.4);
+      touch-action: manipulation;
+    }
+
+    .menu-btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 8px 14px 26px rgba(255, 71, 87, 0.55);
+    }
+
+    .menu-btn.btn-secondary {
+      background: #ffffff;
+      color: var(--text-dark);
+      box-shadow: var(--clay-shadow);
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      text-align: left;
+      font-size: 13px;
+      background: #f1f2f6;
+      padding: 14px;
+      border-radius: 16px;
+      border: 2px solid #ffffff;
+      color: var(--text-dark);
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 2px solid #dfe4ea;
+      font-weight: 800;
+      font-size: 11px;
+      color: var(--primary);
+    }
+
+    .stats-table {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .stat-box {
+      padding: 12px;
+      border-radius: 14px;
+      background: #f1f2f6;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #747d8c;
+      font-weight: 800;
+    }
+
+    .stat-num {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--text-dark);
+    }
+
+    @media (max-width: 650px) {
+      .controls-grid { grid-template-columns: 1fr; }
+      .cockpit-dashboard { min-width: 140px; top: 62px; padding: 4px 14px; }
+      .speedo-num { font-size: 26px; }
+      .clay-touch-btn { width: 56px; height: 56px; }
+      .btn-throttle { width: 62px; height: 86px; }
+      .btn-brake { width: 56px; height: 74px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 3D Canvas Mount Point -->
+  <div id="canvas-container"></div>
+  <canvas id="speed-lines"></canvas>
+  <div id="damage-flash"></div>
+  <div id="near-miss-toast">🔥 NEAR MISS! +150</div>
+
+  <!-- HUD Layer -->
+  <div id="hud-layer">
+    <div class="hud-top">
+      <div class="hud-metrics">
+        <div class="hud-card clay-box">
+          <span class="hud-label">Score</span>
+          <span id="hud-score" class="hud-val">0</span>
+        </div>
+        <div class="hud-card clay-box">
+          <span class="hud-label">Distance</span>
+          <span id="hud-dist" class="hud-val">0 M</span>
+        </div>
+      </div>
+
+      <!-- Cockpit LCD Cluster -->
+      <div class="cockpit-dashboard">
+        <div class="rpm-bar-track">
+          <div id="rpm-bar-fill"></div>
+        </div>
+        <div class="speedo-row">
+          <span id="hud-speed" class="speedo-num">0</span>
+          <span class="speedo-unit">KM/H</span>
+          <span id="hud-gear" class="gear-display">1ST</span>
+        </div>
+        <span id="wheelie-badge" class="wheelie-badge">⚡ WHEELIE BONUS ⚡</span>
+      </div>
+
+      <div class="hud-top-right">
+        <button id="btn-cam-switch" class="hud-btn" title="Camera View">🎥</button>
+        <button id="btn-audio-toggle" class="hud-btn" title="Toggle Sound">🔊</button>
+        <button id="btn-pause-game" class="hud-btn" title="Menu">⏸</button>
+      </div>
+    </div>
+
+    <!-- Mobile Controls (Ergonomic Two-Thumb Phone Play) -->
+    <div id="mobile-controls">
+      <div class="control-cluster">
+        <div id="btn-touch-left" class="clay-touch-btn">◀<br/>LEFT</div>
+        <div id="btn-touch-right" class="clay-touch-btn">▶<br/>RIGHT</div>
+        <div id="btn-touch-horn" class="clay-touch-btn btn-horn">📢<br/>HORN</div>
+      </div>
+
+      <div class="control-cluster">
+        <div id="btn-touch-nitro" class="clay-touch-btn btn-nitro">🚀<br/>NITRO</div>
+        <div id="btn-touch-wheelie" class="clay-touch-btn btn-wheelie">🏍️<br/>WHEELIE</div>
+        <div id="btn-touch-brake" class="clay-touch-btn btn-brake">🛑<br/>BRAKE</div>
+        <div id="btn-touch-gas" class="clay-touch-btn btn-throttle">⚡<br/>GAS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Menu -->
+  <div id="screen-main-menu" class="screen-overlay">
+    <div class="menu-dialog clay-box">
+      <div>
+        <div class="game-badge">3D HIGHWAY RACER • GAME #27</div>
+        <h1 class="game-logo">Moto Traffic<br/>Rider 3D</h1>
+        <p style="font-size: 13px; color: #747d8c; margin-top: 4px;">High-speed highway bike racing & near-miss overtaking</p>
+      </div>
+
+      <p style="font-size: 14px; color: #57606f; line-height: 1.5; max-width: 380px;">
+        Jump onto your 1000cc superbike! Weave through rush-hour highway traffic, skim past cars for <strong>Near Miss</strong> bonuses, ignite Nitro, and pop wheelies at 200+ KM/H!
+      </p>
+
+      <button id="btn-play-game" class="menu-btn">RIDE HIGHWAY</button>
+      <button id="btn-open-controls" class="menu-btn btn-secondary">BIKE MANUAL</button>
+      
+      <div style="font-size: 12px; color: #747d8c; display: flex; gap: 16px; margin-top: 4px;">
+        <div>BEST DIST: <strong id="menu-best-dist" style="color: var(--primary);">0 M</strong></div>
+        <div>BEST SCORE: <strong id="menu-best-score" style="color: var(--accent-yellow);">0</strong></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Instructions Modal -->
+  <div id="screen-controls" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <h2 style="color: var(--text-dark); text-transform: uppercase;">RIDER CONTROLS</h2>
+
+      <div class="controls-grid">
+        <div class="control-row">
+          <span class="badge">W / ▲ / GAS</span>
+          <span>Throttle Acceleration</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">S / ▼ / BRAKE</span>
+          <span>Brake Lever</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">A / D / ◀ ▶</span>
+          <span>Steer & Lean Bike</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">N / NITRO</span>
+          <span>Nitrous Afterburner</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">SHIFT / SPACE</span>
+          <span>Pull Wheelie</span>
+        </div>
+        <div class="control-row">
+          <span class="badge">H / HORN</span>
+          <span>Horn Beep</span>
+        </div>
+      </div>
+
+      <p style="font-size: 13px; color: #57606f; line-height: 1.5; text-align: left;">
+        &bull; <strong>Near Miss:</strong> Overtake vehicles within inches at >100 KM/H for +150 bonus points!<br/>
+        &bull; <strong>Wheelie:</strong> Hold wheelie at high speeds for continuous score multiplier!<br/>
+        &bull; <strong>Collisions:</strong> High-speed crash ends your ride immediately.
+      </p>
+
+      <button id="btn-close-controls" class="menu-btn">RETURN</button>
+    </div>
+  </div>
+
+  <!-- Game Over Screen -->
+  <div id="screen-game-over" class="screen-overlay hidden">
+    <div class="menu-dialog clay-box">
+      <div style="font-size: 42px;">💥</div>
+      <h2 style="color: var(--primary); font-size: 28px; text-transform: uppercase;">HIGHWAY CRASH!</h2>
+      <p style="color: #57606f; font-size: 13px;">Telemetry recorded before fatal impact:</p>
+
+      <div class="stats-table">
+        <div class="stat-box">
+          <span class="stat-label">Final Score</span>
+          <span id="go-score" class="stat-num">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Best Score</span>
+          <span id="go-best-score" class="stat-num">0</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Distance Run</span>
+          <span id="go-dist" class="stat-num">0 M</span>
+        </div>
+        <div class="stat-box">
+          <span class="stat-label">Near Misses</span>
+          <span id="go-near-miss" class="stat-num" style="color: var(--accent-yellow);">0</span>
+        </div>
+      </div>
+
+      <button id="btn-restart-game" class="menu-btn">RIDE AGAIN</button>
+      <button id="btn-quit-to-menu" class="menu-btn btn-secondary">MAIN MENU</button>
+    </div>
+  </div>
+
+  <!-- GAME JAVASCRIPT -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* ==========================================================================
+       1. PROCEDURAL SUPERBIKE SOUND SYNTHESIZER (Pure Web Audio API)
+       ========================================================================== */
+    class BikeAudioEngine {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        this.engineOsc1 = null;
+        this.engineOsc2 = null;
+        this.engineGain = null;
+        this.engineFilter = null;
+        this.nitroNoise = null;
+        this.nitroGain = null;
+      }
+
+      init() {
+        if (this.ctx) {
+          if (this.ctx.state === 'suspended') this.ctx.resume();
+          return;
+        }
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        this.ctx = new AudioCtx();
+
+        // High-rev sportbike twin oscillator (Sawtooth + Triangle)
+        this.engineOsc1 = this.ctx.createOscillator();
+        this.engineOsc1.type = 'sawtooth';
+        this.engineOsc1.frequency.setValueAtTime(65, this.ctx.currentTime);
+
+        this.engineOsc2 = this.ctx.createOscillator();
+        this.engineOsc2.type = 'triangle';
+        this.engineOsc2.frequency.setValueAtTime(130, this.ctx.currentTime);
+
+        this.engineFilter = this.ctx.createBiquadFilter();
+        this.engineFilter.type = 'lowpass';
+        this.engineFilter.frequency.setValueAtTime(350, this.ctx.currentTime);
+
+        this.engineGain = this.ctx.createGain();
+        this.engineGain.gain.setValueAtTime(0.045, this.ctx.currentTime);
+
+        this.engineOsc1.connect(this.engineFilter);
+        this.engineOsc2.connect(this.engineFilter);
+        this.engineFilter.connect(this.engineGain);
+        this.engineGain.connect(this.ctx.destination);
+
+        this.engineOsc1.start();
+        this.engineOsc2.start();
+      }
+
+      updateEngine(speedRatio, isAccelerating, isNitro) {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        // Pitch shift from 60Hz idle to 420Hz redline screaming sportbike
+        const baseFreq = 65 + speedRatio * 320 + (isAccelerating ? 25 : 0) + (isNitro ? 60 : 0);
+        this.engineOsc1.frequency.setTargetAtTime(baseFreq, now, 0.05);
+        this.engineOsc2.frequency.setTargetAtTime(baseFreq * 2, now, 0.05);
+        this.engineFilter.frequency.setTargetAtTime(260 + speedRatio * 980 + (isNitro ? 400 : 0), now, 0.05);
+      }
+
+      playNearMiss() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.18);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.22);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.23);
+      }
+
+      playHorn() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc1 = this.ctx.createOscillator();
+        const osc2 = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc1.frequency.setValueAtTime(420, now);
+        osc2.frequency.setValueAtTime(440, now);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc1.connect(gain);
+        osc2.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc1.start(now);
+        osc2.start(now);
+        osc1.stop(now + 0.26);
+        osc2.stop(now + 0.26);
+      }
+
+      playNitroPop() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const osc = this.ctx.createOscillator();
+        const gain = this.ctx.createGain();
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(120, now);
+        osc.frequency.exponentialRampToValueAtTime(450, now + 0.15);
+        gain.gain.setValueAtTime(0.22, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc.connect(gain);
+        gain.connect(this.ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.2);
+      }
+
+      playCrash() {
+        if (!this.ctx || this.muted) return;
+        const now = this.ctx.currentTime;
+        const bufferSize = this.ctx.sampleRate * 0.45;
+        const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+        }
+        const noise = this.ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(650, now);
+
+        const gain = this.ctx.createGain();
+        gain.gain.setValueAtTime(0.5, now);
+        gain.gain.exponentialRampToValueAtTime(0.01, now + 0.45);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(this.ctx.destination);
+        noise.start(now);
+      }
+
+      toggleMute() {
+        this.muted = !this.muted;
+        if (this.engineGain && this.ctx) {
+          this.engineGain.gain.setValueAtTime(this.muted ? 0 : 0.045, this.ctx.currentTime);
+        }
+        return this.muted;
+      }
+    }
+
+    const sound = new BikeAudioEngine();
+
+    /* ==========================================================================
+       2. THREE.JS SCENE, LIGHTING & HIGHWAY ATMOSPHERE
+       ========================================================================== */
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x0f1522);
+    scene.fog = new THREE.FogExp2(0x0f1522, 0.008);
+
+    const camera = new THREE.PerspectiveCamera(62, window.innerWidth / window.innerHeight, 0.1, 800);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.25;
+    container.appendChild(renderer.domElement);
+
+    // Speedlines Canvas 2D
+    const speedCanvas = document.getElementById('speed-lines');
+    const speedCtx = speedCanvas.getContext('2d');
+    function resizeSpeedFx() {
+      speedCanvas.width = window.innerWidth;
+      speedCanvas.height = window.innerHeight;
+    }
+    resizeSpeedFx();
+
+    // Golden Sunset Horizon Glow + Streetlights Lighting
+    const hemiLight = new THREE.HemisphereLight(0xffa502, 0x141b2b, 1.25);
+    scene.add(hemiLight);
+
+    const sunLight = new THREE.DirectionalLight(0xff793f, 1.4);
+    sunLight.position.set(40, 50, -80);
+    scene.add(sunLight);
+
+    // Distant City Skyline Silhouette
+    function createCitySkyline() {
+      const group = new THREE.Group();
+      const bldgMat = new THREE.MeshBasicMaterial({ color: 0x090d16 });
+      const windowMat = new THREE.MeshBasicMaterial({ color: 0xffeaa7 });
+
+      for (let i = 0; i < 45; i++) {
+        const side = i % 2 === 0 ? 1 : -1;
+        const h = 40 + Math.random() * 80;
+        const w = 14 + Math.random() * 16;
+        const d = 14 + Math.random() * 16;
+        const bldg = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bldgMat);
+        bldg.position.set(side * (50 + Math.random() * 70), h / 2 - 5, (i * 28) - 450);
+        group.add(bldg);
+
+        // Windows dots
+        if (Math.random() > 0.4) {
+          const win = new THREE.Mesh(new THREE.PlaneGeometry(0.8, h * 0.7), windowMat);
+          win.position.set(bldg.position.x + (side === 1 ? -w / 2 - 0.1 : w / 2 + 0.1), h / 2, bldg.position.z);
+          win.rotation.y = side === 1 ? -Math.PI / 2 : Math.PI / 2;
+          group.add(win);
+        }
+      }
+      return group;
+    }
+    const skyline = createCitySkyline();
+    scene.add(skyline);
+
+    /* ==========================================================================
+       3. 3D SUPERBIKE WITH NITRO FLAMES & DETAILED COCKPIT
+       ========================================================================== */
+    function createSuperbike() {
+      const bike = new THREE.Group();
+
+      // Main aerodynamic body frame
+      const fairingMat = new THREE.MeshStandardMaterial({
+        color: 0xff4757,
+        roughness: 0.25,
+        metalness: 0.75
+      });
+      const fairingGeo = new THREE.BoxGeometry(0.72, 0.75, 2.3);
+      const fairing = new THREE.Mesh(fairingGeo, fairingMat);
+      fairing.position.y = 0.8;
+      bike.add(fairing);
+
+      // Gas tank & ergonomic seat
+      const tankGeo = new THREE.BoxGeometry(0.55, 0.45, 1.1);
+      const tankMat = new THREE.MeshStandardMaterial({ color: 0x222a36, roughness: 0.3 });
+      const tank = new THREE.Mesh(tankGeo, tankMat);
+      tank.position.set(0, 1.25, -0.2);
+      bike.add(tank);
+
+      // Windscreen
+      const screenGeo = new THREE.BoxGeometry(0.48, 0.42, 0.05);
+      const screenMat = new THREE.MeshStandardMaterial({
+        color: 0x00d2d3,
+        transparent: true,
+        opacity: 0.8,
+        roughness: 0.1
+      });
+      const windscreen = new THREE.Mesh(screenGeo, screenMat);
+      windscreen.position.set(0, 1.5, -0.9);
+      windscreen.rotation.x = Math.PI / 4;
+      bike.add(windscreen);
+
+      // Handlebars & Grips
+      const barGeo = new THREE.CylinderGeometry(0.04, 0.04, 1.15, 8);
+      barGeo.rotateZ(Math.PI / 2);
+      const barMat = new THREE.MeshStandardMaterial({ color: 0x8a9bb8, metalness: 0.9 });
+      const handlebar = new THREE.Mesh(barGeo, barMat);
+      handlebar.position.set(0, 1.35, -0.85);
+      bike.add(handlebar);
+
+      // Side mirrors
+      const mirrorMat = new THREE.MeshStandardMaterial({ color: 0x141b2b });
+      const leftMirror = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.05), mirrorMat);
+      leftMirror.position.set(-0.64, 1.45, -0.92);
+      const rightMirror = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.08, 0.05), mirrorMat);
+      rightMirror.position.set(0.64, 1.45, -0.92);
+      bike.add(leftMirror, rightMirror);
+
+      // Twin Titanium Exhaust Pipes
+      const exhGeo = new THREE.CylinderGeometry(0.08, 0.11, 0.9, 12);
+      exhGeo.rotateX(Math.PI / 2);
+      const exhMat = new THREE.MeshStandardMaterial({ color: 0xdcdde1, metalness: 0.95, roughness: 0.2 });
+      const exhaust = new THREE.Mesh(exhGeo, exhMat);
+      exhaust.position.set(0.35, 0.65, 1.0);
+      exhaust.rotation.x = -0.2;
+      bike.add(exhaust);
+
+      // Glowing Blue Nitro Exhaust Flame Cone (shows when nitro active)
+      const nitroFlameGeo = new THREE.ConeGeometry(0.14, 0.9, 8);
+      nitroFlameGeo.rotateX(-Math.PI / 2);
+      const nitroFlameMat = new THREE.MeshBasicMaterial({ color: 0x0984e3 });
+      const nitroFlame = new THREE.Mesh(nitroFlameGeo, nitroFlameMat);
+      nitroFlame.position.set(0.35, 0.65, 1.6);
+      nitroFlame.visible = false;
+      bike.add(nitroFlame);
+      bike.nitroFlame = nitroFlame;
+
+      // Front & Rear Wheels
+      const tireGeo = new THREE.TorusGeometry(0.42, 0.15, 12, 24);
+      const tireMat = new THREE.MeshStandardMaterial({ color: 0x1e272e, roughness: 0.8 });
+      const rimMat = new THREE.MeshStandardMaterial({ color: 0xff4757, metalness: 0.85 });
+
+      const frontAssembly = new THREE.Group();
+      frontAssembly.position.set(0, 0.42, -1.25);
+      const frontTire = new THREE.Mesh(tireGeo, tireMat);
+      const frontRim = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.12, 10), rimMat);
+      frontRim.rotateZ(Math.PI / 2);
+      frontAssembly.add(frontTire, frontRim);
+      bike.add(frontAssembly);
+      bike.frontWheel = frontAssembly;
+
+      const rearAssembly = new THREE.Group();
+      rearAssembly.position.set(0, 0.42, 1.15);
+      const rearTire = new THREE.Mesh(tireGeo, tireMat);
+      const rearRim = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.14, 10), rimMat);
+      rearRim.rotateZ(Math.PI / 2);
+      rearAssembly.add(rearTire, rearRim);
+      bike.add(rearAssembly);
+      bike.rearWheel = rearAssembly;
+
+      // LED Headlight & Ground Projective Light Beam
+      const headMat = new THREE.MeshBasicMaterial({ color: 0xfffae0 });
+      const headlight = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.16, 0.05), headMat);
+      headlight.position.set(0, 0.95, -1.18);
+      bike.add(headlight);
+
+      const beamGeo = new THREE.PlaneGeometry(3.0, 14.0);
+      beamGeo.rotateX(-Math.PI / 2);
+      const beamMat = new THREE.MeshBasicMaterial({
+        color: 0xfffae0,
+        transparent: true,
+        opacity: 0.2,
+        depthWrite: false
+      });
+      const lightBeam = new THREE.Mesh(beamGeo, beamMat);
+      lightBeam.position.set(0, 0.04, -8.5);
+      bike.add(lightBeam);
+
+      // Red LED Taillight
+      const tailMat = new THREE.MeshBasicMaterial({ color: 0xff4757 });
+      const taillight = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.12, 0.05), tailMat);
+      taillight.position.set(0, 1.05, 1.18);
+      bike.add(taillight);
+
+      return bike;
+    }
+
+    const playerBike = createSuperbike();
+    scene.add(playerBike);
+
+    /* ==========================================================================
+       4. PROCEDURAL HIGHWAY WITH OVERHEAD GANTRY SIGNS & STREETLIGHTS
+       ========================================================================== */
+    const LANES = [-5.2, -1.8, 1.8, 5.2];
+    const ROAD_WIDTH = 15;
+    const SEGMENT_LENGTH = 80;
+    const NUM_SEGMENTS = 10;
+
+    const roadSegments = [];
+    const roadMat = new THREE.MeshStandardMaterial({ color: 0x222832, roughness: 0.75 });
+    const dashLineMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    const yellowLineMat = new THREE.MeshBasicMaterial({ color: 0xffa502 });
+    const guardrailMat = new THREE.MeshStandardMaterial({ color: 0xa4b0be, metalness: 0.7 });
+
+    function createRoadSegment(zOffset, index) {
+      const seg = new THREE.Group();
+      seg.position.z = zOffset;
+
+      const roadGeo = new THREE.BoxGeometry(ROAD_WIDTH, 0.3, SEGMENT_LENGTH);
+      const roadMesh = new THREE.Mesh(roadGeo, roadMat);
+      roadMesh.position.y = -0.15;
+      seg.add(roadMesh);
+
+      // Shoulders
+      const leftShoulder = new THREE.Mesh(new THREE.PlaneGeometry(0.25, SEGMENT_LENGTH), yellowLineMat);
+      leftShoulder.rotation.x = -Math.PI / 2;
+      leftShoulder.position.set(-ROAD_WIDTH / 2 + 0.5, 0.02, 0);
+
+      const rightShoulder = new THREE.Mesh(new THREE.PlaneGeometry(0.25, SEGMENT_LENGTH), yellowLineMat);
+      rightShoulder.rotation.x = -Math.PI / 2;
+      rightShoulder.position.set(ROAD_WIDTH / 2 - 0.5, 0.02, 0);
+      seg.add(leftShoulder, rightShoulder);
+
+      // Dashed lane lines
+      const dashGeo = new THREE.PlaneGeometry(0.18, 5.0);
+      dashGeo.rotateX(-Math.PI / 2);
+      for (let l = 1; l < LANES.length; l++) {
+        const laneX = (LANES[l - 1] + LANES[l]) / 2;
+        for (let d = -SEGMENT_LENGTH / 2 + 4; d < SEGMENT_LENGTH / 2; d += 12) {
+          const dash = new THREE.Mesh(dashGeo, dashLineMat);
+          dash.position.set(laneX, 0.02, d);
+          seg.add(dash);
+        }
+      }
+
+      // Guardrails
+      for (let side = -1; side <= 1; side += 2) {
+        const rail = new THREE.Mesh(new THREE.BoxGeometry(0.25, 0.65, SEGMENT_LENGTH), guardrailMat);
+        rail.position.set(side * (ROAD_WIDTH / 2 + 0.15), 0.25, 0);
+        seg.add(rail);
+      }
+
+      // Streetlights every alternate segment
+      if (index % 2 === 0) {
+        for (let side = -1; side <= 1; side += 2) {
+          const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.12, 0.14, 9.5, 8), guardrailMat);
+          pole.position.set(side * (ROAD_WIDTH / 2 + 1.2), 4.75, 0);
+          const lampHead = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.25, 0.8), new THREE.MeshBasicMaterial({ color: 0xfffae0 }));
+          lampHead.position.set(side * (ROAD_WIDTH / 2 + 0.6), 9.4, 0);
+          seg.add(pole, lampHead);
+        }
+      }
+
+      // Overhead Highway Gantry Sign on every 4th segment
+      if (index % 4 === 1) {
+        const gantryFrame = new THREE.Mesh(new THREE.BoxGeometry(ROAD_WIDTH + 3, 0.35, 0.4), guardrailMat);
+        gantryFrame.position.set(0, 7.8, 0);
+
+        const signMat = new THREE.MeshBasicMaterial({ color: 0x009432 });
+        const signBoard = new THREE.Mesh(new THREE.BoxGeometry(ROAD_WIDTH * 0.75, 1.8, 0.1), signMat);
+        signBoard.position.set(0, 7.6, 0.1);
+
+        seg.add(gantryFrame, signBoard);
+      }
+
+      scene.add(seg);
+      return seg;
+    }
+
+    for (let i = 0; i < NUM_SEGMENTS; i++) {
+      roadSegments.push(createRoadSegment(-i * SEGMENT_LENGTH, i));
+    }
+
+    /* ==========================================================================
+       5. TRAFFIC VEHICLES WITH REALISTIC MODELS & HEADLIGHTS
+       ========================================================================== */
+    const TRAFFIC_POOL_SIZE = 14;
+    const trafficPool = [];
+    const trafficColors = [0x3742fa, 0x2ed573, 0xff6348, 0x5352ed, 0xf1f2f6, 0x2f3542, 0xffa502];
+
+    function createTrafficVehicle() {
+      const group = new THREE.Group();
+      const isTruck = Math.random() > 0.75;
+      const isTaxi = !isTruck && Math.random() > 0.8;
+      const color = isTaxi ? 0xfbc531 : trafficColors[Math.floor(Math.random() * trafficColors.length)];
+
+      if (isTruck) {
+        // Semi-Truck
+        const cabMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.4 });
+        const cab = new THREE.Mesh(new THREE.BoxGeometry(2.3, 2.2, 3.2), cabMat);
+        cab.position.set(0, 1.2, -2.5);
+        group.add(cab);
+
+        const trailerMat = new THREE.MeshStandardMaterial({ color: 0xdcdde1, roughness: 0.5 });
+        const trailer = new THREE.Mesh(new THREE.BoxGeometry(2.4, 2.8, 6.8), trailerMat);
+        trailer.position.set(0, 1.6, 1.6);
+        group.add(trailer);
+
+        group.colliderW = 1.3;
+        group.colliderL = 5.2;
+      } else {
+        // Sedan / SUV / Taxi
+        const bodyMat = new THREE.MeshStandardMaterial({ color: color, roughness: 0.35, metalness: 0.6 });
+        const body = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.75, 4.4), bodyMat);
+        body.position.y = 0.6;
+        group.add(body);
+
+        const cab = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.55, 2.4), new THREE.MeshStandardMaterial({ color: 0x1e272e }));
+        cab.position.set(0, 1.15, -0.2);
+        group.add(cab);
+
+        // Taxi roof sign
+        if (isTaxi) {
+          const sign = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.2, 0.3), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+          sign.position.set(0, 1.5, -0.2);
+          group.add(sign);
+        }
+
+        group.colliderW = 1.15;
+        group.colliderL = 2.3;
+      }
+
+      // Red Taillights
+      const tailMat = new THREE.MeshBasicMaterial({ color: 0xff4757 });
+      const leftTail = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
+      leftTail.position.set(-0.8, 0.7, group.colliderL);
+      const rightTail = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
+      rightTail.position.set(0.8, 0.7, group.colliderL);
+      group.add(leftTail, rightTail);
+
+      group.active = false;
+      group.speed = 45;
+      group.nearMissAwarded = false;
+      group.position.set(0, -100, 0);
+
+      scene.add(group);
+      return group;
+    }
+
+    for (let i = 0; i < TRAFFIC_POOL_SIZE; i++) {
+      trafficPool.push(createTrafficVehicle());
+    }
+
+    /* ==========================================================================
+       6. TRAFFIC SPAWNER
+       ========================================================================== */
+    let lastSpawnZ = -80;
+    const MIN_SPAWN_GAP = 32;
+
+    function resetTraffic() {
+      trafficPool.forEach(t => {
+        t.active = false;
+        t.position.set(0, -100, 0);
+      });
+      lastSpawnZ = playerBike.position.z - 60;
+    }
+
+    function updateTrafficSpawning() {
+      const frontHorizonZ = playerBike.position.z - 380;
+
+      while (lastSpawnZ > frontHorizonZ) {
+        const gap = MIN_SPAWN_GAP + Math.random() * 22;
+        lastSpawnZ -= gap;
+
+        const laneIdx = Math.floor(Math.random() * LANES.length);
+        const laneX = LANES[laneIdx];
+
+        const car = trafficPool.find(t => !t.active);
+        if (car) {
+          car.active = true;
+          car.nearMissAwarded = false;
+          car.position.set(laneX, 0, lastSpawnZ);
+          car.speed = 40 + Math.random() * 45;
+        }
+      }
+
+      const cullZ = playerBike.position.z + 30;
+      trafficPool.forEach(t => {
+        if (t.active && t.position.z > cullZ) {
+          t.active = false;
+          t.position.y = -100;
+        }
+      });
+    }
+
+    /* ==========================================================================
+       7. SPEEDLINES & NEAR-MISS VISUALS
+       ========================================================================== */
+    const speedLines = [];
+    for (let i = 0; i < 45; i++) {
+      speedLines.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        length: 25 + Math.random() * 65,
+        speed: 16 + Math.random() * 28
+      });
+    }
+
+    function renderSpeedLines(intensity) {
+      speedCtx.clearRect(0, 0, speedCanvas.width, speedCanvas.height);
+      if (intensity <= 0.1) return;
+
+      speedCtx.strokeStyle = `rgba(255, 255, 255, ${Math.min(intensity * 0.45, 0.5)})`;
+      speedCtx.lineWidth = 1.6;
+      speedCtx.beginPath();
+
+      const cx = speedCanvas.width / 2;
+      const cy = speedCanvas.height / 2;
+
+      for (let i = 0; i < speedLines.length; i++) {
+        const line = speedLines[i];
+        const dx = line.x - cx;
+        const dy = line.y - cy;
+        const angle = Math.atan2(dy, dx);
+
+        const x2 = line.x + Math.cos(angle) * (line.length * intensity);
+        const y2 = line.y + Math.sin(angle) * (line.length * intensity);
+
+        speedCtx.moveTo(line.x, line.y);
+        speedCtx.lineTo(x2, y2);
+
+        line.x += Math.cos(angle) * (line.speed * (0.8 + intensity * 1.6));
+        line.y += Math.sin(angle) * (line.speed * (0.8 + intensity * 1.6));
+
+        if (line.x < 0 || line.x > speedCanvas.width || line.y < 0 || line.y > speedCanvas.height) {
+          const spawnAngle = Math.random() * Math.PI * 2;
+          const spawnDist = 40 + Math.random() * 130;
+          line.x = cx + Math.cos(spawnAngle) * spawnDist;
+          line.y = cy + Math.sin(spawnAngle) * spawnDist;
+        }
+      }
+      speedCtx.stroke();
+    }
+
+    function showNearMissToast() {
+      const toast = document.getElementById('near-miss-toast');
+      toast.style.opacity = '1';
+      toast.style.transform = 'translate(-50%, -50%) scale(1.15)';
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translate(-50%, -50%) scale(0.7)';
+      }, 700);
+    }
+
+    /* ==========================================================================
+       8. GAME STATE & BIKE DYNAMICS
+       ========================================================================== */
+    const STATE = { MENU: 'MENU', PLAYING: 'PLAYING', GAMEOVER: 'GAMEOVER' };
+    let currentState = STATE.MENU;
+
+    const MAX_SPEED = 245;
+    const NITRO_MAX_SPEED = 300;
+    const BASE_SPEED = 70;
+
+    const game = {
+      speed: BASE_SPEED,
+      targetSpeed: BASE_SPEED,
+      distance: 0,
+      score: 0,
+      nearMisses: 0,
+      isWheelie: false,
+      isNitro: false,
+      nitroCooldown: 0,
+      playerX: 0,
+      targetX: 0,
+      leanAngle: 0,
+      wheeliePitch: 0,
+      gear: 1,
+      shakeIntensity: 0,
+      bestScore: parseInt(localStorage.getItem('moto_best_score') || '0', 10),
+      bestDist: parseInt(localStorage.getItem('moto_best_dist') || '0', 10)
+    };
+
+    const input = {
+      gas: false,
+      brake: false,
+      left: false,
+      right: false,
+      wheelie: false,
+      nitro: false
+    };
+
+    function startRace() {
+      sound.init();
+      currentState = STATE.PLAYING;
+
+      game.speed = BASE_SPEED;
+      game.targetSpeed = BASE_SPEED;
+      game.distance = 0;
+      game.score = 0;
+      game.nearMisses = 0;
+      game.isWheelie = false;
+      game.isNitro = false;
+      game.nitroCooldown = 0;
+      game.playerX = 0;
+      game.targetX = 0;
+      game.leanAngle = 0;
+      game.wheeliePitch = 0;
+      game.gear = 1;
+      game.shakeIntensity = 0;
+
+      playerBike.position.set(0, 0, 0);
+      playerBike.rotation.set(0, 0, 0);
+      playerBike.nitroFlame.visible = false;
+
+      for (let i = 0; i < NUM_SEGMENTS; i++) {
+        roadSegments[i].position.z = -i * SEGMENT_LENGTH;
+      }
+
+      resetTraffic();
+
+      document.getElementById('screen-main-menu').classList.add('hidden');
+      document.getElementById('screen-controls').classList.add('hidden');
+      document.getElementById('screen-game-over').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'flex';
+    }
+
+    function triggerGameOver() {
+      currentState = STATE.GAMEOVER;
+      sound.playCrash();
+      game.shakeIntensity = 1.4;
+
+      const flash = document.getElementById('damage-flash');
+      flash.style.opacity = '1';
+      setTimeout(() => { flash.style.opacity = '0'; }, 200);
+
+      if (game.score > game.bestScore) {
+        game.bestScore = Math.floor(game.score);
+        localStorage.setItem('moto_best_score', game.bestScore);
+      }
+      if (game.distance > game.bestDist) {
+        game.bestDist = Math.floor(game.distance);
+        localStorage.setItem('moto_best_dist', game.bestDist);
+      }
+
+      document.getElementById('go-score').innerText = Math.floor(game.score);
+      document.getElementById('go-best-score').innerText = game.bestScore;
+      document.getElementById('go-dist').innerText = `${Math.floor(game.distance)} M`;
+      document.getElementById('go-near-miss').innerText = game.nearMisses;
+
+      setTimeout(() => {
+        document.getElementById('screen-game-over').classList.remove('hidden');
+      }, 500);
+    }
+
+    /* ==========================================================================
+       9. PHYSICS TICK & COLLISION DETECTION
+       ========================================================================== */
+    const clock = new THREE.Clock();
+
+    function updateBikePhysics(delta) {
+      // 1. Throttle / Acceleration & Nitro
+      game.isNitro = input.nitro && game.speed > 80;
+      playerBike.nitroFlame.visible = game.isNitro;
+
+      const topSpeed = game.isNitro ? NITRO_MAX_SPEED : MAX_SPEED;
+
+      let targetSpd = BASE_SPEED;
+      if (input.gas || game.isNitro) targetSpd = topSpeed;
+      if (input.brake) targetSpd = 30;
+
+      const accelRate = game.isNitro ? 8.0 : (input.brake ? 6.5 : 3.2);
+      game.speed = THREE.MathUtils.lerp(game.speed, targetSpd, delta * accelRate);
+
+      const forwardMeters = (game.speed * (1000 / 3600)) * delta;
+      playerBike.position.z -= forwardMeters;
+      game.distance += forwardMeters;
+
+      // Distance parallax on city skyline
+      skyline.position.z = playerBike.position.z * 0.85;
+
+      // Score accumulation
+      const wheelieMult = game.isWheelie ? 2.5 : 1.0;
+      const nitroMult = game.isNitro ? 1.8 : 1.0;
+      game.score += forwardMeters * (game.speed / 100) * wheelieMult * nitroMult;
+
+      // Gear calculation based on speed
+      if (game.speed < 50) game.gear = 1;
+      else if (game.speed < 90) game.gear = 2;
+      else if (game.speed < 135) game.gear = 3;
+      else if (game.speed < 180) game.gear = 4;
+      else if (game.speed < 230) game.gear = 5;
+      else game.gear = 6;
+
+      const gearNames = ['1ST', '2ND', '3RD', '4TH', '5TH', '6TH'];
+      document.getElementById('hud-gear').innerText = gearNames[game.gear - 1];
+
+      // RPM gauge fill (0 to 100%)
+      const rpmPercent = Math.min(100, (game.speed / NITRO_MAX_SPEED) * 100);
+      document.getElementById('rpm-bar-fill').style.width = `${rpmPercent}%`;
+
+      // 2. Lateral Steering & Leaning
+      let steerDir = 0;
+      if (input.left) steerDir -= 1;
+      if (input.right) steerDir += 1;
+
+      game.targetX = THREE.MathUtils.clamp(game.targetX + steerDir * delta * 12.5, -ROAD_WIDTH / 2 + 1.2, ROAD_WIDTH / 2 - 1.2);
+      playerBike.position.x = THREE.MathUtils.lerp(playerBike.position.x, game.targetX, delta * 10);
+
+      const lateralVel = (game.targetX - playerBike.position.x);
+      game.leanAngle = THREE.MathUtils.lerp(game.leanAngle, -steerDir * 0.48, delta * 8);
+      playerBike.rotation.z = game.leanAngle;
+      playerBike.rotation.y = -lateralVel * 0.08;
+
+      // 3. Wheelie Pitch Mechanics
+      game.isWheelie = input.wheelie && game.speed > 55;
+      const targetPitch = game.isWheelie ? 0.44 : 0;
+      game.wheeliePitch = THREE.MathUtils.lerp(game.wheeliePitch, targetPitch, delta * 6);
+      playerBike.rotation.x = game.wheeliePitch;
+      playerBike.position.y = game.isWheelie ? 0.38 : 0;
+
+      document.getElementById('wheelie-badge').style.opacity = game.isWheelie ? '1' : '0';
+
+      // Wheel spinning
+      const wheelSpin = (game.speed * delta * 0.4);
+      playerBike.frontWheel.children[0].rotation.x += wheelSpin;
+      playerBike.rearWheel.children[0].rotation.x += wheelSpin;
+
+      // 4. Highway Infinite Loop
+      roadSegments.forEach(seg => {
+        if (seg.position.z > playerBike.position.z + SEGMENT_LENGTH * 1.5) {
+          seg.position.z -= NUM_SEGMENTS * SEGMENT_LENGTH;
+        }
+      });
+
+      // 5. Spawner & Traffic Movement
+      updateTrafficSpawning();
+
+      trafficPool.forEach(t => {
+        if (!t.active) return;
+        t.position.z -= (t.speed * (1000 / 3600)) * delta;
+
+        // Collision Check
+        const deltaX = Math.abs(playerBike.position.x - t.position.x);
+        const deltaZ = Math.abs(playerBike.position.z - t.position.z);
+
+        if (deltaX < t.colliderW + 0.45 && deltaZ < t.colliderL + 1.2) {
+          triggerGameOver();
+          return;
+        }
+
+        // Near-Miss Detection
+        if (!t.nearMissAwarded && game.speed > 90) {
+          if (deltaX < t.colliderW + 1.45 && deltaZ < 1.8 && playerBike.position.z < t.position.z) {
+            t.nearMissAwarded = true;
+            game.nearMisses++;
+            game.score += 250;
+            sound.playNearMiss();
+            showNearMissToast();
+          }
+        }
+      });
+
+      // 6. Audio & FX
+      sound.updateEngine(game.speed / NITRO_MAX_SPEED, input.gas, game.isNitro);
+      const speedFactor = (game.speed - BASE_SPEED) / (NITRO_MAX_SPEED - BASE_SPEED);
+      renderSpeedLines(speedFactor);
+
+      // HUD Update
+      document.getElementById('hud-speed').innerText = Math.floor(game.speed);
+      document.getElementById('hud-score').innerText = Math.floor(game.score);
+      document.getElementById('hud-dist').innerText = `${Math.floor(game.distance)} M`;
+    }
+
+    /* ==========================================================================
+       10. CAMERA & DYNAMIC FOV
+       ========================================================================== */
+    const CAM_MODES = { CHASE: 'CHASE', FIRST_PERSON: 'FIRST_PERSON' };
+    let currentCamMode = CAM_MODES.CHASE;
+
+    function updateCamera(delta) {
+      let shakeOffsetX = 0;
+      let shakeOffsetY = 0;
+      if (game.shakeIntensity > 0) {
+        shakeOffsetX = (Math.random() - 0.5) * game.shakeIntensity * 0.6;
+        shakeOffsetY = (Math.random() - 0.5) * game.shakeIntensity * 0.6;
+        game.shakeIntensity = Math.max(0, game.shakeIntensity - delta * 3.0);
+      }
+
+      if (currentCamMode === CAM_MODES.CHASE) {
+        const targetCamX = playerBike.position.x * 0.7 + shakeOffsetX;
+        const targetCamY = 2.8 + (game.isWheelie ? 0.6 : 0) + shakeOffsetY;
+        const targetCamZ = playerBike.position.z + 5.5;
+
+        camera.position.x = THREE.MathUtils.lerp(camera.position.x, targetCamX, delta * 10);
+        camera.position.y = THREE.MathUtils.lerp(camera.position.y, targetCamY, delta * 10);
+        camera.position.z = THREE.MathUtils.lerp(camera.position.z, targetCamZ, delta * 15);
+
+        camera.lookAt(playerBike.position.x * 0.5, 1.4, playerBike.position.z - 25);
+      } else {
+        camera.position.set(playerBike.position.x + shakeOffsetX, 1.6 + playerBike.position.y + shakeOffsetY, playerBike.position.z - 0.4);
+        camera.lookAt(playerBike.position.x, 1.4, playerBike.position.z - 40);
+      }
+
+      const nitroFov = game.isNitro ? 12 : 0;
+      const targetFOV = 62 + (game.speed / NITRO_MAX_SPEED) * 18 + nitroFov;
+      camera.fov = THREE.MathUtils.lerp(camera.fov, targetFOV, delta * 4.5);
+      camera.updateProjectionMatrix();
+    }
+
+    /* ==========================================================================
+       11. USER CONTROLS & ERGONOMIC TOUCH
+       ========================================================================== */
+    window.addEventListener('keydown', (e) => {
+      sound.init();
+      switch (e.code) {
+        case 'KeyW':
+        case 'ArrowUp':
+          input.gas = true;
+          break;
+        case 'KeyS':
+        case 'ArrowDown':
+          input.brake = true;
+          break;
+        case 'KeyA':
+        case 'ArrowLeft':
+          input.left = true;
+          break;
+        case 'KeyD':
+        case 'ArrowRight':
+          input.right = true;
+          break;
+        case 'ShiftLeft':
+        case 'ShiftRight':
+        case 'Space':
+          input.wheelie = true;
+          break;
+        case 'KeyN':
+          input.nitro = true;
+          sound.playNitroPop();
+          break;
+        case 'KeyH':
+          sound.playHorn();
+          break;
+        case 'KeyC':
+          currentCamMode = currentCamMode === CAM_MODES.CHASE ? CAM_MODES.FIRST_PERSON : CAM_MODES.CHASE;
+          break;
+        case 'KeyR':
+          if (currentState === STATE.GAMEOVER) startRace();
+          break;
+      }
+    });
+
+    window.addEventListener('keyup', (e) => {
+      switch (e.code) {
+        case 'KeyW':
+        case 'ArrowUp':
+          input.gas = false;
+          break;
+        case 'KeyS':
+        case 'ArrowDown':
+          input.brake = false;
+          break;
+        case 'KeyA':
+        case 'ArrowLeft':
+          input.left = false;
+          break;
+        case 'KeyD':
+        case 'ArrowRight':
+          input.right = false;
+          break;
+        case 'ShiftLeft':
+        case 'ShiftRight':
+        case 'Space':
+          input.wheelie = false;
+          break;
+        case 'KeyN':
+          input.nitro = false;
+          break;
+      }
+    });
+
+    function bindTouch(id, onStart, onEnd) {
+      const btn = document.getElementById(id);
+      if (!btn) return;
+
+      const handleStart = (e) => {
+        if (e.cancelable) e.preventDefault();
+        sound.init();
+        btn.classList.add('pressed');
+        if (onStart) onStart();
+      };
+
+      const handleEnd = (e) => {
+        if (e.cancelable) e.preventDefault();
+        btn.classList.remove('pressed');
+        if (onEnd) onEnd();
+      };
+
+      btn.addEventListener('touchstart', handleStart, { passive: false });
+      btn.addEventListener('touchend', handleEnd, { passive: false });
+      btn.addEventListener('touchcancel', handleEnd, { passive: false });
+
+      btn.addEventListener('mousedown', handleStart);
+      btn.addEventListener('mouseup', handleEnd);
+      btn.addEventListener('mouseleave', handleEnd);
+    }
+
+    bindTouch('btn-touch-left', () => { input.left = true; }, () => { input.left = false; });
+    bindTouch('btn-touch-right', () => { input.right = true; }, () => { input.right = false; });
+    bindTouch('btn-touch-gas', () => { input.gas = true; }, () => { input.gas = false; });
+    bindTouch('btn-touch-brake', () => { input.brake = true; }, () => { input.brake = false; });
+    bindTouch('btn-touch-wheelie', () => { input.wheelie = true; }, () => { input.wheelie = false; });
+    bindTouch('btn-touch-nitro', () => { input.nitro = true; sound.playNitroPop(); }, () => { input.nitro = false; });
+    bindTouch('btn-touch-horn', () => { sound.playHorn(); });
+
+    document.getElementById('btn-cam-switch').addEventListener('click', () => {
+      sound.init();
+      currentCamMode = currentCamMode === CAM_MODES.CHASE ? CAM_MODES.FIRST_PERSON : CAM_MODES.CHASE;
+    });
+
+    document.getElementById('btn-audio-toggle').addEventListener('click', () => {
+      sound.init();
+      const isMuted = sound.toggleMute();
+      document.getElementById('btn-audio-toggle').innerText = isMuted ? '🔇' : '🔊';
+    });
+
+    document.getElementById('btn-pause-game').addEventListener('click', () => {
+      currentState = STATE.MENU;
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+    });
+
+    /* ==========================================================================
+       12. SCREEN TRANSITIONS
+       ========================================================================== */
+    function updateMenuRecords() {
+      document.getElementById('menu-best-dist').innerText = `${game.bestDist} M`;
+      document.getElementById('menu-best-score').innerText = `${game.bestScore}`;
+    }
+    updateMenuRecords();
+
+    document.getElementById('btn-play-game').addEventListener('click', startRace);
+    document.getElementById('btn-open-controls').addEventListener('click', () => {
+      document.getElementById('screen-controls').classList.remove('hidden');
+    });
+    document.getElementById('btn-close-controls').addEventListener('click', () => {
+      document.getElementById('screen-controls').classList.add('hidden');
+    });
+    document.getElementById('btn-restart-game').addEventListener('click', startRace);
+    document.getElementById('btn-quit-to-menu').addEventListener('click', () => {
+      currentState = STATE.MENU;
+      document.getElementById('screen-game-over').classList.add('hidden');
+      document.getElementById('hud-layer').style.display = 'none';
+      document.getElementById('screen-main-menu').classList.remove('hidden');
+      updateMenuRecords();
+    });
+
+    /* ==========================================================================
+       13. MAIN LOOP & RESIZE
+       ========================================================================== */
+    function animate() {
+      requestAnimationFrame(animate);
+      const delta = Math.min(clock.getDelta(), 0.1);
+
+      if (currentState === STATE.PLAYING) {
+        updateBikePhysics(delta);
+        updateCamera(delta);
+      } else if (currentState === STATE.MENU || currentState === STATE.GAMEOVER) {
+        const t = clock.getElapsedTime() * 0.4;
+        camera.position.set(Math.sin(t) * 4.5, 2.2, playerBike.position.z + 5.5);
+        camera.lookAt(0, 1.2, playerBike.position.z - 10);
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      resizeSpeedFx();
+    });
+
+  })();
+  </script>
+</body>
+</html>

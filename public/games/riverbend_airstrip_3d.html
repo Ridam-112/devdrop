@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Riverbend Airbase — Extended Runway Upgrade</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#91aab6;font-family:Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+canvas{display:block;width:100%;height:100%}
+
+/* Top Navigation Bar */
+.nav-bar{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  display:flex;gap:10px;z-index:30;background:rgba(15,28,24,0.88);
+  padding:6px 14px;border-radius:30px;border:1px solid rgba(255,255,255,0.22);
+  backdrop-filter:blur(10px);box-shadow:0 8px 30px rgba(0,0,0,0.5);
+}
+.nav-pill{
+  color:#cbd5e1;text-decoration:none;font-size:11px;font-weight:600;
+  padding:6px 14px;border-radius:20px;letter-spacing:1px;transition:all .2s ease;
+}
+.nav-pill:hover{color:#fff;background:rgba(255,255,255,0.14)}
+.nav-pill.active{background:#10b981;color:#041a12;font-weight:700;box-shadow:0 0 12px rgba(16,185,129,0.45)}
+
+/* HUD Elements */
+.hud{position:fixed;top:18px;left:20px;color:#f5f8f4;text-shadow:0 2px 15px rgba(0,0,0,0.8);pointer-events:none;z-index:20}
+.hud h1{font-size:17px;letter-spacing:.2em;margin:0 0 4px;font-weight:800}
+.hud p{font-size:10px;letter-spacing:.14em;margin:0;color:#dce8df;font-weight:600}
+
+.panel{
+  position:fixed;right:18px;top:18px;background:rgba(18,34,28,0.85);
+  border:1px solid rgba(255,255,255,0.2);border-radius:12px;padding:12px 16px;
+  color:#e9f1eb;font-size:11px;line-height:1.75;backdrop-filter:blur(10px);
+  box-shadow:0 8px 24px rgba(0,0,0,0.4);z-index:20;
+}
+.panel b{color:#34d399;letter-spacing:1px}
+
+/* Bottom Interactive Toolbar */
+.controls-bar{
+  position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
+  display:flex;gap:8px;z-index:30;flex-wrap:wrap;justify-content:center;
+}
+button{
+  background:rgba(18,34,28,0.88);color:#f1f5f9;border:1px solid rgba(255,255,255,0.22);
+  border-radius:9px;padding:9px 14px;font-size:11px;font-weight:600;letter-spacing:1px;
+  cursor:pointer;backdrop-filter:blur(8px);transition:all .2s ease;box-shadow:0 4px 15px rgba(0,0,0,0.3);
+}
+button:hover{background:#234739;border-color:#34d399;transform:translateY(-1px);color:#fff}
+button.active{background:#10b981;color:#041a12;border-color:#6ee7b7;box-shadow:0 0 16px rgba(16,185,129,0.5)}
+
+.hint{
+  position:fixed;left:18px;bottom:18px;background:rgba(18,34,28,0.85);
+  border:1px solid rgba(255,255,255,0.18);border-radius:9px;padding:8px 14px;
+  color:#d4e5da;font-size:11px;backdrop-filter:blur(8px);z-index:20;pointer-events:none;
+}
+
+#loading{
+  position:fixed;inset:0;display:grid;place-items:center;background:#142721;
+  color:#edf4ed;letter-spacing:.18em;font-size:12px;z-index:99;transition:opacity .4s ease;
+}
+#loading.hide{opacity:0;pointer-events:none}
+#error{display:none;position:fixed;z-index:100;left:16px;right:16px;bottom:60px;background:#3b2020;color:#ffe7e7;padding:12px;border-radius:8px;font-size:12px;white-space:pre-wrap}
+
+@media(max-width:850px){
+  .panel,.hint{display:none}
+  .nav-bar{top:65px}
+  .hud h1{font-size:14px}
+}
+</style>
+
+<!-- Import Maps for Seamless Local & Remote Execution -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "./three.module.js",
+    "three/": "./",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js": "./three.module.js",
+    "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js": "./OrbitControls.module.js"
+  }
+}
+</script>
+</head>
+<body>
+<div id="loading">RENDERING EXTENDED RUNWAY AIRBASE…</div>
+<div id="error"></div>
+
+<div class="nav-bar">
+  <a href="/tejas_3d.html" class="nav-pill">🛩️ HAL Tejas LCA</a>
+  <a href="/riverbend_airstrip_3d.html" class="nav-pill active">🏝️ Riverbend Airbase (Upgraded)</a>
+  <a href="/carrier_3d_model.html" class="nav-pill">🚢 Aircraft Carrier</a>
+</div>
+
+<div class="hud">
+  <h1>RIVERBEND · AIRBASE</h1>
+  <p>EXTENDED CLEAR RUNWAY · 3D GAME ENVIRONMENT</p>
+</div>
+
+<div class="panel">
+  <b>UPGRADED RUNWAY SPEC</b><br>
+  • Runway: 54m × 390m Extended Asphalt<br>
+  • 12 Threshold Piano Keys & Touchdown Bars<br>
+  • Curved River · Bridge · Piers<br>
+  • 3 Aircraft Hangars · Tower & Radars<br>
+  • Sculpted Valley · Conical Pines
+</div>
+
+<div class="controls-bar">
+  <button id="viewResetBtn">RESET VIEW</button>
+  <button id="viewTowerBtn">TOWER VIEW</button>
+  <button id="viewRunwayBtn">RUNWAY VIEW</button>
+  <button id="viewBridgeBtn">BRIDGE VIEW</button>
+  <button id="autoRotateBtn">AUTO ROTATE</button>
+  <button id="lightBtn">LIGHTING: DAY</button>
+</div>
+
+<div class="hint">🖱️ Drag: Orbit · Scroll: Zoom · Right-drag: Pan</div>
+
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+import {OrbitControls} from 'https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js';
+
+const loading=document.querySelector('#loading'),errorBox=document.querySelector('#error');
+function err(t){errorBox.style.display='block';errorBox.textContent=t;loading.classList.add('hide')}
+window.addEventListener('error',e=>err('3D error: '+e.message));
+window.addEventListener('unhandledrejection',e=>err('Could not load 3D libraries: '+(e.reason?.message||e.reason)));
+
+const renderer=new THREE.WebGLRenderer({antialias:true,powerPreference:'high-performance'});
+renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+renderer.setSize(innerWidth,innerHeight);
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.12;
+if (renderer.useLegacyLights !== undefined) {
+  renderer.useLegacyLights = false;
+} else {
+  renderer.physicallyCorrectLights = true;
+}
+document.body.appendChild(renderer.domElement);
+
+const scene=new THREE.Scene();
+const skyDay = new THREE.Color(0x9bb7c3);
+scene.background=skyDay;
+scene.fog=new THREE.FogExp2(0x9bb7c3,.00155);
+
+const camera=new THREE.PerspectiveCamera(43,innerWidth/innerHeight,.1,1600);
+camera.position.set(180,150,195);
+
+const controls=new OrbitControls(camera,renderer.domElement);
+controls.target.set(-10,2,-5);
+controls.enableDamping=true;
+controls.dampingFactor=.055;
+controls.maxPolarAngle=Math.PI*.485;
+controls.minDistance=30;
+controls.maxDistance=650;
+
+const hemiLight=new THREE.HemisphereLight(0xe6f4ff,0x46533b,1.45);
+scene.add(hemiLight);
+
+const sun=new THREE.DirectionalLight(0xffe7c4,3.1);
+sun.position.set(-130,210,120);
+sun.castShadow=true;
+sun.shadow.mapSize.set(4096,4096);
+sun.shadow.camera.left=-280;
+sun.shadow.camera.right=280;
+sun.shadow.camera.top=280;
+sun.shadow.camera.bottom=-280;
+sun.shadow.bias=-.00015;
+scene.add(sun);
+
+const ambLight=new THREE.AmbientLight(0xc0d4d2,.25);
+scene.add(ambLight);
+
+const mat=(c,r=.85,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
+
+function canvasTex(draw,size=512,repeatX=1,repeatY=1){
+  const c=document.createElement('canvas');c.width=c.height=size;
+  const ctx=c.getContext('2d');draw(ctx,size);
+  const t=new THREE.CanvasTexture(c);
+  t.wrapS=t.wrapT=THREE.RepeatWrapping;
+  t.repeat.set(repeatX,repeatY);
+  t.colorSpace=THREE.SRGBColorSpace;
+  t.anisotropy=renderer.capabilities.getMaxAnisotropy();
+  return t;
+}
+
+const grassTex=canvasTex((c,s)=>{
+  c.fillStyle='#526d43';c.fillRect(0,0,s,s);
+  for(let i=0;i<28000;i++){
+    const v=55+Math.random()*65;
+    c.fillStyle=`rgba(${35+Math.random()*35|0},${v|0},${30+Math.random()*25|0},${.12+Math.random()*.25})`;
+    c.fillRect(Math.random()*s,Math.random()*s,1+Math.random()*3,1+Math.random()*2);
+  }
+},512,18,18);
+
+const asphaltTex=canvasTex((c,s)=>{
+  c.fillStyle='#343a3c';c.fillRect(0,0,s,s);
+  for(let i=0;i<23000;i++){
+    const v=35+Math.random()*55;
+    c.fillStyle=`rgba(${v},${v},${v},${Math.random()*.2})`;
+    c.fillRect(Math.random()*s,Math.random()*s,1+Math.random()*2,1+Math.random()*2);
+  }
+  for(let i=0;i<70;i++){
+    c.strokeStyle='rgba(10,15,17,.18)';c.lineWidth=.6;
+    c.beginPath();let x=Math.random()*s,y=Math.random()*s;
+    c.moveTo(x,y);c.lineTo(x+Math.random()*50,y+Math.random()*8);c.stroke();
+  }
+},512,2,14);
+
+const concreteTex=canvasTex((c,s)=>{
+  c.fillStyle='#858986';c.fillRect(0,0,s,s);
+  for(let i=0;i<15000;i++){
+    let v=90+Math.random()*100;
+    c.fillStyle=`rgba(${v},${v},${v},.16)`;
+    c.fillRect(Math.random()*s,Math.random()*s,1.5,1.5);
+  }
+},512,5,5);
+
+const waterTex=canvasTex((c,s)=>{
+  c.fillStyle='#235969';c.fillRect(0,0,s,s);
+  for(let i=0;i<2500;i++){
+    c.strokeStyle=`rgba(${100+Math.random()*80|0},${160+Math.random()*60|0},${170+Math.random()*70|0},${.04+Math.random()*.13})`;
+    c.lineWidth=.5+Math.random()*2;
+    c.beginPath();let x=Math.random()*s,y=Math.random()*s;
+    c.moveTo(x,y);c.lineTo(x+8+Math.random()*35,y+(Math.random()-.5)*2);c.stroke();
+  }
+},512,4,16);
+
+const grassMat=new THREE.MeshStandardMaterial({map:grassTex,roughness:1});
+const asphaltMat=new THREE.MeshStandardMaterial({map:asphaltTex,roughness:.96});
+const concreteMat=new THREE.MeshStandardMaterial({map:concreteTex,roughness:.92});
+const waterMat=new THREE.MeshPhysicalMaterial({map:waterTex,color:0x8bb9c1,roughness:.24,metalness:.12,clearcoat:.8,clearcoatRoughness:.16});
+const white=mat(0xe9e8dc,.7),yellow=mat(0xe5c04f,.7),dark=mat(0x354047),roof=mat(0x65747a),glass=mat(0x294756,.18,.3);
+
+function box(parent,w,h,d,x,y,z,m){
+  const o=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);
+  o.position.set(x,y,z);
+  o.castShadow=true;o.receiveShadow=true;
+  parent.add(o);
+  return o;
+}
+function ground(w,d,x,y,z,m){
+  const o=new THREE.Mesh(new THREE.PlaneGeometry(w,d),m);
+  o.rotation.x=-Math.PI/2;
+  o.position.set(x,y,z);
+  o.receiveShadow=true;
+  scene.add(o);
+  return o;
+}
+
+// Sculpted landscape with low hills surrounding the playable valley.
+const terrainGeo=new THREE.PlaneGeometry(720,720,150,150);
+terrainGeo.rotateX(-Math.PI/2);
+const a=terrainGeo.attributes.position;
+for(let i=0;i<a.count;i++){
+  let x=a.getX(i),z=a.getZ(i);
+  let h=Math.sin(x*.018)*2.2+Math.cos(z*.022)*1.7+Math.sin((x+z)*.012)*1.2;
+  let edge=Math.max(0,(Math.abs(x)-220)/130, (Math.abs(z)-225)/130);
+  h+=edge*edge*16;
+  a.setY(i,h);
+}
+terrainGeo.computeVertexNormals();
+const terrain=new THREE.Mesh(terrainGeo,grassMat);
+terrain.receiveShadow=true;
+scene.add(terrain);
+
+// Distant soft hills around the map perimeter.
+const hillMat=mat(0x627e66,1);
+for(let i=0;i<22;i++){
+  let x=(Math.random()-.5)*650,z=(Math.random()-.5)*650;
+  if(Math.abs(x)<190&&Math.abs(z)<200)continue;
+  const h=12+Math.random()*25;
+  const hill=new THREE.Mesh(new THREE.SphereGeometry(1,16,12),hillMat);
+  hill.scale.set(30+Math.random()*35,h,28+Math.random()*45);
+  hill.position.set(x,h*.35,z);
+  hill.receiveShadow=true;
+  scene.add(hill);
+}
+
+// Curved river, with textured surface and soft muddy banks.
+const riverCurve=new THREE.CatmullRomCurve3([
+  new THREE.Vector3(115,-.3,-370),new THREE.Vector3(92,-.3,-270),
+  new THREE.Vector3(125,-.3,-170),new THREE.Vector3(98,-.3,-70),
+  new THREE.Vector3(132,-.3,30),new THREE.Vector3(100,-.3,130),
+  new THREE.Vector3(127,-.3,250),new THREE.Vector3(104,-.3,370)
+]);
+const bankMat=mat(0x8a9264,1);
+const bank=new THREE.Mesh(new THREE.TubeGeometry(riverCurve,150,35,12,false),bankMat);
+bank.scale.y=.08;bank.position.y=-1.5;scene.add(bank);
+
+const river=new THREE.Mesh(new THREE.TubeGeometry(riverCurve,180,29,24,false),waterMat);
+river.position.y=-.45;river.receiveShadow=true;scene.add(river);
+
+// --- EXTENDED RUNWAY UPGRADE (54m × 390m) ---
+ground(190,620,0,.1,0,grassMat);
+ground(54,390,-28,.35,-6,asphaltMat);
+ground(78,88,-28,.38,-128,concreteMat);
+ground(28,105,14,.32,45,asphaltMat);
+ground(105,60,-65,.35,-185,concreteMat);
+
+// Centerline, edge lines, threshold piano keys, touchdown bars.
+for(let z=-184;z<174;z+=18)box(scene,.75,.09,9,-28,.56,z,white);
+for(let x of [-54,-2])box(scene,.55,.09,390,x,.56,-6,white);
+for(let i=0;i<12;i++){
+  box(scene,2.5,.1,1.6,-28-20+i*3.65,.58,-199,white);
+  box(scene,2.5,.1,1.6,-28-20+i*3.65,.58,187,white);
+}
+for(let z of [-150,-142,130,138])box(scene,30,.08,.5,-28,.57,z,white);
+for(let i=0;i<18;i++)box(scene,1.2,.08,3,-28,.58,-178+i*20,yellow);
+
+// Taxiway dashed center line and shoulder edge.
+for(let z=15;z<92;z+=12)box(scene,.45,.08,5,14,.53,z,yellow);
+for(let x of [-49,-7])box(scene,1,.08,245,x,.35,-6,dark);
+
+// Apron expansion seams.
+for(let x=-105;x<-25;x+=12)for(let z=-210;z<-150;z+=12)box(scene,.13,.035,60,x,.48,z,mat(0x6a716e));
+
+// Bridge crossing river, concrete piers and guard rails.
+box(scene,78,2.2,10,112,3,42,concreteMat);
+for(let x of [82,112,142])box(scene,3,7,5,x,-1,42,concreteMat);
+for(let s of [-1,1]){
+  box(scene,78,.8,.55,112,4.5,42+s*4.6,dark);
+  for(let i=0;i<18;i++)box(scene,.18,.6,.2,74+i*4.4,5,42+s*4.6,white);
+}
+
+// Hangars with curved roof profiles, sliding doors and windows.
+function hangar(x,z,w=28){
+  const g=new THREE.Group();g.position.set(x,0,z);scene.add(g);
+  box(g,w,8,22,0,4,0,roof);
+  const roofGeo=new THREE.CylinderGeometry(w/2,w/2,22,20,1,false,0,Math.PI);roofGeo.rotateZ(Math.PI/2);
+  const r=new THREE.Mesh(roofGeo,roof);r.scale.set(1,.55,1);r.position.set(0,8,0);r.castShadow=true;g.add(r);
+  box(g,w*.78,5.8,.55,0,3.1,11.25,dark);
+  for(let i=-3;i<=3;i++)box(g,.16,5.3,.12,i*w*.105,3.1,11.6,mat(0x7f8b8b));
+  box(g,w+2,.5,24,0,.25,0,concreteMat);
+  for(let s of [-1,1])box(g,.35,1.1,19,s*(w/2+.5),.6,0,yellow);
+}
+hangar(-91,-164,29);
+hangar(-49,-204,25);
+hangar(-112,-218,23);
+
+// Control Tower
+box(scene,21,13,19,-95,6.5,-112,concreteMat); // tower base
+box(scene,17,5,15,-95,15.5,-112,glass);
+box(scene,22,.8,20,-95,18.5,-112,dark);
+box(scene,12,5,11,-95,21,-112,roof);
+box(scene,16,.5,15,-95,24,-112,concreteMat);
+const mast=new THREE.Mesh(new THREE.CylinderGeometry(.22,.4,11,10),dark);
+mast.position.set(-95,29,-112);scene.add(mast);
+
+const dishes = [];
+for(let y of [27,31]){
+  const dish=new THREE.Mesh(new THREE.SphereGeometry(1.4,12,8),white);
+  dish.scale.set(1,.18,.8);dish.position.set(-95,y,-112);
+  scene.add(dish);
+  dishes.push(dish);
+}
+
+// Access roads, markings, utility structures.
+ground(13,255,-139,.3,-22,asphaltMat);
+ground(13,210,47,.3,-150,asphaltMat);
+ground(205,12,-46,.3,-250,asphaltMat);
+for(let z=-140;z<110;z+=22)box(scene,.35,.07,5,-139,.42,z,white);
+for(let x=-135;x<50;x+=20)box(scene,5,.07,.35,x,.42,-250,white);
+
+// Rich trees: trunks, layered conical foliage and random scale.
+const trunkMat=mat(0x58422f);
+const leafM=[mat(0x244b32,1),mat(0x315e38,1),mat(0x426e3d,1),mat(0x567b46,1)];
+function tree(x,z,s=1){
+  const h=3.5*s;
+  const tr=new THREE.Mesh(new THREE.CylinderGeometry(.22*s,.42*s,h,7),trunkMat);
+  tr.position.set(x,h/2,z);tr.castShadow=true;scene.add(tr);
+  for(let j=0;j<3;j++){
+    const cone=new THREE.Mesh(new THREE.ConeGeometry((2.3-j*.38)*s,3.2*s,8),leafM[Math.floor(Math.random()*leafM.length)]);
+    cone.position.set(x,h+(j*1.6*s),z);cone.castShadow=true;scene.add(cone);
+  }
+}
+for(let i=0;i<330;i++){
+  let x=(Math.random()-.5)*650,z=(Math.random()-.5)*650;
+  if(Math.abs(x+28)<62&&Math.abs(z+6)<150)continue;
+  if(x>55&&x<175)continue;
+  if(x<-65&&z<-90&&z>-245)continue;
+  tree(x,z,.55+Math.random()*.85);
+}
+
+// Shoreline stones and reeds.
+const stone=mat(0x898e7d),reed=mat(0x8a9a59);
+for(let i=0;i<180;i++){
+  let z=-330+Math.random()*660,x=111+Math.sin(z*.025)*12+(Math.random()-.5)*13;
+  const o=new THREE.Mesh(new THREE.DodecahedronGeometry(.7+Math.random()*1.4,0),stone);
+  o.position.set(x,.15,z);o.scale.y=.5;o.castShadow=true;scene.add(o);
+  if(i%3===0){
+    const r=new THREE.Mesh(new THREE.ConeGeometry(.18,1.8,5),reed);
+    r.position.set(x+2,1,z);scene.add(r);
+  }
+}
+
+// Taxiway edge lamps, apron floodlights and windsock.
+for(let side of [-1,1])for(let i=0;i<24;i++){
+  let z=-118+i*9;
+  const pole=new THREE.Mesh(new THREE.CylinderGeometry(.07,.11,1.5,7),dark);
+  pole.position.set(-28+side*23,.8,z);scene.add(pole);
+  const bulb=new THREE.Mesh(new THREE.SphereGeometry(.22,8,8),mat(0xf4d995,.3));
+  bulb.position.set(-28+side*23,1.65,z);scene.add(bulb);
+}
+for(let i=0;i<4;i++){
+  let x=-120+i*22;
+  const p=new THREE.Mesh(new THREE.CylinderGeometry(.14,.2,12,8),dark);
+  p.position.set(x,6,-220);scene.add(p);
+  const lamp=new THREE.Mesh(new THREE.BoxGeometry(2,1,1),white);
+  lamp.position.set(x,12,-220);scene.add(lamp);
+}
+const sockPole=new THREE.Mesh(new THREE.CylinderGeometry(.12,.18,8,8),dark);
+sockPole.position.set(27,4,-150);scene.add(sockPole);
+const sock=new THREE.Mesh(new THREE.ConeGeometry(.7,6,8),mat(0xe6e4d8));
+sock.rotation.z=Math.PI/2;sock.position.set(30,7,-150);scene.add(sock);
+
+// Low-detail village rooftops far beyond airfield
+const houseM=mat(0xb5a78a),tileM=mat(0x78584b);
+for(let i=0;i<26;i++){
+  let x=-230+Math.random()*150,z=-260+Math.random()*500;
+  if(Math.abs(z+6)<140)continue;
+  let w=7+Math.random()*7;
+  box(scene,w,4,w*.8,x,2,z,houseM);
+  const h=new THREE.Mesh(new THREE.ConeGeometry(w*.72,3.5,4),tileM);
+  h.position.set(x,5.6,z);h.rotation.y=Math.PI/4;scene.add(h);
+}
+
+// Sky clouds, soft sun disk.
+for(let i=0;i<30;i++){
+  const c=new THREE.Mesh(new THREE.SphereGeometry(1,14,10),new THREE.MeshStandardMaterial({color:0xffffff,transparent:true,opacity:.2,roughness:1}));
+  c.scale.set(13+Math.random()*22,2.5+Math.random()*4,7+Math.random()*11);
+  c.position.set((Math.random()-.5)*600,85+Math.random()*55,-260-Math.random()*220);scene.add(c);
+}
+const sunDisk=new THREE.Mesh(new THREE.SphereGeometry(8,20,16),new THREE.MeshBasicMaterial({color:0xfff0ce}));
+sunDisk.position.set(-240,150,-360);scene.add(sunDisk);
+
+// Hide loading
+setTimeout(() => loading.classList.add('hide'), 250);
+
+// Interactive UI Buttons
+let isAutoRotate = false;
+const autoRotateBtn = document.getElementById('autoRotateBtn');
+autoRotateBtn.onclick = () => {
+  isAutoRotate = !isAutoRotate;
+  autoRotateBtn.classList.toggle('active', isAutoRotate);
+};
+
+// Camera Smooth Transition
+let camTargetPos = camera.position.clone();
+let camTargetLook = controls.target.clone();
+let isTransitioning = false;
+
+function setCameraView(px, py, pz, tx, ty, tz) {
+  camTargetPos.set(px, py, pz);
+  camTargetLook.set(tx, ty, tz);
+  isTransitioning = true;
+}
+
+document.getElementById('viewResetBtn').onclick = () => setCameraView(180, 150, 195, -10, 2, -5);
+document.getElementById('viewTowerBtn').onclick = () => setCameraView(-95, 23, -112, -28, 5, -6);
+document.getElementById('viewRunwayBtn').onclick = () => setCameraView(-28, 10, 220, -28, 2, -50);
+document.getElementById('viewBridgeBtn').onclick = () => setCameraView(155, 28, 75, 112, 3, 42);
+
+// Day / Dusk / Night Lighting
+let lightIdx = 0;
+const lightBtn = document.getElementById('lightBtn');
+const lightModes = [
+  { name: 'LIGHTING: DAY', sky: 0x9bb7c3, fog: 0x9bb7c3, sunCol: 0xffe7c4, sunInt: 3.1, hemiInt: 1.45, ambInt: 0.25 },
+  { name: 'LIGHTING: DUSK', sky: 0xcc6e53, fog: 0xcc6e53, sunCol: 0xff7038, sunInt: 2.3, hemiInt: 0.85, ambInt: 0.20 },
+  { name: 'LIGHTING: NIGHT', sky: 0x0a141b, fog: 0x0a141b, sunCol: 0x3e5e78, sunInt: 0.45, hemiInt: 0.35, ambInt: 0.15 }
+];
+
+lightBtn.onclick = () => {
+  lightIdx = (lightIdx + 1) % lightModes.length;
+  const m = lightModes[lightIdx];
+  lightBtn.textContent = m.name;
+  scene.background.setHex(m.sky);
+  scene.fog.color.setHex(m.fog);
+  sun.color.setHex(m.sunCol);
+  sun.intensity = m.sunInt;
+  hemiLight.intensity = m.hemiInt;
+  ambLight.intensity = m.ambInt;
+};
+
+// Render Loop
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const time = clock.getElapsedTime();
+
+  if (isTransitioning) {
+    camera.position.lerp(camTargetPos, 0.08);
+    controls.target.lerp(camTargetLook, 0.08);
+    if (camera.position.distanceTo(camTargetPos) < 0.2) {
+      camera.position.copy(camTargetPos);
+      controls.target.copy(camTargetLook);
+      isTransitioning = false;
+    }
+  }
+
+  controls.update();
+
+  // Subtle water heave
+  river.position.y = -0.45 + Math.sin(time * 1.6) * 0.04;
+
+  // Radar dish rotation on tower
+  if (dishes[0]) dishes[0].rotation.y = time * 0.85;
+  if (dishes[1]) dishes[1].rotation.y = -time * 0.65;
+
+  // Auto rotate
+  if (isAutoRotate) {
+    scene.rotation.y = time * 0.035;
+  } else {
+    scene.rotation.y = 0;
+  }
+
+  renderer.render(scene,camera);
+}
+animate();
+
+window.addEventListener('resize',()=>{
+  camera.aspect=innerWidth/innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth,innerHeight);
+});
+</script>
+</body>
+</html>

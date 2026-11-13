@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>One-Tap Platformer - Clay Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+    }
+    body {
+      background: linear-gradient(135deg, #e4edf8 0%, #d8e5f5 100%);
+      font-family: 'Fredoka', cursive, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      padding: 12px;
+    }
+    #game-container {
+      position: relative;
+      width: 480px;
+      max-width: 96vw;
+      height: 720px;
+      max-height: 94vh;
+      background: #fbfdff;
+      border-radius: 36px;
+      box-shadow: 18px 24px 45px rgba(160, 180, 205, 0.45), -12px -12px 35px #ffffff,
+                  inset 4px 4px 8px rgba(255, 255, 255, 0.9), inset -4px -4px 8px rgba(160, 180, 205, 0.2);
+      overflow: hidden;
+      border: 4px solid #ffffff;
+    }
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+    .hud {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .clay-pill {
+      background: #ffffff;
+      padding: 8px 16px;
+      border-radius: 20px;
+      box-shadow: 6px 8px 16px rgba(166, 180, 200, 0.45), inset 3px 3px 6px #ffffff, inset -3px -3px 6px rgba(166, 180, 200, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      pointer-events: auto;
+    }
+    .screen-modal {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(240, 246, 255, 0.88);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 20;
+      text-align: center;
+    }
+    .screen-modal.hidden { display: none; }
+    .clay-card {
+      background: #ffffff;
+      padding: 28px 24px;
+      border-radius: 32px;
+      box-shadow: 14px 20px 35px rgba(160, 178, 202, 0.4), inset 4px 4px 8px #ffffff;
+      border: 3px solid #ffffff;
+      width: 100%;
+      max-width: 340px;
+    }
+    .clay-btn {
+      background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%);
+      color: #ffffff;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 12px 28px;
+      border-radius: 24px;
+      border: 2px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 6px 10px 18px rgba(108, 92, 231, 0.35), inset 2px 2px 4px #ffffff;
+      cursor: pointer;
+      margin-top: 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container">
+    <canvas id="canvas" width="480" height="720"></canvas>
+
+    <div class="hud">
+      <div class="clay-pill">
+        <span>🏃</span>
+        <span id="dist-val">0m</span>
+      </div>
+      <div class="clay-pill">
+        <span>💎</span>
+        <span id="gems-val">0</span>
+      </div>
+      <button class="clay-pill" id="btn-sound" style="padding: 8px 12px; cursor: pointer;">🔊</button>
+    </div>
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="screen-modal">
+      <div class="clay-card">
+        <div style="font-size: 52px; margin-bottom: 8px;">🏃 🦘 💎</div>
+        <h1 style="color: #6c5ce7; font-size: 28px;">One-Tap Runner</h1>
+        <p style="color: #636e72; font-size: 15px; margin: 10px 0;">Just tap anywhere to jump and double jump! Avoid clay spikes and collect gems!</p>
+        <button id="btn-start" class="clay-btn">TAP TO RUN ▶</button>
+      </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameover-screen" class="screen-modal hidden">
+      <div class="clay-card">
+        <div style="font-size: 48px; margin-bottom: 6px;">💥 😵</div>
+        <h1 style="color: #ff5252; font-size: 28px;">FELL DOWN!</h1>
+        <p style="color: #636e72; font-size: 14px; margin-bottom: 16px;">You hit a hazard on the clay platform!</p>
+        <div style="background: #f0f4f9; padding: 12px; border-radius: 18px; margin-bottom: 16px;">
+          <div style="font-size: 24px; font-weight: 700; color: #6c5ce7;" id="final-dist">0m</div>
+          <div style="font-size: 11px; color: #829ab1; text-transform: uppercase;">Distance Run</div>
+        </div>
+        <button id="btn-restart" class="clay-btn">RUN AGAIN 🔄</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    class ClaySound {
+      constructor() {
+        this.ctx = null;
+        this.muted = false;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (AC) this.ctx = new AC();
+        } catch (e) {}
+      }
+      resume() { if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume(); }
+      toggle() { this.muted = !this.muted; return this.muted; }
+      jump() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'triangle';
+        o.frequency.setValueAtTime(260, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(520, this.ctx.currentTime + 0.1);
+        g.gain.setValueAtTime(0.25, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.12);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.12);
+      }
+      gem() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(880, this.ctx.currentTime);
+        o.frequency.setValueAtTime(1320, this.ctx.currentTime + 0.05);
+        g.gain.setValueAtTime(0.3, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.15);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.15);
+      }
+      crash() {
+        if (!this.ctx || this.muted) return;
+        this.resume();
+        const o = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(140, this.ctx.currentTime);
+        o.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 0.3);
+        g.gain.setValueAtTime(0.4, this.ctx.currentTime);
+        g.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 0.35);
+        o.connect(g); g.connect(this.ctx.destination);
+        o.start(); o.stop(this.ctx.currentTime + 0.35);
+      }
+    }
+    const sound = new ClaySound();
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const W = 480;
+    const H = 720;
+
+    let gameState = 'START';
+    let distance = 0;
+    let gems = 0;
+    let speed = 5.5;
+
+    let hero = {
+      x: 100,
+      y: 450,
+      vy: 0,
+      r: 16,
+      jumps: 0,
+      isGrounded: false
+    };
+
+    let platforms = [];
+    let obstacles = [];
+    let gemItems = [];
+    let nextPlatformX = 0;
+
+    function spawnPlatform(x, w, y) {
+      platforms.push({ x, y, w, h: 40 });
+      // Occasional spikes or gems
+      if (w > 120 && Math.random() < 0.4) {
+        obstacles.push({
+          x: x + w / 2 - 12,
+          y: y - 20,
+          w: 24,
+          h: 20
+        });
+      } else if (Math.random() < 0.5) {
+        gemItems.push({
+          x: x + w / 2,
+          y: y - 30,
+          collected: false
+        });
+      }
+    }
+
+    function initGame() {
+      distance = 0;
+      gems = 0;
+      speed = 5.5;
+      hero.x = 100;
+      hero.y = 400;
+      hero.vy = 0;
+      hero.jumps = 0;
+
+      platforms = [];
+      obstacles = [];
+      gemItems = [];
+
+      // Starting flat ground
+      spawnPlatform(0, 500, 500);
+      nextPlatformX = 500;
+
+      for (let i = 0; i < 4; i++) {
+        const gap = 60 + Math.random() * 80;
+        const width = 150 + Math.random() * 150;
+        const py = 440 + (Math.random() - 0.5) * 80;
+        spawnPlatform(nextPlatformX + gap, width, py);
+        nextPlatformX += gap + width;
+      }
+
+      gameState = 'PLAYING';
+      document.getElementById('start-screen').classList.add('hidden');
+      document.getElementById('gameover-screen').classList.add('hidden');
+    }
+
+    function jump() {
+      if (gameState === 'PLAYING') {
+        if (hero.isGrounded || hero.jumps < 2) {
+          hero.vy = -10.8;
+          hero.jumps++;
+          hero.isGrounded = false;
+          sound.jump();
+        }
+      } else if (gameState === 'START') {
+        initGame();
+      }
+    }
+
+    window.addEventListener('pointerdown', (e) => {
+      if (!e.target.closest('button')) jump();
+    });
+    window.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'ArrowUp') { e.preventDefault(); jump(); }
+    });
+
+    document.getElementById('btn-start').addEventListener('click', initGame);
+    document.getElementById('btn-restart').addEventListener('click', initGame);
+    document.getElementById('btn-sound').addEventListener('click', () => {
+      const m = sound.toggle();
+      document.getElementById('btn-sound').innerText = m ? '🔇' : '🔊';
+    });
+
+    function loop() {
+      ctx.fillStyle = '#fbfdff';
+      ctx.fillRect(0, 0, W, H);
+
+      if (gameState === 'PLAYING') {
+        distance += speed * 0.05;
+        speed = 5.5 + Math.min(distance / 200, 4);
+        document.getElementById('dist-val').innerText = `${Math.floor(distance)}m`;
+        document.getElementById('gems-val').innerText = gems;
+
+        // Hero gravity
+        hero.vy += 0.48;
+        hero.y += hero.vy;
+
+        // Scroll world left
+        platforms.forEach(p => p.x -= speed);
+        obstacles.forEach(o => o.x -= speed);
+        gemItems.forEach(g => g.x -= speed);
+        nextPlatformX -= speed;
+
+        // Ground check
+        hero.isGrounded = false;
+        platforms.forEach(p => {
+          if (hero.x + hero.r > p.x && hero.x - hero.r < p.x + p.w &&
+              hero.y + hero.r >= p.y && hero.y + hero.r <= p.y + 16 && hero.vy >= 0) {
+            hero.y = p.y - hero.r;
+            hero.vy = 0;
+            hero.isGrounded = true;
+            hero.jumps = 0;
+          }
+        });
+
+        // Obstacle collision (spikes)
+        obstacles.forEach(o => {
+          if (hero.x + hero.r > o.x && hero.x - hero.r < o.x + o.w &&
+              hero.y + hero.r > o.y && hero.y - hero.r < o.y + o.h) {
+            sound.crash();
+            gameState = 'GAMEOVER';
+            document.getElementById('final-dist').innerText = `${Math.floor(distance)}m`;
+            document.getElementById('gameover-screen').classList.remove('hidden');
+          }
+        });
+
+        // Gem pickup
+        gemItems.forEach(g => {
+          if (!g.collected && Math.hypot(hero.x - g.x, hero.y - g.y) < hero.r + 14) {
+            g.collected = true;
+            gems++;
+            sound.gem();
+          }
+        });
+
+        // Clean & spawn new platforms
+        platforms = platforms.filter(p => p.x + p.w > -50);
+        obstacles = obstacles.filter(o => o.x + o.w > -50);
+        gemItems = gemItems.filter(g => g.x > -50 && !g.collected);
+
+        if (nextPlatformX < W + 200) {
+          const gap = 70 + Math.random() * 80;
+          const width = 140 + Math.random() * 160;
+          const py = 440 + (Math.random() - 0.5) * 80;
+          spawnPlatform(nextPlatformX + gap, width, py);
+          nextPlatformX += gap + width;
+        }
+
+        // Pitfall death
+        if (hero.y > H + 40) {
+          sound.crash();
+          gameState = 'GAMEOVER';
+          document.getElementById('final-dist').innerText = `${Math.floor(distance)}m`;
+          document.getElementById('gameover-screen').classList.remove('hidden');
+        }
+      }
+
+      // Draw Clay Platforms
+      platforms.forEach(p => {
+        ctx.save();
+        ctx.shadowColor = 'rgba(160, 180, 205, 0.4)';
+        ctx.shadowBlur = 10;
+        ctx.shadowOffsetY = 6;
+        ctx.fillStyle = '#6c5ce7';
+        ctx.beginPath();
+        ctx.roundRect(p.x, p.y, p.w, p.h, 14);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+
+        ctx.fillStyle = '#a29bfe';
+        ctx.beginPath();
+        ctx.roundRect(p.x + 3, p.y + 3, p.w - 6, 8, 4);
+        ctx.fill();
+        ctx.restore();
+      });
+
+      // Draw Spikes
+      obstacles.forEach(o => {
+        ctx.fillStyle = '#ff7675';
+        ctx.beginPath();
+        ctx.moveTo(o.x, o.y + o.h);
+        ctx.lineTo(o.x + o.w / 2, o.y);
+        ctx.lineTo(o.x + o.w, o.y + o.h);
+        ctx.closePath();
+        ctx.fill();
+      });
+
+      // Draw Gems
+      gemItems.forEach(g => {
+        ctx.fillStyle = '#00cec9';
+        ctx.beginPath();
+        ctx.arc(g.x, g.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('💎', g.x, g.y + 4);
+      });
+
+      // Draw Hero
+      ctx.save();
+      ctx.translate(hero.x, hero.y);
+      ctx.fillStyle = '#ff7675';
+      ctx.beginPath();
+      ctx.arc(0, 0, hero.r, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Eye
+      ctx.fillStyle = '#ffffff';
+      ctx.beginPath();
+      ctx.arc(4, -3, 5, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#2d3436';
+      ctx.beginPath();
+      ctx.arc(6, -3, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+
+      requestAnimationFrame(loop);
+    }
+
+    loop();
+  </script>
+</body>
+</html>
