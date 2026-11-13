@@ -1,13 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { Shield } from "lucide-react";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata = {
   title: "Privacy Policy — DevDrop",
   description:
     "Read DevDrop's privacy policy regarding client-side processing, external AI API disclosures, advertising, and data safety.",
   alternates: {
-    canonical: "https://devdrop.online/privacy",
+    canonical: `${SITE_URL}/privacy`,
   },
 };
 

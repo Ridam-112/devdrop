@@ -1,0 +1,24 @@
+# ==============================================================================
+# DevDrop (devdrop.online) Authorized Digital Sellers (ads.txt)
+# Specification: https://iabtechlab.com/ads-txt/
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Adsterra
+# TODO: Paste your Adsterra publisher account lines below
+# Example format: adsterra.com, [PUBLISHER_ACCOUNT_ID], DIRECT, [CERTIFICATION_ID]
+# ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+# 2. Monetag
+# TODO: Paste your Monetag publisher account lines below
+# Example format: monetag.com, [PUBLISHER_ACCOUNT_ID], DIRECT, [CERTIFICATION_ID]
+# ------------------------------------------------------------------------------
+
+
+# ------------------------------------------------------------------------------
+# 3. Google AdSense (Optional / Future)
+# TODO: Paste your Google AdSense publisher line below if approved
+# Example format: google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+# ------------------------------------------------------------------------------

@@ -38,75 +38,71 @@ const indexableTools = tools.filter(t => {
   const parentCat = categories.find(c => c.slug === t.categorySlug);
   return parentCat ? parentCat.indexable !== false : false;
 });
+const indexableGames = games.filter(g => g.indexable === true);
 
 const baseUrl = 'https://devdrop.online';
-const now = new Date().toISOString();
 
 const staticRoutes = [
-  { path: '', priority: '1.0', changefreq: 'daily' },
-  { path: '/tools', priority: '0.9', changefreq: 'daily' },
-  { path: '/games', priority: '0.95', changefreq: 'daily' },
-  { path: '/guides', priority: '0.85', changefreq: 'weekly' },
-  { path: '/about', priority: '0.6', changefreq: 'monthly' },
-  { path: '/contact', priority: '0.5', changefreq: 'monthly' },
-  { path: '/disclaimer', priority: '0.5', changefreq: 'monthly' },
-  { path: '/privacy', priority: '0.4', changefreq: 'monthly' },
-  { path: '/terms', priority: '0.4', changefreq: 'monthly' },
+  { path: '', lastmod: '2026-11-13' },
+  { path: '/tools', lastmod: '2026-11-13' },
+  { path: '/games', lastmod: '2026-11-10' },
+  { path: '/guides', lastmod: '2026-11-09' },
+  { path: '/about', lastmod: '2026-11-12' },
+  { path: '/contact', lastmod: '2026-11-10' },
+  { path: '/disclaimer', lastmod: '2026-11-01' },
+  { path: '/privacy', lastmod: '2026-11-13' },
+  { path: '/terms', lastmod: '2026-10-25' },
 ];
 
 let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
 xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
 
+// Static routes
 staticRoutes.forEach(r => {
   xml += '  <url>\n';
   xml += `    <loc>${baseUrl}${r.path}</loc>\n`;
-  xml += `    <lastmod>${now}</lastmod>\n`;
-  xml += `    <changefreq>${r.changefreq}</changefreq>\n`;
-  xml += `    <priority>${r.priority}</priority>\n`;
+  xml += `    <lastmod>${r.lastmod}</lastmod>\n`;
   xml += '  </url>\n';
 });
 
+// Categories (indexable only)
 indexableCategories.forEach(cat => {
   xml += '  <url>\n';
   xml += `    <loc>${baseUrl}/category/${cat.slug}</loc>\n`;
-  xml += `    <lastmod>${now}</lastmod>\n`;
-  xml += '    <changefreq>weekly</changefreq>\n';
-  xml += '    <priority>0.8</priority>\n';
+  xml += `    <lastmod>2026-11-10</lastmod>\n`;
   xml += '  </url>\n';
 });
 
+// Tools (indexable only)
 indexableTools.forEach(tool => {
   xml += '  <url>\n';
   xml += `    <loc>${baseUrl}/tools/${tool.slug}</loc>\n`;
-  xml += `    <lastmod>${now}</lastmod>\n`;
-  xml += '    <changefreq>weekly</changefreq>\n';
-  xml += '    <priority>0.85</priority>\n';
+  xml += `    <lastmod>2026-11-10</lastmod>\n`;
   xml += '  </url>\n';
 });
 
+// Guides (with real per-guide publication dates)
 guides.forEach(guide => {
   xml += '  <url>\n';
   xml += `    <loc>${baseUrl}/guides/${guide.slug}</loc>\n`;
-  xml += `    <lastmod>${now}</lastmod>\n`;
-  xml += '    <changefreq>monthly</changefreq>\n';
-  xml += '    <priority>0.8</priority>\n';
+  xml += `    <lastmod>${guide.publishedAt || '2026-11-05'}</lastmod>\n`;
   xml += '  </url>\n';
 });
 
-games.forEach(game => {
+// Games (best 20 indexable only, with per-game lastmod)
+indexableGames.forEach(game => {
   xml += '  <url>\n';
   xml += `    <loc>${baseUrl}/games/${game.slug}</loc>\n`;
-  xml += `    <lastmod>${now}</lastmod>\n`;
-  xml += '    <changefreq>weekly</changefreq>\n';
-  xml += '    <priority>0.9</priority>\n';
+  xml += `    <lastmod>${game.lastmod || '2026-11-05'}</lastmod>\n`;
   xml += '  </url>\n';
 });
 
 xml += '</urlset>\n';
 
 fs.writeFileSync('public/sitemap.xml', xml, 'utf8');
-console.log(`Generated public/sitemap.xml with ${staticRoutes.length} static, ${indexableCategories.length} categories, ${indexableTools.length} tools, ${guides.length} guides, and ${games.length} games.`);
+console.log(`Generated public/sitemap.xml with ${staticRoutes.length} static, ${indexableCategories.length} categories, ${indexableTools.length} tools, ${guides.length} guides, and ${indexableGames.length} games (NO priority/changefreq).`);
 
+// robots.txt: Crawlable for all agents, does NOT disallow noindex paths so Googlebot can discover the noindex header/meta tags
 const robots = `User-agent: *
 Allow: /
 Disallow: /api/
@@ -134,4 +130,4 @@ Host: https://devdrop.online
 `;
 
 fs.writeFileSync('public/robots.txt', robots, 'utf8');
-console.log('Generated public/robots.txt with canonical host and sitemap link.');
+console.log('Generated public/robots.txt with Allow: / and sitemap link.');

@@ -1,19 +1,21 @@
 import React from "react";
 import { Metadata } from "next";
 import ToolsClient from "@/components/ToolsClient";
+import { INDEXABLE_TOOLS_LABEL } from "@/lib/data/tools";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "All Online Tools & Utilities Directory | DevDrop",
   description:
-    "Explore 140+ interactive online utilities, developer tools, image editors, PDF makers, and diagnostic tools with instant search and filtering.",
+    `Explore ${INDEXABLE_TOOLS_LABEL} interactive online utilities, developer tools, image editors, PDF makers, and converters with instant search.`,
   alternates: {
-    canonical: "https://devdrop.online/tools",
+    canonical: `${SITE_URL}/tools`,
   },
   openGraph: {
     title: "All Online Tools & Utilities | DevDrop",
     description:
-      "Explore 140+ interactive online utilities, developer tools, image editors, and PDF makers.",
-    url: "https://devdrop.online/tools",
+      `Explore ${INDEXABLE_TOOLS_LABEL} interactive online utilities, developer tools, image editors, and PDF makers.`,
+    url: `${SITE_URL}/tools`,
     type: "website",
   },
 };

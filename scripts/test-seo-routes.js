@@ -32,8 +32,8 @@ function test(path, expectCode, validateFn) {
 async function run() {
   console.log('--- STARTING SEO & ROUTE ACCEPTANCE VERIFICATION ---');
 
-  const r1 = await test('/tools/wifi-hacker-simulator', 200, (html) => {
-    const hasCanonical = html.includes('https://devdrop.vercel.app/tools/wifi-hacker-simulator');
+  const r1 = await test('/tools/image-compressor', 200, (html) => {
+    const hasCanonical = html.includes('https://devdrop.online/tools/image-compressor');
     const hasFaq = html.includes('FAQPage');
     const hasBreadcrumbs = html.includes('BreadcrumbList');
     const hasApp = html.includes('WebApplication');
@@ -44,28 +44,28 @@ async function run() {
   const r3 = await test('/tools/location-tracker', 308, (_, res) => res.headers.location === '/tools/phone-location-prank');
   const r4 = await test('/tools/screen-lock', 308, (_, res) => res.headers.location === '/tools/phone-unlock-simulator');
 
-  const r5 = await test('/category/wifi-network', 200, (html) => {
-    const hasCanonical = html.includes('https://devdrop.vercel.app/category/wifi-network');
+  const r5 = await test('/category/image-photo', 200, (html) => {
+    const hasCanonical = html.includes('https://devdrop.online/category/image-photo');
     const hasCol = html.includes('CollectionPage');
     const hasFaq = html.includes('FAQPage');
     return hasCanonical && hasCol && hasFaq;
   });
 
   const r6 = await test('/', 200, (html) => {
-    return html.includes('https://devdrop.vercel.app') && html.includes('WebSite');
+    return html.includes('https://devdrop.online') && html.includes('WebSite');
   });
 
   const r7 = await test('/tools', 200, (html) => {
-    return html.includes('https://devdrop.vercel.app/tools');
+    return html.includes('https://devdrop.online/tools');
   });
 
   const r8 = await test('/sitemap.xml', 200, (xml) => {
-    return xml.includes('https://devdrop.vercel.app/tools/wifi-hacker-simulator') &&
+    return xml.includes('https://devdrop.online/tools/image-compressor') &&
            !xml.includes('/tools/wifi-hacker<');
   });
 
   const r9 = await test('/robots.txt', 200, (txt) => {
-    return txt.includes('Sitemap: https://devdrop.vercel.app/sitemap.xml');
+    return txt.includes('Sitemap: https://devdrop.online/sitemap.xml');
   });
 
   console.log('--- ALL ACCEPTANCE TESTS COMPLETE ---');

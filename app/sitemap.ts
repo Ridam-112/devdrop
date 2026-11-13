@@ -1,100 +1,72 @@
 import { MetadataRoute } from "next";
 import { TOOLS, CATEGORIES, isToolIndexable, isCategoryIndexable } from "@/lib/data/tools";
-import { OPEN_SOURCE_GAMES } from "@/lib/data/games";
+import { OPEN_SOURCE_GAMES, isGameIndexable } from "@/lib/data/games";
 import { GUIDES } from "@/lib/data/guides";
+import { SITE_URL } from "@/lib/constants";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://devdrop.online";
-  const now = new Date();
-
-  // Static core routes
+  // Static core routes with real page update dates (no priority/changefreq as Google ignores them)
   const staticRoutes: MetadataRoute.Sitemap = [
     {
-      url: `${baseUrl}`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 1.0,
+      url: SITE_URL,
+      lastModified: new Date("2026-11-13"),
     },
     {
-      url: `${baseUrl}/tools`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.9,
+      url: `${SITE_URL}/tools`,
+      lastModified: new Date("2026-11-13"),
     },
     {
-      url: `${baseUrl}/games`,
-      lastModified: now,
-      changeFrequency: "daily",
-      priority: 0.95,
+      url: `${SITE_URL}/games`,
+      lastModified: new Date("2026-11-10"),
     },
     {
-      url: `${baseUrl}/guides`,
-      lastModified: now,
-      changeFrequency: "weekly",
-      priority: 0.85,
+      url: `${SITE_URL}/guides`,
+      lastModified: new Date("2026-11-09"),
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.6,
+      url: `${SITE_URL}/about`,
+      lastModified: new Date("2026-11-12"),
     },
     {
-      url: `${baseUrl}/contact`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date("2026-11-10"),
     },
     {
-      url: `${baseUrl}/disclaimer`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.5,
+      url: `${SITE_URL}/disclaimer`,
+      lastModified: new Date("2026-11-01"),
     },
     {
-      url: `${baseUrl}/privacy`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.4,
+      url: `${SITE_URL}/privacy`,
+      lastModified: new Date("2026-11-13"),
     },
     {
-      url: `${baseUrl}/terms`,
-      lastModified: now,
-      changeFrequency: "monthly",
-      priority: 0.4,
+      url: `${SITE_URL}/terms`,
+      lastModified: new Date("2026-10-25"),
     },
   ];
 
-  // Dynamic indexable category routes only
+  // Dynamic indexable category routes only (3 core utility categories)
   const categoryRoutes: MetadataRoute.Sitemap = CATEGORIES.filter(isCategoryIndexable).map((cat) => ({
-    url: `${baseUrl}/category/${cat.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.8,
+    url: `${SITE_URL}/category/${cat.slug}`,
+    lastModified: new Date("2026-11-10"),
   }));
 
-  // Dynamic indexable tool routes only
+  // Dynamic indexable tool routes only (53 indexable tools)
   const toolRoutes: MetadataRoute.Sitemap = TOOLS.filter(isToolIndexable).map((tool) => ({
-    url: `${baseUrl}/tools/${tool.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.85,
+    url: `${SITE_URL}/tools/${tool.slug}`,
+    lastModified: new Date("2026-11-10"),
   }));
 
-  // Dynamic guides routes
+  // Dynamic guides routes with per-article publication dates
   const guideRoutes: MetadataRoute.Sitemap = GUIDES.map((guide) => ({
-    url: `${baseUrl}/guides/${guide.slug}`,
-    lastModified: now,
-    changeFrequency: "monthly",
-    priority: 0.8,
+    url: `${SITE_URL}/guides/${guide.slug}`,
+    lastModified: new Date(guide.publishedAt),
   }));
 
-  // Dynamic open-source game routes
-  const gameRoutes: MetadataRoute.Sitemap = OPEN_SOURCE_GAMES.map((game) => ({
-    url: `${baseUrl}/games/${game.slug}`,
-    lastModified: now,
-    changeFrequency: "weekly",
-    priority: 0.9,
+  // Dynamic open-source game routes: Only the best 20 indexable games
+  const gameRoutes: MetadataRoute.Sitemap = OPEN_SOURCE_GAMES.filter(isGameIndexable).map((game) => ({
+    url: `${SITE_URL}/games/${game.slug}`,
+    lastModified: new Date(game.lastmod || "2026-11-05"),
   }));
 
   return [...staticRoutes, ...categoryRoutes, ...toolRoutes, ...guideRoutes, ...gameRoutes];

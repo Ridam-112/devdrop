@@ -136,6 +136,16 @@ export const Footer: React.FC = () => {
                   Contact &amp; Support
                 </Link>
               </li>
+              <li>
+                <a
+                  href="https://uplcm.com/4/12244922"
+                  target="_blank"
+                  rel="sponsored nofollow noopener"
+                  className="text-amber-400/90 hover:text-amber-300 transition-colors flex items-center gap-1 font-mono text-[11px]"
+                >
+                  <span>Partner Deals (Sponsored)</span>
+                </a>
+              </li>
             </ul>
           </div>
         </div>

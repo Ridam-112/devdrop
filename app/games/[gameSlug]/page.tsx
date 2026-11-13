@@ -17,11 +17,12 @@ import {
   Sparkles,
   Info,
 } from "lucide-react";
-import { OPEN_SOURCE_GAMES, OpenSourceGame } from "@/lib/data/games";
+import { OPEN_SOURCE_GAMES, OpenSourceGame, isGameIndexable } from "@/lib/data/games";
 import { PlayableGameCanvas } from "@/components/games/PlayableGameCanvas";
 import { Playable2048 } from "@/components/games/Playable2048";
 import { IframeGamePlayer } from "@/components/games/IframeGamePlayer";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
+import { SITE_URL } from "@/lib/constants";
 
 interface Props {
   params: {
@@ -40,12 +41,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   if (!game) {
     return {
-      title: "Game Not Found | DEVDROP",
+      title: "Game Not Found | DevDrop",
       robots: { index: false, follow: false },
     };
   }
 
-  const canonicalUrl = `https://devdrop.online/games/${game.slug}`;
+  const isIndexable = isGameIndexable(game);
+  const canonicalUrl = `${SITE_URL}/games/${game.slug}`;
 
   return {
     title: game.metaTitle,
@@ -53,30 +55,39 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: canonicalUrl,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-video-preview": -1,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-      },
-    },
+    robots: isIndexable
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-video-preview": -1,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+          },
+        }
+      : {
+          index: false,
+          follow: false,
+          googleBot: {
+            index: false,
+            follow: false,
+          },
+        },
     openGraph: {
       title: game.metaTitle,
       description: game.metaDescription,
       url: canonicalUrl,
-      siteName: "DEVDROP",
+      siteName: "DevDrop",
       locale: "en_US",
       type: "website",
       images: [
         {
-          url: "https://devdrop.online/og-image.png",
-          width: 1200,
-          height: 630,
-          alt: `${game.name} open source HTML5 game preview`,
+          url: `${SITE_URL}/logo.png`,
+          width: 1024,
+          height: 1024,
+          alt: `${game.name} open source game preview`,
         },
       ],
     },
@@ -95,7 +106,7 @@ export default function GameDetailPage({ params }: Props) {
     notFound();
   }
 
-  const canonicalUrl = `https://devdrop.online/games/${game.slug}`;
+  const canonicalUrl = `${SITE_URL}/games/${game.slug}`;
   const relatedGames = OPEN_SOURCE_GAMES.filter(
     (g) => g.slug !== game.slug && (g.genre === game.genre || g.isPlayableDirectly)
   ).slice(0, 3);
@@ -109,13 +120,13 @@ export default function GameDetailPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.online",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Open Source Games",
-        item: "https://devdrop.online/games",
+        item: `${SITE_URL}/games`,
       },
       {
         "@type": "ListItem",
@@ -225,9 +236,6 @@ export default function GameDetailPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Top Banner Ad Placement */}
-      <AdvertisementSlot slotId={`game-${game.slug}-top-banner`} format="banner" className="my-6" />
-
       {/* Game Player Arena Section */}
       <section className="my-8">
         {game.builtInGameType === "2048" ? (
@@ -301,6 +309,9 @@ export default function GameDetailPage({ params }: Props) {
         )}
       </section>
 
+      {/* Mid-Page Banner Ad Placement (Below main game interface) */}
+      <AdvertisementSlot slotId={`game-${game.slug}-mid-banner`} format="banner" className="my-8" />
+
       {/* Game Details, Controls, and Specifications Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 my-12">
         {/* Main Content (Features & How to play) */}
@@ -357,6 +368,26 @@ export default function GameDetailPage({ params }: Props) {
             </div>
           </section>
 
+          {/* Pro Tips & Strategies */}
+          {game.tips && game.tips.length > 0 && (
+            <section className="bg-cyber-card/40 border border-cyber-borderSubtle rounded-2xl p-6">
+              <h2 className="text-xl font-bold font-mono text-white mb-4 flex items-center gap-2">
+                <Trophy className="w-5 h-5 text-amber-400" />
+                <span>Pro Tips &amp; Gameplay Strategies</span>
+              </h2>
+              <ul className="space-y-3 font-sans text-sm text-slate-300">
+                {game.tips.map((tip, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <span className="w-5 h-5 rounded-md bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-mono flex items-center justify-center shrink-0 mt-0.5 font-bold">
+                      {idx + 1}
+                    </span>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+
           {/* Technical FAQs */}
           <section className="bg-cyber-card/40 border border-cyber-borderSubtle rounded-2xl p-6">
             <h2 className="text-xl font-bold font-mono text-white mb-4 flex items-center gap-2">
@@ -380,6 +411,36 @@ export default function GameDetailPage({ params }: Props) {
 
         {/* Sidebar Information & Related Games */}
         <aside className="space-y-6">
+          {/* Attribution & Open-Source Licensing Credit Block */}
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 space-y-3">
+            <div className="flex items-center gap-2 text-emerald-400 font-mono text-xs font-bold uppercase">
+              <ShieldCheck className="w-4 h-4" />
+              <span>Attribution &amp; Licensing</span>
+            </div>
+            <div className="space-y-2.5 font-mono text-xs text-neutral-300">
+              <div>
+                <span className="text-neutral-500 block text-[10px] uppercase">Author / Creator</span>
+                <span className="text-white font-semibold">{game.author || "DevDrop Contributors"}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 block text-[10px] uppercase">License</span>
+                <span className="text-emerald-400 font-semibold">{game.license}</span>
+              </div>
+              <div>
+                <span className="text-neutral-500 block text-[10px] uppercase">Original Project</span>
+                <a
+                  href={game.sourceUrl || game.githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-cyan-400 hover:underline flex items-center gap-1 mt-0.5 break-all"
+                >
+                  <span>Project Repository</span>
+                  <ExternalLink className="w-3 h-3 shrink-0" />
+                </a>
+              </div>
+            </div>
+          </div>
+
           {/* Tech Specs Card */}
           <div className="bg-cyber-card border border-cyber-borderSubtle rounded-2xl p-6 space-y-4">
             <div className="flex items-center gap-2 text-cyber-green font-mono text-xs font-bold uppercase">
@@ -400,10 +461,12 @@ export default function GameDetailPage({ params }: Props) {
                 <span className="text-cyber-muted">Release Year</span>
                 <span className="text-white">{game.releaseYear}</span>
               </div>
-              <div className="flex items-center justify-between pb-2 border-b border-cyber-borderSubtle">
-                <span className="text-cyber-muted">Rating</span>
-                <span className="text-yellow-400 font-bold">★ {game.rating} / 5</span>
-              </div>
+              {game.rating ? (
+                <div className="flex items-center justify-between pb-2 border-b border-cyber-borderSubtle">
+                  <span className="text-cyber-muted">Rating</span>
+                  <span className="text-yellow-400 font-bold">★ {game.rating} / 5</span>
+                </div>
+              ) : null}
               <div>
                 <span className="text-cyber-muted block mb-1.5">Technologies</span>
                 <div className="flex flex-wrap gap-1">

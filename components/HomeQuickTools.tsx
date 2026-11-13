@@ -34,7 +34,7 @@ export function HomeQuickTools() {
   }, [qrText]);
 
   // Word Counter State
-  const [wordText, setWordText] = useState("DevDrop provides 140+ free developer and everyday utilities. Fast, client-side, and private.");
+  const [wordText, setWordText] = useState("DevDrop provides free developer and everyday utilities. Fast, client-side, and private.");
   const words = wordText.trim() ? wordText.trim().split(/\s+/).length : 0;
   const chars = wordText.length;
   const readingTime = Math.ceil(words / 200);

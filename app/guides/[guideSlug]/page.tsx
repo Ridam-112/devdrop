@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { GUIDES } from "@/lib/data/guides";
 import { TOOLS } from "@/lib/data/tools";
+import { SITE_URL } from "@/lib/constants";
 
 interface Props {
   params: {
@@ -35,7 +36,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     };
   }
 
-  const canonicalUrl = `https://devdrop.online/guides/${guide.slug}`;
+  const canonicalUrl = `${SITE_URL}/guides/${guide.slug}`;
 
   return {
     title: guide.metaTitle,
@@ -78,7 +79,7 @@ export default function GuideDetailPage({ params }: Props) {
   }
 
   const targetTool = TOOLS.find((t) => t.slug === guide.targetToolSlug);
-  const canonicalUrl = `https://devdrop.online/guides/${guide.slug}`;
+  const canonicalUrl = `${SITE_URL}/guides/${guide.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -89,13 +90,13 @@ export default function GuideDetailPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.online",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Guides",
-        item: "https://devdrop.online/guides",
+        item: `${SITE_URL}/guides`,
       },
       {
         "@type": "ListItem",
@@ -117,15 +118,15 @@ export default function GuideDetailPage({ params }: Props) {
     author: {
       "@type": "Organization",
       name: "DevDrop Editorial Team",
-      url: "https://devdrop.online/about",
+      url: `${SITE_URL}/about`,
     },
     publisher: {
       "@type": "Organization",
       name: "DevDrop",
-      url: "https://devdrop.online",
+      url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: "https://devdrop.online/logo.png",
+        url: `${SITE_URL}/logo.png`,
       },
     },
     mainEntityOfPage: {

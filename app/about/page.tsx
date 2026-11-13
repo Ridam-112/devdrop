@@ -1,13 +1,14 @@
 import React from "react";
 import Link from "next/link";
 import { Wrench, Shield, Sparkles, CheckCircle2, ArrowRight, Heart, Mail } from "lucide-react";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata = {
   title: "About DevDrop — Free Online Web Utilities & Browser Games",
   description:
     "Learn about DevDrop (devdrop.online): privacy-first client-side web tools, image and PDF utilities, developer helpers, and open-source browser games.",
   alternates: {
-    canonical: "https://devdrop.online/about",
+    canonical: `${SITE_URL}/about`,
   },
 };
 

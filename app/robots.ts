@@ -1,4 +1,5 @@
 import { MetadataRoute } from "next";
+import { SITE_URL } from "@/lib/constants";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -6,7 +7,7 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/api/", "/private/"],
+        disallow: ["/api/"],
       },
       {
         userAgent: [
@@ -14,12 +15,13 @@ export default function robots(): MetadataRoute.Robots {
           "Bingbot",
           "OAI-SearchBot",
           "ChatGPT-User",
-          "Claude-SearchBot",
+          "ClaudeBot",
           "PerplexityBot",
         ],
         allow: "/",
       },
     ],
-    sitemap: "https://devdrop.online/sitemap.xml",
+    sitemap: `${SITE_URL}/sitemap.xml`,
+    host: SITE_URL,
   };
 }

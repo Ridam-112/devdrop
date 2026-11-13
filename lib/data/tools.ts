@@ -5044,35 +5044,35 @@ export const TOOLS: ToolItem[] = [
     ],
     "name": "Photo Background Remover",
     "h1": "Photo Background Remover: Instant AI-Powered Transparent Cutouts",
-    "tagline": "Erase photo backgrounds automatically in-browser with zero upload",
+    "tagline": "Erase photo backgrounds automatically with AI or local fallback",
     "categorySlug": "image-media",
     "iconName": "Scissors",
     "badge": "Trending",
     "isPopular": true,
-    "shortIntro": "Remove photo backgrounds automatically inspired by rembg open-source models. Create transparent PNG cutouts, product photos, profile pictures, and replace backgrounds with solid colors or chroma green.",
-    "description": "Automatic photo background remover that creates transparent PNG cutouts directly in the browser.",
-    "longDescription": "Inspired by cutting-edge open-source background removal models like danielgatis/rembg, the DevDrop Photo Background Remover automatically detects foreground subjects and isolates them from distracting backgrounds. Adjust edge tolerance, feather borders, swap backdrops (transparent, white studio, dark cyberpunk, or chroma green), and download crisp PNG cutouts.",
+    "shortIntro": "Remove photo backgrounds automatically using the Remove.bg AI API over encrypted HTTPS, with a local browser-based fallback when no API key is set.",
+    "description": "Photo background remover using the Remove.bg API (over encrypted HTTPS, not retained) with local browser fallback.",
+    "longDescription": "The DevDrop Photo Background Remover isolates subjects and produces clean transparent PNG cutouts. Images are processed via the Remove.bg API over secure HTTPS and are never retained or stored. When an API key is not configured, a browser-based client-side color-clustering engine is used.",
     "features": [
-      "Automatic background removal for portraits, objects, and product photos",
+      "Automatic AI background removal for portraits, objects, and product photos",
       "Tolerance threshold and edge feathering sliders for pixel-perfect cutouts",
       "Instant background replacer: transparent checkerboard, pure white, dark, or green screen",
       "1-click high-resolution PNG download with preserved alpha transparency"
     ],
     "limitations": [
-      "Client-side algorithm performs best on photos with distinct lighting contrast between foreground and background.",
-      "Complex fine hair or semi-transparent glass may require fine-tuning tolerance sliders."
+      "AI cutout requires internet connectivity to communicate with the Remove.bg API over HTTPS.",
+      "Local fallback mode performs best on photos with distinct lighting contrast between foreground and background."
     ],
-    "disclaimer": "Operates 100% client-side in browser memory. No photos are uploaded or analyzed by third-party tracking APIs.",
+    "disclaimer": "Uses the Remove.bg API over encrypted HTTPS to generate clean AI cutouts with no permanent data retention. A local browser-based fallback runs if no API key is configured.",
     "howItWorks": [
       "Upload or drop any portrait or product photo",
-      "The tool analyzes color clustering and isolates the subject automatically",
+      "The image is processed over encrypted HTTPS via the Remove.bg API (or local browser fallback)",
       "Fine-tune the tolerance or feather slider for softer edges",
       "Select a background fill or keep it transparent, then click Download PNG"
     ],
     "faqs": [
       {
-        "question": "How does this compare to Python's rembg tool?",
-        "answer": "It applies client-side foreground-background edge segmentation inspired by rembg concepts directly in modern WebAssembly/Canvas environments without requiring Python or server backends."
+        "question": "Are my uploaded photos stored on any server?",
+        "answer": "No. Photos sent to the Remove.bg API are processed solely in-memory over SSL/TLS to produce the cutout and are never retained or used for AI training."
       },
       {
         "question": "Can I replace the background with a white backdrop for eCommerce?",
@@ -5084,8 +5084,8 @@ export const TOOLS: ToolItem[] = [
       "photo-to-pdf",
       "image-color-picker"
     ],
-    "metaTitle": "Photo Background Remover — Free Instant Transparent PNG Cutouts | DEVDROP",
-    "metaDescription": "Remove photo backgrounds automatically online for free. Create transparent PNGs and eCommerce product shots with zero server upload.",
+    "metaTitle": "Photo Background Remover – Free AI Cutout Online | DevDrop",
+    "metaDescription": "Remove photo backgrounds automatically with AI. Generates transparent PNG cutouts via Remove.bg API over HTTPS with client-side fallback.",
     "canonicalPath": "/tools/photo-bg-remover"
   },
   {
@@ -7366,3 +7366,8 @@ export const TOOLS: ToolItem[] = [
     "canonicalPath": "/tools/html-to-markdown-converter"
   }
 ];
+
+export const getIndexableTools = (): ToolItem[] => TOOLS.filter(isToolIndexable);
+export const INDEXABLE_TOOLS_COUNT = TOOLS.filter(isToolIndexable).length;
+export const INDEXABLE_TOOLS_LABEL = `${Math.floor(INDEXABLE_TOOLS_COUNT / 10) * 10}+ tools`;
+

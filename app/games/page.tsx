@@ -15,35 +15,26 @@ import {
 import { OPEN_SOURCE_GAMES } from "@/lib/data/games";
 import { GamesClient } from "@/components/games/GamesClient";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Play 70+ Free HTML5 Browser Games Online | DevDrop",
   description:
     "Play 70+ free open-source HTML5 & 3D browser games with zero downloads. Enjoy flight simulators, retro shooters, 2048, sports games, and puzzles directly in browser.",
-  keywords: [
-    "online open source html 5 game",
-    "open source html5 games",
-    "free open source browser games",
-    "play open source games online",
-    "best open source web games 2026",
-    "html5 games online no download",
-    "open source games github",
-    "playable browser games",
-  ],
   alternates: {
-    canonical: "https://devdrop.online/games",
+    canonical: `${SITE_URL}/games`,
   },
   openGraph: {
     title: "Play Online Open Source HTML5 Games — Free Browser Web Games | DEVDROP",
     description:
       "Play online open source HTML5 games free in your browser with zero downloads. Explore top open-source GitHub games including 2048, MicropolisJS, and retro arcade titles.",
-    url: "https://devdrop.online/games",
+    url: `${SITE_URL}/games`,
     siteName: "DEVDROP",
     locale: "en_US",
     type: "website",
     images: [
       {
-        url: "https://devdrop.online/og-image.png",
+        url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
         alt: "Open Source HTML5 Games Directory on DEVDROP",
@@ -59,7 +50,7 @@ export const metadata: Metadata = {
 };
 
 export default function GamesHubPage() {
-  const canonicalUrl = "https://devdrop.online/games";
+  const canonicalUrl = `${SITE_URL}/games`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -70,7 +61,7 @@ export default function GamesHubPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.online",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
@@ -104,7 +95,7 @@ export default function GamesHubPage() {
           genre: game.genre,
           operatingSystem: "All (Web Browser)",
           gamePlatform: ["Web Browser", "HTML5 Canvas", "WebGL"],
-          url: `https://devdrop.online/games/${game.slug}`,
+          url: `${SITE_URL}/games/${game.slug}`,
           offers: {
             "@type": "Offer",
             price: "0",

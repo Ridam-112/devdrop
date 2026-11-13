@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ExternalLink, Sparkles } from "lucide-react";
 
 export const ADSTERRA_SMARTLINK = "https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429";
@@ -24,68 +24,100 @@ export const AdsterraIframeBanner: React.FC<AdsterraIframeProps> = ({
   className = "",
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Lazy-load banner only when scrolled into view or after idle
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            setIsVisible(true);
+            observer.disconnect();
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    } else {
+      setIsVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
+    if (!isVisible) return;
     const el = containerRef.current;
     if (!el) return;
 
     el.innerHTML = "";
 
-    try {
-      const iframe = document.createElement("iframe");
-      iframe.width = `${width}`;
-      iframe.height = `${height}`;
-      iframe.style.border = "none";
-      iframe.style.overflow = "hidden";
-      iframe.scrolling = "no";
-      iframe.title = "Sponsored Advertisement";
+    const loadIframe = () => {
+      try {
+        const iframe = document.createElement("iframe");
+        iframe.width = `${width}`;
+        iframe.height = `${height}`;
+        iframe.style.border = "none";
+        iframe.style.overflow = "hidden";
+        iframe.scrolling = "no";
+        iframe.title = "Sponsored Advertisement";
 
-      el.appendChild(iframe);
+        el.appendChild(iframe);
 
-      const doc = iframe.contentDocument || iframe.contentWindow?.document;
-      if (doc) {
-        doc.open();
-        doc.write(`
-          <!DOCTYPE html>
-          <html>
-            <head>
-              <base target="_blank">
-              <style>
-                body {
-                  margin: 0;
-                  padding: 0;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  background: transparent;
-                }
-              </style>
-            </head>
-            <body>
-              <script type="text/javascript">
-                atOptions = {
-                  'key' : '${adKey}',
-                  'format' : 'iframe',
-                  'height' : ${height},
-                  'width' : ${width},
-                  'params' : {}
-                };
-              </script>
-              <script type="text/javascript" src="https://bauval.org/22/${adKey}"></script>
-            </body>
-          </html>
-        `);
-        doc.close();
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (doc) {
+          doc.open();
+          doc.write(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <base target="_blank">
+                <style>
+                  body {
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background: transparent;
+                  }
+                </style>
+              </head>
+              <body>
+                <script type="text/javascript">
+                  atOptions = {
+                    'key' : '${adKey}',
+                    'format' : 'iframe',
+                    'height' : ${height},
+                    'width' : ${width},
+                    'params' : {}
+                  };
+                </script>
+                <script type="text/javascript" src="https://bauval.org/22/${adKey}"></script>
+              </body>
+            </html>
+          `);
+          doc.close();
+        }
+      } catch (err) {
+        console.warn(`Adsterra banner (${width}x${height}) init note:`, err);
       }
-    } catch (err) {
-      console.warn(`Adsterra banner (${width}x${height}) init note:`, err);
+    };
+
+    if ("requestIdleCallback" in window) {
+      (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(loadIframe);
+    } else {
+      setTimeout(loadIframe, 500);
     }
-  }, [adKey, width, height]);
+  }, [isVisible, adKey, width, height]);
 
   return (
     <div
       ref={containerRef}
-      style={{ minHeight: `${height}px`, minWidth: `${Math.min(width, 300)}px` }}
+      style={{ minHeight: `${height}px`, minWidth: `${Math.min(width, 280)}px` }}
       className={`flex justify-center items-center overflow-x-auto overflow-y-hidden max-w-full ${className}`}
     />
   );
@@ -130,7 +162,7 @@ export const AdsterraBanner160x600: React.FC = () => (
 // Responsive Horizontal Banner: 468x60 on sm/md/lg, 320x50 on mobile
 export const AdsterraResponsiveBanner: React.FC = () => {
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className="w-full flex justify-center items-center min-h-[60px]">
       <div className="hidden sm:flex justify-center">
         <AdsterraBanner468x60 />
       </div>
@@ -144,27 +176,48 @@ export const AdsterraResponsiveBanner: React.FC = () => {
 // Native Ad Container
 export const AdsterraNativeBanner: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.async = true;
-    script.setAttribute("data-cfasync", "false");
-    script.src = "https://bauval.org/21/e3fd0062bd8745fa6fca6aa87545b640";
-    document.body.appendChild(script);
+    const el = containerRef.current;
+    if (!el) return;
 
-    return () => {
-      try {
-        script.remove();
-      } catch (_) {}
+    const loadScript = () => {
+      const script = document.createElement("script");
+      script.async = true;
+      script.setAttribute("data-cfasync", "false");
+      script.src = "https://bauval.org/21/e3fd0062bd8745fa6fca6aa87545b640";
+      document.body.appendChild(script);
+      setIsLoaded(true);
     };
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            if ("requestIdleCallback" in window) {
+              (window as unknown as { requestIdleCallback: (cb: () => void) => number }).requestIdleCallback(loadScript);
+            } else {
+              setTimeout(loadScript, 500);
+            }
+            observer.disconnect();
+          }
+        },
+        { rootMargin: "200px" }
+      );
+      observer.observe(el);
+      return () => observer.disconnect();
+    } else {
+      setTimeout(loadScript, 1000);
+    }
   }, []);
 
   return (
-    <div className="w-full my-3 flex justify-center items-center overflow-hidden">
+    <div className="w-full my-3 flex justify-center items-center overflow-hidden min-h-[90px]">
       <div
         id="container-e3fd0062bd8745fa6fca6aa87545b640"
         ref={containerRef}
-        className="w-full max-w-4xl min-h-[80px]"
+        className="w-full max-w-4xl min-h-[90px]"
       />
     </div>
   );
@@ -172,8 +225,8 @@ export const AdsterraNativeBanner: React.FC = () => {
 
 // High-Converting Smartlink Card
 export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string; link?: string }> = ({
-  title = "⚡ Exclusive Partner Offers & Cloud Boosters",
-  subtitle = "High-speed developer nodes, proxy proxies, and cybersecurity perks curated by our partner network.",
+  title = "⚡ Featured Partner Services & Web Boosters",
+  subtitle = "High-speed developer nodes, cloud utilities, and productivity offers curated by our sponsor network.",
   link = PRIMARY_DIRECT_LINK,
 }) => {
   return (
@@ -181,23 +234,26 @@ export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string
       href={link}
       target="_blank"
       rel="sponsored nofollow noopener"
-      className="w-full p-4 rounded-xl bg-gradient-to-r from-cyber-card via-cyber-dark to-cyber-card border border-cyber-cyan/30 hover:border-cyber-cyan transition-all duration-300 flex items-center justify-between gap-4 group shadow-lg hover:shadow-cyber-cyan/10"
+      className="w-full p-4 rounded-xl bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 border border-neutral-800 hover:border-cyan-500/50 transition-all duration-300 flex items-center justify-between gap-4 group shadow-lg min-h-[72px]"
     >
       <div className="flex items-center gap-3">
-        <div className="p-2.5 rounded-lg bg-cyber-cyan/10 text-cyber-cyan group-hover:scale-110 transition-transform">
+        <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform">
           <Sparkles className="w-5 h-5 animate-pulse" />
         </div>
         <div>
-          <h4 className="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-cyber-cyan transition-colors">
+          <span className="text-[10px] uppercase font-mono tracking-wider text-amber-400 block mb-0.5 font-bold">
+            Sponsored Offer
+          </span>
+          <h4 className="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-cyan-400 transition-colors">
             {title}
           </h4>
-          <p className="text-[11px] text-cyber-muted font-sans mt-0.5 line-clamp-1">
+          <p className="text-[11px] text-neutral-400 font-sans mt-0.5 line-clamp-1">
             {subtitle}
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-cyber-cyan/10 text-cyber-cyan text-xs font-mono font-bold group-hover:bg-cyber-cyan group-hover:text-black transition-all shrink-0">
-        <span>Explore</span>
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 text-cyan-400 text-xs font-mono font-bold group-hover:bg-cyan-500 group-hover:text-black transition-all shrink-0">
+        <span>Visit Partner</span>
         <ExternalLink className="w-3.5 h-3.5" />
       </div>
     </a>
@@ -215,6 +271,25 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
   format = "horizontal",
   className = "",
 }) => {
+  const getMinHeightClass = () => {
+    switch (format) {
+      case "sidebar":
+        return "min-h-[610px]";
+      case "rectangle":
+        return "min-h-[310px]";
+      case "mobile":
+        return "min-h-[60px]";
+      case "banner":
+        return "min-h-[70px]";
+      case "smartlink":
+        return "min-h-[76px]";
+      case "horizontal":
+      case "native":
+      default:
+        return "min-h-[90px]";
+    }
+  };
+
   const renderAdFormat = () => {
     switch (format) {
       case "horizontal":
@@ -237,27 +312,27 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
 
   return (
     <aside
-      className={`mx-auto w-full my-6 flex flex-col items-center justify-center ${className}`}
-      aria-label="Advertisement Placement"
+      className={`mx-auto w-full my-6 flex flex-col items-center justify-center ${getMinHeightClass()} ${className}`}
+      aria-label="Advertisement"
     >
-      <div className="w-full flex items-center justify-between mb-1.5 px-2 opacity-60">
-        <span className="text-[9px] uppercase font-mono tracking-wider text-cyber-muted px-2 py-0.5 rounded bg-cyber-dark/80 border border-cyber-borderSubtle">
-          Sponsored Network
+      <div className="w-full flex items-center justify-between mb-1.5 px-2 opacity-70">
+        <span className="text-[9px] uppercase font-mono tracking-wider text-neutral-400 px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800">
+          Advertisement
         </span>
         <a
           href={PRIMARY_DIRECT_LINK}
           target="_blank"
           rel="sponsored nofollow noopener"
-          className="text-[9px] font-mono text-cyber-cyan/80 hover:text-cyber-cyan flex items-center gap-1 hover:underline"
+          className="text-[9px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 hover:underline"
         >
-          <span>Featured Partner</span>
+          <span>Sponsored Partner</span>
           <ExternalLink className="w-2.5 h-2.5" />
         </a>
       </div>
 
       <div
         id={slotId}
-        className="w-full flex justify-center items-center py-2 px-1 border border-cyber-borderSubtle/40 rounded-xl bg-cyber-card/20 backdrop-blur-sm transition-colors duration-200 hover:border-cyber-cyan/30"
+        className={`w-full flex justify-center items-center py-2 px-1 border border-neutral-800/60 rounded-xl bg-neutral-950/40 backdrop-blur-sm transition-colors duration-200 hover:border-cyan-500/20 ${getMinHeightClass()}`}
       >
         {renderAdFormat()}
       </div>

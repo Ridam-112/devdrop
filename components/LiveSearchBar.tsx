@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, X, ArrowRight, Sparkles, Smartphone, Wifi, Shield, Terminal, Skull, Gamepad2, Heart, Award } from "lucide-react";
 import { searchTools } from "@/lib/utils/searchEngine";
-import { ToolItem } from "@/lib/data/tools";
+import { ToolItem, INDEXABLE_TOOLS_LABEL } from "@/lib/data/tools";
 
 interface LiveSearchBarProps {
   placeholder?: string;
@@ -15,7 +15,7 @@ interface LiveSearchBarProps {
 }
 
 export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
-  placeholder = "Search 87+ tools (e.g. phone tracker, wifi hacker, free fire, PIN lock)...",
+  placeholder = `Search ${INDEXABLE_TOOLS_LABEL} (e.g. image compress, background remover, qr code, pdf)...`,
   autoFocus = false,
   className = "",
   size = "large",
@@ -209,7 +209,7 @@ export const LiveSearchBar: React.FC<LiveSearchBarProps> = ({
             Try searching for common terms like:
           </p>
           <div className="flex flex-wrap justify-center gap-1.5">
-            {["phone tracker", "wifi hacker", "free fire", "bgmi", "password", "instagram", "bsod", "terminal"].map((preset) => (
+            {["image compress", "bg remover", "qr code", "pdf merge", "json format", "password gen", "aspect ratio", "timer"].map((preset) => (
               <button
                 key={preset}
                 type="button"

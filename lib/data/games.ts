@@ -33,6 +33,11 @@ export interface OpenSourceGame {
   badge?: string;
   releaseYear: number;
   faqs: GameFaq[];
+  sourceUrl?: string;
+  author?: string;
+  indexable?: boolean;
+  tips?: string[];
+  lastmod?: string;
 }
 
 export const GAME_GENRES = [
@@ -66,7 +71,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "GLSL Shaders"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/chaos-skies-3d",
     "isPlayableDirectly": true,
@@ -158,6 +163,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How do I evade incoming enemy missiles in Chaos Skies 3D?",
         "answer": "When the red 'MISSILE INCOMING' HUD alert flashes and beeps, immediately press C (or the FLARE button on mobile) to launch thermal flares, and perform an evasive barrel roll (press E) or loop (press R) to break the enemy missile lock."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-10",
+    "tips": [
+      "Use afterburners in short bursts to save fuel while closing distance to bogies.",
+      "Deploy thermal flares the moment incoming missile radar alert tones reach maximum pitch.",
+      "Perform barrel rolls to break hard radar missile locks."
     ]
   },
   {
@@ -175,7 +189,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/fruit-slice-master",
     "isPlayableDirectly": true,
@@ -214,6 +228,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Fruit Slice Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-08",
+    "tips": [
+      "Wait for multiple fruits to reach peak trajectory before slicing to trigger combo multipliers.",
+      "Avoid slashing wildly near bottom corners where bombs spawn unexpectedly.",
+      "Slice freeze bananas to slow down game physics for effortless combos."
     ]
   },
   {
@@ -231,7 +254,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/endless-runner-clay",
     "isPlayableDirectly": true,
@@ -278,6 +301,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Endless Clay Runner on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-07",
+    "tips": [
+      "Keep your eyes on oncoming hazards two tiles ahead rather than directly under your character.",
+      "Save your jump boosts for multi-tier spikes.",
+      "Slide early when approaching hanging overhangs."
     ]
   },
   {
@@ -295,7 +327,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/balloon-pop-frenzy",
     "isPlayableDirectly": true,
@@ -334,6 +366,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Balloon Pop Frenzy on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-06",
+    "tips": [
+      "Prioritize golden balloons for temporary double points multipliers.",
+      "Never pop skull balloons as they penalize your lives.",
+      "Use wide swipe gestures on mobile to burst clustered balloon flotillas."
     ]
   },
   {
@@ -351,7 +392,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/brick-breaker-clay",
     "isPlayableDirectly": true,
@@ -390,6 +431,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Brick Breaker Clay on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-06",
+    "tips": [
+      "Angle the ball off the edges of your paddle to hit tight corner bricks.",
+      "Catch multi-ball capsules to clear dense stone layers quickly.",
+      "Aim to lodge the ball above the ceiling bricks for rapid rebound damage."
     ]
   },
   {
@@ -446,7 +496,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Color Switch Bounce on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "emoji-memory-match",
@@ -502,7 +555,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Emoji Memory Match on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "clay-block-puzzle",
@@ -558,7 +614,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Clay Block Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "number-merge-drop",
@@ -614,7 +673,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Number Merge Drop on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "maze-escape-3d-clay",
@@ -670,7 +732,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Maze Escape Lab on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "clay-2048-puzzle",
@@ -726,7 +791,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Clay 2048 Number Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "mini-car-racing-circuit",
@@ -743,7 +811,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/mini-car-racing-circuit",
     "isPlayableDirectly": true,
@@ -782,6 +850,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Mini Car Racing Circuit on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-05",
+    "tips": [
+      "Brake slightly before entering sharp hairpins to maintain traction.",
+      "Follow the inside apex on turns to shave tenths of a second off lap times.",
+      "Draft behind rivals on long straights to build slipstream velocity."
     ]
   },
   {
@@ -842,7 +919,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Traffic Dodge Highway on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "basketball-hoop-shot",
@@ -898,7 +978,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Basketball Hoop Shot on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "penalty-kick-master",
@@ -954,7 +1037,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Penalty Kick Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "downhill-bike-rush",
@@ -1018,7 +1104,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Downhill Bike Rush on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "stickman-jump-deluxe",
@@ -1074,7 +1163,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Stickman Jump Deluxe on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "one-tap-platformer",
@@ -1130,7 +1222,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play One-Tap Platformer on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "bubble-shooter-classic",
@@ -1186,7 +1281,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Bubble Shooter Classic on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "whack-a-mole-bonk",
@@ -1242,7 +1340,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Whack-a-Mole Bonk on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "fishing-mini-game",
@@ -1298,7 +1399,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Fishing Mini Game on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "tower-stack-builder",
@@ -1354,7 +1458,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Tower Stack Builder on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "sliding-jigsaw-puzzle",
@@ -1410,7 +1517,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Sliding Jigsaw Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "simon-memory-master",
@@ -1466,7 +1576,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Simon Memory Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "tic-tac-toe-duel",
@@ -1522,7 +1635,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Tic-Tac-Toe Duel on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "skyroad-rush-3d",
@@ -1582,7 +1698,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play SkyRoad Rush 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "car-parking-simulator-3d",
@@ -1599,7 +1718,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/car-parking-simulator-3d",
     "isPlayableDirectly": true,
@@ -1642,6 +1761,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Car Parking 3D Simulator on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-04",
+    "tips": [
+      "Switch between top-down camera and chase view when reversing into parallel slots.",
+      "Align your rear bumper with the obstacle marker before turning full lock.",
+      "Crawl at slow speeds to avoid boundary penalty points."
     ]
   },
   {
@@ -1659,7 +1787,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/moto-traffic-rider-3d",
     "isPlayableDirectly": true,
@@ -1702,6 +1830,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Moto Traffic Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-08",
+    "tips": [
+      "Ride in the center dotted lane to react swiftly to cars merging from either side.",
+      "Near-miss passes at high speeds award bonus nitro charge.",
+      "Tap brakes early when brake lights on preceding SUVs flash."
     ]
   },
   {
@@ -1762,7 +1899,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Zombie Survival 3D Arena on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "football-penalty-master-3d",
@@ -1818,7 +1958,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Football Penalty Master 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "sky-parkour-challenge-3d",
@@ -1878,7 +2021,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Sky Parkour Challenge 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "cyber-shooting-arena-3d",
@@ -1942,7 +2088,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Cyber Shooting Arena 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "airport-ground-crew-3d",
@@ -1998,7 +2147,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Airport Ground Crew 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "sumo-push-clash-2d",
@@ -2054,7 +2206,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Sumo Push Clash 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "flight-pitch-master-2d",
@@ -2114,7 +2269,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Flight Pitch Master 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "head-football-2d",
@@ -2178,7 +2336,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Head Football Champions 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "one-tap-cricket-timing-2d",
@@ -2234,7 +2395,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play One-Tap Cricket Timing 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "speed-math-duel-2d",
@@ -2290,7 +2454,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Speed Math Duel 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "tug-of-war-clay-2d",
@@ -2346,13 +2513,16 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Tug of War 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "beyblade-spin-battle-2d",
-    "name": "Beyblade Spin Battle 2D",
-    "tagline": "Epic Beyblade dish clashes — ripcord launches, spin RPM physics, dashes, and explosive Burst Finishes",
-    "h1": "Play Beyblade Spin Battle 2D Online: Free Action Browser Game",
+    "name": "Spin Top Battle 2D",
+    "tagline": "High-speed spinning tops collision battle arena in 2D physics",
+    "h1": "Spin Top Battle 2D: Physics Combat Arena",
     "genre": "Action",
     "description": "Epic Beyblade dish clashes! Ripcord launches, spin RPM physics, special dashes, and explosive Burst Finishes!",
     "longDescription": "Beyblade Spin Battle 2D is a high-performance browser-native game featuring tactile aesthetics, procedural Web Audio sound synthesis, and instant zero-download gameplay on any desktop or mobile browser. Enjoy responsive controls, high score tracking, and smooth 60 FPS performance.",
@@ -2402,7 +2572,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Beyblade Spin Battle 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "crazy-delivery-rider-3d",
@@ -2462,7 +2635,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Crazy Delivery Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "no-brakes-desi-bus-3d",
@@ -2479,7 +2655,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/no-brakes-desi-bus-3d",
     "isPlayableDirectly": true,
@@ -2526,6 +2702,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play No Brakes Desi Bus Driver 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-09",
+    "tips": [
+      "Counter-steer through highway curves to prevent top-heavy bus rollovers.",
+      "Sound the musical horn to clear autorickshaws and cattle from the fast lane.",
+      "Use steep uphill grades to naturally decelerate if highway traffic halts."
     ]
   },
   {
@@ -2590,7 +2775,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Local Train Door Jammer 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "election-mayhem-voting-battle",
@@ -2646,7 +2834,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Election Mayhem: Voting Battle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "parliament-kaand-3d",
@@ -2702,7 +2893,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Parliament Kaand 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "sledge-rider-3d",
@@ -2719,7 +2913,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "MIT / Open Source",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/sledge-rider-3d",
     "isPlayableDirectly": true,
@@ -2762,6 +2956,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Sledge Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
+    ],
+    "indexable": true,
+    "author": "DevDrop Team",
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "lastmod": "2026-11-09",
+    "tips": [
+      "Time your jumps over icy cliffs to maintain forward downhill momentum.",
+      "Avoid dark gray rocks which shatter the wooden runners on impact.",
+      "Collect pine cones and snow crystals to unlock custom painted sledges."
     ]
   },
   {
@@ -2826,7 +3029,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Dino Escape: Adventure Game on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "warehouse-tdm-3d",
@@ -2894,7 +3100,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Warehouse Team Deathmatch 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Contributors"
   },
   {
     "slug": "space-defender-html5",
@@ -2961,6 +3170,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Where can I view the source code of this game?",
         "answer": "The game and reference architecture are part of the open-source games ecosystem cataloged from the bobeff/open-source-games repository on GitHub."
       }
+    ],
+    "indexable": true,
+    "author": "bobeff & Open-Source Contributors",
+    "sourceUrl": "https://github.com/bobeff/open-source-games",
+    "lastmod": "2026-11-03",
+    "tips": [
+      "Focus fire on elite command ships before they deploy homing drones.",
+      "Collect blue shield orbs to absorb stray plasma impacts.",
+      "Stay near the bottom center for the broadest lateral firing arc."
     ]
   },
   {
@@ -3023,6 +3241,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "What makes this HTML5 snake game open source?",
         "answer": "The entire logic is implemented client-side in open-source JavaScript and Canvas, allowing anyone to inspect, fork, and learn game loop mechanics."
       }
+    ],
+    "indexable": true,
+    "author": "bobeff & Open-Source Contributors",
+    "sourceUrl": "https://github.com/bobeff/open-source-games",
+    "lastmod": "2026-11-02",
+    "tips": [
+      "Circle the exterior boundary perimeter once your tail reaches over 40 nodes.",
+      "Never cut through the center grid when moving at boosted speeds.",
+      "Plan your turning corridor before gobbling bonus data packets."
     ]
   },
   {
@@ -3086,6 +3313,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I continue playing after reaching 2048?",
         "answer": "Yes! Once you construct the 2048 tile, you can keep playing to reach 4096, 8192, and beyond until the grid is filled without possible moves."
       }
+    ],
+    "indexable": true,
+    "author": "Gabriele Cirulli",
+    "sourceUrl": "https://github.com/gabrielecirulli/2048",
+    "lastmod": "2026-11-01",
+    "tips": [
+      "Anchor your highest value tile permanently in one corner (e.g. bottom-right).",
+      "Never swipe in the direction opposite to your corner anchor.",
+      "Keep your rows monotonically descending to facilitate chain merges."
     ]
   },
   {
@@ -3144,13 +3380,22 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How does paddle deflection work in Neon Breakout?",
         "answer": "The rebound angle depends on where the ball strikes the paddle. Striking near the edges creates sharper angles, while hitting the center yields straighter vertical returns."
       }
+    ],
+    "indexable": true,
+    "author": "bobeff & Open-Source Contributors",
+    "sourceUrl": "https://github.com/bobeff/open-source-games",
+    "lastmod": "2026-11-02",
+    "tips": [
+      "Keep the ball bouncing near the ceiling to trigger multi-hit chain reactions.",
+      "Expand paddle powerups should be prioritized over laser upgrades.",
+      "Watch ball velocity increases after clearing high-density brick lines."
     ]
   },
   {
     "slug": "micropolis-js",
-    "name": "MicropolisJS (SimCity HTML5)",
-    "tagline": "Handmade JavaScript/HTML5 port of the legendary Micropolis / SimCity",
-    "h1": "MicropolisJS Online: Open Source HTML5 City Simulation Game",
+    "name": "MicropolisJS City Simulator",
+    "tagline": "Classic open-source municipal city planning, zoning & disaster simulator",
+    "h1": "MicropolisJS: Open-Source City Construction Simulator",
     "genre": "Simulation",
     "description": "Zone residential, commercial, and industrial districts, build power grids, manage municipal budgets, and avert disasters in this iconic open-source city simulator.",
     "longDescription": "MicropolisJS is a faithful, handcrafted JavaScript and HTML5 Canvas port of the original open-source Micropolis (the open-source release of the classic SimCity engine created by Will Wright and Maxis). Developed by Graeme McCutcheon and featured in the bobeff/open-source-games directory, it allows players to experience the birth of modern simulation gaming directly in any web browser.",
@@ -3206,7 +3451,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I save my city in MicropolisJS?",
         "answer": "Yes, modern browser ports utilize HTML5 LocalStorage or JSON export to save and reload your municipal plans."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/graememcc/micropolisJS",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "server-survival",
@@ -3264,7 +3512,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Is Server Survival suitable for learning DevOps?",
         "answer": "Absolutely! It was created specifically to teach developers and students cloud engineering concepts like load balancing, caching, and failovers through gamified mechanics."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/pshenok/server-survival",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "openpanzer-html5",
@@ -3321,7 +3572,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can OpenPanzer be played offline?",
         "answer": "Yes, once loaded, the assets can run client-side in the browser cache without active server communication."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/nicupavel/openpanzer",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "isocity-nextjs",
@@ -3379,7 +3633,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "What makes IsoCity unique among city builders?",
         "answer": "IsoCity is built entirely on modern web technologies (Next.js, TypeScript, Tailwind) and renders cleanly on HTML5 Canvas without bulky legacy game engines."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/amilich/isometric-city",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "athena-crisis",
@@ -3437,7 +3694,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Is Athena Crisis really fully open source?",
         "answer": "Yes, the creator Christoph Nakazawa open-sourced the complete game client and map editor under the permissive MIT license on GitHub."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/nkzw-tech/athena-crisis",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "openlara-webgl",
@@ -3499,7 +3759,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How does OpenLara run Tomb Raider in a web browser?",
         "answer": "The engine was rewritten in clean C++ and compiled to WebAssembly with WebGL rendering, enabling the browser to process 3D meshes and textures natively."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/XProger/OpenLara",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "hnefatafl-web",
@@ -3552,7 +3815,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How is Hnefatafl different from standard chess?",
         "answer": "Unlike symmetrical chess, Hnefatafl is asymmetric. One player has 24 attackers trying to trap the King, while the other controls 12 defenders and the King trying to escape."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/dcampbell24/hnefatafl",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "dead-ascend-html5",
@@ -3606,7 +3872,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Dead Ascend on touch screens?",
         "answer": "Yes, point-and-click mechanics translate naturally to touch taps and drags on mobile phones and tablets."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/larpon/DeadAscend",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "clumsy-bird-html5",
@@ -3660,6 +3929,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Is Clumsy Bird playable on phones and tablets?",
         "answer": "Yes, Clumsy Bird supports instant touch events on mobile screens, making it identical to the original tap-to-fly arcade experience."
       }
+    ],
+    "indexable": true,
+    "author": "Ellison Leao",
+    "sourceUrl": "https://github.com/ellisonleao/clumsy-bird",
+    "lastmod": "2026-11-01",
+    "tips": [
+      "Tap in steady, rhythmic cadences rather than reactive panic flaps.",
+      "Aim for the lower half of pipe gaps to account for upward wing lift.",
+      "Stay calm between pipe sets to reset your visual center."
     ]
   },
   {
@@ -3676,7 +3954,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "HTML5 Canvas",
       "Web Audio API"
     ],
-    "license": "Creative Commons / MIT",
+    "license": "MIT / CC BY-NC 3.0",
     "githubUrl": "https://github.com/BKcore/HexGL",
     "liveDemoUrl": "http://hexgl.bkcore.com/play/",
     "isPlayableDirectly": false,
@@ -3718,6 +3996,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Does HexGL require a dedicated graphics card?",
         "answer": "Any modern device with WebGL hardware acceleration (including modern smartphones and integrated laptop GPUs) can render HexGL smoothly at 60 FPS."
       }
+    ],
+    "indexable": true,
+    "author": "Thibaut Despoulain (BKcore)",
+    "sourceUrl": "https://github.com/BKcore/HexGL",
+    "lastmod": "2026-11-04",
+    "tips": [
+      "Hit green boost pads consistently to maintain supersonic cruising velocity.",
+      "Use air-brakes on high-angle chicanes to prevent scraping track guardrails.",
+      "Watch your ship shield integrity meter on high-speed track segments."
     ]
   },
   {
@@ -3734,7 +4021,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "Node.js",
       "JavaScript"
     ],
-    "license": "MPL-2.0",
+    "license": "MPL-2.0 / CC BY-SA 3.0",
     "githubUrl": "https://github.com/mozilla/BrowserQuest",
     "liveDemoUrl": "https://browserquest.itch.io/browserquest",
     "isPlayableDirectly": false,
@@ -3772,13 +4059,22 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Is BrowserQuest truly multiplayer in the browser?",
         "answer": "Yes, it uses WebSockets to synchronize player positions, combat animations, and chat messages in real time across browser clients."
       }
+    ],
+    "indexable": true,
+    "author": "Mozilla Foundation & Little Workshop",
+    "sourceUrl": "https://github.com/mozilla/BrowserQuest",
+    "lastmod": "2026-11-03",
+    "tips": [
+      "Defeat forest bats and rats early to upgrade from cloth rags to leather armor.",
+      "Lure cave skeletons one at a time to prevent getting overwhelmed.",
+      "Drink red health potions before engaging boss gargoyles."
     ]
   },
   {
     "slug": "command-and-conquer-html5",
-    "name": "Command & Conquer HTML5",
-    "tagline": "Full real-time strategy recreation in HTML5 Canvas and JavaScript",
-    "h1": "Command & Conquer Online: Open Source HTML5 Real-Time Strategy Game",
+    "name": "Tactical Warfare RTS (HTML5)",
+    "tagline": "Classic command base building, tank production & tactical warfare in browser",
+    "h1": "Tactical Warfare RTS: Classic Real-Time Strategy HTML5",
     "genre": "Strategy",
     "description": "Harvest Tiberium, construct power plants and barracks, build tanks, and wage tactical RTS warfare in this faithful open-source HTML5 recreation.",
     "longDescription": "Command & Conquer HTML5 is a masterclass in browser game engineering developed by Aditya Ravishankar (featured in awesome-open-source-games). It recreates Westwood Studios' iconic 1995 RTS title entirely in HTML5 Canvas and JavaScript, complete with authentic unit voices, pathfinding AI, fog of war, and base building.",
@@ -3830,7 +4126,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How was C&C recreated in pure HTML5?",
         "answer": "The developer extracted original sprite sheets and sound clips from the game assets and coded the entire game engine, AI logic, and collision physics in client-side JavaScript."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/adityaravishankar/command-and-conquer",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "sandboxels-physics-sandbox",
@@ -3887,6 +4186,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I create custom elements in Sandboxels?",
         "answer": "Yes! Sandboxels includes a built-in modding API and element editor that allows users to write custom JS definitions for new physical materials."
       }
+    ],
+    "indexable": true,
+    "author": "R74n",
+    "sourceUrl": "https://github.com/R74nCom/sandboxels",
+    "lastmod": "2026-11-05",
+    "tips": [
+      "Mix oil and fire to experiment with atmospheric convection currents.",
+      "Use glass or bedrock boundaries to contain high-temperature radioactive reactions.",
+      "Explore the hidden elements menu to uncover exotic chemical interactions."
     ]
   },
   {
@@ -3903,7 +4211,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "WebSockets"
     ],
-    "license": "GPL-2.0",
+    "license": "GPL-2.0 / AGPL-3.0",
     "githubUrl": "https://github.com/freeciv/freeciv-web",
     "liveDemoUrl": "https://www.freecivweb.org",
     "isPlayableDirectly": false,
@@ -3945,6 +4253,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Is Freeciv-web compatible with desktop Freeciv?",
         "answer": "Yes, Freeciv-web uses the standard Freeciv protocol, allowing web players to connect to global servers alongside desktop Linux and Windows players."
       }
+    ],
+    "indexable": true,
+    "author": "Freeciv-web Contributors",
+    "sourceUrl": "https://github.com/freeciv/freeciv-web",
+    "lastmod": "2026-11-05",
+    "tips": [
+      "Establish your first city on river tiles or coastal grasslands for optimal food yields.",
+      "Prioritize Bronze Working and Iron Working for early military deterrence.",
+      "Send triremes along coastlines to discover trade partners and boost scientific output."
     ]
   },
   {
@@ -4002,7 +4319,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Does HTML5 Asteroids emulate authentic physics?",
         "answer": "Yes! It models real momentum and rotational torque, meaning cutting thrust doesn't immediately stop your ship."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/dmcinnes/HTML5-Asteroids",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "alien-invasion-html5",
@@ -4055,7 +4375,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Does the game get faster as fewer aliens remain?",
         "answer": "Yes, exactly like the 1978 original arcade machine, as the alien ranks diminish, their march cadence and drop frequency speed up dramatically."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/cykod/AlienInvasion",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "3d-hartwig-chess",
@@ -4108,6 +4431,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Why do the pieces in Hartwig chess have unusual shapes?",
         "answer": "In 1923, Bauhaus sculptor Josef Hartwig designed pieces where their geometric shape directly conveys their legal move (e.g. bishop is an X for diagonal, rook is a cube for orthogonal)."
       }
+    ],
+    "indexable": true,
+    "author": "Julien Garnier",
+    "sourceUrl": "https://github.com/juliangarnier/3D-Hartwig-chess-set",
+    "lastmod": "2026-11-02",
+    "tips": [
+      "Rotate the 3D board view to spot diagonal bishop threats obscured by perspective.",
+      "Control the 4 center squares early with your geometric pawns.",
+      "Castle early to tuck your King into safety."
     ]
   },
   {
@@ -4165,13 +4497,16 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Can I play Onslaught Arena with a gamepad?",
         "answer": "Yes, modern web browsers support the HTML5 Gamepad API, allowing twin-stick controller support in Onslaught Arena."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/lostdecade/onslaught_arena",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "blockrain-tetris-html5",
-    "name": "Blockrain Tetris HTML5",
-    "tagline": "Polished falling blocks retro puzzle game in lightweight HTML5",
-    "h1": "Play Blockrain Tetris Online: Open Source HTML5 Falling Blocks Game",
+    "name": "Blockrain Falling Blocks HTML5",
+    "tagline": "Rotate and slot falling blocks to clear rows and score high",
+    "h1": "Blockrain Falling Blocks: Arcade Brick Puzzle HTML5",
     "genre": "Puzzle",
     "description": "Rotate and slot falling tetrominoes, clear multi-line combos, and chase high scores in this gorgeous open-source HTML5 arcade puzzle game.",
     "longDescription": "Blockrain.js is an open-source HTML5 Canvas and JavaScript falling blocks puzzle game developed by Aerolab and cataloged in awesome-open-source-games. Featuring customizable visual themes (Retro, Candy, Neon, GameBoy), smooth rotation physics, and touch compatibility.",
@@ -4226,13 +4561,16 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "Does Blockrain Tetris work on touch devices?",
         "answer": "Yes, Blockrain includes responsive touch controls for mobile screens with on-screen buttons for rotating and dropping."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/Aerolab/blockrain.js",
+    "author": "Open-Source Authors"
   },
   {
     "slug": "duckhunt-javascript-html5",
-    "name": "DuckHunt JavaScript",
-    "tagline": "Classic 8-bit retro arcade hunter recreated in HTML5 Canvas",
-    "h1": "Play DuckHunt Online: Open Source HTML5 8-Bit Retro Hunting Game",
+    "name": "Marshland Bird Hunt (JavaScript)",
+    "tagline": "Test your target reflexes in this classic marshland hunting arcade game",
+    "h1": "Marshland Bird Hunt: Classic Target Arcade HTML5",
     "genre": "Arcade",
     "description": "Take aim at wild mallards taking flight across marshlands, test your reaction speed, and avoid the snickering hunting dog in this open-source HTML5 classic.",
     "longDescription": "DuckHunt JS is a faithful open-source HTML5 Canvas recreation of the beloved 1984 NES light-gun classic authored by Matt Surabian and highlighted in awesome-open-source-games. Recreating the authentic 8-bit flight paths, timing windows, sound clips, and level difficulty curves in pure modern JavaScript.",
@@ -4279,6 +4617,14 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "question": "How does the mouse replace the original NES Zapper light gun?",
         "answer": "The mouse cursor acts as a precision crosshair, calculating optical raycast coordinates onto the HTML5 Canvas to register hits with sub-pixel accuracy."
       }
-    ]
+    ],
+    "indexable": false,
+    "sourceUrl": "https://github.com/MattSurabian/DuckHunt-JS",
+    "author": "Open-Source Authors"
   }
 ];
+
+export function isGameIndexable(game: OpenSourceGame): boolean {
+  return game.indexable === true;
+}
+

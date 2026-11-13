@@ -1,11 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata = {
   title: "Terms of Service — DEVDROP",
   description: "Review the Terms of Service governing access and acceptable use of the DEVDROP platform.",
   alternates: {
-    canonical: "https://devdrop.online/terms",
+    canonical: `${SITE_URL}/terms`,
   },
 };
 

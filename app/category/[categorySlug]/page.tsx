@@ -6,6 +6,7 @@ import { ChevronRight, ArrowLeft, HelpCircle, Shield, FileText, AlertTriangle } 
 import { CATEGORIES, TOOLS, isCategoryIndexable } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
+import { SITE_URL } from "@/lib/constants";
 
 interface Props {
   params: {
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const isIndexable = isCategoryIndexable(category);
-  const canonicalUrl = `https://devdrop.online/category/${category.slug}`;
+  const canonicalUrl = `${SITE_URL}/category/${category.slug}`;
 
   return {
     title: category.metaTitle,
@@ -66,7 +67,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://devdrop.online/og-image.png",
+          url: `${SITE_URL}/og-image.png`,
           width: 1200,
           height: 630,
           alt: `${category.name} category hub on DevDrop`,
@@ -90,7 +91,7 @@ export default function CategoryPage({ params }: Props) {
 
   const isIndexable = isCategoryIndexable(category);
   const categoryTools = TOOLS.filter((t) => t.categorySlug === category.slug);
-  const canonicalUrl = `https://devdrop.online/category/${category.slug}`;
+  const canonicalUrl = `${SITE_URL}/category/${category.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -101,13 +102,13 @@ export default function CategoryPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.online",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Categories",
-        item: "https://devdrop.online/tools",
+        item: `${SITE_URL}/tools`,
       },
       {
         "@type": "ListItem",
@@ -131,7 +132,7 @@ export default function CategoryPage({ params }: Props) {
       itemListElement: categoryTools.map((tool, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
-        url: `https://devdrop.online/tools/${tool.slug}`,
+        url: `${SITE_URL}/tools/${tool.slug}`,
         name: tool.name,
       })),
     },

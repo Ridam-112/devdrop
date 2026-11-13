@@ -23,7 +23,8 @@ import {
   Play,
   Star
 } from "lucide-react";
-import { TOOLS, CATEGORIES } from "@/lib/data/tools";
+import { TOOLS, CATEGORIES, INDEXABLE_TOOLS_LABEL } from "@/lib/data/tools";
+import { SITE_URL } from "@/lib/constants";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 import { LiveSearchBar } from "@/components/LiveSearchBar";
@@ -34,18 +35,18 @@ export const metadata: Metadata = {
   description:
     "DevDrop provides free online utilities: image compressors, photo background remover, QR code generator, PDF makers, and 70+ browser games.",
   alternates: {
-    canonical: "https://devdrop.online",
+    canonical: SITE_URL,
   },
   openGraph: {
     title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
     description:
       "Free client-side tools for file conversion, image compression, QR codes, PDFs, developer utilities, and 70+ open-source HTML5 games.",
-    url: "https://devdrop.online",
+    url: SITE_URL,
     siteName: "DevDrop",
     type: "website",
     images: [
       {
-        url: "https://devdrop.online/logo.png",
+        url: `${SITE_URL}/logo.png`,
         width: 1024,
         height: 1024,
         alt: "DevDrop Logo",
@@ -57,7 +58,7 @@ export const metadata: Metadata = {
     title: "DevDrop — Free Online Web Tools & Utilities",
     description:
       "Free everyday web utilities, developer tools, and browser games running fast with zero sign-up required.",
-    images: ["https://devdrop.online/logo.png"],
+    images: [`${SITE_URL}/logo.png`],
   },
 };
 
@@ -189,7 +190,7 @@ export default function HomePage() {
             href="/tools"
             className="text-xs font-mono font-bold text-emerald-400 hover:underline flex items-center gap-1"
           >
-            Browse all 140+ tools <ArrowRight className="w-3.5 h-3.5" />
+            Browse all {INDEXABLE_TOOLS_LABEL} <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
@@ -208,7 +209,7 @@ export default function HomePage() {
               Verified Architecture
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mt-1">
-              Why Professionals & Students Trust DevDrop
+              Why Professionals &amp; Students Trust DevDrop
             </h2>
             <p className="text-xs sm:text-sm text-neutral-400 mt-2">
               Every conversion, encryption, and document operation executes locally in your browser memory sandbox.
@@ -221,10 +222,10 @@ export default function HomePage() {
                 <ShieldCheck className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-white mb-2">
-                1. 100% In-Browser Privacy
+                1. In-Browser Privacy First
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Your photos, passwords, text notes, and receipts are never uploaded to remote cloud databases. Everything runs on your machine.
+                Most tools run entirely in your browser. The Photo Background Remover is the exception: it sends the image to the Remove.bg API over encrypted HTTPS without data retention.
               </p>
             </div>
 
@@ -248,7 +249,7 @@ export default function HomePage() {
                 3. Zero Paywalls or Sign-Ups
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                No credit cards, subscriptions, or accounts required. All 140+ tools are unconditionally free for personal and commercial use.
+                No credit cards, subscriptions, or accounts required. All {INDEXABLE_TOOLS_LABEL} are unconditionally free for personal and commercial use.
               </p>
             </div>
 

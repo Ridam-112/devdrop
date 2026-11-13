@@ -14,6 +14,7 @@ import {
   FileText,
 } from "lucide-react";
 import { TOOLS, CATEGORIES, ToolItem, isToolIndexable } from "@/lib/data/tools";
+import { SITE_URL } from "@/lib/constants";
 import { ShareButton } from "@/components/ShareButton";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
@@ -73,7 +74,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const isIndexable = isToolIndexable(tool);
-  const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
+  const canonicalUrl = `${SITE_URL}/tools/${tool.slug}`;
 
   // Standardized title format: "{Tool Name} – Free Online, No Upload | DevDrop" (50-60 chars)
   let pageTitle = `${tool.name} – Free Online, No Upload | DevDrop`;
@@ -121,7 +122,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: "https://devdrop.online/og-image.png",
+          url: `${SITE_URL}/og-image.png`,
           width: 1200,
           height: 630,
           alt: `${tool.name} interface preview on DevDrop`,
@@ -151,7 +152,7 @@ export default function ToolDetailPage({ params }: Props) {
     (t) => tool.relatedSlugs.includes(t.slug) && (isIndexable ? isToolIndexable(t) : true)
   );
 
-  const canonicalUrl = `https://devdrop.online/tools/${tool.slug}`;
+  const canonicalUrl = `${SITE_URL}/tools/${tool.slug}`;
 
   // Structured Data: BreadcrumbList
   const breadcrumbJsonLd = {
@@ -162,13 +163,13 @@ export default function ToolDetailPage({ params }: Props) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://devdrop.online",
+        item: SITE_URL,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "All Tools",
-        item: "https://devdrop.online/tools",
+        item: `${SITE_URL}/tools`,
       },
       ...(category
         ? [
@@ -176,7 +177,7 @@ export default function ToolDetailPage({ params }: Props) {
               "@type": "ListItem",
               position: 3,
               name: category.name,
-              item: `https://devdrop.online/category/${category.slug}`,
+              item: `${SITE_URL}/category/${category.slug}`,
             },
             {
               "@type": "ListItem",

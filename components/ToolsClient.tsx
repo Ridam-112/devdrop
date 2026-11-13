@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Search, Filter, Sparkles, X, RefreshCw, ArrowRight } from "lucide-react";
-import { TOOLS, CATEGORIES, ToolItem } from "@/lib/data/tools";
+import { TOOLS, CATEGORIES, ToolItem, INDEXABLE_TOOLS_LABEL } from "@/lib/data/tools";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 import { searchTools } from "@/lib/utils/searchEngine";
@@ -47,10 +47,10 @@ function ToolsContent() {
           COMPLETE TOOL CATALOGUE
         </span>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-white font-mono tracking-tight">
-          All Cybersecurity Tools &amp; Intelligence Suites
+          All Web Tools &amp; Developer Utilities
         </h1>
         <p className="text-sm text-slate-300 mt-2 leading-relaxed">
-          Filter and explore our complete ecosystem of 87+ interactive cybersecurity tools, Wi-Fi penetration suites, gaming telemetry utilities, network monitors, and terminal command environments.
+          Filter and explore our collection of {INDEXABLE_TOOLS_LABEL}, including image optimizers, PDF processors, code formatters, unit converters, and client-side utilities.
         </p>
       </div>
 
@@ -64,7 +64,7 @@ function ToolsContent() {
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search 87+ tools by keyword, feature, or game (e.g. phone tracker, wifi hacker, free fire, PIN lock)..."
+              placeholder={`Search ${INDEXABLE_TOOLS_LABEL} by keyword or feature (e.g. background remover, image compress, qr code, pdf)...`}
               className="w-full bg-cyber-dark border border-cyber-borderSubtle focus:border-cyber-cyan rounded-xl py-2.5 pl-10 pr-10 text-sm text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-cyber-cyan/30 transition-all font-mono"
             />
             {searchQuery && (
@@ -161,15 +161,14 @@ function ToolsContent() {
           </p>
           <div className="flex flex-wrap justify-center gap-1.5 mb-6">
             {[
-              "phone tracker",
-              "wifi hacker",
-              "phone unlock",
-              "free fire",
-              "bgmi",
-              "instagram",
-              "password",
-              "bsod",
-              "terminal",
+              "background remover",
+              "image compress",
+              "qr code",
+              "pdf merge",
+              "json formatter",
+              "password generator",
+              "base64",
+              "markdown preview",
             ].map((term) => (
               <button
                 key={term}
@@ -198,7 +197,7 @@ export default function ToolsClient() {
     <Suspense
       fallback={
         <div className="max-w-7xl mx-auto px-4 py-20 text-center text-cyber-green font-mono text-sm">
-          Loading cybersecurity catalogue...
+          Loading tools catalogue...
         </div>
       }
     >

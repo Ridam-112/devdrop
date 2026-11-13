@@ -4,6 +4,8 @@ import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { SITE_URL } from "@/lib/constants";
+import { INDEXABLE_TOOLS_LABEL } from "@/lib/data/tools";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,14 +20,14 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://devdrop.online"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     template: "%s | DevDrop",
   },
   description:
     "DevDrop (devdrop.online) provides free online web utilities: image compressors, photo background remover, QR code generators, PDF makers, and open-source HTML5 browser games.",
-  authors: [{ name: "DevDrop Core Team", url: "https://devdrop.online" }],
+  authors: [{ name: "DevDrop Core Team", url: SITE_URL }],
   creator: "DevDrop",
   publisher: "DevDrop Platform",
   formatDetection: {
@@ -46,14 +48,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://devdrop.online",
+    url: SITE_URL,
     siteName: "DevDrop",
     title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     description:
       "Free client-side web utilities, PDF creators, image compressors, and 70+ open-source browser games.",
     images: [
       {
-        url: "https://devdrop.online/logo.png",
+        url: `${SITE_URL}/logo.png`,
         width: 1024,
         height: 1024,
         alt: "DevDrop Brand Logo",
@@ -141,8 +143,8 @@ export default function RootLayout({
               "@graph": [
                 {
                   "@type": "WebSite",
-                  "@id": "https://devdrop.online/#website",
-                  "url": "https://devdrop.online",
+                  "@id": `${SITE_URL}/#website`,
+                  "url": SITE_URL,
                   "name": "DevDrop",
                   "alternateName": [
                     "DevDrop Online",
@@ -154,23 +156,23 @@ export default function RootLayout({
                   "description":
                     "Free online web utility suite with image compressors, PDF converters, developer tools, and open-source HTML5 browser games.",
                   "publisher": {
-                    "@id": "https://devdrop.online/#organization"
+                    "@id": `${SITE_URL}/#organization`
                   },
                   "inLanguage": "en-US",
                   "potentialAction": {
                     "@type": "SearchAction",
-                    "target": "https://devdrop.online/tools?q={search_term_string}",
+                    "target": `${SITE_URL}/tools?q={search_term_string}`,
                     "query-input": "required name=search_term_string"
                   }
                 },
                 {
                   "@type": "Organization",
-                  "@id": "https://devdrop.online/#organization",
+                  "@id": `${SITE_URL}/#organization`,
                   "name": "DevDrop",
-                  "url": "https://devdrop.online",
+                  "url": SITE_URL,
                   "logo": {
                     "@type": "ImageObject",
-                    "url": "https://devdrop.online/logo.png",
+                    "url": `${SITE_URL}/logo.png`,
                     "width": 1024,
                     "height": 1024
                   },
@@ -180,7 +182,7 @@ export default function RootLayout({
                 },
                 {
                   "@type": "SoftwareApplication",
-                  "@id": "https://devdrop.online/#application",
+                  "@id": `${SITE_URL}/#application`,
                   "name": "DevDrop",
                   "applicationCategory": "UtilitiesApplication",
                   "operatingSystem": "All modern browsers (Chrome, Edge, Safari, Firefox), Windows, macOS, Linux, iOS, Android",
@@ -190,7 +192,7 @@ export default function RootLayout({
                     "priceCurrency": "USD"
                   },
                   "featureList": [
-                    "140+ Client-Side Developer Tools",
+                    `${INDEXABLE_TOOLS_LABEL} Client-Side Developer Tools`,
                     "Direct Device File Drop & QR Code Sharing",
                     "Image Compressor & Format Converter",
                     "Photo Background Remover",

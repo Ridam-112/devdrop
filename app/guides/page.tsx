@@ -3,19 +3,20 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { BookOpen, Clock, Calendar, ArrowRight, Sparkles } from "lucide-react";
 import { GUIDES } from "@/lib/data/guides";
+import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Free Online Tool Guides & Tutorials | DevDrop",
   description:
     "Explore practical guides on image compression, converting JPG to PDF, custom QR code generation, loan EMI calculations, and JSON validation.",
   alternates: {
-    canonical: "https://devdrop.online/guides",
+    canonical: `${SITE_URL}/guides`,
   },
   openGraph: {
     title: "Free Online Tool Guides & Tutorials | DevDrop",
     description:
       "Step-by-step developer and everyday productivity tutorials for browser utilities.",
-    url: "https://devdrop.online/guides",
+    url: `${SITE_URL}/guides`,
     siteName: "DevDrop",
     type: "website",
   },
