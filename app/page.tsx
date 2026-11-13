@@ -31,16 +31,16 @@ import { LiveSearchBar } from "@/components/LiveSearchBar";
 import { HomeQuickTools } from "@/components/HomeQuickTools";
 
 export const metadata: Metadata = {
-  title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
+  title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
   description:
-    "DevDrop provides free online utilities: image compressors, photo background remover, QR code generator, PDF makers, and 70+ browser games.",
+    "DevDrop provides free online utilities: image compressors, photo background remover, QR code generator, PDF makers, and free browser games.",
   alternates: {
     canonical: SITE_URL,
   },
   openGraph: {
-    title: "DevDrop — Free Online Web Tools, Utilities & 70+ Games",
+    title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     description:
-      "Free client-side tools for file conversion, image compression, QR codes, PDFs, developer utilities, and 70+ open-source HTML5 games.",
+      "Free client-side tools for file conversion, image compression, QR codes, PDFs, developer utilities, and free HTML5 games.",
     url: SITE_URL,
     siteName: "DevDrop",
     type: "website",
@@ -122,7 +122,7 @@ export default function HomePage() {
 
           {/* Subtitle */}
           <p className="text-sm sm:text-base md:text-lg text-neutral-300 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Compress images, remove photo backgrounds, generate custom QR codes &amp; barcodes, compile PDFs, format JSON, calculate loans, and play 70+ open-source 3D and HTML5 browser games.
+            Compress images, remove photo backgrounds, generate custom QR codes &amp; barcodes, compile PDFs, format JSON, calculate loans, and play free 3D and HTML5 browser games.
           </p>
 
           {/* Prominent Live Search Engine */}
@@ -258,10 +258,10 @@ export default function HomePage() {
                 <Gamepad2 className="w-5 h-5" />
               </div>
               <h3 className="text-sm font-bold text-white mb-2">
-                4. 70+ Open-Source Games
+                4. Free Browser Games
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Enjoy 70+ open-source 3D flight simulators, clay arcade classics, sports games, and retro puzzles with zero installs.
+                Enjoy free 3D flight simulators, clay arcade classics, sports games, and retro puzzles with zero installs.
               </p>
             </div>
           </div>
@@ -320,7 +320,7 @@ export default function HomePage() {
                   className="w-full sm:w-auto px-6 py-4 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
                 >
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
-                  <span>Browse All 70+ Games</span>
+                  <span>Browse All Browser Games</span>
                 </Link>
               </div>
             </div>
@@ -454,9 +454,9 @@ export default function HomePage() {
               </p>
             </div>
             <div className="bg-neutral-950 border border-neutral-800 p-5 rounded-xl space-y-2">
-              <span className="text-purple-400 font-bold text-sm font-mono block">70+ Open-Source Games</span>
+              <span className="text-purple-400 font-bold text-sm font-mono block">Free Browser Games</span>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Enjoy open-source HTML5 and WebGL games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, and classic puzzles directly in your browser.
+                Enjoy free HTML5 and WebGL games including Chaos Skies 3D, Desi Bus Driver, Cricket 2D, and classic puzzles directly in your browser.
               </p>
             </div>
           </div>
@@ -479,7 +479,7 @@ export default function HomePage() {
                 What is DevDrop (devdrop.online)?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
+                DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and free browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
               </p>
             </div>
 
@@ -524,7 +524,7 @@ export default function HomePage() {
                 Are the browser games free to play?
               </h3>
               <p className="text-xs text-neutral-400 leading-relaxed">
-                Yes, all 70+ games are open-source HTML5 and WebGL titles that run directly in your browser with zero installation and support both mobile and desktop controls.
+                Yes, all games are free HTML5 and WebGL titles that run directly in your browser with zero installation and support both mobile and desktop controls.
               </p>
             </div>
           </div>
@@ -543,7 +543,7 @@ export default function HomePage() {
                   "name": "What is DevDrop (devdrop.online)?",
                   "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and open-source HTML5 browser games with zero sign-up."
+                    "text": "DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and free HTML5 browser games with zero sign-up."
                   }
                 },
                 {

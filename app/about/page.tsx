@@ -6,7 +6,7 @@ import { SITE_URL } from "@/lib/constants";
 export const metadata = {
   title: "About DevDrop — Free Online Web Utilities & Browser Games",
   description:
-    "Learn about DevDrop (devdrop.online): privacy-first client-side web tools, image and PDF utilities, developer helpers, and open-source browser games.",
+    "Learn about DevDrop (devdrop.online): privacy-first client-side web tools, image and PDF utilities, developer helpers, and browser games.",
   alternates: {
     canonical: `${SITE_URL}/about`,
   },
@@ -23,7 +23,7 @@ export default function AboutPage() {
           Everyday Utilities, Built for Speed &amp; Privacy
         </h1>
         <p className="text-sm text-neutral-300 mt-3 leading-relaxed">
-          DevDrop (devdrop.online) is an independent web utility platform built to provide free, accessible, and privacy-focused tools and open-source games for students, creators, and developers worldwide.
+          DevDrop (devdrop.online) is an independent web utility platform built to provide free, accessible, and privacy-focused tools and browser games for students, creators, and developers worldwide.
         </p>
       </div>
 

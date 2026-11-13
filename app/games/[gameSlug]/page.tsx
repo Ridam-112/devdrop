@@ -30,13 +30,29 @@ interface Props {
   };
 }
 
+const REMOVED_GAME_SLUGS = new Set([
+  "command-and-conquer-html5",
+  "duckhunt-javascript-html5",
+  "blockrain-tetris-html5",
+  "beyblade-spin-battle-2d",
+  "hexgl-3d-racing",
+  "sandboxels-physics-sandbox",
+]);
+
 export async function generateStaticParams() {
-  return OPEN_SOURCE_GAMES.map((g) => ({
+  return OPEN_SOURCE_GAMES.filter((g) => !REMOVED_GAME_SLUGS.has(g.slug)).map((g) => ({
     gameSlug: g.slug,
   }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (REMOVED_GAME_SLUGS.has(params.gameSlug)) {
+    return {
+      title: "Game Not Found | DevDrop",
+      robots: { index: false, follow: false },
+    };
+  }
+
   const game = OPEN_SOURCE_GAMES.find((g) => g.slug === params.gameSlug);
 
   if (!game) {
@@ -100,6 +116,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default function GameDetailPage({ params }: Props) {
+  if (REMOVED_GAME_SLUGS.has(params.gameSlug)) {
+    notFound();
+  }
+
   const game = OPEN_SOURCE_GAMES.find((g) => g.slug === params.gameSlug);
 
   if (!game) {
@@ -125,7 +145,7 @@ export default function GameDetailPage({ params }: Props) {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Open Source Games",
+        name: "Browser Games",
         item: `${SITE_URL}/games`,
       },
       {
@@ -283,21 +303,23 @@ export default function GameDetailPage({ params }: Props) {
                   <ExternalLink className="w-4 h-4 ml-1" />
                 </a>
 
-                <a
-                  href={game.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-cyber-dark hover:bg-cyber-card border border-cyber-borderSubtle text-slate-200 hover:text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
-                >
-                  <Github className="w-4 h-4" />
-                  <span>Inspect Source Code</span>
-                </a>
+                {game.sourceUrl && (
+                  <a
+                    href={game.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-cyber-dark hover:bg-cyber-card border border-cyber-borderSubtle text-slate-200 hover:text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                  >
+                    <Github className="w-4 h-4" />
+                    <span>Inspect Source Code</span>
+                  </a>
+                )}
               </div>
 
               <div className="flex flex-wrap items-center justify-center gap-4 pt-4 text-xs font-mono text-cyber-muted border-t border-cyber-borderSubtle/60">
                 <span className="flex items-center gap-1.5 text-cyber-green">
                   <ShieldCheck className="w-4 h-4" />
-                  <span>100% Free Open Source</span>
+                  <span>{game.sourceUrl ? "Verified Open Source" : "Free Web Game"}</span>
                 </span>
                 <span>•</span>
                 <span>License: {game.license}</span>
@@ -427,16 +449,20 @@ export default function GameDetailPage({ params }: Props) {
                 <span className="text-emerald-400 font-semibold">{game.license}</span>
               </div>
               <div>
-                <span className="text-neutral-500 block text-[10px] uppercase">Original Project</span>
-                <a
-                  href={game.sourceUrl || game.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-cyan-400 hover:underline flex items-center gap-1 mt-0.5 break-all"
-                >
-                  <span>Project Repository</span>
-                  <ExternalLink className="w-3 h-3 shrink-0" />
-                </a>
+                <span className="text-neutral-500 block text-[10px] uppercase">{game.sourceUrl ? "Original Project" : "Edition"}</span>
+                {game.sourceUrl ? (
+                  <a
+                    href={game.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-cyan-400 hover:underline flex items-center gap-1 mt-0.5 break-all"
+                  >
+                    <span>Project Repository</span>
+                    <ExternalLink className="w-3 h-3 shrink-0" />
+                  </a>
+                ) : (
+                  <span className="text-white font-semibold">DevDrop Built-In Game</span>
+                )}
               </div>
             </div>
           </div>
@@ -501,7 +527,7 @@ export default function GameDetailPage({ params }: Props) {
             <div className="bg-cyber-card border border-cyber-borderSubtle rounded-2xl p-6 space-y-4">
               <h3 className="text-sm font-bold font-mono text-white flex items-center gap-2">
                 <Gamepad2 className="w-4 h-4 text-cyber-green" />
-                <span>Related Open-Source Games</span>
+                <span>Related Browser Games</span>
               </h3>
               <div className="space-y-3">
                 {relatedGames.map((rel) => (
@@ -523,7 +549,7 @@ export default function GameDetailPage({ params }: Props) {
                 href="/games"
                 className="w-full inline-flex items-center justify-center gap-1.5 text-xs font-mono text-cyber-green hover:underline pt-2 font-bold"
               >
-                <span>View All Open Source Games</span>
+                <span>View All Browser Games</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </Link>
             </div>

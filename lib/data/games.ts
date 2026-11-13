@@ -71,7 +71,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "GLSL Shaders"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/chaos-skies-3d",
     "isPlayableDirectly": true,
@@ -165,8 +165,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-10",
     "tips": [
       "Use afterburners in short bursts to save fuel while closing distance to bogies.",
@@ -189,7 +188,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/fruit-slice-master",
     "isPlayableDirectly": true,
@@ -230,8 +229,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-08",
     "tips": [
       "Wait for multiple fruits to reach peak trajectory before slicing to trigger combo multipliers.",
@@ -254,7 +252,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/endless-runner-clay",
     "isPlayableDirectly": true,
@@ -303,8 +301,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-07",
     "tips": [
       "Keep your eyes on oncoming hazards two tiles ahead rather than directly under your character.",
@@ -327,7 +324,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/balloon-pop-frenzy",
     "isPlayableDirectly": true,
@@ -368,8 +365,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-06",
     "tips": [
       "Prioritize golden balloons for temporary double points multipliers.",
@@ -392,7 +388,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/brick-breaker-clay",
     "isPlayableDirectly": true,
@@ -433,8 +429,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-06",
     "tips": [
       "Angle the ball off the edges of your paddle to hit tight corner bricks.",
@@ -457,7 +452,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/color-switch-bounce",
     "isPlayableDirectly": true,
@@ -498,8 +493,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "emoji-memory-match",
@@ -516,7 +510,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/emoji-memory-match",
     "isPlayableDirectly": true,
@@ -557,8 +551,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "clay-block-puzzle",
@@ -575,7 +568,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/clay-block-puzzle",
     "isPlayableDirectly": true,
@@ -616,8 +609,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "number-merge-drop",
@@ -634,7 +626,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/number-merge-drop",
     "isPlayableDirectly": true,
@@ -675,8 +667,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "maze-escape-3d-clay",
@@ -693,7 +684,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/maze-escape-3d-clay",
     "isPlayableDirectly": true,
@@ -734,8 +725,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "clay-2048-puzzle",
@@ -752,7 +742,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/clay-2048-puzzle",
     "isPlayableDirectly": true,
@@ -793,8 +783,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "mini-car-racing-circuit",
@@ -811,7 +800,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/mini-car-racing-circuit",
     "isPlayableDirectly": true,
@@ -852,8 +841,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-05",
     "tips": [
       "Brake slightly before entering sharp hairpins to maintain traction.",
@@ -876,7 +864,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/traffic-dodge-highway",
     "isPlayableDirectly": true,
@@ -921,8 +909,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "basketball-hoop-shot",
@@ -939,7 +926,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/basketball-hoop-shot",
     "isPlayableDirectly": true,
@@ -980,8 +967,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "penalty-kick-master",
@@ -998,7 +984,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/penalty-kick-master",
     "isPlayableDirectly": true,
@@ -1039,8 +1025,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "downhill-bike-rush",
@@ -1057,7 +1042,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/downhill-bike-rush",
     "isPlayableDirectly": true,
@@ -1106,8 +1091,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "stickman-jump-deluxe",
@@ -1124,7 +1108,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/stickman-jump-deluxe",
     "isPlayableDirectly": true,
@@ -1165,8 +1149,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "one-tap-platformer",
@@ -1183,7 +1166,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/one-tap-platformer",
     "isPlayableDirectly": true,
@@ -1224,8 +1207,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "bubble-shooter-classic",
@@ -1242,7 +1224,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/bubble-shooter-classic",
     "isPlayableDirectly": true,
@@ -1283,8 +1265,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "whack-a-mole-bonk",
@@ -1301,7 +1282,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/whack-a-mole-bonk",
     "isPlayableDirectly": true,
@@ -1342,8 +1323,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "fishing-mini-game",
@@ -1360,7 +1340,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/fishing-mini-game",
     "isPlayableDirectly": true,
@@ -1401,8 +1381,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "tower-stack-builder",
@@ -1419,7 +1398,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/tower-stack-builder",
     "isPlayableDirectly": true,
@@ -1460,8 +1439,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "sliding-jigsaw-puzzle",
@@ -1478,7 +1456,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/sliding-jigsaw-puzzle",
     "isPlayableDirectly": true,
@@ -1519,8 +1497,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "simon-memory-master",
@@ -1537,7 +1514,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/simon-memory-master",
     "isPlayableDirectly": true,
@@ -1578,8 +1555,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "tic-tac-toe-duel",
@@ -1596,7 +1572,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/tic-tac-toe-duel",
     "isPlayableDirectly": true,
@@ -1637,8 +1613,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "skyroad-rush-3d",
@@ -1655,7 +1630,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/skyroad-rush-3d",
     "isPlayableDirectly": true,
@@ -1700,8 +1675,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "car-parking-simulator-3d",
@@ -1718,7 +1692,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/car-parking-simulator-3d",
     "isPlayableDirectly": true,
@@ -1763,8 +1737,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-04",
     "tips": [
       "Switch between top-down camera and chase view when reversing into parallel slots.",
@@ -1787,7 +1760,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/moto-traffic-rider-3d",
     "isPlayableDirectly": true,
@@ -1832,8 +1805,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-08",
     "tips": [
       "Ride in the center dotted lane to react swiftly to cars merging from either side.",
@@ -1856,7 +1828,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/zombie-survival-3d",
     "isPlayableDirectly": true,
@@ -1901,8 +1873,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "football-penalty-master-3d",
@@ -1919,7 +1890,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/football-penalty-master-3d",
     "isPlayableDirectly": true,
@@ -1960,8 +1931,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "sky-parkour-challenge-3d",
@@ -1978,7 +1948,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/sky-parkour-challenge-3d",
     "isPlayableDirectly": true,
@@ -2023,8 +1993,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "cyber-shooting-arena-3d",
@@ -2041,7 +2010,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/cyber-shooting-arena-3d",
     "isPlayableDirectly": true,
@@ -2090,8 +2059,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "airport-ground-crew-3d",
@@ -2108,7 +2076,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/airport-ground-crew-3d",
     "isPlayableDirectly": true,
@@ -2149,8 +2117,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "sumo-push-clash-2d",
@@ -2167,7 +2134,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/sumo-push-clash-2d",
     "isPlayableDirectly": true,
@@ -2208,8 +2175,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "flight-pitch-master-2d",
@@ -2226,7 +2192,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/flight-pitch-master-2d",
     "isPlayableDirectly": true,
@@ -2271,8 +2237,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "head-football-2d",
@@ -2289,7 +2254,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/head-football-2d",
     "isPlayableDirectly": true,
@@ -2338,8 +2303,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "one-tap-cricket-timing-2d",
@@ -2356,7 +2320,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/one-tap-cricket-timing-2d",
     "isPlayableDirectly": true,
@@ -2397,8 +2361,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "speed-math-duel-2d",
@@ -2415,7 +2378,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/speed-math-duel-2d",
     "isPlayableDirectly": true,
@@ -2456,8 +2419,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "tug-of-war-clay-2d",
@@ -2474,7 +2436,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/tug-of-war-clay-2d",
     "isPlayableDirectly": true,
@@ -2515,67 +2477,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
-  },
-  {
-    "slug": "beyblade-spin-battle-2d",
-    "name": "Spin Top Battle 2D",
-    "tagline": "High-speed spinning tops collision battle arena in 2D physics",
-    "h1": "Spin Top Battle 2D: Physics Combat Arena",
-    "genre": "Action",
-    "description": "Epic Beyblade dish clashes! Ripcord launches, spin RPM physics, special dashes, and explosive Burst Finishes!",
-    "longDescription": "Beyblade Spin Battle 2D is a high-performance browser-native game featuring tactile aesthetics, procedural Web Audio sound synthesis, and instant zero-download gameplay on any desktop or mobile browser. Enjoy responsive controls, high score tracking, and smooth 60 FPS performance.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Audio API",
-      "CSS3",
-      "WebGL"
-    ],
-    "license": "Open Source / Free-to-Play",
-    "githubUrl": "https://github.com/Ridam-112/devdrop",
-    "liveDemoUrl": "https://devdrop.online/games/beyblade-spin-battle-2d",
-    "isPlayableDirectly": true,
-    "builtInGameType": "iframe",
-    "iframeUrl": "/games/39_beyblade_spin_battle_2d.html",
-    "badge": "Spin Battle",
-    "releaseYear": 2026,
-    "rating": 4.9,
-    "ratingCount": 1230,
-    "features": [
-      "Ripcord pull power launcher gauge",
-      "Dish collision ricochet and stamina friction physics",
-      "Special dash attacks and ultimate bursts",
-      "Multiple customizable beyblade tops"
-    ],
-    "howToPlay": [
-      "Use the intuitive keyboard keys or touch screen gestures to control your player",
-      "Follow on-screen objectives to rack up points and complete levels",
-      "Collect power-ups and avoid hazards to maintain your multiplier streaks",
-      "Compete to set your personal best high score saved locally on your device"
-    ],
-    "controls": [
-      {
-        "key": "Arrow Keys / Tap Controls",
-        "action": "Steer and dash blade"
-      }
-    ],
-    "metaTitle": "Beyblade Spin Battle 2D — Play Free Online Action Game | DevDrop",
-    "metaDescription": "Play Beyblade Spin Battle 2D online for free in your browser. Epic Beyblade dish clashes! Ripcord launches, spin RPM physics, special dashes, and explosive Burst Finishes! No downloads or installs required.",
-    "faqs": [
-      {
-        "question": "Is Beyblade Spin Battle 2D free to play on DevDrop?",
-        "answer": "Yes! Beyblade Spin Battle 2D is 100% free with no downloads, subscriptions, or paywalls required. Play directly inside your web browser."
-      },
-      {
-        "question": "Can I play Beyblade Spin Battle 2D on a smartphone?",
-        "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "crazy-delivery-rider-3d",
@@ -2592,7 +2494,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/crazy-delivery-rider-3d",
     "isPlayableDirectly": true,
@@ -2637,8 +2539,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "no-brakes-desi-bus-3d",
@@ -2655,7 +2556,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/no-brakes-desi-bus-3d",
     "isPlayableDirectly": true,
@@ -2704,8 +2605,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-09",
     "tips": [
       "Counter-steer through highway curves to prevent top-heavy bus rollovers.",
@@ -2728,7 +2628,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/local-train-door-jammer-3d",
     "isPlayableDirectly": true,
@@ -2777,8 +2677,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "election-mayhem-voting-battle",
@@ -2795,7 +2694,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/election-mayhem-voting-battle",
     "isPlayableDirectly": true,
@@ -2836,8 +2735,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "parliament-kaand-3d",
@@ -2854,7 +2752,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/parliament-kaand-3d",
     "isPlayableDirectly": true,
@@ -2895,8 +2793,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "sledge-rider-3d",
@@ -2913,7 +2810,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "MIT / Open Source",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/sledge-rider-3d",
     "isPlayableDirectly": true,
@@ -2958,8 +2855,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "DevDrop Team",
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
+    "author": "DevDrop Studio",
     "lastmod": "2026-11-09",
     "tips": [
       "Time your jumps over icy cliffs to maintain forward downhill momentum.",
@@ -2982,7 +2878,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/dino-escape-adventure",
     "isPlayableDirectly": true,
@@ -3031,8 +2927,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "warehouse-tdm-3d",
@@ -3049,7 +2944,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "CSS3",
       "WebGL"
     ],
-    "license": "Open Source / Free-to-Play",
+    "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
     "liveDemoUrl": "https://devdrop.online/games/warehouse-tdm-3d",
     "isPlayableDirectly": true,
@@ -3102,8 +2997,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": false,
-    "sourceUrl": "https://github.com/Ridam-112/devdrop",
-    "author": "DevDrop Contributors"
+    "author": "DevDrop Studio"
   },
   {
     "slug": "space-defender-html5",
@@ -3119,7 +3013,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "Web Audio API",
       "CSS3"
     ],
-    "license": "MIT",
+    "license": "CC0-1.0",
     "githubUrl": "https://github.com/bobeff/open-source-games",
     "liveDemoUrl": "https://devdrop.online/games/space-defender-html5",
     "isPlayableDirectly": true,
@@ -3194,7 +3088,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "Tailwind CSS"
     ],
-    "license": "MIT",
+    "license": "CC0-1.0",
     "githubUrl": "https://github.com/bobeff/open-source-games",
     "liveDemoUrl": "https://devdrop.online/games/cyber-snake-html5",
     "isPlayableDirectly": true,
@@ -3337,7 +3231,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "Vector Math Physics"
     ],
-    "license": "MIT",
+    "license": "CC0-1.0",
     "githubUrl": "https://github.com/bobeff/open-source-games",
     "liveDemoUrl": "https://devdrop.online/games/neon-breakout-html5",
     "isPlayableDirectly": true,
@@ -3931,80 +3825,13 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "Ellison Leao",
+    "author": "Ellison Leão",
     "sourceUrl": "https://github.com/ellisonleao/clumsy-bird",
     "lastmod": "2026-11-01",
     "tips": [
       "Tap in steady, rhythmic cadences rather than reactive panic flaps.",
       "Aim for the lower half of pipe gaps to account for upward wing lift.",
       "Stay calm between pipe sets to reset your visual center."
-    ]
-  },
-  {
-    "slug": "hexgl-3d-racing",
-    "name": "HexGL 3D Racing",
-    "tagline": "Futuristic 3D sci-fi antigravity racing game built with WebGL and HTML5",
-    "h1": "Play HexGL 3D Online: Open Source HTML5 & WebGL Antigravity Racing Game",
-    "genre": "Racing",
-    "description": "Pilot high-velocity hovercraft across neon-lit cyber raceways at blinding speeds in this groundbreaking open-source WebGL and HTML5 3D racer.",
-    "longDescription": "HexGL is a legendary open-source futuristic racing game created by Thibaut Despoulain (BKcore) and spotlighted in awesome-open-source-games. Inspired by Wipeout and F-Zero, it serves as a historic benchmark showcasing desktop-grade 3D graphics inside modern web browsers using WebGL, Three.js, and HTML5 Audio.",
-    "techStack": [
-      "WebGL",
-      "Three.js",
-      "HTML5 Canvas",
-      "Web Audio API"
-    ],
-    "license": "MIT / CC BY-NC 3.0",
-    "githubUrl": "https://github.com/BKcore/HexGL",
-    "liveDemoUrl": "http://hexgl.bkcore.com/play/",
-    "isPlayableDirectly": false,
-    "badge": "WebGL Legend",
-    "releaseYear": 2012,
-    "rating": 4.9,
-    "ratingCount": 4210,
-    "features": [
-      "Full 3D hardware-accelerated WebGL track geometry and antigravity hover mechanics",
-      "Dynamic particle spark effects, speed blur, and air-brake drift steering",
-      "Precision time-trial ghost telemetry and sector split tracking",
-      "Supports keyboard, gamepad controllers, and touch acceleration",
-      "One of the most famous WebGL showcases in web engineering history"
-    ],
-    "howToPlay": [
-      "Accelerate down magnetic speed rails to build kinetic momentum",
-      "Engage left and right air brakes when executing tight hairpins",
-      "Avoid grinding against barrier bulkheads to preserve ship shield integrity",
-      "Shave milliseconds off your lap records across futuristic neon circuits"
-    ],
-    "controls": [
-      {
-        "key": "Up Arrow / W",
-        "action": "Throttle Acceleration"
-      },
-      {
-        "key": "Left / Right / A / D",
-        "action": "Steer Hovercraft"
-      },
-      {
-        "key": "Q / E",
-        "action": "Engage Air Brakes (Left/Right)"
-      }
-    ],
-    "metaTitle": "Play HexGL 3D Online — Free Open Source HTML5 WebGL Racing Game | DEVDROP",
-    "metaDescription": "Play HexGL 3D online in your browser. Open source futuristic antigravity racing game built with HTML5, WebGL, and Three.js. Fast 60fps racing with zero install.",
-    "faqs": [
-      {
-        "question": "Does HexGL require a dedicated graphics card?",
-        "answer": "Any modern device with WebGL hardware acceleration (including modern smartphones and integrated laptop GPUs) can render HexGL smoothly at 60 FPS."
-      }
-    ],
-    "indexable": true,
-    "author": "Thibaut Despoulain (BKcore)",
-    "sourceUrl": "https://github.com/BKcore/HexGL",
-    "lastmod": "2026-11-04",
-    "tips": [
-      "Hit green boost pads consistently to maintain supersonic cruising velocity.",
-      "Use air-brakes on high-angle chicanes to prevent scraping track guardrails.",
-      "Watch your ship shield integrity meter on high-speed track segments."
     ]
   },
   {
@@ -4021,7 +3848,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "Node.js",
       "JavaScript"
     ],
-    "license": "MPL-2.0 / CC BY-SA 3.0",
+    "license": "MPL-2.0 / CC-BY-SA 3.0",
     "githubUrl": "https://github.com/mozilla/BrowserQuest",
     "liveDemoUrl": "https://browserquest.itch.io/browserquest",
     "isPlayableDirectly": false,
@@ -4060,7 +3887,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "answer": "Yes, it uses WebSockets to synchronize player positions, combat animations, and chat messages in real time across browser clients."
       }
     ],
-    "indexable": true,
+    "indexable": false,
     "author": "Mozilla Foundation & Little Workshop",
     "sourceUrl": "https://github.com/mozilla/BrowserQuest",
     "lastmod": "2026-11-03",
@@ -4068,133 +3895,6 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "Defeat forest bats and rats early to upgrade from cloth rags to leather armor.",
       "Lure cave skeletons one at a time to prevent getting overwhelmed.",
       "Drink red health potions before engaging boss gargoyles."
-    ]
-  },
-  {
-    "slug": "command-and-conquer-html5",
-    "name": "Tactical Warfare RTS (HTML5)",
-    "tagline": "Classic command base building, tank production & tactical warfare in browser",
-    "h1": "Tactical Warfare RTS: Classic Real-Time Strategy HTML5",
-    "genre": "Strategy",
-    "description": "Harvest Tiberium, construct power plants and barracks, build tanks, and wage tactical RTS warfare in this faithful open-source HTML5 recreation.",
-    "longDescription": "Command & Conquer HTML5 is a masterclass in browser game engineering developed by Aditya Ravishankar (featured in awesome-open-source-games). It recreates Westwood Studios' iconic 1995 RTS title entirely in HTML5 Canvas and JavaScript, complete with authentic unit voices, pathfinding AI, fog of war, and base building.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "HTML5 Audio",
-      "A* Pathfinding"
-    ],
-    "license": "Open Source / Educational",
-    "githubUrl": "https://github.com/adityaravishankar/command-and-conquer",
-    "liveDemoUrl": "http://www.adityaravishankar.com/projects/games/command-and-conquer/",
-    "isPlayableDirectly": false,
-    "badge": "RTS Masterpiece",
-    "releaseYear": 2012,
-    "rating": 4.9,
-    "ratingCount": 2950,
-    "features": [
-      "Faithful reproduction of original C&C GDI vs NOD campaign missions in HTML5",
-      "Full economic loop: Tiberium harvesters, refineries, and radar stations",
-      "Advanced A* pathfinding and tactical unit AI for tank columns and infantry",
-      "Original audio score, sound effects, and unit response sound clips",
-      "Runs completely in-browser without software plugins or Flash"
-    ],
-    "howToPlay": [
-      "Deploy Construction Yard and establish Power Plants to energize your base",
-      "Send Harvesters to green Tiberium fields to supply tactical credits",
-      "Queue infantry squads and medium battle tanks at military production facilities",
-      "Scout enemy encampments and launch coordinated strike packages to destroy the enemy base"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Drag",
-        "action": "Box Select Multiple Combat Units"
-      },
-      {
-        "key": "Right Click / Left Click",
-        "action": "Issue Move / Attack Orders"
-      },
-      {
-        "key": "Mini-Map Click",
-        "action": "Quick Pan Strategic Overview"
-      }
-    ],
-    "metaTitle": "Play Command & Conquer Online — Free Open Source HTML5 RTS Game | DEVDROP",
-    "metaDescription": "Play Command & Conquer online in your web browser. Outstanding open source HTML5/JavaScript RTS recreation featuring base building, tanks, and Tiberium harvesting.",
-    "faqs": [
-      {
-        "question": "How was C&C recreated in pure HTML5?",
-        "answer": "The developer extracted original sprite sheets and sound clips from the game assets and coded the entire game engine, AI logic, and collision physics in client-side JavaScript."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/adityaravishankar/command-and-conquer",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "sandboxels-physics-sandbox",
-    "name": "Sandboxels",
-    "tagline": "Falling sand simulation with 500+ chemical, physical, and biological elements",
-    "h1": "Play Sandboxels Online: Open Source Falling Sand Physics Simulation",
-    "genre": "Simulation",
-    "description": "Experiment with thermodynamics, fire, acid, electricity, plants, and nuclear reactions with over 500 interactive elements in this viral open-source sandbox.",
-    "longDescription": "Sandboxels is a viral open-source falling-sand simulation created by R74n (listed in awesome-open-source-games). Featuring over 500 distinct materials ranging from basic sand and water to molten lava, gunpowder, biological viruses, and quantum particles, all interacting through realistic chemical reactions and heat transfer physics.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Pixel Particle Engine"
-    ],
-    "license": "GPL-3.0",
-    "githubUrl": "https://github.com/R74nCom/sandboxels",
-    "liveDemoUrl": "https://sandboxels.r74n.com",
-    "isPlayableDirectly": false,
-    "badge": "Viral Sandbox",
-    "releaseYear": 2021,
-    "rating": 4.9,
-    "ratingCount": 5120,
-    "features": [
-      "Over 500 unique elemental materials and thousands of chemical reactions",
-      "Simulated thermodynamics, phase transitions (solid, liquid, gas, plasma), and electricity",
-      "Biological simulation including trees, algae, disease bacteria, and animal cells",
-      "Custom element creator allowing players to invent custom chemical compounds",
-      "100% free and open-source under GPLv3"
-    ],
-    "howToPlay": [
-      "Select any element from the category tabs (Solids, Liquids, Gases, Life, Chemistry)",
-      "Draw onto the canvas viewport to dispense particles into the physics world",
-      "Watch elements interact: mix water and fire for steam, ignite oil for explosions",
-      "Use heating, cooling, and air-pressure tools to conduct laboratory experiments"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Drag",
-        "action": "Pour / Draw Selected Element"
-      },
-      {
-        "key": "Right Click",
-        "action": "Sample Element / Eraser"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Pause Physics Time Engine"
-      }
-    ],
-    "metaTitle": "Play Sandboxels Online — Free Open Source Falling Sand Physics Game | DEVDROP",
-    "metaDescription": "Play Sandboxels online in browser for free. Open source falling sand physics simulation with 500+ elements, chemical reactions, and thermodynamic modeling.",
-    "faqs": [
-      {
-        "question": "Can I create custom elements in Sandboxels?",
-        "answer": "Yes! Sandboxels includes a built-in modding API and element editor that allows users to write custom JS definitions for new physical materials."
-      }
-    ],
-    "indexable": true,
-    "author": "R74n",
-    "sourceUrl": "https://github.com/R74nCom/sandboxels",
-    "lastmod": "2026-11-05",
-    "tips": [
-      "Mix oil and fire to experiment with atmospheric convection currents.",
-      "Use glass or bedrock boundaries to contain high-temperature radioactive reactions.",
-      "Explore the hidden elements menu to uncover exotic chemical interactions."
     ]
   },
   {
@@ -4211,7 +3911,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "JavaScript",
       "WebSockets"
     ],
-    "license": "GPL-2.0 / AGPL-3.0",
+    "license": "GNU AGPL-3.0 / GPL-2.0",
     "githubUrl": "https://github.com/freeciv/freeciv-web",
     "liveDemoUrl": "https://www.freecivweb.org",
     "isPlayableDirectly": false,
@@ -4254,7 +3954,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "answer": "Yes, Freeciv-web uses the standard Freeciv protocol, allowing web players to connect to global servers alongside desktop Linux and Windows players."
       }
     ],
-    "indexable": true,
+    "indexable": false,
     "author": "Freeciv-web Contributors",
     "sourceUrl": "https://github.com/freeciv/freeciv-web",
     "lastmod": "2026-11-05",
@@ -4433,7 +4133,7 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       }
     ],
     "indexable": true,
-    "author": "Julien Garnier",
+    "author": "Julian Garnier",
     "sourceUrl": "https://github.com/juliangarnier/3D-Hartwig-chess-set",
     "lastmod": "2026-11-02",
     "tips": [
@@ -4500,126 +4200,6 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
     ],
     "indexable": false,
     "sourceUrl": "https://github.com/lostdecade/onslaught_arena",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "blockrain-tetris-html5",
-    "name": "Blockrain Falling Blocks HTML5",
-    "tagline": "Rotate and slot falling blocks to clear rows and score high",
-    "h1": "Blockrain Falling Blocks: Arcade Brick Puzzle HTML5",
-    "genre": "Puzzle",
-    "description": "Rotate and slot falling tetrominoes, clear multi-line combos, and chase high scores in this gorgeous open-source HTML5 arcade puzzle game.",
-    "longDescription": "Blockrain.js is an open-source HTML5 Canvas and JavaScript falling blocks puzzle game developed by Aerolab and cataloged in awesome-open-source-games. Featuring customizable visual themes (Retro, Candy, Neon, GameBoy), smooth rotation physics, and touch compatibility.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "CSS3 Animations"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/Aerolab/blockrain.js",
-    "liveDemoUrl": "https://aerolab.github.io/blockrain.js/",
-    "isPlayableDirectly": false,
-    "badge": "Puzzle Hit",
-    "releaseYear": 2014,
-    "rating": 4.8,
-    "ratingCount": 2450,
-    "features": [
-      "Iconic Tetris puzzle gameplay with responsive soft and hard drop mechanics",
-      "Multiple built-in aesthetic themes (Retro arcade, Neon, Flat, GameBoy mono)",
-      "High-line clear score combos: single, double, triple, and full Tetris 4-line clears",
-      "Lightweight standalone library with zero bloated dependencies",
-      "100% free and open-source under the MIT license"
-    ],
-    "howToPlay": [
-      "Guide falling tetromino pieces using Left/Right navigation keys",
-      "Rotate pieces clockwise with the Up Arrow to slot into matrix gaps",
-      "Use Down Arrow for soft drop or Spacebar for instant hard drop locking",
-      "Fill complete horizontal rows to clear blocks and prevent matrix overflow"
-    ],
-    "controls": [
-      {
-        "key": "Left / Right Arrow",
-        "action": "Shift Tetromino Left / Right"
-      },
-      {
-        "key": "Up Arrow",
-        "action": "Rotate Piece 90 Degrees"
-      },
-      {
-        "key": "Down Arrow",
-        "action": "Soft Drop Velocity Boost"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Instant Hard Drop"
-      }
-    ],
-    "metaTitle": "Play Blockrain Tetris Online — Free Open Source HTML5 Puzzle Game | DEVDROP",
-    "metaDescription": "Play Blockrain Tetris online for free in your browser. Open source HTML5 Canvas falling blocks puzzle game with multiple themes, smooth drops, and zero downloads.",
-    "faqs": [
-      {
-        "question": "Does Blockrain Tetris work on touch devices?",
-        "answer": "Yes, Blockrain includes responsive touch controls for mobile screens with on-screen buttons for rotating and dropping."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/Aerolab/blockrain.js",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "duckhunt-javascript-html5",
-    "name": "Marshland Bird Hunt (JavaScript)",
-    "tagline": "Test your target reflexes in this classic marshland hunting arcade game",
-    "h1": "Marshland Bird Hunt: Classic Target Arcade HTML5",
-    "genre": "Arcade",
-    "description": "Take aim at wild mallards taking flight across marshlands, test your reaction speed, and avoid the snickering hunting dog in this open-source HTML5 classic.",
-    "longDescription": "DuckHunt JS is a faithful open-source HTML5 Canvas recreation of the beloved 1984 NES light-gun classic authored by Matt Surabian and highlighted in awesome-open-source-games. Recreating the authentic 8-bit flight paths, timing windows, sound clips, and level difficulty curves in pure modern JavaScript.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "8-Bit Audio Synth"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/MattSurabian/DuckHunt-JS",
-    "liveDemoUrl": "https://mattsurabian.com/DuckHunt-JS/",
-    "isPlayableDirectly": false,
-    "badge": "NES Nostalgia",
-    "releaseYear": 2013,
-    "rating": 4.8,
-    "ratingCount": 1980,
-    "features": [
-      "Faithful 8-bit pixel art graphics, flight trajectory physics, and audio chiptunes",
-      "Multiple difficulty rounds with faster flying ducks and tighter target windows",
-      "Interactive level creator and custom difficulty configuration modes",
-      "Precision mouse cursor crosshairs replacing the classic NES Zapper light-gun",
-      "100% open-source under MIT with comprehensive GitHub documentation"
-    ],
-    "howToPlay": [
-      "Observe the marshland grass until the hunting dog flushes out ducks",
-      "Quickly aim your cursor crosshairs over the airborne target",
-      "Left-click to discharge your shotgun shell before the duck flees the screen",
-      "Hit the required quota of birds each round to advance to higher tier stages"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Move",
-        "action": "Aim Shotgun Crosshair"
-      },
-      {
-        "key": "Mouse Left Click",
-        "action": "Discharge Shotgun Shell"
-      }
-    ],
-    "metaTitle": "Play DuckHunt Online — Free Open Source HTML5 8-Bit Arcade Game | DEVDROP",
-    "metaDescription": "Play DuckHunt online for free in browser. Faithful open source HTML5 Canvas recreation of the 1984 8-bit NES classic with authentic sounds and zero install.",
-    "faqs": [
-      {
-        "question": "How does the mouse replace the original NES Zapper light gun?",
-        "answer": "The mouse cursor acts as a precision crosshair, calculating optical raycast coordinates onto the HTML5 Canvas to register hits with sub-pixel accuracy."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/MattSurabian/DuckHunt-JS",
     "author": "Open-Source Authors"
   }
 ];

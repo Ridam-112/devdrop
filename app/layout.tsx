@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | DevDrop",
   },
   description:
-    "DevDrop (devdrop.online) provides free online web utilities: image compressors, photo background remover, QR code generators, PDF makers, and open-source HTML5 browser games.",
+    "DevDrop (devdrop.online) provides free online web utilities: image compressors, photo background remover, QR code generators, PDF makers, and free HTML5 browser games.",
   authors: [{ name: "DevDrop Core Team", url: SITE_URL }],
   creator: "DevDrop",
   publisher: "DevDrop Platform",
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     siteName: "DevDrop",
     title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
     description:
-      "Free client-side web utilities, PDF creators, image compressors, and 70+ open-source browser games.",
+      "Free client-side web utilities, PDF creators, image compressors, and free browser games.",
     images: [
       {
         url: `${SITE_URL}/logo.png`,
@@ -154,7 +154,7 @@ export default function RootLayout({
                     "DevDrop Tools"
                   ],
                   "description":
-                    "Free online web utility suite with image compressors, PDF converters, developer tools, and open-source HTML5 browser games.",
+                    "Free online web utility suite with image compressors, PDF converters, developer tools, and free HTML5 browser games.",
                   "publisher": {
                     "@id": `${SITE_URL}/#organization`
                   },
@@ -197,7 +197,7 @@ export default function RootLayout({
                     "Image Compressor & Format Converter",
                     "Photo Background Remover",
                     "Pure Client-Side PDF Maker & Photo to PDF",
-                    "70+ Curated Open Source HTML5 & 3D Browser Games",
+                    "Curated HTML5 & 3D Browser Games",
                     "Privacy-First Client Processing for Document & Developer Tools"
                   ]
                 }

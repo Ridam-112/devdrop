@@ -18,18 +18,18 @@ import { AdvertisementSlot } from "@/components/AdvertisementSlot";
 import { SITE_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Play 70+ Free HTML5 Browser Games Online | DevDrop",
+  title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
   description:
-    "Play 70+ free open-source HTML5 & 3D browser games with zero downloads. Enjoy flight simulators, retro shooters, 2048, sports games, and puzzles directly in browser.",
+    "Play free HTML5 and 3D browser games with zero downloads. Enjoy flight simulators, retro arcade classics, 2048, sports games, and puzzles directly in your browser.",
   alternates: {
     canonical: `${SITE_URL}/games`,
   },
   openGraph: {
-    title: "Play Online Open Source HTML5 Games — Free Browser Web Games | DEVDROP",
+    title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play online open source HTML5 games free in your browser with zero downloads. Explore top open-source GitHub games including 2048, MicropolisJS, and retro arcade titles.",
+      "Play free browser games online with zero downloads. Explore flight simulators, 3D racers, 2048, and classic arcade titles.",
     url: `${SITE_URL}/games`,
-    siteName: "DEVDROP",
+    siteName: "DevDrop",
     locale: "en_US",
     type: "website",
     images: [
@@ -37,15 +37,15 @@ export const metadata: Metadata = {
         url: `${SITE_URL}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "Open Source HTML5 Games Directory on DEVDROP",
+        alt: "Free HTML5 & 3D Browser Games on DevDrop",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Play Online Open Source HTML5 Games — Free Web Games | DEVDROP",
+    title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play online open source HTML5 games free in your browser with zero downloads. Explore top open-source GitHub games including 2048, MicropolisJS, and retro arcade titles.",
+      "Play free browser games online with zero downloads. Explore flight simulators, 3D racers, 2048, and classic arcade titles.",
   },
 };
 
@@ -66,7 +66,7 @@ export default function GamesHubPage() {
       {
         "@type": "ListItem",
         position: 2,
-        name: "Open Source HTML5 Games",
+        name: "Browser Games",
         item: canonicalUrl,
       },
     ],
@@ -76,10 +76,10 @@ export default function GamesHubPage() {
   const gamesCollectionJsonLd = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    name: "Online Open Source HTML5 Games Directory",
-    headline: "Free Online Open Source HTML5 Games: Play Best Browser Games",
+    name: "Free Online HTML5 & 3D Browser Games Directory",
+    headline: "Play Free HTML5 & 3D Browser Games Online",
     description:
-      "Curated index of playable open source HTML5, Canvas, WebGL, and WebAssembly games from verified GitHub projects.",
+      "Curated index of playable HTML5 Canvas, WebGL, and verified open-source web games.",
     url: canonicalUrl,
     mainEntity: {
       "@type": "ItemList",
@@ -163,7 +163,7 @@ export default function GamesHubPage() {
             </Link>
           </li>
           <li>/</li>
-          <li className="text-white font-semibold">Open Source Games</li>
+          <li className="text-white font-semibold">Browser Games</li>
         </ol>
       </nav>
 
@@ -171,10 +171,10 @@ export default function GamesHubPage() {
       <header className="mb-8 relative">
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <span className="text-[10px] uppercase font-mono font-bold tracking-widest px-2.5 py-1 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-            Open Source Gaming Hub
+            Browser Gaming Hub
           </span>
           <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-dark text-cyber-muted border border-cyber-borderSubtle">
-            GitHub Sourced (bobeff/open-source-games)
+            HTML5 Canvas &amp; WebGL 3D
           </span>
           <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/30">
             Zero Download Required
@@ -182,13 +182,13 @@ export default function GamesHubPage() {
         </div>
 
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black font-mono tracking-tight text-white mb-4 leading-tight">
-          Free Online Open Source HTML5 Games: Play Best Browser Games
+          Play Free HTML5 &amp; 3D Browser Games Online
         </h1>
 
         {/* Front-loaded self-contained answer block (GEO / Claude-SEO standard) */}
         <div className="p-4 sm:p-5 rounded-2xl bg-cyber-card/60 border border-cyber-borderSubtle text-slate-300 font-sans text-sm sm:text-base leading-relaxed max-w-4xl backdrop-blur-md">
           <p>
-            Experience the finest collection of <strong>online open source HTML5 games</strong> playable directly in your web browser. Built on open web standards including <strong>HTML5 Canvas, WebGL, WebAssembly, and modern JavaScript</strong>, these games require zero software downloads, emulators, or paid subscriptions. From timeless mathematical brain-teasers like <em>2048</em> and city simulation ports like <em>MicropolisJS</em> to retro cyberpunk space shooters and tactical wargames, all titles are 100% free under transparent open-source licenses (MIT, GPL) sourced from the authoritative <code>bobeff/open-source-games</code> GitHub directory.
+            Experience our curated collection of <strong>free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, and verified open-source classics like <em>2048</em> and <em>3D Hartwig Chess</em> with instant client-side execution.
           </p>
         </div>
 
@@ -196,7 +196,7 @@ export default function GamesHubPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
           <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
             <div className="text-xl sm:text-2xl font-black text-cyber-green">100%</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Free & Open Source</div>
+            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Free to Play</div>
           </div>
           <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
             <div className="text-xl sm:text-2xl font-black text-cyber-cyan">60 FPS</div>
@@ -207,8 +207,8 @@ export default function GamesHubPage() {
             <div className="text-[10px] text-cyber-muted uppercase mt-0.5">No Downloads</div>
           </div>
           <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
-            <div className="text-xl sm:text-2xl font-black text-cyber-green">MIT / GPL</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Permissive Licenses</div>
+            <div className="text-xl sm:text-2xl font-black text-cyber-green">HTML5</div>
+            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Open Web Standards</div>
           </div>
         </div>
       </header>
