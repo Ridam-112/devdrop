@@ -20,14 +20,14 @@ import { SITE_URL } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
   description:
-    "Play free HTML5 and 3D browser games with zero downloads. Enjoy flight simulators, retro arcade classics, 2048, sports games, and puzzles directly in your browser.",
+    "Play 46 free HTML5 and 3D browser games with zero downloads. Enjoy 3D flight simulators, retro arcade classics, sports games, and puzzles directly in your browser.",
   alternates: {
     canonical: `${SITE_URL}/games`,
   },
   openGraph: {
     title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play free browser games online with zero downloads. Explore flight simulators, 3D racers, 2048, and classic arcade titles.",
+      "Play 46 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
     url: `${SITE_URL}/games`,
     siteName: "DevDrop",
     locale: "en_US",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play free browser games online with zero downloads. Explore flight simulators, 3D racers, 2048, and classic arcade titles.",
+      "Play 46 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
   },
 };
 
@@ -113,27 +113,27 @@ export default function GamesHubPage() {
     mainEntity: [
       {
         "@type": "Question",
-        name: "What are online open source HTML5 games?",
+        name: "What are DevDrop HTML5 and 3D browser games?",
         answer:
-          "Online open source HTML5 games are video games built with open web standards (HTML5 Canvas, WebGL, WebAssembly, and JavaScript) whose underlying source code is released publicly under permissive licenses like MIT or GPL. They can be played instantly in any modern web browser without downloads, installation, or account registration.",
+          "DevDrop HTML5 and 3D browser games are video games built with open web standards (HTML5 Canvas, WebGL, Three.js, and JavaScript). They can be played instantly in any modern web browser without downloads, installation, or account registration.",
       },
       {
         "@type": "Question",
-        name: "Are these open source games safe to play in browser?",
+        name: "Are these browser games safe to play in browser?",
         answer:
-          "Yes, completely. Because they run in standard web browser sandboxes using client-side JavaScript and HTML5 Canvas, they do not execute native machine binaries or require administrative device privileges. Furthermore, their open-source nature means anyone can audit their codebase on GitHub for privacy and security.",
+          "Yes, completely. Because they run in standard web browser sandboxes using client-side JavaScript and HTML5 Canvas/WebGL, they do not execute native machine binaries or require device installation. Your gameplay is secure, private, and instant.",
       },
       {
         "@type": "Question",
-        name: "Where are these open source games sourced from?",
+        name: "Can I play these games on mobile phones and tablets?",
         answer:
-          "The games in this directory are cataloged from premier open-source gaming repositories, primarily the bobeff/open-source-games GitHub compilation and independent open-source developers worldwide.",
+          "Yes! All 46 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.",
       },
       {
         "@type": "Question",
-        name: "Can I inspect the source code and build my own version?",
+        name: "Do I need to sign up or create an account?",
         answer:
-          "Yes! Every game listed includes a direct link to its official GitHub or git source code repository, enabling developers, students, and indie game creators to learn, fork, and contribute.",
+          "No registration is required. All 46 games are completely free and immediately playable with high scores saved directly to your local browser storage.",
       },
     ],
   };
@@ -188,7 +188,7 @@ export default function GamesHubPage() {
         {/* Front-loaded self-contained answer block (GEO / Claude-SEO standard) */}
         <div className="p-4 sm:p-5 rounded-2xl bg-cyber-card/60 border border-cyber-borderSubtle text-slate-300 font-sans text-sm sm:text-base leading-relaxed max-w-4xl backdrop-blur-md">
           <p>
-            Experience our curated collection of <strong>free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, and verified open-source classics like <em>2048</em> and <em>3D Hartwig Chess</em> with instant client-side execution.
+            Experience our curated collection of <strong>46 free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, Three.js, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, sports games, and puzzles with instant client-side execution.
           </p>
         </div>
 
@@ -311,37 +311,37 @@ export default function GamesHubPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-5 rounded-2xl bg-cyber-card/40 border border-cyber-borderSubtle space-y-2">
               <h3 className="text-base font-bold font-mono text-white">
-                What are online open source HTML5 games?
+                What are DevDrop HTML5 and 3D browser games?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                Online open source HTML5 games are video games built with open web standards (HTML5 Canvas, WebGL, WebAssembly, and JavaScript) whose underlying source code is released publicly under permissive licenses like MIT or GPL. They can be played instantly in any modern web browser without downloads, installation, or account registration.
+                DevDrop HTML5 and 3D browser games are video games built with open web standards (HTML5 Canvas, WebGL, Three.js, and JavaScript). They can be played instantly in any modern web browser without downloads, installation, or account registration.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-cyber-card/40 border border-cyber-borderSubtle space-y-2">
               <h3 className="text-base font-bold font-mono text-white">
-                Are these open source games safe to play in my browser?
+                Are these browser games safe to play in my browser?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                Yes, completely. Because they run in standard web browser sandboxes using client-side JavaScript and HTML5 Canvas, they do not execute native machine binaries or require administrative device privileges. Furthermore, their open-source nature means anyone can audit their codebase on GitHub for privacy and security.
+                Yes, completely. Because they run in standard web browser sandboxes using client-side JavaScript and HTML5 Canvas/WebGL, they do not execute native machine binaries or require device installation. Your gameplay is secure, private, and instant.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-cyber-card/40 border border-cyber-borderSubtle space-y-2">
               <h3 className="text-base font-bold font-mono text-white">
-                Where are these open source games sourced from?
+                Can I play these games on mobile phones and tablets?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                The games in this directory are cataloged from premier open-source gaming repositories, primarily the <code>bobeff/open-source-games</code> GitHub compilation and independent open-source developers worldwide.
+                Yes! All 46 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.
               </p>
             </div>
 
             <div className="p-5 rounded-2xl bg-cyber-card/40 border border-cyber-borderSubtle space-y-2">
               <h3 className="text-base font-bold font-mono text-white">
-                Can I inspect the source code and build my own version?
+                Do I need to sign up or create an account?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                Yes! Every game listed includes a direct link to its official GitHub or git source code repository, enabling developers, students, and indie game creators to learn, fork, and contribute.
+                No registration is required. All 46 games are completely free and immediately playable with high scores saved directly to your local browser storage.
               </p>
             </div>
           </div>

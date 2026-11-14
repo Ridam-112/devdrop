@@ -106,11 +106,11 @@ export const GamesClient: React.FC = () => {
           <div className="flex items-center gap-2">
             <span>SHOWING:</span>
             <span className="text-white font-bold">{filteredGames.length}</span>
-            <span>OF {OPEN_SOURCE_GAMES.length} OPEN SOURCE HTML5 GAMES</span>
+            <span>OF {OPEN_SOURCE_GAMES.length} ORIGINAL BROWSER GAMES</span>
           </div>
           <div className="hidden sm:flex items-center gap-1.5 text-cyber-green">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>100% Free & Open-Source (MIT / GPL)</span>
+            <span>100% Free Client-Side Browser Games</span>
           </div>
         </div>
       </div>
@@ -120,7 +120,7 @@ export const GamesClient: React.FC = () => {
         <div className="flex items-center gap-2 mb-4">
           <Flame className="w-5 h-5 text-cyber-green animate-pulse" />
           <h2 className="text-xl sm:text-2xl font-black font-mono text-white tracking-tight">
-            Featured Playable HTML5 Games
+            Featured Playable Browser Games
           </h2>
           <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyber-green/20 text-cyber-green border border-cyber-green/40">
             60 FPS In-Browser
@@ -128,23 +128,23 @@ export const GamesClient: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {/* Card 1: Space Defender */}
+          {/* Card 1: Chaos Skies 3D */}
           <div className="bg-cyber-card border border-cyber-border hover:border-cyber-green/50 rounded-2xl p-5 shadow-xl transition-all group flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-                  INSTANT ACTION
+                  3D DOGFIGHT SIMULATOR
                 </span>
-                <span className="text-xs font-mono text-cyber-muted">MIT License</span>
+                <span className="text-xs font-mono text-cyber-muted">Free-to-Play</span>
               </div>
               <h3 className="text-lg font-bold font-mono text-white group-hover:text-cyber-green transition-colors">
-                Space Defender HTML5
+                Chaos Skies 3D
               </h3>
               <p className="text-xs text-cyber-muted font-sans mt-1 line-clamp-2">
-                High-octane neon retro space combat shooter in pure HTML5 2D Canvas. Dodge plasma waves and obliterate alien armadas at 60 FPS.
+                High-octane 3D aerial combat simulator built with Three.js. Pilot your jet through canyon rings, lock onto enemy squadrons, and engage in frantic dogfights at 60 FPS.
               </p>
               <div className="flex flex-wrap gap-1.5 my-3">
-                {["HTML5 Canvas", "JavaScript", "Web Audio API"].map((tech) => (
+                {["Three.js", "WebGL", "HTML5 Canvas", "Web Audio API"].map((tech) => (
                   <span key={tech} className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyber-dark text-slate-300 border border-cyber-borderSubtle">
                     {tech}
                   </span>
@@ -155,7 +155,7 @@ export const GamesClient: React.FC = () => {
               <button
                 onClick={() =>
                   setActivePlayGame(
-                    OPEN_SOURCE_GAMES.find((g) => g.slug === "space-defender-html5") || null
+                    OPEN_SOURCE_GAMES.find((g) => g.slug === "chaos-skies-3d") || null
                   )
                 }
                 className="flex-1 py-2.5 px-4 rounded-xl bg-cyber-green text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-cyber-green/90 transition-all flex items-center justify-center gap-2 shadow-neon-green/30"
@@ -164,7 +164,7 @@ export const GamesClient: React.FC = () => {
                 <span>Play Now</span>
               </button>
               <Link
-                href="/games/space-defender-html5"
+                href="/games/chaos-skies-3d"
                 className="py-2.5 px-4 rounded-xl bg-cyber-dark hover:bg-cyber-card border border-cyber-borderSubtle text-xs font-mono text-slate-300 hover:text-white transition-all flex items-center justify-center"
               >
                 Game Guide
@@ -172,23 +172,23 @@ export const GamesClient: React.FC = () => {
             </div>
           </div>
 
-          {/* Card 2: 2048 HTML5 */}
+          {/* Card 2: Fruit Slice Master */}
           <div className="bg-cyber-card border border-cyber-border hover:border-cyber-cyan/50 rounded-2xl p-5 shadow-xl transition-all group flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between mb-3">
                 <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/30">
-                  BRAIN PUZZLE
+                  ARCADE SLASHER
                 </span>
-                <span className="text-xs font-mono text-cyber-muted">MIT License</span>
+                <span className="text-xs font-mono text-cyber-muted">Free-to-Play</span>
               </div>
               <h3 className="text-lg font-bold font-mono text-white group-hover:text-cyber-cyan transition-colors">
-                2048 HTML5 Open Source
+                Fruit Slice Master
               </h3>
               <p className="text-xs text-cyber-muted font-sans mt-1 line-clamp-2">
-                The world-famous mathematical tile-sliding puzzle originally created by Gabriele Cirulli. Merge identical powers of 2 to reach the 2048 tile!
+                Swipe your blade across juicy flying clay fruits and slice multi-fruit combos while dodging lethal bombs! High-speed tactile physics and particle splashes.
               </p>
               <div className="flex flex-wrap gap-1.5 my-3">
-                {["HTML5", "CSS3 Transitions", "JavaScript", "LocalStorage"].map((tech) => (
+                {["HTML5 Canvas", "JavaScript", "Touch Physics", "Procedural Audio"].map((tech) => (
                   <span key={tech} className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyber-dark text-slate-300 border border-cyber-borderSubtle">
                     {tech}
                   </span>
@@ -199,7 +199,7 @@ export const GamesClient: React.FC = () => {
               <button
                 onClick={() =>
                   setActivePlayGame(
-                    OPEN_SOURCE_GAMES.find((g) => g.slug === "2048-html5-open-source") || null
+                    OPEN_SOURCE_GAMES.find((g) => g.slug === "fruit-slice-master") || null
                   )
                 }
                 className="flex-1 py-2.5 px-4 rounded-xl bg-cyber-cyan text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-cyber-cyan/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-cyber-cyan/20"
@@ -208,7 +208,7 @@ export const GamesClient: React.FC = () => {
                 <span>Play Now</span>
               </button>
               <Link
-                href="/games/2048-html5-open-source"
+                href="/games/fruit-slice-master"
                 className="py-2.5 px-4 rounded-xl bg-cyber-dark hover:bg-cyber-card border border-cyber-borderSubtle text-xs font-mono text-slate-300 hover:text-white transition-all flex items-center justify-center"
               >
                 Game Guide
@@ -227,10 +227,10 @@ export const GamesClient: React.FC = () => {
           <div>
             <h2 className="text-xl sm:text-2xl font-black font-mono text-white tracking-tight flex items-center gap-2">
               <Gamepad2 className="w-6 h-6 text-cyber-green" />
-              <span>Open Source Games Directory</span>
+              <span>DevDrop Browser Games Directory</span>
             </h2>
             <p className="text-xs sm:text-sm text-cyber-muted font-mono mt-1">
-              Curated from bobeff/open-source-games & verified GitHub web projects.
+              46 original 3D &amp; HTML5 games built with Canvas, WebGL &amp; Three.js.
             </p>
           </div>
         </div>
@@ -325,7 +325,7 @@ export const GamesClient: React.FC = () => {
           </div>
         ) : (
           <div className="py-16 text-center font-mono text-sm text-cyber-muted bg-cyber-card/30 rounded-2xl border border-cyber-borderSubtle">
-            No open source HTML5 games matched your search criteria.
+            No browser games matched your search criteria.
           </div>
         )}
       </section>

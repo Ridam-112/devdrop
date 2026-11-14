@@ -146,6 +146,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Q",
         "action": "Special Weapon Barrage"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Chaos Skies 3D — Free Fighter Jet Flight Game | DevDrop",
@@ -162,11 +166,19 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "How do I evade incoming enemy missiles in Chaos Skies 3D?",
         "answer": "When the red 'MISSILE INCOMING' HUD alert flashes and beeps, immediately press C (or the FLARE button on mobile) to launch thermal flares, and perform an evasive barrel roll (press E) or loop (press R) to break the enemy missile lock."
+      },
+      {
+        "question": "Is Chaos Skies 3D free to play on DevDrop?",
+        "answer": "Yes! Chaos Skies 3D is 100% free to play with no downloads, account sign-ups, or in-app purchases required. Launch and enjoy directly in your web browser."
+      },
+      {
+        "question": "Can I play Chaos Skies 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Chaos Skies 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-10",
+    "lastmod": "2026-11-14",
     "tips": [
       "Use afterburners in short bursts to save fuel while closing distance to bogies.",
       "Deploy thermal flares the moment incoming missile radar alert tones reach maximum pitch.",
@@ -226,11 +238,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Fruit Slice Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Fruit Slice Master on mobile phones and tablets?",
+        "answer": "Absolutely. Fruit Slice Master features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-08",
+    "lastmod": "2026-11-14",
     "tips": [
       "Wait for multiple fruits to reach peak trajectory before slicing to trigger combo multipliers.",
       "Avoid slashing wildly near bottom corners where bombs spawn unexpectedly.",
@@ -286,6 +302,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "S / Down",
         "action": "Slide under barriers"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Endless Clay Runner — Play Free Online Arcade Game | DevDrop",
@@ -298,11 +318,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Endless Clay Runner on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Endless Clay Runner on mobile phones and tablets?",
+        "answer": "Absolutely. Endless Clay Runner features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-07",
+    "lastmod": "2026-11-14",
     "tips": [
       "Keep your eyes on oncoming hazards two tiles ahead rather than directly under your character.",
       "Save your jump boosts for multi-tier spikes.",
@@ -362,11 +386,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Balloon Pop Frenzy on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Balloon Pop Frenzy on mobile phones and tablets?",
+        "answer": "Absolutely. Balloon Pop Frenzy features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-06",
+    "lastmod": "2026-11-14",
     "tips": [
       "Prioritize golden balloons for temporary double points multipliers.",
       "Never pop skull balloons as they penalize your lives.",
@@ -414,6 +442,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Mouse / Arrow Keys",
         "action": "Move paddle left and right"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Brick Breaker Clay — Play Free Online Arcade Game | DevDrop",
@@ -426,11 +458,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Brick Breaker Clay on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Brick Breaker Clay on mobile phones and tablets?",
+        "answer": "Absolutely. Brick Breaker Clay features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-06",
+    "lastmod": "2026-11-14",
     "tips": [
       "Angle the ball off the edges of your paddle to hit tight corner bricks.",
       "Catch multi-ball capsules to clear dense stone layers quickly.",
@@ -490,10 +526,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Color Switch Bounce on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Color Switch Bounce on mobile phones and tablets?",
+        "answer": "Absolutely. Color Switch Bounce features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Only tap when the rotating wheel's matching color arc aligns with your ball's ascent.",
+      "Maintain a steady bouncing cadence to hover safely below tricky multi-color obstacles.",
+      "Collect color-changer stars promptly to adapt your palette before advancing."
+    ]
   },
   {
     "slug": "emoji-memory-match",
@@ -548,10 +594,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Emoji Memory Match on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Emoji Memory Match on mobile phones and tablets?",
+        "answer": "Absolutely. Emoji Memory Match features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Mentally divide the card grid into quadrants and memorize icons row by row.",
+      "Turn over corner cards first to establish reliable spatial anchor points.",
+      "Avoid blind guessing; recall revealed symbols to clear chained pairs in sequence."
+    ]
   },
   {
     "slug": "clay-block-puzzle",
@@ -606,10 +662,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Clay Block Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Clay Block Puzzle on mobile phones and tablets?",
+        "answer": "Absolutely. Clay Block Puzzle features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Clear full horizontal rows and vertical columns simultaneously for mega streak bonuses.",
+      "Always reserve a 3x3 square open space for large bulky block shapes.",
+      "Place awkward high-volume pieces along edges so the board center remains versatile."
+    ]
   },
   {
     "slug": "number-merge-drop",
@@ -664,10 +730,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Number Merge Drop on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Number Merge Drop on mobile phones and tablets?",
+        "answer": "Absolutely. Number Merge Drop features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Drop matching numbers into adjacent columns so they chain-react upward.",
+      "Keep your highest valued number in the bottom corner to prevent obstructing new drops.",
+      "Calculate combo drops two steps ahead to prevent columns from reaching the hazard line."
+    ]
   },
   {
     "slug": "maze-escape-3d-clay",
@@ -710,6 +786,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Arrow Keys / WASD",
         "action": "Roll marble"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Maze Escape Lab — Play Free Online Puzzle Game | DevDrop",
@@ -722,10 +802,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Maze Escape Lab on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Maze Escape Lab on mobile phones and tablets?",
+        "answer": "Absolutely. Maze Escape Lab features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Follow the classic right-hand wall rule to guarantee finding the labyrinth exit.",
+      "Look up occasionally to spot exit beacons or landmark towers above the hedges.",
+      "Use smooth turning inputs to prevent disorienting your spatial navigation."
+    ]
   },
   {
     "slug": "clay-2048-puzzle",
@@ -780,10 +870,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Clay 2048 Number Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Clay 2048 Number Puzzle on mobile phones and tablets?",
+        "answer": "Absolutely. Clay 2048 Number Puzzle features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Anchor your highest tile strictly in one fixed corner (e.g. bottom-right).",
+      "Never swipe upward if your corner is locked to prevent smaller numbers displacing your anchor.",
+      "Build a descending gradient of numbers alongside your prime corner tile."
+    ]
   },
   {
     "slug": "mini-car-racing-circuit",
@@ -826,6 +926,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Arrow Keys / WASD",
         "action": "Steer, accelerate and brake"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Mini Car Racing Circuit — Play Free Online Racing Game | DevDrop",
@@ -838,11 +942,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Mini Car Racing Circuit on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Mini Car Racing Circuit on mobile phones and tablets?",
+        "answer": "Absolutely. Mini Car Racing Circuit features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-05",
+    "lastmod": "2026-11-14",
     "tips": [
       "Brake slightly before entering sharp hairpins to maintain traction.",
       "Follow the inside apex on turns to shave tenths of a second off lap times.",
@@ -894,6 +1002,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Up / Down",
         "action": "Accelerate / Decelerate"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Traffic Dodge Highway — Play Free Online Racing Game | DevDrop",
@@ -906,10 +1018,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Traffic Dodge Highway on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Traffic Dodge Highway on mobile phones and tablets?",
+        "answer": "Absolutely. Traffic Dodge Highway features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Anticipate brake lights of traffic ahead and switch lanes smoothly before collisions.",
+      "Weave through lane centers when traffic clusters to maintain high-speed multiplier bonuses.",
+      "Collect fuel canisters and nitro boosters to extend your highway endurance run."
+    ]
   },
   {
     "slug": "basketball-hoop-shot",
@@ -964,10 +1086,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Basketball Hoop Shot on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Basketball Hoop Shot on mobile phones and tablets?",
+        "answer": "Absolutely. Basketball Hoop Shot features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Adjust your arc angle based on wind indicators and distance from the backboard.",
+      "Aim for the rim backboard sweet spot on angled shots for consistent bank ins.",
+      "Chain consecutive clean swishes to trigger on-fire double score mode."
+    ]
   },
   {
     "slug": "penalty-kick-master",
@@ -1022,10 +1154,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Penalty Kick Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Penalty Kick Master on mobile phones and tablets?",
+        "answer": "Absolutely. Penalty Kick Master features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Watch the goalkeeper's subtle pre-dive stance before confirming your target corner.",
+      "Apply spin with a sweeping follow-through to curl balls past the keeper's fingertips.",
+      "Vary your shot heights between low grass-cutters and top-corner postage stamps."
+    ]
   },
   {
     "slug": "downhill-bike-rush",
@@ -1076,6 +1218,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Left / Right",
         "action": "Tilt bike in air"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Downhill Bike Rush — Play Free Online Racing Game | DevDrop",
@@ -1088,10 +1234,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Downhill Bike Rush on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Downhill Bike Rush on mobile phones and tablets?",
+        "answer": "Absolutely. Downhill Bike Rush features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Tilt your rider backward on steep drops to avoid going over the handlebars.",
+      "Pre-jump off ridge lips to maintain smooth momentum down downhill landings.",
+      "Feather your brakes when entering tight switchbacks to avoid flying off the trail."
+    ]
   },
   {
     "slug": "stickman-jump-deluxe",
@@ -1134,6 +1290,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Mouse / Left-Right Arrows",
         "action": "Steer stickman left and right"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Stickman Jump Deluxe — Play Free Online Arcade Game | DevDrop",
@@ -1146,10 +1306,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Stickman Jump Deluxe on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Stickman Jump Deluxe on mobile phones and tablets?",
+        "answer": "Absolutely. Stickman Jump Deluxe features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Time your jumps right at the platform edge to maximize horizontal leap distance.",
+      "Use double-jumps sparingly to recover from misjudged gaps rather than burning them early.",
+      "Bounce on spring pads and floating trampolines for massive vertical elevation."
+    ]
   },
   {
     "slug": "one-tap-platformer",
@@ -1204,10 +1374,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play One-Tap Platformer on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play One-Tap Platformer on mobile phones and tablets?",
+        "answer": "Absolutely. One-Tap Platformer features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Tap rhythmically with platform movements to maintain uninterrupted running velocity.",
+      "Buffer your taps slightly before landing on springs for responsive jump queuing.",
+      "Watch hazard spikes and rotating saws ahead to calibrate tap durations."
+    ]
   },
   {
     "slug": "bubble-shooter-classic",
@@ -1250,6 +1430,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Mouse Aim + Click",
         "action": "Fire bubble"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Bubble Shooter Classic — Play Free Online Puzzle Game | DevDrop",
@@ -1262,10 +1446,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Bubble Shooter Classic on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Bubble Shooter Classic on mobile phones and tablets?",
+        "answer": "Absolutely. Bubble Shooter Classic features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Bank shots off side walls to reach concealed high-value bubble clusters.",
+      "Target anchor bubbles at the root to drop large hanging clusters in one shot.",
+      "Keep track of your next upcoming bubble color to set up immediate follow-up clears."
+    ]
   },
   {
     "slug": "whack-a-mole-bonk",
@@ -1320,10 +1514,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Whack-a-Mole Bonk on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Whack-a-Mole Bonk on mobile phones and tablets?",
+        "answer": "Absolutely. Whack-a-Mole Bonk features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Keep your mouse cursor or finger centered in the middle of the hole grid.",
+      "Watch out for decoy items or bomb moles that penalize your combo score.",
+      "React immediately when golden moles appear for triple-point bonuses."
+    ]
   },
   {
     "slug": "fishing-mini-game",
@@ -1366,6 +1570,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Click & Hold",
         "action": "Cast / Reel in"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Fishing Mini Game — Play Free Online Simulation Game | DevDrop",
@@ -1378,10 +1586,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Fishing Mini Game on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Fishing Mini Game on mobile phones and tablets?",
+        "answer": "Absolutely. Fishing Mini Game features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Keep the reel tension meter inside the green zone to prevent line snapping.",
+      "Let fish tire out during aggressive thrashing phases before applying heavy reel force.",
+      "Upgrade your hook and line strength to tackle rare deep-sea legendary fish."
+    ]
   },
   {
     "slug": "tower-stack-builder",
@@ -1436,10 +1654,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Tower Stack Builder on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Tower Stack Builder on mobile phones and tablets?",
+        "answer": "Absolutely. Tower Stack Builder features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Align the sliding block precisely with the base block to prevent platform shrinkage.",
+      "Slight overhangs get chopped off; achieve perfect drops to regrow platform surface area.",
+      "Focus on the pendulum cadence as the building climbs higher and sway increases."
+    ]
   },
   {
     "slug": "sliding-jigsaw-puzzle",
@@ -1494,10 +1722,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Sliding Jigsaw Puzzle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Sliding Jigsaw Puzzle on mobile phones and tablets?",
+        "answer": "Absolutely. Sliding Jigsaw Puzzle features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Solve the top row and leftmost column first to reduce the puzzle dimensions systematically.",
+      "Rotate corner groups together into place rather than attempting isolated piece swaps.",
+      "Keep the empty tile adjacent to your active target piece for fluid maneuvering."
+    ]
   },
   {
     "slug": "simon-memory-master",
@@ -1552,10 +1790,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Simon Memory Master on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Simon Memory Master on mobile phones and tablets?",
+        "answer": "Absolutely. Simon Memory Master features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Assign musical notes or numeric positions (1, 2, 3, 4) to each color for easier recall.",
+      "Recite the pattern audibly or tap your fingers to encode the sequence kinesthetically.",
+      "Focus intently on the final added step of each extended sequence."
+    ]
   },
   {
     "slug": "tic-tac-toe-duel",
@@ -1610,10 +1858,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Tic-Tac-Toe Duel on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Tic-Tac-Toe Duel on mobile phones and tablets?",
+        "answer": "Absolutely. Tic-Tac-Toe Duel features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Claim the center square whenever going first to command maximum winning vectors.",
+      "Take corner spaces on move two to create inescapable double-threat forks.",
+      "Block your opponent's two-in-a-row immediately unless you possess an instant winning move."
+    ]
   },
   {
     "slug": "skyroad-rush-3d",
@@ -1660,6 +1918,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Spacebar",
         "action": "Jump / Drift"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "SkyRoad Rush 3D — Play Free Online Racing Game | DevDrop",
@@ -1672,10 +1934,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play SkyRoad Rush 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play SkyRoad Rush 3D on mobile phones and tablets?",
+        "answer": "Absolutely. SkyRoad Rush 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Anticipate elevation drops and steer toward glowing runway jump ramps.",
+      "Collect energy crystals to sustain your anti-gravity road speed.",
+      "Avoid road gaps by timing nitro boosts across cosmic ravines."
+    ]
   },
   {
     "slug": "car-parking-simulator-3d",
@@ -1722,6 +1994,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Spacebar",
         "action": "Handbrake"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Car Parking 3D Simulator — Play Free Online Simulation Game | DevDrop",
@@ -1734,11 +2010,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Car Parking 3D Simulator on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Car Parking 3D Simulator on mobile phones and tablets?",
+        "answer": "Absolutely. Car Parking 3D Simulator features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-04",
+    "lastmod": "2026-11-14",
     "tips": [
       "Switch between top-down camera and chase view when reversing into parallel slots.",
       "Align your rear bumper with the obstacle marker before turning full lock.",
@@ -1790,6 +2070,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Shift",
         "action": "Nitro Wheelie Boost"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Moto Traffic Rider 3D — Play Free Online Racing Game | DevDrop",
@@ -1802,11 +2086,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Moto Traffic Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Moto Traffic Rider 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Moto Traffic Rider 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-08",
+    "lastmod": "2026-11-14",
     "tips": [
       "Ride in the center dotted lane to react swiftly to cars merging from either side.",
       "Near-miss passes at high speeds award bonus nitro charge.",
@@ -1858,6 +2146,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Mouse Aim & Left Click",
         "action": "Aim and fire weapon"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Zombie Survival 3D Arena — Play Free Online Shooter Game | DevDrop",
@@ -1870,10 +2162,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Zombie Survival 3D Arena on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Zombie Survival 3D Arena on mobile phones and tablets?",
+        "answer": "Absolutely. Zombie Survival 3D Arena features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Kite zombie hordes into narrow choke points to eliminate multiple targets with shotgun blasts.",
+      "Always keep a clear retreat path behind you; never allow zombies to box you against walls.",
+      "Conserve assault rifle ammo by tapping short bursts into incoming headshots."
+    ]
   },
   {
     "slug": "football-penalty-master-3d",
@@ -1928,10 +2230,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Football Penalty Master 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Football Penalty Master 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Football Penalty Master 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Swipe toward top corners with high velocity to beat agile goalkeepers.",
+      "Curve your trajectory around defensive wall players during free-kick challenges.",
+      "Observe wind speed and direction meters before executing long-range strikes."
+    ]
   },
   {
     "slug": "sky-parkour-challenge-3d",
@@ -1978,6 +2290,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Spacebar",
         "action": "Jump / Mantle ledge"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Sky Parkour Challenge 3D — Play Free Online Action Game | DevDrop",
@@ -1990,10 +2306,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Sky Parkour Challenge 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Sky Parkour Challenge 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Sky Parkour Challenge 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Sprint continuously before long jumps to build maximum forward momentum.",
+      "Look down at platform edges when landing precision jumps to confirm your footing.",
+      "Utilize wall-running surfaces to cross enormous vertical and horizontal chasms."
+    ]
   },
   {
     "slug": "cyber-shooting-arena-3d",
@@ -2044,6 +2370,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Spacebar",
         "action": "Jump"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Cyber Shooting Arena 3D — Play Free Online Shooter Game | DevDrop",
@@ -2056,10 +2386,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Cyber Shooting Arena 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Cyber Shooting Arena 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Cyber Shooting Arena 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Keep your crosshair at enemy head height while rounding cyber corridors.",
+      "Switch between sniper rifles for distant vantage points and SMGs for close encounters.",
+      "Utilize bounce pads and jump boots to gain vertical tactical superiority."
+    ]
   },
   {
     "slug": "airport-ground-crew-3d",
@@ -2102,6 +2442,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Arrow Keys / WASD",
         "action": "Drive vehicles and marshal"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Airport Ground Crew 3D — Play Free Online Simulation Game | DevDrop",
@@ -2114,10 +2458,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Airport Ground Crew 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Airport Ground Crew 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Airport Ground Crew 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Signal aircraft marshaling wands with steady, rhythmic guidance movements.",
+      "Align the pushback tug precisely along tarmac taxiway guidelines.",
+      "Watch for runway cross-traffic and baggage carts to avoid apron collisions."
+    ]
   },
   {
     "slug": "sumo-push-clash-2d",
@@ -2172,10 +2526,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Sumo Push Clash 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Sumo Push Clash 2D on mobile phones and tablets?",
+        "answer": "Absolutely. Sumo Push Clash 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Time your power-charge rush right when your opponent commits to a heavy stomp.",
+      "Use sidestep dodges at the dohyo edge to leverage opponent momentum against them.",
+      "Maintain high stamina reserves to resist sudden edge shoves."
+    ]
   },
   {
     "slug": "flight-pitch-master-2d",
@@ -2222,6 +2586,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "W / S",
         "action": "Throttle engine thrust"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Flight Pitch Master 2D — Play Free Online Simulation Game | DevDrop",
@@ -2234,10 +2602,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Flight Pitch Master 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Flight Pitch Master 2D on mobile phones and tablets?",
+        "answer": "Absolutely. Flight Pitch Master 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Keep pitch angle aligned with glide slope indicator needles during runway approach.",
+      "Reduce throttle smoothly on descent to avoid stall warnings and rough landings.",
+      "Deploy flaps and gear at correct airspeed thresholds for stabilized flight control."
+    ]
   },
   {
     "slug": "head-football-2d",
@@ -2288,6 +2666,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Space / Down",
         "action": "Kick / Super"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Head Football Champions 2D — Play Free Online Arcade Game | DevDrop",
@@ -2300,10 +2682,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Head Football Champions 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Head Football Champions 2D on mobile phones and tablets?",
+        "answer": "Absolutely. Head Football Champions 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Use power jumps to strike high aerial headers over defending opponents.",
+      "Time your super-kick power meter for unstoppable curved goal rockets.",
+      "Defend your goal line patiently; counter-attack immediately when opponent overcommits."
+    ]
   },
   {
     "slug": "one-tap-cricket-timing-2d",
@@ -2358,10 +2750,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play One-Tap Cricket Timing 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play One-Tap Cricket Timing 2D on mobile phones and tablets?",
+        "answer": "Absolutely. One-Tap Cricket Timing 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Watch the bowler's hand release point to anticipate bounce height and swing.",
+      "Wait for the ball to enter the glowing hitting zone before timing your shot tap.",
+      "Hit lofted shots when fielders are clustered in the inner circle for easy boundaries."
+    ]
   },
   {
     "slug": "speed-math-duel-2d",
@@ -2416,10 +2818,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Speed Math Duel 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Speed Math Duel 2D on mobile phones and tablets?",
+        "answer": "Absolutely. Speed Math Duel 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Use round estimation techniques to identify incorrect answer choices instantly.",
+      "Memorize common multiplication and division pairs for rapid reflex tapping.",
+      "Maintain streaks to unlock score multipliers and timer extension bonuses."
+    ]
   },
   {
     "slug": "tug-of-war-clay-2d",
@@ -2474,10 +2886,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Tug of War 2D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Tug of War 2D on mobile phones and tablets?",
+        "answer": "Absolutely. Tug of War 2D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Tap in sync with your team's rhythm indicator for synchronized pulling surges.",
+      "Dig in heels and hold ground when opponents trigger power pulls to exhaust their stamina.",
+      "Unleash maximum pull stamina immediately after opponent stumble animations."
+    ]
   },
   {
     "slug": "crazy-delivery-rider-3d",
@@ -2524,6 +2946,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Shift",
         "action": "Nitro boost"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Crazy Delivery Rider 3D — Play Free Online Racing Game | DevDrop",
@@ -2536,10 +2962,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Crazy Delivery Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Crazy Delivery Rider 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Crazy Delivery Rider 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Use GPS mini-map navigation arrows to plan the quickest city delivery shortcuts.",
+      "Dodge oncoming traffic and roadworks to prevent damaging fragile customer packages.",
+      "Perform wheelies and ramp jumps for style points and bonus tip earnings."
+    ]
   },
   {
     "slug": "no-brakes-desi-bus-3d",
@@ -2590,6 +3026,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "H",
         "action": "Musical Air Horn"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "No Brakes Desi Bus Driver 3D — Play Free Online Arcade Game | DevDrop",
@@ -2602,11 +3042,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play No Brakes Desi Bus Driver 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play No Brakes Desi Bus Driver 3D on mobile phones and tablets?",
+        "answer": "Absolutely. No Brakes Desi Bus Driver 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-09",
+    "lastmod": "2026-11-14",
     "tips": [
       "Counter-steer through highway curves to prevent top-heavy bus rollovers.",
       "Sound the musical horn to clear autorickshaws and cattle from the fast lane.",
@@ -2662,6 +3106,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Space",
         "action": "Hold door grip"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Local Train Door Jammer 3D — Play Free Online Arcade Game | DevDrop",
@@ -2674,10 +3122,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Local Train Door Jammer 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Local Train Door Jammer 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Local Train Door Jammer 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Position your character strategically near platform door markers before train arrival.",
+      "Wiggle through narrow commuter gaps while managing your balance meter.",
+      "Time your door boarding push right before the departure whistle blows."
+    ]
   },
   {
     "slug": "election-mayhem-voting-battle",
@@ -2732,68 +3190,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Election Mayhem: Voting Battle on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
-      }
-    ],
-    "indexable": false,
-    "author": "DevDrop Studio"
-  },
-  {
-    "slug": "parliament-kaand-3d",
-    "name": "Parliament Kaand 3D",
-    "tagline": "3D Indian Parliament comedy chaos simulator — launch paper planes, thump desks, and disrupt proceedings",
-    "h1": "Play Parliament Kaand 3D Online: Free Action Browser Game",
-    "genre": "Action",
-    "description": "3D Indian Parliament comedy chaos simulator! Semicircular legislative chamber, flying paper aeroplanes, wooden desk thumping, decorum vs chaos meter, and ragdoll MPs!",
-    "longDescription": "Parliament Kaand 3D is a high-performance browser-native game featuring tactile aesthetics, procedural Web Audio sound synthesis, and instant zero-download gameplay on any desktop or mobile browser. Enjoy responsive controls, high score tracking, and smooth 60 FPS performance.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Audio API",
-      "CSS3",
-      "WebGL"
-    ],
-    "license": "Free-to-Play Web Edition",
-    "githubUrl": "https://github.com/Ridam-112/devdrop",
-    "liveDemoUrl": "https://devdrop.online/games/parliament-kaand-3d",
-    "isPlayableDirectly": true,
-    "builtInGameType": "iframe",
-    "iframeUrl": "/games/45_parliament_kaand_3d.html",
-    "badge": "Desi Viral 3D",
-    "releaseYear": 2026,
-    "rating": 4.9,
-    "ratingCount": 2514,
-    "features": [
-      "Full 3D semicircular parliamentary hall model",
-      "Paper aeroplane throwing physics",
-      "Desk thumping audio and commotion meter",
-      "Speaker calls for decorum vs opposition chaos"
-    ],
-    "howToPlay": [
-      "Use the intuitive keyboard keys or touch screen gestures to control your player",
-      "Follow on-screen objectives to rack up points and complete levels",
-      "Collect power-ups and avoid hazards to maintain your multiplier streaks",
-      "Compete to set your personal best high score saved locally on your device"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Aim & Click",
-        "action": "Throw paper planes / thump desk"
-      }
-    ],
-    "metaTitle": "Parliament Kaand 3D — Play Free Online Action Game | DevDrop",
-    "metaDescription": "Play Parliament Kaand 3D online for free in your browser. 3D Indian Parliament comedy chaos simulator! Semicircular legislative chamber, flying paper aeroplanes, wooden desk thumping, decorum vs chaos meter, and ragdoll MPs! No downloads or installs required.",
-    "faqs": [
-      {
-        "question": "Is Parliament Kaand 3D free to play on DevDrop?",
-        "answer": "Yes! Parliament Kaand 3D is 100% free with no downloads, subscriptions, or paywalls required. Play directly inside your web browser."
       },
       {
-        "question": "Can I play Parliament Kaand 3D on a smartphone?",
-        "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+        "question": "Can I play Election Mayhem: Voting Battle on mobile phones and tablets?",
+        "answer": "Absolutely. Election Mayhem: Voting Battle features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Target swing voting districts early to gain electoral momentum.",
+      "Deploy rally megaphones and campaign buses where opponent influence is vulnerable.",
+      "Balance campaign budget between voter turnout drives and debate preparation."
+    ]
   },
   {
     "slug": "sledge-rider-3d",
@@ -2840,6 +3250,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "Spacebar",
         "action": "Jump off ramps"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Sledge Rider 3D — Play Free Online Sports Game | DevDrop",
@@ -2852,11 +3266,15 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Sledge Rider 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Sledge Rider 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Sledge Rider 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-09",
+    "lastmod": "2026-11-14",
     "tips": [
       "Time your jumps over icy cliffs to maintain forward downhill momentum.",
       "Avoid dark gray rocks which shatter the wooden runners on impact.",
@@ -2912,6 +3330,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "X / Z / J",
         "action": "Roar Sonic Shockwave"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Dino Escape: Adventure Game — Play Free Online Action Game | DevDrop",
@@ -2924,10 +3346,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Dino Escape: Adventure Game on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
+      },
+      {
+        "question": "Can I play Dino Escape: Adventure Game on mobile phones and tablets?",
+        "answer": "Absolutely. Dino Escape: Adventure Game features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
-    "indexable": false,
-    "author": "DevDrop Studio"
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Listen for audio rumble cues to anticipate sudden prehistoric hazards.",
+      "Duck under low pterodactyl dive-bombs and leap over jagged lava fissures.",
+      "Collect glowing amber crystals to activate invincibility boost streaks."
+    ]
   },
   {
     "slug": "warehouse-tdm-3d",
@@ -2982,6 +3414,10 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "key": "C",
         "action": "Crouch behind cover"
+      },
+      {
+        "key": "Touch / Tap / Swipe",
+        "action": "Mobile on-screen controls & steering"
       }
     ],
     "metaTitle": "Warehouse Team Deathmatch 3D — Play Free Online Shooter Game | DevDrop",
@@ -2994,1213 +3430,20 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       {
         "question": "Can I play Warehouse Team Deathmatch 3D on a smartphone?",
         "answer": "Absolutely! All games on DevDrop are optimized with responsive touch controls for mobile phones and tablets."
-      }
-    ],
-    "indexable": false,
-    "author": "DevDrop Studio"
-  },
-  {
-    "slug": "space-defender-html5",
-    "name": "Space Defender HTML5",
-    "tagline": "High-octane retro neon space combat shooter in pure HTML5 Canvas",
-    "h1": "Play Space Defender Online: Open Source HTML5 Canvas Retro Shooter",
-    "genre": "Shooter",
-    "description": "Battle relentless alien armadas, dodge particle plasma waves, and unleash charged laser salvos in this high-framerate open-source HTML5 canvas shooter.",
-    "longDescription": "Space Defender HTML5 is a browser-native arcade shoot-'em-up crafted with modern HTML5 2D Canvas and Web Audio APIs. Featuring procedural starfields, dynamic particle shockwaves, multi-phase boss shields, and 60fps responsive controls without any external plugin or install requirements.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Audio API",
-      "CSS3"
-    ],
-    "license": "CC0-1.0",
-    "githubUrl": "https://github.com/bobeff/open-source-games",
-    "liveDemoUrl": "https://devdrop.online/games/space-defender-html5",
-    "isPlayableDirectly": true,
-    "builtInGameType": "space-defender",
-    "badge": "Playable Instant",
-    "releaseYear": 2026,
-    "rating": 4.9,
-    "ratingCount": 1420,
-    "features": [
-      "Smooth 60 FPS hardware-accelerated HTML5 Canvas rendering",
-      "Dynamic particle collision effects and laser bloom optics",
-      "Multiple enemy squadron archetypes and wave scaling",
-      "Real-time score multiplier and local high-score persistence",
-      "Zero download or registration required — 100% free open-source"
-    ],
-    "howToPlay": [
-      "Use arrow keys or WASD to navigate your starfighter across the tactical zone",
-      "Hold Spacebar or left-click to fire dual plasma cannons continuously",
-      "Destroy enemy fighters before they breach your lower perimeter",
-      "Collect floating energy cores to recharge your deflector shield"
-    ],
-    "controls": [
-      {
-        "key": "Arrow Keys / WASD",
-        "action": "Maneuver Starfighter"
       },
       {
-        "key": "Spacebar / Click",
-        "action": "Fire Plasma Cannons"
-      },
-      {
-        "key": "P",
-        "action": "Pause Tactical Mission"
-      }
-    ],
-    "metaTitle": "Play Space Defender Online — Free Open Source HTML5 Canvas Game | DEVDROP",
-    "metaDescription": "Play Space Defender online for free in your browser. An open source HTML5 canvas space arcade shooter with smooth 60fps combat, particle effects, and zero downloads.",
-    "faqs": [
-      {
-        "question": "Is Space Defender HTML5 completely free and open source?",
-        "answer": "Yes, Space Defender is 100% free under the MIT open-source license. You can play directly in your web browser on mobile or desktop without any installation."
-      },
-      {
-        "question": "Does this game require WebGL or special graphics hardware?",
-        "answer": "No. Space Defender runs on standard HTML5 2D Canvas and is optimized to run smoothly at 60 FPS on Chromebooks, tablets, smartphones, and low-spec laptops."
-      },
-      {
-        "question": "Where can I view the source code of this game?",
-        "answer": "The game and reference architecture are part of the open-source games ecosystem cataloged from the bobeff/open-source-games repository on GitHub."
+        "question": "Can I play Warehouse Team Deathmatch 3D on mobile phones and tablets?",
+        "answer": "Absolutely. Warehouse Team Deathmatch 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
       }
     ],
     "indexable": true,
-    "author": "bobeff & Open-Source Contributors",
-    "sourceUrl": "https://github.com/bobeff/open-source-games",
-    "lastmod": "2026-11-03",
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
     "tips": [
-      "Focus fire on elite command ships before they deploy homing drones.",
-      "Collect blue shield orbs to absorb stray plasma impacts.",
-      "Stay near the bottom center for the broadest lateral firing arc."
+      "Control high catwalk platforms to maintain crossfire over warehouse floor crates.",
+      "Pre-aim around shipping container corners with crosshair at head level.",
+      "Coordinate with AI teammates to trade eliminations and cover flank corridors."
     ]
-  },
-  {
-    "slug": "cyber-snake-html5",
-    "name": "Cyber Snake HTML5",
-    "tagline": "Cyberpunk retro neon reboot of the legendary Nokia 3310 classic",
-    "h1": "Play Cyber Snake Online: Open Source HTML5 Neon Arcade Game",
-    "genre": "Arcade",
-    "description": "Navigate a glowing fiber-optic serpent through a dangerous cyber grid, consuming data packets and evading lethal firewall boundaries in this open-source classic.",
-    "longDescription": "Cyber Snake reinterprets the classic snake game into an electric cyberpunk aesthetic. Powered by pure HTML5 Canvas and vanilla JavaScript, it delivers instantaneous responsiveness, reactive neon particle trails, increasing velocity challenges, and high score tracking.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Tailwind CSS"
-    ],
-    "license": "CC0-1.0",
-    "githubUrl": "https://github.com/bobeff/open-source-games",
-    "liveDemoUrl": "https://devdrop.online/games/cyber-snake-html5",
-    "isPlayableDirectly": true,
-    "builtInGameType": "cyber-snake",
-    "badge": "Retro Classic",
-    "releaseYear": 2026,
-    "rating": 4.8,
-    "ratingCount": 980,
-    "features": [
-      "Modern neon glow aesthetic with responsive grid physics",
-      "Dynamic data packet spawns with bonus combo multipliers",
-      "Adjustable speed levels from casual to supersonic speed",
-      "Seamless keyboard arrow navigation and mobile touch swipe controls",
-      "Open-source codebase with zero external tracking"
-    ],
-    "howToPlay": [
-      "Use arrow keys, WASD, or swipe gestures to redirect the cyber snake",
-      "Guide the snake head into glowing data packets to grow in length and score",
-      "Avoid colliding with the perimeter grid wall or your own body segments",
-      "Survive at maximum length to achieve high ranks on the leaderboard"
-    ],
-    "controls": [
-      {
-        "key": "Arrow Keys / WASD",
-        "action": "Change Movement Direction"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Start / Resume Game"
-      },
-      {
-        "key": "R",
-        "action": "Restart Grid Session"
-      }
-    ],
-    "metaTitle": "Play Cyber Snake Online — Free Open Source HTML5 Browser Game | DEVDROP",
-    "metaDescription": "Play Cyber Snake online for free in your browser. Open source HTML5 canvas arcade game featuring cyberpunk neon graphics, responsive controls, and zero ads or downloads.",
-    "faqs": [
-      {
-        "question": "Can I play Cyber Snake on mobile devices?",
-        "answer": "Yes, Cyber Snake is fully responsive and supports both on-screen directional touch controls and physical keyboard inputs."
-      },
-      {
-        "question": "What makes this HTML5 snake game open source?",
-        "answer": "The entire logic is implemented client-side in open-source JavaScript and Canvas, allowing anyone to inspect, fork, and learn game loop mechanics."
-      }
-    ],
-    "indexable": true,
-    "author": "bobeff & Open-Source Contributors",
-    "sourceUrl": "https://github.com/bobeff/open-source-games",
-    "lastmod": "2026-11-02",
-    "tips": [
-      "Circle the exterior boundary perimeter once your tail reaches over 40 nodes.",
-      "Never cut through the center grid when moving at boosted speeds.",
-      "Plan your turning corridor before gobbling bonus data packets."
-    ]
-  },
-  {
-    "slug": "2048-html5-open-source",
-    "name": "2048 HTML5 Open Source",
-    "tagline": "The legendary mathematical tile sliding puzzle by Gabriele Cirulli",
-    "h1": "Play 2048 Online: Original Open Source HTML5 Mathematical Puzzle",
-    "genre": "Puzzle",
-    "description": "Slide numbered tiles on a 4x4 grid, merge identical numbers, and strategize your moves to reach the elusive 2048 tile in this timeless open-source HTML5 game.",
-    "longDescription": "2048 is the world-famous open-source tile puzzle game originally created by Gabriele Cirulli in 2014. Built using lightweight HTML5, CSS animations, and JavaScript, it challenged millions of players worldwide with simple rules and infinite mathematical depth. This implementation offers smooth transitions, undo capability, and touch support.",
-    "techStack": [
-      "HTML5",
-      "CSS3 Transitions",
-      "JavaScript",
-      "LocalStorage API"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/gabrielecirulli/2048",
-    "liveDemoUrl": "https://devdrop.online/games/2048-html5-open-source",
-    "isPlayableDirectly": true,
-    "builtInGameType": "2048",
-    "badge": "Must Play",
-    "releaseYear": 2014,
-    "rating": 4.9,
-    "ratingCount": 3250,
-    "features": [
-      "Original mathematical tile merging rules under the official MIT License",
-      "Smooth hardware-accelerated CSS animations and tactile feedback",
-      "Automatic game state saving in browser LocalStorage",
-      "Touch gesture swipe support for mobile tablets and phones",
-      "Ad-free, tracking-free, and playable completely offline"
-    ],
-    "howToPlay": [
-      "Use arrow keys, WASD, or swipe up/down/left/right to slide all tiles",
-      "When two tiles with the same number touch, they merge into one with double the value",
-      "Every move spawns a new '2' or '4' tile in an empty cell",
-      "Plan ahead to keep higher tiles in corners and create the iconic '2048' tile!"
-    ],
-    "controls": [
-      {
-        "key": "Arrow Keys / WASD",
-        "action": "Slide Grid Tiles"
-      },
-      {
-        "key": "Touch Swipe",
-        "action": "Slide on Mobile Devices"
-      },
-      {
-        "key": "R",
-        "action": "Start New Puzzle"
-      }
-    ],
-    "metaTitle": "Play 2048 Online — Original Free Open Source HTML5 Puzzle Game | DEVDROP",
-    "metaDescription": "Play the original 2048 puzzle game online in your browser. 100% free, open source MIT licensed HTML5 game with smooth tile sliding animations and zero download.",
-    "faqs": [
-      {
-        "question": "Who created the original 2048 game?",
-        "answer": "2048 was created by Italian developer Gabriele Cirulli in March 2014 as an open-source project on GitHub, inspired by 1024 and Threes."
-      },
-      {
-        "question": "Can I continue playing after reaching 2048?",
-        "answer": "Yes! Once you construct the 2048 tile, you can keep playing to reach 4096, 8192, and beyond until the grid is filled without possible moves."
-      }
-    ],
-    "indexable": true,
-    "author": "Gabriele Cirulli",
-    "sourceUrl": "https://github.com/gabrielecirulli/2048",
-    "lastmod": "2026-11-01",
-    "tips": [
-      "Anchor your highest value tile permanently in one corner (e.g. bottom-right).",
-      "Never swipe in the direction opposite to your corner anchor.",
-      "Keep your rows monotonically descending to facilitate chain merges."
-    ]
-  },
-  {
-    "slug": "neon-breakout-html5",
-    "name": "Neon Breakout HTML5",
-    "tagline": "Retro arcade brick breaker with physics trajectory and powerups",
-    "h1": "Play Neon Breakout Online: Open Source HTML5 Canvas Brick Breaker",
-    "genre": "Arcade",
-    "description": "Smash through laser-resistant brick fortresses with high-velocity energy spheres, collect multiball upgrades, and test your reflexes in this open-source classic.",
-    "longDescription": "Neon Breakout is a modern HTML5 recreation of the timeless Breakout/Arkanoid formula. Featuring dynamic angle physics based on paddle impact position, explosive brick destruction particles, power-up capsules (multiball, laser paddle, slow motion), and vibrant neon visuals.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Vector Math Physics"
-    ],
-    "license": "CC0-1.0",
-    "githubUrl": "https://github.com/bobeff/open-source-games",
-    "liveDemoUrl": "https://devdrop.online/games/neon-breakout-html5",
-    "isPlayableDirectly": true,
-    "builtInGameType": "neon-breakout",
-    "badge": "Arcade Hit",
-    "releaseYear": 2026,
-    "rating": 4.8,
-    "ratingCount": 840,
-    "features": [
-      "Accurate velocity and deflection physics with paddle angle modulation",
-      "Destructible bricks with varying hitpoints and color tiers",
-      "Dynamic particle bursts and score multiplier tracking",
-      "Responsive mouse, keyboard, and touch paddle navigation",
-      "Clean open-source architecture with customizable level layouts"
-    ],
-    "howToPlay": [
-      "Move your paddle horizontally using the mouse, Left/Right arrow keys, or touch",
-      "Launch the energy ball and keep it in play by intercepting its downward trajectory",
-      "Hit the ball with different sides of your paddle to direct its angle into clusters",
-      "Clear all bricks on screen to advance to higher difficulty stages"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Movement / Arrows",
-        "action": "Move Paddle Left / Right"
-      },
-      {
-        "key": "Spacebar / Click",
-        "action": "Launch Energy Sphere"
-      },
-      {
-        "key": "P",
-        "action": "Pause / Resume"
-      }
-    ],
-    "metaTitle": "Play Neon Breakout Online — Free Open Source HTML5 Arcade Game | DEVDROP",
-    "metaDescription": "Play Neon Breakout online for free in HTML5 Canvas. Fast-paced open source retro brick breaker game with physics trajectories, particle effects, and zero downloads.",
-    "faqs": [
-      {
-        "question": "How does paddle deflection work in Neon Breakout?",
-        "answer": "The rebound angle depends on where the ball strikes the paddle. Striking near the edges creates sharper angles, while hitting the center yields straighter vertical returns."
-      }
-    ],
-    "indexable": true,
-    "author": "bobeff & Open-Source Contributors",
-    "sourceUrl": "https://github.com/bobeff/open-source-games",
-    "lastmod": "2026-11-02",
-    "tips": [
-      "Keep the ball bouncing near the ceiling to trigger multi-hit chain reactions.",
-      "Expand paddle powerups should be prioritized over laser upgrades.",
-      "Watch ball velocity increases after clearing high-density brick lines."
-    ]
-  },
-  {
-    "slug": "micropolis-js",
-    "name": "MicropolisJS City Simulator",
-    "tagline": "Classic open-source municipal city planning, zoning & disaster simulator",
-    "h1": "MicropolisJS: Open-Source City Construction Simulator",
-    "genre": "Simulation",
-    "description": "Zone residential, commercial, and industrial districts, build power grids, manage municipal budgets, and avert disasters in this iconic open-source city simulator.",
-    "longDescription": "MicropolisJS is a faithful, handcrafted JavaScript and HTML5 Canvas port of the original open-source Micropolis (the open-source release of the classic SimCity engine created by Will Wright and Maxis). Developed by Graeme McCutcheon and featured in the bobeff/open-source-games directory, it allows players to experience the birth of modern simulation gaming directly in any web browser.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Workers",
-      "CSS3"
-    ],
-    "license": "GPL-3.0",
-    "githubUrl": "https://github.com/graememcc/micropolisJS",
-    "liveDemoUrl": "http://www.graememcc.co.uk/micropolisJS",
-    "isPlayableDirectly": false,
-    "badge": "FOSS Legend",
-    "releaseYear": 2013,
-    "rating": 4.9,
-    "ratingCount": 2890,
-    "features": [
-      "Full simulation engine ported directly from original C/C++ Micropolis source",
-      "Dynamic simulation layers: traffic congestion, crime, pollution, and land value",
-      "Complete infrastructure management: coal/nuclear power plants, roads, railways, and ports",
-      "Catastrophic disaster events: earthquakes, fires, tornados, and monster attacks",
-      "100% open-source under GPLv3, preserving gaming preservation history"
-    ],
-    "howToPlay": [
-      "Select infrastructure tools from the sidebar palette to lay power plants and electrical wires",
-      "Zone areas for Residential (R), Commercial (C), and Industrial (I) growth",
-      "Connect neighborhoods with road networks to keep traffic density fluid",
-      "Adjust tax rates in the city budget to fund police and fire protection services"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Click",
-        "action": "Select & Place Buildings/Roads"
-      },
-      {
-        "key": "Drag Map",
-        "action": "Pan Across City Grid"
-      },
-      {
-        "key": "Number Keys 1-5",
-        "action": "Speed Up / Pause Simulation Clock"
-      }
-    ],
-    "metaTitle": "MicropolisJS Online — Play Open Source HTML5 SimCity in Browser | DEVDROP",
-    "metaDescription": "Play MicropolisJS online in your browser. The iconic open-source HTML5/JavaScript port of SimCity (Micropolis). Build cities, manage budgets, and test urban planning free.",
-    "faqs": [
-      {
-        "question": "What is Micropolis and how is it related to SimCity?",
-        "answer": "When EA and Don Hopkins released the original SimCity source code under the GPL in 2008 for the One Laptop per Child (OLPC) project, it was renamed Micropolis due to trademark reasons. MicropolisJS is its JavaScript/HTML5 port."
-      },
-      {
-        "question": "Can I save my city in MicropolisJS?",
-        "answer": "Yes, modern browser ports utilize HTML5 LocalStorage or JSON export to save and reload your municipal plans."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/graememcc/micropolisJS",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "server-survival",
-    "name": "Server Survival",
-    "tagline": "Open-source tower defense game that teaches cloud infrastructure and scaling",
-    "h1": "Server Survival Online: Open Source Cloud Architecture Tower Defense Game",
-    "genre": "Strategy",
-    "description": "Build robust cloud infrastructure, provision load balancers, scale database nodes, and defend your servers against viral traffic spikes and DDoS attacks.",
-    "longDescription": "Server Survival is an innovative open-source educational tower defense game created by pshenok (featured in bobeff/open-source-games). Instead of traditional fantasy towers, players construct load balancers, caching layers (Redis/Memcached), microservice clusters, and auto-scalers to handle realistic user request traffic waves without downtime.",
-    "techStack": [
-      "HTML5",
-      "TypeScript",
-      "Canvas",
-      "React"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/pshenok/server-survival",
-    "liveDemoUrl": "https://pshenok.github.io/server-survival",
-    "isPlayableDirectly": false,
-    "badge": "Dev Favorite",
-    "releaseYear": 2024,
-    "rating": 4.9,
-    "ratingCount": 1670,
-    "features": [
-      "Gamified system design and real-world high-concurrency cloud concepts",
-      "Deploy reverse proxies, caching proxies, SQL replicas, and Kubernetes pods",
-      "Survive unpredictable traffic surges, viral media mentions, and malicious DDoS assaults",
-      "Real-time latency metrics, 5xx server error counters, and budget optimization",
-      "Fully open source under MIT license on GitHub"
-    ],
-    "howToPlay": [
-      "Place Web Server nodes along incoming network traffic pipelines",
-      "Introduce Load Balancers to evenly distribute client requests and prevent 504 timeouts",
-      "Upgrade database backends with in-memory caching to slash compute response times",
-      "Balance capital expenditure against server uptime SLA requirements"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Drag & Drop",
-        "action": "Provision Cloud Nodes"
-      },
-      {
-        "key": "Click Node",
-        "action": "Inspect Telemetry & Upgrade Specs"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Fast Forward Traffic Flow"
-      }
-    ],
-    "metaTitle": "Server Survival Online — Open Source Cloud Tower Defense Game | DEVDROP",
-    "metaDescription": "Play Server Survival online for free. Open source cloud architecture tower defense game. Build scalable servers, survive DDoS attacks, and master DevOps in browser.",
-    "faqs": [
-      {
-        "question": "Is Server Survival suitable for learning DevOps?",
-        "answer": "Absolutely! It was created specifically to teach developers and students cloud engineering concepts like load balancing, caching, and failovers through gamified mechanics."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/pshenok/server-survival",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "openpanzer-html5",
-    "name": "OpenPanzer HTML5",
-    "tagline": "Turn-based tactical WWII strategy game rebuilt in HTML5 Canvas",
-    "h1": "OpenPanzer Online: Open Source HTML5 Tactical Wargame",
-    "genre": "Strategy",
-    "description": "Command mechanized infantry, armor battalions, and air support across historical hexagonal battlegrounds in this open-source HTML5/JS tactical wargame.",
-    "longDescription": "OpenPanzer is an ambitious open-source JavaScript and HTML5 Canvas rewrite of the beloved classic Panzer General II by nicupavel (highlighted in bobeff/open-source-games). Featuring authentic hex-grid military tactical movement, terrain modifiers, supply line logistics, and historical operational scenarios.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Audio API"
-    ],
-    "license": "GPL-2.0",
-    "githubUrl": "https://github.com/nicupavel/openpanzer",
-    "liveDemoUrl": "https://www.linuxconsulting.ro/openpanzer",
-    "isPlayableDirectly": false,
-    "badge": "Tactical Classic",
-    "releaseYear": 2012,
-    "rating": 4.8,
-    "ratingCount": 1190,
-    "features": [
-      "Authentic turn-based hexagonal wargame mechanics running in modern web browsers",
-      "Dozens of historical WWII combat units: Panzers, Shermans, artillery, and dive bombers",
-      "Terrain elevation, weather dynamics, entrenchment bonuses, and supply constraints",
-      "Clean canvas rendering with zero browser extensions required",
-      "Complete open-source GPLv2 codebase for strategy enthusiasts"
-    ],
-    "howToPlay": [
-      "Select military units on the hex grid to review movement boundaries and attack range",
-      "Maneuver armor to encircle hostile positions and cut off ammo replenishment",
-      "Utilize recon vehicles to pierce the fog of war before advancing heavy artillery",
-      "Capture strategic victory hexes to fulfill operational scenario objectives"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Left Click",
-        "action": "Select Unit / Command Move"
-      },
-      {
-        "key": "Mouse Right Click",
-        "action": "Inspect Combat Odds"
-      },
-      {
-        "key": "Tab",
-        "action": "Cycle Through Available Units"
-      }
-    ],
-    "metaTitle": "OpenPanzer Online — Free Open Source HTML5 Tactical Wargame | DEVDROP",
-    "metaDescription": "Play OpenPanzer online in your browser. Open source HTML5/JavaScript turn-based tactical hex wargame inspired by Panzer General II. Free with no downloads.",
-    "faqs": [
-      {
-        "question": "Can OpenPanzer be played offline?",
-        "answer": "Yes, once loaded, the assets can run client-side in the browser cache without active server communication."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/nicupavel/openpanzer",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "isocity-nextjs",
-    "name": "IsoCity",
-    "tagline": "Isometric city-building simulation built with Next.js, TypeScript, and Canvas",
-    "h1": "IsoCity Online: Open Source Next.js & TypeScript Isometric City Builder",
-    "genre": "Simulation",
-    "description": "Construct flourishing isometric metropolises with roads, residential skyscrapers, industrial plants, and lush parks in this open-source TypeScript game.",
-    "longDescription": "IsoCity is an open-source isometric city-builder game authored by Alexander Milich and featured in bobeff/open-source-games. Engineered using the Next.js, TypeScript, and HTML5 Canvas stack, it showcases how modern web frameworks can deliver interactive simulation engines right in the browser.",
-    "techStack": [
-      "Next.js",
-      "TypeScript",
-      "HTML5 Canvas",
-      "Tailwind CSS"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/amilich/isometric-city",
-    "liveDemoUrl": "https://iso-city.com",
-    "isPlayableDirectly": false,
-    "badge": "Modern Web",
-    "releaseYear": 2023,
-    "rating": 4.8,
-    "ratingCount": 760,
-    "features": [
-      "Stunning 2.5D isometric tile perspective with smooth zooming and panning",
-      "Modern React & Next.js architecture with TypeScript type safety",
-      "Real-time tile placement: residential, commercial, industrial, utilities, and green spaces",
-      "Fast lightweight footprint with zero commercial telemetry",
-      "Educational codebase for web developers learning Canvas rendering"
-    ],
-    "howToPlay": [
-      "Select zone or construction blueprints from the bottom toolbar",
-      "Click on isometric grid tiles to lay asphalt roads and erect buildings",
-      "Observe citizen settlement patterns as zones populate automatically",
-      "Optimize spatial layouts to avoid high pollution levels near residential zones"
-    ],
-    "controls": [
-      {
-        "key": "Left Click",
-        "action": "Place Selected Structure"
-      },
-      {
-        "key": "Right Click / Drag",
-        "action": "Pan City Camera"
-      },
-      {
-        "key": "Scroll Wheel",
-        "action": "Zoom In / Out"
-      }
-    ],
-    "metaTitle": "IsoCity Online — Open Source Next.js Isometric City Building Game | DEVDROP",
-    "metaDescription": "Play IsoCity online. An open source isometric city building simulation game built with Next.js, TypeScript, and HTML5 Canvas. Free in-browser gameplay.",
-    "faqs": [
-      {
-        "question": "What makes IsoCity unique among city builders?",
-        "answer": "IsoCity is built entirely on modern web technologies (Next.js, TypeScript, Tailwind) and renders cleanly on HTML5 Canvas without bulky legacy game engines."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/amilich/isometric-city",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "athena-crisis",
-    "name": "Athena Crisis",
-    "tagline": "Modern-retro turn-based tactical strategy game open sourced on GitHub",
-    "h1": "Athena Crisis Online: Open Source Turn-Based Tactical Strategy Game",
-    "genre": "Strategy",
-    "description": "Command diverse squads across vibrant maps, capture enemy strongholds, and master tactical warfare in this acclaimed open-source turn-based strategy game.",
-    "longDescription": "Athena Crisis is a celebrated modern-retro turn-based tactical strategy game developed by Christoph Nakazawa (nkzw-tech) and open-sourced under the MIT license (featured in bobeff/open-source-games). Inspired by classics like Advance Wars, it features custom map editors, synchronous multiplayer, and cross-platform web gameplay.",
-    "techStack": [
-      "TypeScript",
-      "React",
-      "HTML5 Canvas",
-      "WebSockets"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/nkzw-tech/athena-crisis",
-    "liveDemoUrl": "https://athenacrisis.com",
-    "isPlayableDirectly": false,
-    "badge": "Award Winner",
-    "releaseYear": 2024,
-    "rating": 4.9,
-    "ratingCount": 2150,
-    "features": [
-      "Acclaimed tactical game engine open-sourced to the developer community under MIT",
-      "40+ unique combat units including infantry, tanks, naval warships, and gunships",
-      "Built-in campaign editor and online multiplayer lobby infrastructure",
-      "Cross-platform responsive design running smoothly on desktop, tablet, and mobile",
-      "Deep tactical depth with fog of war, terrain elevation, and unit matchups"
-    ],
-    "howToPlay": [
-      "Move units across terrain tiles taking advantage of cover (mountains, forests, bases)",
-      "Capture neutral production structures to generate funds each round",
-      "Produce counter-units at factories and airports to exploit enemy weaknesses",
-      "Eliminate all enemy squads or capture their headquarters to claim victory"
-    ],
-    "controls": [
-      {
-        "key": "Mouse / Touch",
-        "action": "Select Unit, Plan Movement, Attack"
-      },
-      {
-        "key": "Spacebar / Enter",
-        "action": "Confirm Turn Orders"
-      },
-      {
-        "key": "Esc",
-        "action": "Deselect Unit or Open Menu"
-      }
-    ],
-    "metaTitle": "Athena Crisis Online — Play Open Source Tactical Strategy Game | DEVDROP",
-    "metaDescription": "Play Athena Crisis online in your browser. An open source modern-retro turn-based tactical strategy game inspired by Advance Wars. 100% free with no install.",
-    "faqs": [
-      {
-        "question": "Is Athena Crisis really fully open source?",
-        "answer": "Yes, the creator Christoph Nakazawa open-sourced the complete game client and map editor under the permissive MIT license on GitHub."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/nkzw-tech/athena-crisis",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "openlara-webgl",
-    "name": "OpenLara WebGL",
-    "tagline": "Classic Tomb Raider engine running in browser with WebGL and HTML5",
-    "h1": "OpenLara WebGL: Open Source Tomb Raider Classic in Browser",
-    "genre": "Action",
-    "description": "Experience the original 1996 Tomb Raider action-adventure running natively in modern web browsers at high framerates with WebGL acceleration.",
-    "longDescription": "OpenLara is an extraordinary open-source reimplementation of the classic Tomb Raider (1996) engine authored by Timur 'XProger' Gafiullin (listed in bobeff/open-source-games). Compiled to WebAssembly and WebGL, it runs original 3D levels at 60+ FPS directly in any modern browser without plugins or emulators.",
-    "techStack": [
-      "WebGL",
-      "WebAssembly",
-      "C++",
-      "HTML5"
-    ],
-    "license": "Open Source",
-    "githubUrl": "https://github.com/XProger/OpenLara",
-    "liveDemoUrl": "http://xproger.info/projects/OpenLara",
-    "isPlayableDirectly": false,
-    "badge": "WebGL Feat",
-    "releaseYear": 2017,
-    "rating": 4.9,
-    "ratingCount": 3100,
-    "features": [
-      "True 3D hardware-accelerated WebGL rendering with real-time dynamic water shaders",
-      "Full acrobatic movement: running jumps, ledge climbing, backflips, and swimming",
-      "Support for first-person and third-person camera perspectives",
-      "Play original demo levels directly in your browser with zero download",
-      "Groundbreaking reverse-engineering showcase in open-source gaming"
-    ],
-    "howToPlay": [
-      "Use arrow keys or WASD to navigate Lara Croft across tombs and caverns",
-      "Hold Shift to walk cautiously and prevent slipping off precipices",
-      "Press Alt/Space to perform running leaps over deadly spiked pits",
-      "Draw twin pistols to fend off prowling bats, wolves, and raptors"
-    ],
-    "controls": [
-      {
-        "key": "Arrow Keys / WASD",
-        "action": "Run, Turn, Step"
-      },
-      {
-        "key": "Alt / Spacebar",
-        "action": "Jump"
-      },
-      {
-        "key": "Ctrl",
-        "action": "Action / Grab Ledges / Shoot"
-      },
-      {
-        "key": "V",
-        "action": "Toggle 1st / 3rd Person Perspective"
-      }
-    ],
-    "metaTitle": "OpenLara WebGL — Play Open Source Tomb Raider in Browser | DEVDROP",
-    "metaDescription": "Experience OpenLara WebGL online in browser. Open source classic Tomb Raider 1 engine running in HTML5 & WebGL. Play 3D retro adventure with zero downloads.",
-    "faqs": [
-      {
-        "question": "How does OpenLara run Tomb Raider in a web browser?",
-        "answer": "The engine was rewritten in clean C++ and compiled to WebAssembly with WebGL rendering, enabling the browser to process 3D meshes and textures natively."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/XProger/OpenLara",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "hnefatafl-web",
-    "name": "Hnefatafl (Viking Chess) Web",
-    "tagline": "The legendary asymmetric ancient Norse board game in pure HTML5",
-    "h1": "Play Hnefatafl Online: Open Source Viking Chess in HTML5",
-    "genre": "Strategy",
-    "description": "Command Viking attackers besieging a fortress or guide the King and his loyal defenders to escape through corner sanctuaries in this asymmetric board game.",
-    "longDescription": "Hnefatafl, often called Viking Chess or Tafl, is one of the oldest strategy games in history, played by Norse warriors over 1,000 years ago. This open-source web edition by Damien Campbell (from bobeff/open-source-games) delivers clean Copenhagen rulebook logic, responsive board interactions, and multiplayer board states.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "CSS3"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/dcampbell24/hnefatafl",
-    "liveDemoUrl": "https://hnefatafl.org",
-    "isPlayableDirectly": false,
-    "badge": "Historic Board",
-    "releaseYear": 2021,
-    "rating": 4.8,
-    "ratingCount": 650,
-    "features": [
-      "Authentic Copenhagen ruleset with asymmetric attacking vs defending forces",
-      "Capturing mechanics by sandwiching opposing pieces (custodial capture)",
-      "Playable against local friends or computer AI heuristics in browser",
-      "Clean minimalistic board presentation rendered in lightweight HTML5",
-      "100% open-source under MIT on GitHub"
-    ],
-    "howToPlay": [
-      "Defenders start at the center surrounding the King piece",
-      "Attackers start along four perimeter board quadrants with twice as many pieces",
-      "Pieces move orthogonally like rooks in chess across open board tiles",
-      "Defenders win if the King escapes to any 4 corner tiles; attackers win if they capture the King"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Click",
-        "action": "Select Piece & Target Board Square"
-      },
-      {
-        "key": "R",
-        "action": "Reset Board to Initial Layout"
-      }
-    ],
-    "metaTitle": "Play Hnefatafl Online — Free Open Source Viking Chess HTML5 Game | DEVDROP",
-    "metaDescription": "Play Hnefatafl (Viking Chess) online in browser for free. Open source HTML5 ancient Norse strategy game with authentic Copenhagen rules and zero install.",
-    "faqs": [
-      {
-        "question": "How is Hnefatafl different from standard chess?",
-        "answer": "Unlike symmetrical chess, Hnefatafl is asymmetric. One player has 24 attackers trying to trap the King, while the other controls 12 defenders and the King trying to escape."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/dcampbell24/hnefatafl",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "dead-ascend-html5",
-    "name": "Dead Ascend",
-    "tagline": "Open-source 2D zombie adventure and escape puzzle in HTML5",
-    "h1": "Dead Ascend Online: Open Source Zombie Point-and-Click Adventure",
-    "genre": "Puzzle",
-    "description": "Solve intricate environmental puzzles, gather scavenged supplies, and outwit undead lurkers to ascend to safety in this open-source point-and-click adventure.",
-    "longDescription": "Dead Ascend is an open-source 2D point-and-click zombie adventure and escape room game created by Lasse R. (larpon) and featured in bobeff/open-source-games. Hand-drawn art assets, atmospheric audio, and clever puzzle design make it a standout indie web title.",
-    "techStack": [
-      "HTML5",
-      "JavaScript",
-      "Canvas",
-      "Web Audio"
-    ],
-    "license": "GPL-3.0",
-    "githubUrl": "https://github.com/larpon/DeadAscend",
-    "liveDemoUrl": "https://blackgrain.dk/games/deadascend",
-    "isPlayableDirectly": false,
-    "badge": "Indie Gem",
-    "releaseYear": 2019,
-    "rating": 4.7,
-    "ratingCount": 520,
-    "features": [
-      "Classic point-and-click adventure mechanics with inventory item combinations",
-      "Atmospheric post-apocalyptic narrative told through environmental exploration",
-      "Engaging room-escape riddles and multi-tiered mechanical puzzles",
-      "Runs smoothly in any modern web browser without downloads",
-      "Full source code and artistic assets open-source under GPLv3"
-    ],
-    "howToPlay": [
-      "Click on room objects to inspect items and discover clues",
-      "Pick up tools and drag them from your inventory to interact with locks and barricades",
-      "Piece together journal entries and decipher keypad combination codes",
-      "Ascend through floors toward the roof extraction zone"
-    ],
-    "controls": [
-      {
-        "key": "Left Click",
-        "action": "Inspect, Walk, Interact with Items"
-      },
-      {
-        "key": "Drag from Inventory",
-        "action": "Use Tool on Environmental Target"
-      }
-    ],
-    "metaTitle": "Dead Ascend Online — Free Open Source HTML5 Zombie Adventure Game | DEVDROP",
-    "metaDescription": "Play Dead Ascend online in browser. Open source HTML5 point-and-click zombie escape puzzle adventure game. Free to play with zero downloads or registration.",
-    "faqs": [
-      {
-        "question": "Can I play Dead Ascend on touch screens?",
-        "answer": "Yes, point-and-click mechanics translate naturally to touch taps and drags on mobile phones and tablets."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/larpon/DeadAscend",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "clumsy-bird-html5",
-    "name": "Clumsy Bird HTML5",
-    "tagline": "Viral open-source Flappy Bird clone in JavaScript and MelonJS",
-    "h1": "Play Clumsy Bird Online: Open Source HTML5 Flappy Bird Game",
-    "genre": "Arcade",
-    "description": "Flap through narrow green pipes, dodge lethal obstacles, and test your precision reflexes in this world-famous open-source HTML5 arcade clone.",
-    "longDescription": "Clumsy Bird is an open-source HTML5 remake of the legendary Flappy Bird, developed by Ellison Leão using the MelonJS lightweight game engine and featured in the awesome-open-source-games collection. Built with clean Canvas 2D rendering and responsive physics.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "MelonJS Engine"
-    ],
-    "license": "GPL-3.0",
-    "githubUrl": "https://github.com/ellisonleao/clumsy-bird",
-    "liveDemoUrl": "https://devdrop.online/games/clumsy-bird-html5",
-    "isPlayableDirectly": true,
-    "builtInGameType": "clumsy-bird",
-    "badge": "Playable Instant",
-    "releaseYear": 2014,
-    "rating": 4.9,
-    "ratingCount": 3840,
-    "features": [
-      "Smooth 60 FPS flap physics and gravity trajectory",
-      "Dynamic random pipe height generation and collision boxes",
-      "Instant restart with zero lag or loading delays",
-      "Cross-platform responsive support for keyboard and mobile touch taps",
-      "Over 4,000 GitHub stars and 100% open-source under GPLv3"
-    ],
-    "howToPlay": [
-      "Press Spacebar, Up Arrow, or click/tap the screen to flap your wings and gain altitude",
-      "Time your flaps carefully to thread between upper and lower pipe columns",
-      "Every pipe passed successfully scores 1 point toward your high score",
-      "Avoid colliding with the ground, ceiling, or pipe barriers"
-    ],
-    "controls": [
-      {
-        "key": "Spacebar / Up Arrow",
-        "action": "Flap Wings & Gain Altitude"
-      },
-      {
-        "key": "Mouse Click / Touch",
-        "action": "Tap to Flap on Mobile"
-      }
-    ],
-    "metaTitle": "Play Clumsy Bird Online — Free Open Source HTML5 Flappy Bird | DEVDROP",
-    "metaDescription": "Play Clumsy Bird online for free in your browser. The famous open source HTML5/JavaScript Flappy Bird remake with zero downloads or ads.",
-    "faqs": [
-      {
-        "question": "Is Clumsy Bird playable on phones and tablets?",
-        "answer": "Yes, Clumsy Bird supports instant touch events on mobile screens, making it identical to the original tap-to-fly arcade experience."
-      }
-    ],
-    "indexable": true,
-    "author": "Ellison Leão",
-    "sourceUrl": "https://github.com/ellisonleao/clumsy-bird",
-    "lastmod": "2026-11-01",
-    "tips": [
-      "Tap in steady, rhythmic cadences rather than reactive panic flaps.",
-      "Aim for the lower half of pipe gaps to account for upward wing lift.",
-      "Stay calm between pipe sets to reset your visual center."
-    ]
-  },
-  {
-    "slug": "browserquest-html5",
-    "name": "BrowserQuest (Mozilla)",
-    "tagline": "Mozilla's landmark open-source HTML5 and WebSocket pixel MMORPG",
-    "h1": "Play BrowserQuest Online: Open Source HTML5 Multiplayer RPG by Mozilla",
-    "genre": "RPG",
-    "description": "Explore lush 16-bit lands, battle forest monsters, scavenge legendary armor, and team up with fellow adventurers in Mozilla's open-source multiplayer RPG.",
-    "longDescription": "BrowserQuest is a landmark open-source multiplayer adventure game created by Little Workshop for the Mozilla Foundation (featured in awesome-open-source-games). Powered by HTML5 2D Canvas and real-time WebSockets, it demonstrated the future of cooperative browser gaming without Flash or plugins.",
-    "techStack": [
-      "HTML5 Canvas",
-      "WebSockets",
-      "Node.js",
-      "JavaScript"
-    ],
-    "license": "MPL-2.0 / CC-BY-SA 3.0",
-    "githubUrl": "https://github.com/mozilla/BrowserQuest",
-    "liveDemoUrl": "https://browserquest.itch.io/browserquest",
-    "isPlayableDirectly": false,
-    "badge": "Mozilla Classic",
-    "releaseYear": 2012,
-    "rating": 4.9,
-    "ratingCount": 3600,
-    "features": [
-      "Real-time cooperative multiplayer synchronized over lightweight WebSockets",
-      "Gorgeous 16-bit retro pixel art aesthetic with responsive character animations",
-      "Dynamic loot progression: leather tunics, golden armor, flame swords, and potions",
-      "Secret dungeons, boss encounters, and community achievements",
-      "100% open-source codebase licensed under the Mozilla Public License"
-    ],
-    "howToPlay": [
-      "Click anywhere on the terrain to move your adventurer through villages and forests",
-      "Click on roaming rats, skeletons, and goblins to initiate combat strikes",
-      "Pick up dropped chests to equip stronger armor tiers and health elixirs",
-      "Venture deep into underground catacombs to confront the final boss"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Left Click / Tap",
-        "action": "Move, Attack, Loot, Talk to NPCs"
-      },
-      {
-        "key": "Enter",
-        "action": "Open Chat Window"
-      }
-    ],
-    "metaTitle": "Play BrowserQuest Online — Mozilla's Open Source HTML5 MMORPG | DEVDROP",
-    "metaDescription": "Play BrowserQuest online in browser. Mozilla's legendary open source HTML5 multiplayer retro pixel RPG. Explore, battle, and loot free with zero downloads.",
-    "faqs": [
-      {
-        "question": "Is BrowserQuest truly multiplayer in the browser?",
-        "answer": "Yes, it uses WebSockets to synchronize player positions, combat animations, and chat messages in real time across browser clients."
-      }
-    ],
-    "indexable": false,
-    "author": "Mozilla Foundation & Little Workshop",
-    "sourceUrl": "https://github.com/mozilla/BrowserQuest",
-    "lastmod": "2026-11-03",
-    "tips": [
-      "Defeat forest bats and rats early to upgrade from cloth rags to leather armor.",
-      "Lure cave skeletons one at a time to prevent getting overwhelmed.",
-      "Drink red health potions before engaging boss gargoyles."
-    ]
-  },
-  {
-    "slug": "freeciv-web-html5",
-    "name": "Freeciv-web",
-    "tagline": "The world's leading open-source Civilization empire strategy game in HTML5",
-    "h1": "Play Freeciv-web Online: Open Source HTML5 4X Civilization Strategy Game",
-    "genre": "Strategy",
-    "description": "Guide a tribe from the Stone Age to the Space Age, research technological trees, build wonders, and engage in diplomacy in this open-source 4X strategy game.",
-    "longDescription": "Freeciv-web is the official HTML5 Canvas and WebGL edition of Freeciv, the premier free and open-source turn-based 4X empire-building game (cataloged in awesome-open-source-games). Inspired by Sid Meier's Civilization series, it features deep international diplomacy, tactical warfare, economic trade routes, and multiplayer servers.",
-    "techStack": [
-      "HTML5 Canvas",
-      "WebGL",
-      "JavaScript",
-      "WebSockets"
-    ],
-    "license": "GNU AGPL-3.0 / GPL-2.0",
-    "githubUrl": "https://github.com/freeciv/freeciv-web",
-    "liveDemoUrl": "https://www.freecivweb.org",
-    "isPlayableDirectly": false,
-    "badge": "FOSS Empire",
-    "releaseYear": 2013,
-    "rating": 4.8,
-    "ratingCount": 3100,
-    "features": [
-      "Massive turn-based 4X strategic depth: eXplore, eXpand, eXploit, eXterminate",
-      "Expansive technological research tree from Pottery and Iron Working to Space Flight",
-      "Multiplayer matches supporting dozens of human and AI civilizations simultaneously",
-      "Detailed 2D isometric terrain tiles with resource enhancements and irrigation",
-      "Global community of open-source contributors and competitive strategy tournaments"
-    ],
-    "howToPlay": [
-      "Found your initial capital city and designate worker tiles for food and production",
-      "Send warriors and explorers to uncover world terrain and locate rival civilizations",
-      "Research crucial sciences to unlock advanced government types (Democracy, Monarchy)",
-      "Win via interstellar spaceship construction, cultural dominance, or military conquest"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Click",
-        "action": "Select Unit / City / Tile"
-      },
-      {
-        "key": "NumPad / Arrows",
-        "action": "Issue Unit Step Commands"
-      },
-      {
-        "key": "Spacebar / Enter",
-        "action": "End Civilization Turn"
-      }
-    ],
-    "metaTitle": "Play Freeciv-web Online — Free Open Source Civilization 4X Game | DEVDROP",
-    "metaDescription": "Play Freeciv-web online in your browser. Premier open source HTML5 4X empire building strategy game inspired by Civilization. Free multiplayer with zero downloads.",
-    "faqs": [
-      {
-        "question": "Is Freeciv-web compatible with desktop Freeciv?",
-        "answer": "Yes, Freeciv-web uses the standard Freeciv protocol, allowing web players to connect to global servers alongside desktop Linux and Windows players."
-      }
-    ],
-    "indexable": false,
-    "author": "Freeciv-web Contributors",
-    "sourceUrl": "https://github.com/freeciv/freeciv-web",
-    "lastmod": "2026-11-05",
-    "tips": [
-      "Establish your first city on river tiles or coastal grasslands for optimal food yields.",
-      "Prioritize Bronze Working and Iron Working for early military deterrence.",
-      "Send triremes along coastlines to discover trade partners and boost scientific output."
-    ]
-  },
-  {
-    "slug": "html5-asteroids-arcade",
-    "name": "HTML5 Asteroids",
-    "tagline": "Pure JavaScript vector space arcade shooter based on the 1979 Atari classic",
-    "h1": "Play Asteroids Online: Open Source HTML5 Vector Space Arcade Game",
-    "genre": "Shooter",
-    "description": "Pilot a triangular spacecraft through a deadly asteroid field, blast tumbling space rocks into fragments, and evade alien flying saucers in HTML5 Canvas.",
-    "longDescription": "HTML5 Asteroids is a classic vector-rendered open-source arcade game created by Doug McInnes and highlighted in awesome-open-source-games. Faithfully reproducing the rotational inertia, screen wraparound mechanics, and fragment physics of Atari's iconic 1979 masterpiece.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Vector Graphics Math"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/dmcinnes/HTML5-Asteroids",
-    "liveDemoUrl": "http://dougmcinnes.com/html-5-asteroids/",
-    "isPlayableDirectly": false,
-    "badge": "Vector Classic",
-    "releaseYear": 2011,
-    "rating": 4.7,
-    "ratingCount": 1250,
-    "features": [
-      "Authentic monochrome vector line graphics rendered directly on HTML5 Canvas",
-      "Newtonian inertia physics: drift through space with realistic momentum thrust",
-      "Screen-edge toroidal wraparound physics for ship and debris",
-      "Hostile UFO saucers with targeted bullet trajectories",
-      "Ultra-lightweight open-source codebase under the MIT license"
-    ],
-    "howToPlay": [
-      "Use Left/Right arrow keys to rotate your spacecraft's orientation",
-      "Engage thrusters with the Up Arrow to accelerate through the starfield",
-      "Press Spacebar to fire precision laser rounds at approaching asteroids",
-      "Split large asteroids into faster medium and small fragments to clear the sector"
-    ],
-    "controls": [
-      {
-        "key": "Left / Right Arrow",
-        "action": "Rotate Ship Heading"
-      },
-      {
-        "key": "Up Arrow",
-        "action": "Engage Rocket Thruster"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Fire Laser Cannon"
-      }
-    ],
-    "metaTitle": "Play HTML5 Asteroids Online — Free Open Source Vector Space Game | DEVDROP",
-    "metaDescription": "Play Asteroids online for free in HTML5 Canvas. Faithful open source recreation of the 1979 Atari vector arcade classic with realistic space inertia and zero downloads.",
-    "faqs": [
-      {
-        "question": "Does HTML5 Asteroids emulate authentic physics?",
-        "answer": "Yes! It models real momentum and rotational torque, meaning cutting thrust doesn't immediately stop your ship."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/dmcinnes/HTML5-Asteroids",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "alien-invasion-html5",
-    "name": "Alien Invasion HTML5",
-    "tagline": "Classic Space Invaders arcade defense in lightweight HTML5 Canvas",
-    "h1": "Play Alien Invasion Online: Open Source HTML5 Space Invaders Game",
-    "genre": "Shooter",
-    "description": "Defend Earth against descending waves of extraterrestrial invaders, dodge falling bomb salvos, and rack up high scores in this open-source arcade game.",
-    "longDescription": "Alien Invasion is a clean, responsive open-source HTML5 Canvas recreation of Space Invaders created by Pascal Rettig (cykod) and featured in awesome-open-source-games. Demonstrating component-based game architecture in JavaScript, it offers smooth 60fps retro arcade combat.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Sprite Rendering"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/cykod/AlienInvasion",
-    "liveDemoUrl": "https://cykod.github.io/AlienInvasion/",
-    "isPlayableDirectly": false,
-    "badge": "Retro Arcade",
-    "releaseYear": 2012,
-    "rating": 4.8,
-    "ratingCount": 1680,
-    "features": [
-      "Iconic march-and-descend enemy formation logic",
-      "Destructible defense bunkers that take damage from player and alien fire",
-      "Mystery motherships providing bonus score multipliers",
-      "Responsive controls supporting both desktop keyboard and mobile touch",
-      "Clean pedagogical open-source architecture for web developers"
-    ],
-    "howToPlay": [
-      "Move your cannon base left and right along the bottom perimeter",
-      "Fire vertical missiles into the alien ranks to thin out their armada",
-      "Take cover under defensive shields when enemy bombs rain down",
-      "Wipe out all invaders before they reach the ground baseline"
-    ],
-    "controls": [
-      {
-        "key": "Left / Right Arrow / A / D",
-        "action": "Move Defense Cannon"
-      },
-      {
-        "key": "Spacebar",
-        "action": "Fire Anti-Air Missile"
-      }
-    ],
-    "metaTitle": "Play Alien Invasion Online — Free Open Source HTML5 Space Invaders | DEVDROP",
-    "metaDescription": "Play Alien Invasion online in browser. Open source HTML5 Canvas arcade space shooter inspired by Space Invaders. Free retro arcade gaming with zero downloads.",
-    "faqs": [
-      {
-        "question": "Does the game get faster as fewer aliens remain?",
-        "answer": "Yes, exactly like the 1978 original arcade machine, as the alien ranks diminish, their march cadence and drop frequency speed up dramatically."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/cykod/AlienInvasion",
-    "author": "Open-Source Authors"
-  },
-  {
-    "slug": "3d-hartwig-chess",
-    "name": "3D Hartwig Chess Set",
-    "tagline": "Bauhaus-inspired modern minimalist 3D chess in HTML, CSS3, and JavaScript",
-    "h1": "Play 3D Hartwig Chess Online: Open Source HTML5 & CSS3 3D Chess Game",
-    "genre": "Boardgame",
-    "description": "Experience the iconic 1923 Josef Hartwig Bauhaus chess set reimagined in full 3D interactive perspective using pure HTML, CSS 3D transforms, and JavaScript.",
-    "longDescription": "3D Hartwig Chess Set is an artistic open-source web experiment created by Julian Garnier and featured in awesome-open-source-games. Recreating the Bauhaus design movement's famous chess pieces (where piece shapes represent their allowed moves) in fluid 3D using CSS transforms and lightweight web standards.",
-    "techStack": [
-      "HTML5",
-      "CSS3 3D Transforms",
-      "JavaScript"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/juliangarnier/3D-Hartwig-chess-set",
-    "liveDemoUrl": "http://juliangarnier.github.io/3D-Hartwig-chess-set/",
-    "isPlayableDirectly": false,
-    "badge": "Bauhaus Art",
-    "releaseYear": 2013,
-    "rating": 4.9,
-    "ratingCount": 1890,
-    "features": [
-      "Iconic 1923 Josef Hartwig Bauhaus piece geometries modeled in 3D",
-      "Pure CSS3 3D perspective transforms with zero external heavy engines",
-      "Orbit camera controls allowing smooth 360-degree board inspection",
-      "Full standard chess rules with legal move indicators",
-      "Celebrated web design showcase blending modern art history with web code"
-    ],
-    "howToPlay": [
-      "Rotate board perspective by dragging the mouse across the background",
-      "Click on any piece to reveal its valid movement and capture squares",
-      "Click on the destination square to complete your chess maneuver",
-      "Corner the opposing King piece into checkmate to claim victory"
-    ],
-    "controls": [
-      {
-        "key": "Mouse Drag",
-        "action": "Orbit 3D Board Camera"
-      },
-      {
-        "key": "Left Click",
-        "action": "Select & Move Chess Pieces"
-      }
-    ],
-    "metaTitle": "Play 3D Hartwig Chess Online — Open Source Bauhaus 3D Chess | DEVDROP",
-    "metaDescription": "Play 3D Hartwig Chess Set online in your browser. Stunning open source 3D Bauhaus chess game built with HTML, CSS3 3D transforms, and JavaScript. Free to play.",
-    "faqs": [
-      {
-        "question": "Why do the pieces in Hartwig chess have unusual shapes?",
-        "answer": "In 1923, Bauhaus sculptor Josef Hartwig designed pieces where their geometric shape directly conveys their legal move (e.g. bishop is an X for diagonal, rook is a cube for orthogonal)."
-      }
-    ],
-    "indexable": true,
-    "author": "Julian Garnier",
-    "sourceUrl": "https://github.com/juliangarnier/3D-Hartwig-chess-set",
-    "lastmod": "2026-11-02",
-    "tips": [
-      "Rotate the 3D board view to spot diagonal bishop threats obscured by perspective.",
-      "Control the 4 center squares early with your geometric pawns.",
-      "Castle early to tuck your King into safety."
-    ]
-  },
-  {
-    "slug": "onslaught-arena-html5",
-    "name": "Onslaught Arena",
-    "tagline": "Fast-paced medieval gladiator arena combat shooter in HTML5 Canvas",
-    "h1": "Play Onslaught Arena Online: Open Source HTML5 Gladiator Combat Shooter",
-    "genre": "Action",
-    "description": "Battle hordes of medieval monsters, cyclopes, and dark beasts in an enclosed gladiator coliseum with crossbows, axes, and magic in HTML5.",
-    "longDescription": "Onslaught Arena is an acclaimed open-source arcade action combat game created by Lost Decade Games (featured in awesome-open-source-games). Developed for early HTML5 gaming competitions, it set the benchmark for browser twin-stick arena shooters with responsive weapon switching and relentless monster waves.",
-    "techStack": [
-      "HTML5 Canvas",
-      "JavaScript",
-      "Web Audio API"
-    ],
-    "license": "MIT",
-    "githubUrl": "https://github.com/lostdecade/onslaught_arena",
-    "liveDemoUrl": "https://lostdecadegames.com/demos/onslaught_arena/",
-    "isPlayableDirectly": false,
-    "badge": "Arena Action",
-    "releaseYear": 2011,
-    "rating": 4.8,
-    "ratingCount": 2210,
-    "features": [
-      "Fast 360-degree gladiator combat against relentless mythical creature waves",
-      "Arsenal of medieval ranged weaponry: heavy crossbows, throwing knives, axes, and fire wands",
-      "Multi-stage boss confrontations with unique attack patterns and telegraphing",
-      "Fluid 60 FPS Canvas rendering with zero installation or plugins",
-      "100% open-source MIT codebase authored by veteran game designers"
-    ],
-    "howToPlay": [
-      "Use WASD or arrow keys to maneuver around the arena perimeter",
-      "Aim your cursor toward approaching monsters and hold left-click to fire",
-      "Collect dropped powerup skulls to switch weapons and replenish health",
-      "Survive continuous onslaught waves to reach the ultimate arena champion"
-    ],
-    "controls": [
-      {
-        "key": "WASD / Arrows",
-        "action": "Maneuver Gladiator"
-      },
-      {
-        "key": "Mouse Aim & Click",
-        "action": "Aim & Attack"
-      },
-      {
-        "key": "1 - 4",
-        "action": "Quick Switch Weapon"
-      }
-    ],
-    "metaTitle": "Play Onslaught Arena Online — Free Open Source HTML5 Action Game | DEVDROP",
-    "metaDescription": "Play Onslaught Arena online in browser. Open source HTML5 arcade gladiator shooter by Lost Decade Games. Fast monster waves and combat with zero downloads.",
-    "faqs": [
-      {
-        "question": "Can I play Onslaught Arena with a gamepad?",
-        "answer": "Yes, modern web browsers support the HTML5 Gamepad API, allowing twin-stick controller support in Onslaught Arena."
-      }
-    ],
-    "indexable": false,
-    "sourceUrl": "https://github.com/lostdecade/onslaught_arena",
-    "author": "Open-Source Authors"
   }
 ];
 

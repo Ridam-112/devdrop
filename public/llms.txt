@@ -1,6 +1,6 @@
 # DevDrop (https://devdrop.online)
 
-> DevDrop (devdrop.online) is a free online platform providing client-side web tools, everyday utilities, document processors, developer helpers, technical how-to guides, and 70+ open-source HTML5 browser games. All utility operations execute directly in the browser memory sandbox for high speed and data privacy.
+> DevDrop (devdrop.online) is a free online platform providing client-side web tools, everyday utilities, document processors, developer helpers, technical how-to guides, and 46 original HTML5 & 3D browser games. All utility operations execute directly in the browser memory sandbox for high speed and data privacy.
 
 ## Platform Overview
 - Canonical Domain: https://devdrop.online
@@ -53,13 +53,13 @@ Educational guides and step-by-step tutorials targeting common productivity work
 - [How Loan EMI Is Calculated](https://devdrop.online/guides/how-loan-emi-is-calculated): Complete mathematical formula breakdown with practical loan examples.
 - [JSON Formatting & Validation Guide](https://devdrop.online/guides/json-formatting-and-validation-guide): Debugging malformed JSON and optimizing payloads for web applications.
 
-## Browser Games Catalog (70+ Open Source Games)
-100% free open-source HTML5, WebGL, and Three.js games playable with zero installs:
-- [Chaos Skies 3D](https://devdrop.online/games/chaos-skies-3d): 3D fighter jet combat simulator featuring Sukhoi Su-30MKI and HAL Tejas Mk1 in Three.js WebGL.
-- [Space Defender HTML5](https://devdrop.online/games/space-defender-html5): Classic particle shooter built with HTML5 Canvas.
-- [Cyber Snake HTML5](https://devdrop.online/games/cyber-snake-html5): Retro arcade snake on a glowing cyber grid.
-- [2048 HTML5](https://devdrop.online/games/2048-html5-open-source): Number tile sliding puzzle game.
-- [MicropolisJS](https://devdrop.online/games/micropolis-js): Open-source city-building simulation in JavaScript.
+## Browser Games Catalog (46 Original HTML5 & 3D Games)
+100% free original HTML5, WebGL, and Three.js browser games playable with zero installs:
+- [Chaos Skies 3D](https://devdrop.online/games/chaos-skies-3d): 3D fighter jet combat simulator featuring supersonic dogfights in Three.js WebGL.
+- [Fruit Slice Master](https://devdrop.online/games/fruit-slice-master): Tactile arcade fruit-slasher with particle splash physics.
+- [Car Parking 3D Simulator](https://devdrop.online/games/car-parking-simulator-3d): Precision 3D driving and obstacle course parking simulation.
+- [Moto Traffic Rider 3D](https://devdrop.online/games/moto-traffic-rider-3d): High-speed motorcycle highway dodging game in first-person 3D.
+- [No Brakes Desi Bus Driver 3D](https://devdrop.online/games/no-brakes-desi-bus-3d): Frantic mountain pass passenger transport arcade simulator.
 
 ## Interactive Entertainment & Simulations (Noindexed)
 The following modules are fictional visual simulators designed strictly for entertainment, video props, and UI demonstrations (served with `noindex, nofollow` to search crawlers):
