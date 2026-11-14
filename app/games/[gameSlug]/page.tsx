@@ -248,31 +248,30 @@ export default function GameDetailPage({ params }: Props) {
         </ol>
       </nav>
 
-      {/* Hero Header */}
-      <header className="mb-8">
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-            {game.genre} Game
-          </span>
-          <span className="text-[10px] font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-dark text-cyber-cyan border border-cyber-borderSubtle">
-            {game.license} License
-          </span>
-          <span className="text-[10px] font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-card text-cyber-muted border border-cyber-borderSubtle">
-            Release: {game.releaseYear}
-          </span>
-        </div>
+      {/* Compact Game Arena Header */}
+      <header className="mb-6 pb-4 border-b border-cyber-borderSubtle">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex flex-wrap items-center gap-2 mb-2">
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
+                {game.genre}
+              </span>
+              <span className="text-[10px] font-mono tracking-wider px-2.5 py-0.5 rounded-full bg-cyber-dark text-cyber-cyan border border-cyber-borderSubtle">
+                60 FPS Hardware-Accelerated
+              </span>
+              <span className="text-[10px] font-mono tracking-wider px-2.5 py-0.5 rounded-full bg-cyber-card text-slate-300 border border-cyber-borderSubtle">
+                No Downloads Required
+              </span>
+            </div>
 
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black font-mono tracking-tight text-white mb-3 leading-tight">
-          {game.h1}
-        </h1>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black font-mono tracking-tight text-white">
+              {game.name}
+            </h1>
 
-        <p className="text-base sm:text-lg font-mono text-cyber-cyan mb-4">
-          {game.tagline}
-        </p>
-
-        {/* Self-contained description passage for GEO & Answer Engines */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-cyber-card/60 border border-cyber-borderSubtle text-slate-300 font-sans text-sm sm:text-base leading-relaxed max-w-4xl backdrop-blur-md">
-          <p>{game.longDescription}</p>
+            <p className="text-xs sm:text-sm font-mono text-cyber-cyan mt-1">
+              {game.tagline}
+            </p>
+          </div>
         </div>
       </header>
 
