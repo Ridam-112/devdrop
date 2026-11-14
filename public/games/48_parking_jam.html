@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Parking Jam Puzzle</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: system-ui, -apple-system, sans-serif; }
+    body { background: #0b111e; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; touch-action: manipulation; }
+    .container { width: 100%; max-width: 440px; background: #131d31; border: 2px solid #00ffcc33; border-radius: 20px; padding: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.5); text-align: center; }
+    .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-family: monospace; }
+    .badge { background: #00ffcc22; color: #00ffcc; border: 1px solid #00ffcc55; padding: 4px 10px; border-radius: 8px; font-size: 13px; font-weight: bold; }
+    .btn { background: #00ffcc; color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: monospace; }
+    canvas { background: #1e293b; border-radius: 14px; border: 3px solid #334155; display: block; margin: 0 auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.4); max-width: 100%; height: auto; }
+    .info { font-size: 12px; color: #94a3b8; margin-top: 10px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hud">
+      <div class="badge">LEVEL: <span id="lvl">1</span></div>
+      <div class="badge">CARS LEFT: <span id="cars-left">0</span></div>
+      <button class="btn" onclick="restartLevel()">Reset</button>
+    </div>
+    <canvas id="cvs" width="400" height="400"></canvas>
+    <div class="info">Tap a car to drive it out of the parking grid! Avoid crashes!</div>
+  </div>
+  <script>
+    
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSound(type) {
+    try {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      if (type === 'click') {
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+        osc.start(now); osc.stop(now + 0.05);
+      } else if (type === 'pop') {
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'win') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0.15, now + i*0.1);
+          g.gain.linearRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+          o.start(now + i*0.1); o.stop(now + i*0.1 + 0.25);
+        });
+      } else if (type === 'hit' || type === 'lose') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(70, now + 0.25);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now); osc.stop(now + 0.25);
+      } else if (type === 'score' || type === 'coin') {
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+    } catch(e) {}
+  }
+
+    const canvas = document.getElementById('cvs');
+    const ctx = canvas.getContext('2d');
+    const GRID_SIZE = 6;
+    const CELL = 400 / GRID_SIZE; // ~66.6px
+    let level = 1;
+    let cars = [];
+    let movingCar = null;
+
+    // Car definition: { id, x, y, len, dir: 'H'|'V', color, exitDir: 1|-1, escaped: false }
+    const LEVELS = [
+      // Level 1: Beginner
+      [
+        { x: 1, y: 1, len: 2, dir: 'H', exitDir: 1, color: '#f43f5e' },
+        { x: 1, y: 3, len: 2, dir: 'V', exitDir: 1, color: '#38bdf8' },
+        { x: 3, y: 2, len: 2, dir: 'V', exitDir: -1, color: '#4ade80' },
+        { x: 3, y: 4, len: 2, dir: 'H', exitDir: 1, color: '#eab308' },
+        { x: 0, y: 5, len: 2, dir: 'H', exitDir: -1, color: '#a855f7' }
+      ],
+      // Level 2: Intersecting
+      [
+        { x: 2, y: 1, len: 3, dir: 'V', exitDir: 1, color: '#f43f5e' },
+        { x: 0, y: 2, len: 2, dir: 'H', exitDir: -1, color: '#38bdf8' },
+        { x: 3, y: 2, len: 2, dir: 'H', exitDir: 1, color: '#4ade80' },
+        { x: 1, y: 4, len: 3, dir: 'H', exitDir: 1, color: '#eab308' },
+        { x: 4, y: 3, len: 2, dir: 'V', exitDir: 1, color: '#ec4899' },
+        { x: 0, y: 0, len: 2, dir: 'H', exitDir: -1, color: '#06b6d4' }
+      ],
+      // Level 3: Tight Gridlock
+      [
+        { x: 1, y: 1, len: 2, dir: 'H', exitDir: -1, color: '#f43f5e' },
+        { x: 3, y: 1, len: 2, dir: 'H', exitDir: 1, color: '#38bdf8' },
+        { x: 2, y: 2, len: 2, dir: 'V', exitDir: -1, color: '#4ade80' },
+        { x: 4, y: 2, len: 2, dir: 'V', exitDir: 1, color: '#eab308' },
+        { x: 1, y: 3, len: 2, dir: 'V', exitDir: 1, color: '#a855f7' },
+        { x: 2, y: 4, len: 2, dir: 'H', exitDir: 1, color: '#ec4899' },
+        { x: 4, y: 4, len: 2, dir: 'H', exitDir: 1, color: '#06b6d4' },
+        { x: 0, y: 5, len: 3, dir: 'H', exitDir: -1, color: '#f97316' }
+      ]
+    ];
+
+    function loadLevel(lvlIdx) {
+      const idx = (lvlIdx - 1) % LEVELS.length;
+      cars = JSON.parse(JSON.stringify(LEVELS[idx])).map((c, i) => ({
+        ...c, id: i, escaped: false, animX: c.x * CELL, animY: c.y * CELL, isMoving: false
+      }));
+      movingCar = null;
+      document.getElementById('lvl').innerText = lvlIdx;
+      updateHud();
+      playSound('pop');
+    }
+    function updateHud() {
+      const remaining = cars.filter(c => !c.escaped).length;
+      document.getElementById('cars-left').innerText = remaining;
+      if (remaining === 0) {
+        playSound('win');
+        setTimeout(() => {
+          level++;
+          loadLevel(level);
+        }, 800);
+      }
+    }
+    function restartLevel() {
+      loadLevel(level);
+    }
+    function isOccupied(gx, gy, ignoreId) {
+      for (const c of cars) {
+        if (c.escaped || c.id === ignoreId) continue;
+        if (c.dir === 'H') {
+          if (gy === c.y && gx >= c.x && gx < c.x + c.len) return true;
+        } else {
+          if (gx === c.x && gy >= c.y && gy < c.y + c.len) return true;
+        }
+      }
+      return false;
+    }
+    function tryMoveCar(car) {
+      if (car.escaped || movingCar) return;
+      // Check if path to border in exitDir is clear
+      let clear = true;
+      if (car.dir === 'H') {
+        if (car.exitDir > 0) {
+          for (let checkX = car.x + car.len; checkX < GRID_SIZE; checkX++) {
+            if (isOccupied(checkX, car.y, car.id)) { clear = false; break; }
+          }
+        } else {
+          for (let checkX = car.x - 1; checkX >= 0; checkX--) {
+            if (isOccupied(checkX, car.y, car.id)) { clear = false; break; }
+          }
+        }
+      } else {
+        if (car.exitDir > 0) {
+          for (let checkY = car.y + car.len; checkY < GRID_SIZE; checkY++) {
+            if (isOccupied(car.x, checkY, car.id)) { clear = false; break; }
+          }
+        } else {
+          for (let checkY = car.y - 1; checkY >= 0; checkY--) {
+            if (isOccupied(car.x, checkY, car.id)) { clear = false; break; }
+          }
+        }
+      }
+      if (clear) {
+        playSound('score');
+        car.isMoving = true;
+        movingCar = car;
+      } else {
+        playSound('hit');
+        // Mini wiggle animation
+        car.shake = 6;
+      }
+    }
+    canvas.addEventListener('pointerdown', (e) => {
+      const rect = canvas.getBoundingClientRect();
+      const scale = 400 / rect.width;
+      const mx = (e.clientX - rect.left) * scale;
+      const my = (e.clientY - rect.top) * scale;
+      for (const c of cars) {
+        if (c.escaped) continue;
+        const w = c.dir === 'H' ? c.len * CELL : CELL;
+        const h = c.dir === 'V' ? c.len * CELL : CELL;
+        if (mx >= c.animX && mx <= c.animX + w && my >= c.animY && my <= c.animY + h) {
+          tryMoveCar(c);
+          break;
+        }
+      }
+    });
+
+    function update() {
+      if (movingCar) {
+        const speed = 12;
+        if (movingCar.dir === 'H') {
+          movingCar.animX += movingCar.exitDir * speed;
+          if (movingCar.animX > 450 || movingCar.animX < -150) {
+            movingCar.escaped = true;
+            movingCar = null;
+            updateHud();
+          }
+        } else {
+          movingCar.animY += movingCar.exitDir * speed;
+          if (movingCar.animY > 450 || movingCar.animY < -150) {
+            movingCar.escaped = true;
+            movingCar = null;
+            updateHud();
+          }
+        }
+      }
+      cars.forEach(c => {
+        if (c.shake) c.shake *= -0.8;
+        if (Math.abs(c.shake) < 0.5) c.shake = 0;
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, 400, 400);
+      // Draw grid lines & parking stalls
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 1;
+      for (let i = 0; i <= GRID_SIZE; i++) {
+        ctx.beginPath(); ctx.moveTo(i * CELL, 0); ctx.lineTo(i * CELL, 400); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, i * CELL); ctx.lineTo(400, i * CELL); ctx.stroke();
+      }
+      // Draw exit arrows along boundaries
+      ctx.fillStyle = '#00ffcc44';
+      ctx.font = '12px monospace';
+      ctx.fillText('EXIT →', 350, 20);
+      ctx.fillText('← EXIT', 10, 390);
+
+      // Draw cars
+      for (const c of cars) {
+        if (c.escaped) continue;
+        const pad = 6;
+        const w = (c.dir === 'H' ? c.len * CELL : CELL) - pad * 2;
+        const h = (c.dir === 'V' ? c.len * CELL : CELL) - pad * 2;
+        const drawX = c.animX + pad + (c.shake || 0);
+        const drawY = c.animY + pad;
+
+        ctx.fillStyle = c.color;
+        ctx.beginPath();
+        ctx.roundRect(drawX, drawY, w, h, 8);
+        ctx.fill();
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = '#ffffff88';
+        ctx.stroke();
+
+        // Windshield
+        ctx.fillStyle = '#0f172a';
+        if (c.dir === 'H') {
+          const wsX = c.exitDir > 0 ? drawX + w - 18 : drawX + 6;
+          ctx.beginPath(); ctx.roundRect(wsX, drawY + 4, 12, h - 8, 3); ctx.fill();
+          // Headlights
+          ctx.fillStyle = '#fef08a';
+          const hlX = c.exitDir > 0 ? drawX + w - 2 : drawX + 2;
+          ctx.fillRect(hlX, drawY + 4, 2, 4);
+          ctx.fillRect(hlX, drawY + h - 8, 2, 4);
+        } else {
+          const wsY = c.exitDir > 0 ? drawY + h - 18 : drawY + 6;
+          ctx.beginPath(); ctx.roundRect(drawX + 4, wsY, w - 8, 12, 3); ctx.fill();
+          // Headlights
+          ctx.fillStyle = '#fef08a';
+          const hlY = c.exitDir > 0 ? drawY + h - 2 : drawY + 2;
+          ctx.fillRect(drawX + 4, hlY, 4, 2);
+          ctx.fillRect(drawX + w - 8, hlY, 4, 2);
+        }
+      }
+    }
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loadLevel(1);
+    loop();
+  </script>
+</body>
+</html>

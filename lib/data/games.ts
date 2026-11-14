@@ -3444,6 +3444,737 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
       "Pre-aim around shipping container corners with crosshair at head level.",
       "Coordinate with AI teammates to trade eliminations and cover flank corridors."
     ]
+  },
+  {
+    "slug": "minesweeper-logic-puzzle",
+    "name": "Minesweeper Cyber Logic",
+    "tagline": "Uncover safe cyber grid sectors and flag hidden mines in this classic tactical deduction puzzle",
+    "h1": "Play Minesweeper Online: Free Cyber Logic Browser Game",
+    "genre": "Puzzle",
+    "description": "Scan numerical clues, flag hazardous hidden mines, and sweep the cyber grid across Easy, Medium, and Hard difficulties with zero downloads.",
+    "longDescription": "Minesweeper Cyber Logic brings the quintessential PC puzzle to modern browsers with neon aesthetic polish, dedicated dig/flag mobile toggles, procedural audio clicks, and guaranteed safe first-clicks. Hone your deductive reasoning and challenge your fastest clear times directly in your web browser.",
+    "techStack": [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Web Audio API",
+      "LocalStorage"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/minesweeper-logic-puzzle",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/47_minesweeper_logic.html",
+    "badge": "Classic Logic",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 3120,
+    "features": [
+      "Custom difficulty modes (Easy, Medium, Hard)",
+      "Mobile-friendly Dig and Flag mode switchers",
+      "Guaranteed safe first click opening mechanism",
+      "Live LCD digital timer and mine counter"
+    ],
+    "howToPlay": [
+      "Click or tap an unrevealed grid square to inspect its sector value",
+      "Numbers reveal exactly how many mines touch that specific square",
+      "Flag squares where mines are guaranteed to avoid accidental detonation",
+      "Clear every single safe cell on the board to claim victory"
+    ],
+    "controls": [
+      {
+        "key": "Left Click / Tap",
+        "action": "Reveal grid square"
+      },
+      {
+        "key": "Right Click / Flag Mode",
+        "action": "Place or remove hazard flag"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Mobile responsive controls"
+      }
+    ],
+    "metaTitle": "Minesweeper Online — Free Classic Logic Browser Game | DevDrop",
+    "metaDescription": "Play Minesweeper online for free in your browser. Classic deduction puzzle with neon cyber visuals, multiple difficulties, and mobile touch controls. Zero downloads.",
+    "faqs": [
+      {
+        "question": "Is Minesweeper free to play on DevDrop?",
+        "answer": "Yes, Minesweeper Cyber Logic is 100% free with no paywalls, accounts, or downloads required."
+      },
+      {
+        "question": "Can I play Minesweeper on mobile smartphones?",
+        "answer": "Yes, the game features a dedicated Dig/Flag toggle button specifically engineered for effortless touch screen playing on iPhone and Android."
+      },
+      {
+        "question": "Is the first click always safe in Minesweeper?",
+        "answer": "Yes, the minefield is generated immediately after your first click, guaranteeing you never detonate a mine on move one."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Identify 1-1 and 1-2 edge patterns to reveal adjacent guaranteed safe squares.",
+      "Flag obvious corner mines immediately to reduce mental clutter on the board.",
+      "Work inward from wide cleared openings rather than guessing in isolated corners."
+    ]
+  },
+  {
+    "slug": "parking-jam-puzzle",
+    "name": "Parking Jam Puzzle",
+    "tagline": "Navigate gridlocked cars out of congested parking lots without collisions",
+    "h1": "Play Parking Jam Online: Free 2D Car Grid Logic Game",
+    "genre": "Puzzle",
+    "description": "Tap and guide colorful cars out of packed parking lots into clear exit lanes. Test your spatial reasoning across progressive puzzle challenges.",
+    "longDescription": "Parking Jam Puzzle is an engaging brain-teaser where players must strategize the precise departure sequence for cars trapped in a crowded lot. Featuring smooth movement physics, collision safeguards, and rewarding unlockable levels directly in your browser.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "CSS3",
+      "Web Audio API"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/parking-jam-puzzle",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/48_parking_jam.html",
+    "badge": "Brain Teaser",
+    "releaseYear": 2026,
+    "rating": 4.8,
+    "ratingCount": 2840,
+    "features": [
+      "Progressive gridlock challenges with unique car orientations",
+      "Dynamic collision detection and car shake feedback",
+      "Smooth 60 FPS driving animations and procedural horn effects",
+      "Zero install instant browser playability"
+    ],
+    "howToPlay": [
+      "Examine which cars have an unblocked trajectory to the parking lot exits",
+      "Tap a car to accelerate it forward out of the grid",
+      "Clear exterior perimeter vehicles first to create maneuvering room for center cars",
+      "Empty the entire lot to advance to the next puzzle level"
+    ],
+    "controls": [
+      {
+        "key": "Mouse Click",
+        "action": "Tap car to drive forward toward exit"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Mobile screen tap to dispatch vehicles"
+      }
+    ],
+    "metaTitle": "Parking Jam Puzzle — Play Free Car Grid Brain Game | DevDrop",
+    "metaDescription": "Play Parking Jam Puzzle free online in your browser. Unblock gridlocked cars and guide vehicles to clear exits without crashes. Instant play, no download.",
+    "faqs": [
+      {
+        "question": "Is Parking Jam Puzzle free to play?",
+        "answer": "Yes, Parking Jam is free with no download or app store installation needed."
+      },
+      {
+        "question": "Does Parking Jam work on mobile phones?",
+        "answer": "Yes, the tap-to-dispatch mechanic is perfectly tailored for mobile touchscreens and tablets."
+      },
+      {
+        "question": "What happens if a car's exit path is blocked?",
+        "answer": "The car will wiggle and honk its horn to warn you of an obstacle, allowing you to try another vehicle without penalty."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Always clear outer cars parked closest to exit arrows first.",
+      "Check whether a vehicle moves horizontally or vertically before committing your tap.",
+      "Use the Reset button if you find yourself stuck in a multi-car deadlock."
+    ]
+  },
+  {
+    "slug": "water-sort-puzzle",
+    "name": "Water Sort Color Puzzle",
+    "tagline": "Pour and sort vibrant colored liquids into test tubes until each vial holds a single hue",
+    "h1": "Play Water Sort Online: Free Color Sorting Brain Puzzle",
+    "genre": "Puzzle",
+    "description": "Relax and challenge your brain by pouring colored water between test tubes. Group matching liquid layers together with soothing fluid dynamics.",
+    "longDescription": "Water Sort Color Puzzle offers a satisfying and mindful puzzle experience. Strategize your pouring moves across test tubes, using spare empty vials to untangle vibrant liquid layers until every tube contains only one uniform color.",
+    "techStack": [
+      "HTML5",
+      "CSS3 Animations",
+      "JavaScript",
+      "Web Audio API"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/water-sort-puzzle",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/49_water_sort.html",
+    "badge": "Mindful Relax",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 3410,
+    "features": [
+      "Satisfying liquid pouring animations and sound cues",
+      "Spare buffer tubes for intricate color maneuvers",
+      "Multi-color challenges scaling with each cleared stage",
+      "Playable instantly on any modern mobile and desktop browser"
+    ],
+    "howToPlay": [
+      "Tap any test tube to lift and select its top liquid layer",
+      "Tap a destination tube that has enough space and a matching top color",
+      "You can also pour any color into a completely empty test tube",
+      "Sort all liquids so that each test tube contains four segments of the exact same color"
+    ],
+    "controls": [
+      {
+        "key": "Mouse Click",
+        "action": "Select tube & pour into destination"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Direct touch tube selection on smartphones"
+      }
+    ],
+    "metaTitle": "Water Sort Color Puzzle — Play Free Online Brain Game | DevDrop",
+    "metaDescription": "Play Water Sort Color Puzzle free in your browser. Relaxing liquid sorting game with vibrant test tubes and strategic color matching. No download needed.",
+    "faqs": [
+      {
+        "question": "Is Water Sort Puzzle free on DevDrop?",
+        "answer": "Yes, it is 100% free with unlimited level attempts and zero registration."
+      },
+      {
+        "question": "Can I pour into an empty test tube?",
+        "answer": "Yes, empty test tubes can receive any color and serve as vital staging buffers."
+      },
+      {
+        "question": "Can I undo or restart if I get stuck?",
+        "answer": "Yes, simply tap the Restart button anytime to reset the current test tube configuration."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Keep at least one test tube completely empty for as long as possible.",
+      "Consolidate multiple segments of the same color in one swift transfer.",
+      "Focus on completing full single-color tubes first to permanently clear board space."
+    ]
+  },
+  {
+    "slug": "flappy-wings-arcade",
+    "name": "Flappy Wings Arcade",
+    "tagline": "Flap your cyber wings through neon obstacle gates in this classic reflex endurance test",
+    "h1": "Play Flappy Wings Online: Free Neon Arcade Browser Game",
+    "genre": "Arcade",
+    "description": "Tap to flap your wings, balance aerial gravity, and weave through tricky neon pipe gates in this high-intensity 60 FPS endless runner.",
+    "longDescription": "Flappy Wings Arcade is an adrenaline-fueled homage to classic endless flappers, revitalized with crisp neon cyber visuals, responsive single-tap physics, and persistent local high score tracking. Challenge your reflex timing directly in browser.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "LocalStorage"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/flappy-wings-arcade",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/50_flappy_wings.html",
+    "badge": "Retro Arcade",
+    "releaseYear": 2026,
+    "rating": 4.8,
+    "ratingCount": 3950,
+    "features": [
+      "Silky smooth 60 FPS Canvas aerodynamics",
+      "Synthesized audio feedback for wing flaps and score streaks",
+      "Adaptive neon pipe obstacle generator",
+      "Automatic local best score saving"
+    ],
+    "howToPlay": [
+      "Tap the screen or press Spacebar to flap upward",
+      "Release controls to allow gravity to pull you downward",
+      "Carefully navigate through the openings between upper and lower pipes",
+      "Each successfully cleared pipe gate rewards +1 point"
+    ],
+    "controls": [
+      {
+        "key": "Spacebar / Up Arrow",
+        "action": "Flap wings upward"
+      },
+      {
+        "key": "Mouse Click",
+        "action": "Flap wings"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Mobile screen tap to flap"
+      }
+    ],
+    "metaTitle": "Flappy Wings Arcade — Play Free Online Reflex Game | DevDrop",
+    "metaDescription": "Play Flappy Wings Arcade online for free in your browser. Test your reflex timing and weave through neon obstacles at 60 FPS with zero installs.",
+    "faqs": [
+      {
+        "question": "Is Flappy Wings Arcade free to play?",
+        "answer": "Yes, it is completely free with instant instant-restart gameplay."
+      },
+      {
+        "question": "Does the game save my best high score?",
+        "answer": "Yes, your personal best record is saved locally in your browser storage."
+      },
+      {
+        "question": "What is the best way to control height?",
+        "answer": "Short, rhythmic taps give you far superior height stability compared to rapid erratic tapping."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Aim to enter pipe gaps slightly lower than center so gravity works in your favor.",
+      "Maintain a steady, measured tapping tempo to hover safely between obstacles.",
+      "Stay focused on the next upcoming gap rather than admiring your current score."
+    ]
+  },
+  {
+    "slug": "knife-hit-reflex",
+    "name": "Knife Hit Reflex",
+    "tagline": "Fling razor-sharp blades into rotating targets while avoiding existing knives",
+    "h1": "Play Knife Hit Online: Free Arcade Reflex Browser Game",
+    "genre": "Arcade",
+    "description": "Test your precision timing by throwing knives into spinning targets. Avoid hitting previously embedded blades and conquer escalating boss stages.",
+    "longDescription": "Knife Hit Reflex delivers satisfying arcade action where every tap counts. Gauge the fluctuating rotation speeds of wooden targets, fling your arsenal of knives into empty slots, and advance through challenging stages with zero downloads required.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "CSS3"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/knife-hit-reflex",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/51_knife_hit.html",
+    "badge": "Fast Reflex",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 3200,
+    "features": [
+      "Dynamic target rotation physics with sudden speed shifts",
+      "Satisfying blade embedding impact audio",
+      "Stage progression with increasing knife payloads",
+      "Instant tap-to-throw responsiveness on both desktop and mobile"
+    ],
+    "howToPlay": [
+      "Tap the screen or press Spacebar to fling a knife upward toward the rotating target",
+      "Land every knife cleanly in an empty wooden sector",
+      "Avoid colliding with any previously embedded blades",
+      "Clear all allocated knives in your inventory to advance to the next stage"
+    ],
+    "controls": [
+      {
+        "key": "Left Click / Spacebar",
+        "action": "Fling knife into target"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Tap anywhere on mobile screen to throw"
+      }
+    ],
+    "metaTitle": "Knife Hit Reflex — Play Free Online Target Arcade Game | DevDrop",
+    "metaDescription": "Play Knife Hit Reflex online for free in your browser. Fling blades into spinning targets, avoid collisions, and beat high score stages with zero downloads.",
+    "faqs": [
+      {
+        "question": "Is Knife Hit Reflex free to play?",
+        "answer": "Yes, 100% free with unlimited retries directly inside your web browser."
+      },
+      {
+        "question": "Does the target rotate at a constant speed?",
+        "answer": "No, the target periodically accelerates, decelerates, and reverses direction to test your reflex anticipation."
+      },
+      {
+        "question": "What happens if I hit an existing knife?",
+        "answer": "Colliding with an embedded blade will cause your knife to deflect and trigger a game over."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Do not rush all your knives at once; wait for wide open gaps on the rotating log.",
+      "Anticipate target deceleration pauses to fire rapid pairs into adjacent spaces.",
+      "Keep your eyes locked on the target's bottom entry zone rather than following rotation."
+    ]
+  },
+  {
+    "slug": "doodle-jumper-platformer",
+    "name": "Doodle Jumper Platformer",
+    "tagline": "Bounce higher and higher on floating platforms in this vertical jumping arcade adventure",
+    "h1": "Play Doodle Jumper Online: Free Endless Platformer Game",
+    "genre": "Arcade",
+    "description": "Guide your springy jumper up endless floating platforms. Dodge perilous falls, hit high-flying spring pads, and reach record altitudes.",
+    "longDescription": "Doodle Jumper Platformer brings the timeless joy of vertical jumping to web browsers. Bounce continuously across platforms, wrap around screen edges, and climb through the cosmic atmosphere with smooth physics and instant responsiveness.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "LocalStorage"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/doodle-jumper-platformer",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/52_doodle_jumper.html",
+    "badge": "Endless Jumper",
+    "releaseYear": 2026,
+    "rating": 4.8,
+    "ratingCount": 3100,
+    "features": [
+      "Endless procedural platform generation",
+      "Screen-edge wrap-around mechanics",
+      "Dynamic camera scroll and altitude score tracking",
+      "Dual touch button and screen-side tap support for smartphones"
+    ],
+    "howToPlay": [
+      "Use Left/Right arrow keys or touch screen sides to steer your character",
+      "Land feet-first on green platforms to automatically trigger a bounce",
+      "Wrap across the left and right screen borders to reach distant ledges",
+      "Climb as high as possible without falling below the screen threshold"
+    ],
+    "controls": [
+      {
+        "key": "Left / Right Arrow / A-D",
+        "action": "Steer jumper horizontally"
+      },
+      {
+        "key": "Touch Screen Sides / Buttons",
+        "action": "Mobile horizontal navigation"
+      }
+    ],
+    "metaTitle": "Doodle Jumper Platformer — Play Free Online Vertical Game | DevDrop",
+    "metaDescription": "Play Doodle Jumper Platformer online for free in your browser. Bounce across endless floating platforms, set altitude records, and play with zero installs.",
+    "faqs": [
+      {
+        "question": "Is Doodle Jumper free on DevDrop?",
+        "answer": "Yes, Doodle Jumper is completely free to play on both mobile and desktop."
+      },
+      {
+        "question": "Can I move through the left edge to appear on the right?",
+        "answer": "Yes! The game features wrap-around boundaries, allowing you to jump off the left side and emerge on the right."
+      },
+      {
+        "question": "Does the score save automatically?",
+        "answer": "Yes, your highest altitude score is stored locally in your browser."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Use border wrap-arounds frequently to bypass huge vertical gaps.",
+      "Plan your next two platform landings while at the apex of your jump.",
+      "Stay centered on the screen to avoid getting trapped with no platforms in reach."
+    ]
+  },
+  {
+    "slug": "retro-space-invaders",
+    "name": "Retro Space Invaders",
+    "tagline": "Defend Earth from marching alien armadas in this retro arcade shooter classic",
+    "h1": "Play Retro Space Invaders Online: Free Classic Arcade Shooter",
+    "genre": "Shooter",
+    "description": "Maneuver your defense cannon, fire plasma salvos, and repel descending waves of alien invaders before they reach Earth's surface.",
+    "longDescription": "Retro Space Invaders recreates the authentic tension of legendary 1978 arcade shooters. Dodge enemy bomb drops, blast descending alien formations row by row, and survive intensifying waves directly in your web browser with zero downloads.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "CSS3"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/retro-space-invaders",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/53_space_invaders.html",
+    "badge": "Retro Classic",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 4120,
+    "features": [
+      "Classic marching alien swarm formation physics",
+      "Multi-wave escalation with accelerating alien speed",
+      "Player defense cannon with triple life meter",
+      "Touch control buttons optimized for mobile gameplay"
+    ],
+    "howToPlay": [
+      "Steer your cannon left and right using arrow keys or on-screen buttons",
+      "Press Spacebar or Fire button to shoot plasma projectiles",
+      "Dodge incoming red laser bombs dropped by the alien squadron",
+      "Eliminate every invader in the wave before they reach the ground"
+    ],
+    "controls": [
+      {
+        "key": "Left / Right Arrow / A-D",
+        "action": "Move defense cannon"
+      },
+      {
+        "key": "Spacebar / Fire Button",
+        "action": "Fire laser projectile"
+      },
+      {
+        "key": "Touch Controls",
+        "action": "Mobile on-screen directional & fire buttons"
+      }
+    ],
+    "metaTitle": "Retro Space Invaders — Play Free Online Arcade Shooter | DevDrop",
+    "metaDescription": "Play Retro Space Invaders online for free in your browser. Defend Earth against descending alien fleets with classic arcade shooting action. Zero downloads.",
+    "faqs": [
+      {
+        "question": "Is Retro Space Invaders free to play?",
+        "answer": "Yes, it is 100% free with unlimited retries in any modern web browser."
+      },
+      {
+        "question": "Do the aliens move faster as their numbers dwindle?",
+        "answer": "Yes, just like the authentic classic arcade original, the fleet accelerates as fewer invaders remain."
+      },
+      {
+        "question": "Can I play with mobile touch controls?",
+        "answer": "Yes, responsive on-screen buttons let you move and fire effortlessly on smartphones and tablets."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Eliminate outer columns first to narrow the alien fleet's horizontal travel distance.",
+      "Stay in motion between shots to evade falling enemy laser bombs.",
+      "Target high-value top-row invaders early for maximum score multipliers."
+    ]
+  },
+  {
+    "slug": "mahjong-connect-deluxe",
+    "name": "Mahjong Connect Deluxe",
+    "tagline": "Link pairs of traditional tiles with two or fewer turns to clear the bamboo board",
+    "h1": "Play Mahjong Connect Online: Free Tile Matching Puzzle Game",
+    "genre": "Puzzle",
+    "description": "Match identical tiles using paths with no more than two 90-degree turns. Clear the grid and exercise your spatial pattern recognition.",
+    "longDescription": "Mahjong Connect Deluxe provides a classic tile-connecting experience. Link matching symbols across open perimeters and cleared interior avenues with crisp graphics, audio cues, and instant shuffle assistance directly in your browser.",
+    "techStack": [
+      "HTML5",
+      "CSS3",
+      "JavaScript",
+      "Web Audio API"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/mahjong-connect-deluxe",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/54_mahjong_connect.html",
+    "badge": "Zen Puzzle",
+    "releaseYear": 2026,
+    "rating": 4.8,
+    "ratingCount": 2900,
+    "features": [
+      "Authentic two-turn connecting pathfinding algorithm",
+      "Traditional oriental tile motifs and crisp typography",
+      "Instant board shuffle helper to resolve deadlocks",
+      "100% client-side zero-download browser play"
+    ],
+    "howToPlay": [
+      "Click or tap an unblocked tile to highlight it",
+      "Select a matching tile that can connect with 0, 1, or 2 ninety-degree corners",
+      "Paths can travel through already-cleared empty tiles or around the outside board perimeter",
+      "Clear all pairs from the board to achieve complete victory"
+    ],
+    "controls": [
+      {
+        "key": "Left Click",
+        "action": "Select and connect matching tiles"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Direct mobile tap to link pairs"
+      }
+    ],
+    "metaTitle": "Mahjong Connect Deluxe — Play Free Online Tile Puzzle | DevDrop",
+    "metaDescription": "Play Mahjong Connect Deluxe online for free in your browser. Connect identical tiles with two or fewer turns to clear the board. No downloads required.",
+    "faqs": [
+      {
+        "question": "Is Mahjong Connect free on DevDrop?",
+        "answer": "Yes, it is completely free with no registration or installations."
+      },
+      {
+        "question": "Can paths wrap around the outside of the board?",
+        "answer": "Yes! Connecting lines can travel freely through the open exterior boundary around the tile grid."
+      },
+      {
+        "question": "What does the Shuffle button do?",
+        "answer": "If you cannot spot any remaining pairs, use Shuffle to rearrange all active tiles on the board."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Clear exterior perimeter pairs first to open wide conduit channels into the board center.",
+      "Look for directly adjacent identical tiles for instant zero-turn clears.",
+      "Scan row by row rather than letting your eyes wander aimlessly across the board."
+    ]
+  },
+  {
+    "slug": "pinball-classic-arcade",
+    "name": "Pinball Classic Arcade",
+    "tagline": "Launch the silver ball, trigger high-score bumpers, and flip your way to arcade glory",
+    "h1": "Play Pinball Classic Online: Free Arcade Flipper Browser Game",
+    "genre": "Arcade",
+    "description": "Experience genuine retro pinball physics in your browser. Trigger glowing bumpers, control dual flippers, and rack up high-score combos.",
+    "longDescription": "Pinball Classic Arcade features responsive kinetic physics, dual responsive flippers, high-velocity bumpers, and spring launcher mechanics. Enjoy vintage arcade entertainment with zero downloads directly inside your browser window.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "Physics Engine"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/pinball-classic-arcade",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/55_pinball_classic.html",
+    "badge": "Arcade Physics",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 3600,
+    "features": [
+      "Responsive dual flippers with momentum transfer",
+      "Dynamic high-bounce bumper targets with audio chimes",
+      "Plunger launch lane with variable release force",
+      "Dedicated mobile flipper buttons for comfortable two-thumb play"
+    ],
+    "howToPlay": [
+      "Launch the ball up the right runway using Spacebar or the Launch button",
+      "Use Left and Right flipper controls to keep the ball from falling down the center drain",
+      "Aim the ball at glowing bumpers and side cushions to rack up massive points",
+      "Survive across 3 balls to establish your record score"
+    ],
+    "controls": [
+      {
+        "key": "Z / Left Arrow",
+        "action": "Trigger Left Flipper"
+      },
+      {
+        "key": "/ or Right Arrow",
+        "action": "Trigger Right Flipper"
+      },
+      {
+        "key": "Spacebar",
+        "action": "Launch new ball"
+      },
+      {
+        "key": "Mobile Buttons",
+        "action": "Two-thumb responsive on-screen flipper controls"
+      }
+    ],
+    "metaTitle": "Pinball Classic Arcade — Play Free Online Pinball Game | DevDrop",
+    "metaDescription": "Play Pinball Classic Arcade online for free in your browser. Realistic flipper physics, neon bumpers, and high-score combos with zero installs.",
+    "faqs": [
+      {
+        "question": "Is Pinball Classic free to play on DevDrop?",
+        "answer": "Yes, it is 100% free with instant restart and zero software installation."
+      },
+      {
+        "question": "How do I play on a smartphone?",
+        "answer": "Large on-screen Left and Right buttons are placed at the bottom for easy two-thumb arcade control."
+      },
+      {
+        "question": "How many balls do I get per game?",
+        "answer": "You are given 3 balls per session to rack up your highest possible score."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Do not flip frantically; hold the flipper up to trap the ball and aim your next shot.",
+      "Aim for the high-value center bumper to trigger rapid ricochet score cascades.",
+      "Flick the ball from the tip of the flipper for maximum upward velocity."
+    ]
+  },
+  {
+    "slug": "mini-tower-defense",
+    "name": "Mini Tower Defense",
+    "tagline": "Deploy defensive towers along winding paths to stop invading creep waves",
+    "h1": "Play Mini Tower Defense Online: Free Strategy Browser Game",
+    "genre": "Strategy",
+    "description": "Place dart and cannon defense towers strategically along winding roads to eliminate enemy waves and protect your base.",
+    "longDescription": "Mini Tower Defense delivers fast-paced tactical gameplay where path positioning and economy management determine survival. Upgrade your arsenal, counter accelerating enemy waves, and safeguard your territory directly in your web browser.",
+    "techStack": [
+      "HTML5 Canvas",
+      "JavaScript",
+      "Web Audio API",
+      "Strategy Engine"
+    ],
+    "license": "Free-to-Play Web Edition",
+    "githubUrl": "https://github.com/Ridam-112/devdrop",
+    "liveDemoUrl": "https://devdrop.online/games/mini-tower-defense",
+    "isPlayableDirectly": true,
+    "builtInGameType": "iframe",
+    "iframeUrl": "/games/56_mini_tower_defense.html",
+    "badge": "Tactical Defense",
+    "releaseYear": 2026,
+    "rating": 4.9,
+    "ratingCount": 3750,
+    "features": [
+      "Strategic pathfinding waypoint system",
+      "Multiple tower archetypes (Rapid Dart & Heavy Cannon)",
+      "Creep waves with escalating health and bounties",
+      "Real-time gold economy and life meter tracking"
+    ],
+    "howToPlay": [
+      "Select your preferred tower type (Dart or Cannon) using the action buttons",
+      "Tap anywhere on the field to construct a tower within budget",
+      "Towers automatically target and fire at incoming enemy creeps in their range",
+      "Earn gold bounties from defeated enemies to finance additional defenses"
+    ],
+    "controls": [
+      {
+        "key": "Left Click / Tap",
+        "action": "Select tower type and place on field"
+      },
+      {
+        "key": "Touch / Tap",
+        "action": "Full mobile touchscreen placement support"
+      }
+    ],
+    "metaTitle": "Mini Tower Defense — Play Free Online Strategy Game | DevDrop",
+    "metaDescription": "Play Mini Tower Defense online for free in your browser. Build strategic towers, defend against enemy creep waves, and manage your gold economy. Zero downloads.",
+    "faqs": [
+      {
+        "question": "Is Mini Tower Defense free on DevDrop?",
+        "answer": "Yes, it is 100% free with unlimited wave challenges and zero signup."
+      },
+      {
+        "question": "What is the difference between Dart and Cannon towers?",
+        "answer": "Dart towers fire rapidly with longer range, while Cannon towers deal heavy burst damage to armored creeps."
+      },
+      {
+        "question": "Where is the best place to build towers?",
+        "answer": "Build towers inside hairpin road corners where their firing radius covers multiple segments of the path."
+      }
+    ],
+    "indexable": true,
+    "author": "DevDrop Studio",
+    "lastmod": "2026-11-14",
+    "tips": [
+      "Place towers at sharp corners to maximize the time enemies spend inside your firing range.",
+      "Balance fast dart towers to pick off scouts with heavy cannons for high-health waves.",
+      "Save extra gold between waves to construct reinforcements immediately when needed."
+    ]
   }
 ];
 

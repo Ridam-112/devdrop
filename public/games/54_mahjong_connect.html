@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Mahjong Connect Deluxe</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: system-ui, sans-serif; }
+    body { background: #111827; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; }
+    .game-card { width: 100%; max-width: 460px; background: #1f2937; border: 2px solid #f59e0b44; border-radius: 20px; padding: 14px; text-align: center; box-shadow: 0 10px 40px rgba(245,158,11,0.15); }
+    .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-family: monospace; font-size: 14px; color: #f59e0b; }
+    .btn { background: #f59e0b; color: #000; border: none; padding: 6px 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+    #board { display: grid; gap: 4px; background: #0f172a; padding: 8px; border-radius: 12px; border: 1px solid #374151; justify-content: center; touch-action: manipulation; }
+    .tile { width: 38px; height: 46px; background: #f8fafc; color: #1e293b; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; cursor: pointer; border: 2px solid #cbd5e1; box-shadow: 0 3px 0 #94a3b8; transition: transform 0.1s, border-color 0.1s; }
+    .tile.selected { border-color: #f59e0b; transform: scale(1.08); box-shadow: 0 0 10px #f59e0b; background: #fef3c7; }
+    .tile.empty { visibility: hidden; pointer-events: none; }
+    .info { font-size: 11px; color: #9ca3af; margin-top: 10px; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="game-card">
+    <div class="hud">
+      <div>SCORE: <span id="score">0</span></div>
+      <div>TILES: <span id="tiles">0</span></div>
+      <button class="btn" onclick="initGame()">Shuffle / Restart</button>
+    </div>
+    <div id="board"></div>
+    <div class="info">Connect pairs of identical tiles with 2 or fewer turns! Clear the board to win.</div>
+  </div>
+  <script>
+    
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSound(type) {
+    try {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      if (type === 'click' || type === 'jump') {
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(750, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === 'pop') {
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'win') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0.15, now + i*0.1);
+          g.gain.linearRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+          o.start(now + i*0.1); o.stop(now + i*0.1 + 0.25);
+        });
+      } else if (type === 'hit' || type === 'lose') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(70, now + 0.25);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now); osc.stop(now + 0.25);
+      } else if (type === 'score' || type === 'shoot') {
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.06);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.06);
+        osc.start(now); osc.stop(now + 0.06);
+      }
+    } catch(e) {}
+  }
+
+    const ROWS = 6, COLS = 8;
+    const ICONS = ['🀄', '🀅', '🀆', '🌸', '🎋', '🪙', '🎴', '🐉', '🏮', '🥢'];
+    let grid = [];
+    let selected = null;
+    let score = 0;
+
+    function initGame() {
+      selected = null;
+      score = 0;
+      document.getElementById('score').innerText = '0';
+      const totalPairs = (ROWS * COLS) / 2;
+      let pool = [];
+      for (let i = 0; i < totalPairs; i++) {
+        const icon = ICONS[i % ICONS.length];
+        pool.push(icon, icon);
+      }
+      // Shuffle
+      for (let i = pool.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      grid = [];
+      for (let r = 0; r < ROWS; r++) {
+        grid.push(pool.splice(0, COLS));
+      }
+      render();
+      playSound('pop');
+    }
+
+    function render() {
+      const b = document.getElementById('board');
+      b.style.gridTemplateColumns = `repeat(${COLS}, 38px)`;
+      b.innerHTML = '';
+      let activeCount = 0;
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const div = document.createElement('div');
+          const val = grid[r][c];
+          if (!val) {
+            div.className = 'tile empty';
+          } else {
+            activeCount++;
+            div.className = 'tile' + (selected && selected.r === r && selected.c === c ? ' selected' : '');
+            div.innerText = val;
+            div.addEventListener('click', () => handleClick(r, c));
+          }
+          b.appendChild(div);
+        }
+      }
+      document.getElementById('tiles').innerText = activeCount;
+      if (activeCount === 0) {
+        playSound('win');
+        setTimeout(() => alert('Congratulations! Board Cleared!'), 200);
+      }
+    }
+
+    // Path check: 0, 1, or 2 turns in grid + virtual perimeter
+    function canConnect(p1, p2) {
+      if (grid[p1.r][p1.c] !== grid[p2.r][p2.c]) return false;
+      // Direct straight line
+      if (isLineClear(p1, p2)) return true;
+      // 1 turn
+      const c1 = { r: p1.r, c: p2.c };
+      const c2 = { r: p2.r, c: p1.c };
+      if (!grid[c1.r][c1.c] && isLineClear(p1, c1) && isLineClear(c1, p2)) return true;
+      if (!grid[c2.r][c2.c] && isLineClear(p1, c2) && isLineClear(c2, p2)) return true;
+      // 2 turns (boundary or open spaces)
+      for (let r = -1; r <= ROWS; r++) {
+        const k1 = { r, c: p1.c };
+        const k2 = { r, c: p2.c };
+        if (isEmptyOrOut(k1) && isEmptyOrOut(k2) && isLineClear(p1, k1) && isLineClear(k1, k2) && isLineClear(k2, p2)) return true;
+      }
+      for (let c = -1; c <= COLS; c++) {
+        const k1 = { r: p1.r, c };
+        const k2 = { r: p2.r, c };
+        if (isEmptyOrOut(k1) && isEmptyOrOut(k2) && isLineClear(p1, k1) && isLineClear(k1, k2) && isLineClear(k2, p2)) return true;
+      }
+      return false;
+    }
+    function isEmptyOrOut(p) {
+      if (p.r < 0 || p.r >= ROWS || p.c < 0 || p.c >= COLS) return true;
+      return !grid[p.r][p.c];
+    }
+    function isLineClear(p1, p2) {
+      if (p1.r === p2.r) {
+        const minC = Math.min(p1.c, p2.c);
+        const maxC = Math.max(p1.c, p2.c);
+        for (let c = minC + 1; c < maxC; c++) {
+          if (!isEmptyOrOut({ r: p1.r, c })) return false;
+        }
+        return true;
+      }
+      if (p1.c === p2.c) {
+        const minR = Math.min(p1.r, p2.r);
+        const maxR = Math.max(p1.r, p2.r);
+        for (let r = minR + 1; r < maxR; r++) {
+          if (!isEmptyOrOut({ r, c: p1.c })) return false;
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function handleClick(r, c) {
+      if (!grid[r][c]) return;
+      if (!selected) {
+        selected = { r, c };
+        playSound('click');
+        render();
+      } else if (selected.r === r && selected.c === c) {
+        selected = null;
+        render();
+      } else {
+        if (canConnect(selected, { r, c })) {
+          grid[selected.r][selected.c] = null;
+          grid[r][c] = null;
+          selected = null;
+          score += 20;
+          document.getElementById('score').innerText = score;
+          playSound('score');
+          render();
+        } else {
+          selected = { r, c };
+          playSound('hit');
+          render();
+        }
+      }
+    }
+    initGame();
+  </script>
+</body>
+</html>

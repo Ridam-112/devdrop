@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Water Sort Color Puzzle</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: system-ui, sans-serif; }
+    body { background: #0f172a; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; }
+    .container { width: 100%; max-width: 480px; background: #1e293b; border: 2px solid #38bdf833; border-radius: 24px; padding: 18px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+    .hud { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; font-family: monospace; }
+    .badge { background: #38bdf822; color: #38bdf8; border: 1px solid #38bdf855; padding: 6px 14px; border-radius: 10px; font-size: 14px; font-weight: bold; }
+    .btn { background: #38bdf8; color: #000; border: none; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; font-family: monospace; }
+    .tubes-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px; margin: 20px 0; min-height: 240px; align-items: flex-end; }
+    .tube { width: 50px; height: 180px; border: 3px solid #e2e8f0; border-top: none; border-radius: 0 0 25px 25px; display: flex; flex-direction: column-reverse; overflow: hidden; background: rgba(255,255,255,0.05); cursor: pointer; transition: transform 0.2s, border-color 0.2s; position: relative; }
+    .tube.selected { transform: translateY(-20px); border-color: #38bdf8; box-shadow: 0 0 15px rgba(56,189,248,0.5); }
+    .segment { width: 100%; height: 25%; transition: height 0.2s; }
+    .instructions { font-size: 12px; color: #94a3b8; font-family: monospace; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hud">
+      <div class="badge">LEVEL: <span id="lvl">1</span></div>
+      <button class="btn" onclick="restartLevel()">Restart</button>
+    </div>
+    <div class="tubes-grid" id="tubes-container"></div>
+    <div class="instructions">Tap a tube to select, then tap another tube to pour water! Group matching colors together.</div>
+  </div>
+  <script>
+    
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSound(type) {
+    try {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      if (type === 'click') {
+        osc.frequency.setValueAtTime(600, now);
+        osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.05);
+        osc.start(now); osc.stop(now + 0.05);
+      } else if (type === 'pop') {
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'win') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0.15, now + i*0.1);
+          g.gain.linearRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+          o.start(now + i*0.1); o.stop(now + i*0.1 + 0.25);
+        });
+      } else if (type === 'hit' || type === 'lose') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(70, now + 0.25);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now); osc.stop(now + 0.25);
+      } else if (type === 'score' || type === 'coin') {
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.exponentialRampToValueAtTime(1320, now + 0.08);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      }
+    } catch(e) {}
+  }
+
+    const COLORS = ['#ef4444', '#3b82f6', '#22c55e', '#eab308', '#a855f7', '#ec4899'];
+    let level = 1;
+    let tubes = [];
+    let selectedIdx = null;
+
+    function initLevel(lvl) {
+      selectedIdx = null;
+      document.getElementById('lvl').innerText = lvl;
+      const numColors = Math.min(6, 2 + lvl);
+      const activeColors = COLORS.slice(0, numColors);
+      let liquids = [];
+      activeColors.forEach(c => {
+        for (let i = 0; i < 4; i++) liquids.push(c);
+      });
+      // Shuffle
+      for (let i = liquids.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [liquids[i], liquids[j]] = [liquids[j], liquids[i]];
+      }
+      tubes = [];
+      for (let i = 0; i < numColors; i++) {
+        tubes.push(liquids.splice(0, 4));
+      }
+      // Add 2 empty tubes
+      tubes.push([]);
+      tubes.push([]);
+      render();
+      playSound('pop');
+    }
+    function restartLevel() {
+      initLevel(level);
+    }
+    function render() {
+      const container = document.getElementById('tubes-container');
+      container.innerHTML = '';
+      tubes.forEach((t, i) => {
+        const div = document.createElement('div');
+        div.className = 'tube' + (selectedIdx === i ? ' selected' : '');
+        t.forEach(color => {
+          const seg = document.createElement('div');
+          seg.className = 'segment';
+          seg.style.backgroundColor = color;
+          div.appendChild(seg);
+        });
+        div.addEventListener('click', () => handleTubeClick(i));
+        container.appendChild(div);
+      });
+    }
+    function handleTubeClick(idx) {
+      if (selectedIdx === null) {
+        if (tubes[idx].length > 0) {
+          selectedIdx = idx;
+          playSound('click');
+          render();
+        }
+      } else if (selectedIdx === idx) {
+        selectedIdx = null;
+        render();
+      } else {
+        pour(selectedIdx, idx);
+      }
+    }
+    function pour(from, to) {
+      const src = tubes[from];
+      const dest = tubes[to];
+      if (src.length === 0 || dest.length >= 4) {
+        selectedIdx = null;
+        render();
+        return;
+      }
+      const color = src[src.length - 1];
+      if (dest.length === 0 || dest[dest.length - 1] === color) {
+        while (src.length > 0 && src[src.length - 1] === color && dest.length < 4) {
+          dest.push(src.pop());
+        }
+        playSound('score');
+        selectedIdx = null;
+        render();
+        checkWin();
+      } else {
+        playSound('hit');
+        selectedIdx = null;
+        render();
+      }
+    }
+    function checkWin() {
+      const won = tubes.every(t => t.length === 0 || (t.length === 4 && t.every(c => c === t[0])));
+      if (won) {
+        playSound('win');
+        setTimeout(() => {
+          level++;
+          initLevel(level);
+        }, 900);
+      }
+    }
+    initLevel(1);
+  </script>
+</body>
+</html>

@@ -20,14 +20,14 @@ import { SITE_URL } from "@/lib/constants";
 export const metadata: Metadata = {
   title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
   description:
-    "Play 46 free HTML5 and 3D browser games with zero downloads. Enjoy 3D flight simulators, retro arcade classics, sports games, and puzzles directly in your browser.",
+    "Play 56 free HTML5 and 3D browser games with zero downloads. Enjoy 3D flight simulators, retro arcade classics, sports games, and puzzles directly in your browser.",
   alternates: {
     canonical: `${SITE_URL}/games`,
   },
   openGraph: {
     title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play 46 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
+      "Play 56 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
     url: `${SITE_URL}/games`,
     siteName: "DevDrop",
     locale: "en_US",
@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Play Free HTML5 & 3D Browser Games Online | DevDrop",
     description:
-      "Play 46 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
+      "Play 56 free browser games online with zero downloads. Explore 3D flight simulators, 3D racers, sports challenges, and classic arcade titles.",
   },
 };
 
@@ -127,13 +127,13 @@ export default function GamesHubPage() {
         "@type": "Question",
         name: "Can I play these games on mobile phones and tablets?",
         answer:
-          "Yes! All 46 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.",
+          "Yes! All 56 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.",
       },
       {
         "@type": "Question",
         name: "Do I need to sign up or create an account?",
         answer:
-          "No registration is required. All 46 games are completely free and immediately playable with high scores saved directly to your local browser storage.",
+          "No registration is required. All 56 games are completely free and immediately playable with high scores saved directly to your local browser storage.",
       },
     ],
   };
@@ -188,7 +188,7 @@ export default function GamesHubPage() {
         {/* Front-loaded self-contained answer block (GEO / Claude-SEO standard) */}
         <div className="p-4 sm:p-5 rounded-2xl bg-cyber-card/60 border border-cyber-borderSubtle text-slate-300 font-sans text-sm sm:text-base leading-relaxed max-w-4xl backdrop-blur-md">
           <p>
-            Experience our curated collection of <strong>46 free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, Three.js, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, sports games, and puzzles with instant client-side execution.
+            Experience our curated collection of <strong>56 free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, Three.js, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, sports games, and puzzles with instant client-side execution.
           </p>
         </div>
 
@@ -332,7 +332,7 @@ export default function GamesHubPage() {
                 Can I play these games on mobile phones and tablets?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                Yes! All 46 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.
+                Yes! All 56 games are fully optimized for touchscreens with responsive controls, adaptive viewports, and smooth 60 FPS graphics on iPhone, iPad, and Android devices.
               </p>
             </div>
 
@@ -341,7 +341,7 @@ export default function GamesHubPage() {
                 Do I need to sign up or create an account?
               </h3>
               <p className="text-xs text-cyber-muted font-sans leading-relaxed">
-                No registration is required. All 46 games are completely free and immediately playable with high scores saved directly to your local browser storage.
+                No registration is required. All 56 games are completely free and immediately playable with high scores saved directly to your local browser storage.
               </p>
             </div>
           </div>

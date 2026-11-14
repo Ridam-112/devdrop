@@ -230,7 +230,7 @@ export const GamesClient: React.FC = () => {
               <span>DevDrop Browser Games Directory</span>
             </h2>
             <p className="text-xs sm:text-sm text-cyber-muted font-mono mt-1">
-              46 original 3D &amp; HTML5 games built with Canvas, WebGL &amp; Three.js.
+              56 original 3D &amp; HTML5 games built with Canvas, WebGL &amp; Three.js.
             </p>
           </div>
         </div>

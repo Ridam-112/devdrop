@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Pinball Classic Arcade</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; font-family: monospace; }
+    body { background: #070913; color: #fff; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; touch-action: none; }
+    .game-card { width: 100%; max-width: 400px; background: #0e1322; border: 2px solid #ec489944; border-radius: 20px; padding: 14px; text-align: center; box-shadow: 0 10px 40px rgba(236,72,153,0.15); }
+    canvas { background: #04060c; border-radius: 12px; border: 2px solid #1f293d; display: block; margin: 0 auto; max-width: 100%; height: auto; }
+    .hud { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: #ec4899; font-weight: bold; }
+    .controls { display: flex; gap: 8px; justify-content: space-between; margin-top: 10px; }
+    .f-btn { background: #1f293d; color: #fff; border: 1px solid #ec489955; border-radius: 8px; padding: 12px 20px; font-size: 16px; cursor: pointer; flex: 1; }
+    .f-btn:active { background: #ec4899; color: #000; }
+    .info { font-size: 11px; color: #64748b; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div class="game-card">
+    <div class="hud">
+      <div>SCORE: <span id="score">0</span></div>
+      <div>BALLS: <span id="balls">3</span></div>
+    </div>
+    <canvas id="c" width="360" height="520"></canvas>
+    <div class="controls">
+      <button class="f-btn" id="b-left">◀ Left Flipper</button>
+      <button class="f-btn" id="b-launch" style="background:#ec489933;border-color:#ec4899">🚀 Launch</button>
+      <button class="f-btn" id="b-right">Right Flipper ▶</button>
+    </div>
+    <div class="info">Desktop: Z/Left Arrow for Left Flipper, / or Right Arrow for Right Flipper, Space to Launch</div>
+  </div>
+  <script>
+    
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+  function getAudio() {
+    if (!audioCtx) audioCtx = new AudioCtx();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+  }
+  function playSound(type) {
+    try {
+      const ctx = getAudio();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      const now = ctx.currentTime;
+      if (type === 'click' || type === 'jump') {
+        osc.frequency.setValueAtTime(450, now);
+        osc.frequency.exponentialRampToValueAtTime(750, now + 0.08);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.08);
+        osc.start(now); osc.stop(now + 0.08);
+      } else if (type === 'pop') {
+        osc.frequency.setValueAtTime(400, now);
+        osc.frequency.exponentialRampToValueAtTime(900, now + 0.1);
+        gain.gain.setValueAtTime(0.2, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.1);
+        osc.start(now); osc.stop(now + 0.1);
+      } else if (type === 'win') {
+        [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.connect(g); g.connect(ctx.destination);
+          o.frequency.value = freq;
+          g.gain.setValueAtTime(0.15, now + i*0.1);
+          g.gain.linearRampToValueAtTime(0.01, now + i*0.1 + 0.2);
+          o.start(now + i*0.1); o.stop(now + i*0.1 + 0.25);
+        });
+      } else if (type === 'hit' || type === 'lose') {
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(250, now);
+        osc.frequency.exponentialRampToValueAtTime(70, now + 0.25);
+        gain.gain.setValueAtTime(0.25, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.25);
+        osc.start(now); osc.stop(now + 0.25);
+      } else if (type === 'score' || type === 'shoot') {
+        osc.frequency.setValueAtTime(800, now);
+        osc.frequency.exponentialRampToValueAtTime(1200, now + 0.06);
+        gain.gain.setValueAtTime(0.15, now);
+        gain.gain.linearRampToValueAtTime(0.01, now + 0.06);
+        osc.start(now); osc.stop(now + 0.06);
+      }
+    } catch(e) {}
+  }
+
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let score = 0, balls = 3;
+    let ball = { x: 335, y: 450, vx: 0, vy: 0, r: 8, inPlay: false };
+    let leftFlipper = { active: false };
+    let rightFlipper = { active: false };
+    const bumpers = [
+      { x: 120, y: 140, r: 24, pts: 100, color: '#f43f5e' },
+      { x: 220, y: 140, r: 24, pts: 100, color: '#38bdf8' },
+      { x: 170, y: 220, r: 26, pts: 250, color: '#eab308' }
+    ];
+
+    function launchBall() {
+      if (!ball.inPlay && balls > 0) {
+        ball.x = 335;
+        ball.y = 450;
+        ball.vx = -1.5;
+        ball.vy = -18;
+        ball.inPlay = true;
+        playSound('pop');
+      }
+    }
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'z' || e.key === 'ArrowLeft') leftFlipper.active = true;
+      if (e.key === '/' || e.key === 'ArrowRight') rightFlipper.active = true;
+      if (e.code === 'Space') { e.preventDefault(); launchBall(); }
+    });
+    window.addEventListener('keyup', (e) => {
+      if (e.key === 'z' || e.key === 'ArrowLeft') leftFlipper.active = false;
+      if (e.key === '/' || e.key === 'ArrowRight') rightFlipper.active = false;
+    });
+
+    document.getElementById('b-left').addEventListener('pointerdown', (e) => { e.preventDefault(); leftFlipper.active = true; });
+    document.getElementById('b-left').addEventListener('pointerup', () => leftFlipper.active = false);
+    document.getElementById('b-right').addEventListener('pointerdown', (e) => { e.preventDefault(); rightFlipper.active = true; });
+    document.getElementById('b-right').addEventListener('pointerup', () => rightFlipper.active = false);
+    document.getElementById('b-launch').addEventListener('pointerdown', (e) => { e.preventDefault(); launchBall(); });
+
+    function update() {
+      if (!ball.inPlay) return;
+      ball.vy += 0.32; // gravity
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // Outer wall bounces
+      if (ball.x - ball.r < 15) { ball.x = 15 + ball.r; ball.vx *= -0.75; playSound('click'); }
+      if (ball.x + ball.r > 345) { ball.x = 345 - ball.r; ball.vx *= -0.75; playSound('click'); }
+      if (ball.y - ball.r < 15) { ball.y = 15 + ball.r; ball.vy *= -0.75; playSound('click'); }
+
+      // Bumper bounces
+      bumpers.forEach(b => {
+        const dx = ball.x - b.x;
+        const dy = ball.y - b.y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < ball.r + b.r) {
+          const angle = Math.atan2(dy, dx);
+          ball.vx = Math.cos(angle) * 11;
+          ball.vy = Math.sin(angle) * 11;
+          score += b.pts;
+          document.getElementById('score').innerText = score;
+          playSound('score');
+        }
+      });
+
+      // Flipper collisions (Left: 90,440 to 150,470 | Right: 250,440 to 190,470)
+      if (ball.y > 420 && ball.y < 475) {
+        if (ball.x > 80 && ball.x < 170) {
+          ball.vy = leftFlipper.active ? -14 : -7;
+          ball.vx = (ball.x - 120) * 0.12;
+          playSound('jump');
+        } else if (ball.x > 170 && ball.x < 260) {
+          ball.vy = rightFlipper.active ? -14 : -7;
+          ball.vx = (ball.x - 220) * 0.12;
+          playSound('jump');
+        }
+      }
+
+      // Ball drain
+      if (ball.y > 530) {
+        ball.inPlay = false;
+        balls--;
+        document.getElementById('balls').innerText = balls;
+        playSound('hit');
+      }
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, 360, 520);
+      // Outer border track
+      ctx.strokeStyle = '#334155';
+      ctx.lineWidth = 4;
+      ctx.strokeRect(10, 10, 340, 500);
+
+      // Launcher lane
+      ctx.beginPath(); ctx.moveTo(315, 200); ctx.lineTo(315, 510); ctx.stroke();
+
+      // Draw bumpers
+      bumpers.forEach(b => {
+        ctx.fillStyle = b.color;
+        ctx.beginPath(); ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2); ctx.fill();
+        ctx.strokeStyle = '#fff'; ctx.lineWidth = 3; ctx.stroke();
+      });
+
+      // Draw Flippers
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = leftFlipper.active ? '#ec4899' : '#94a3b8';
+      ctx.beginPath();
+      ctx.moveTo(90, 440);
+      ctx.lineTo(150, leftFlipper.active ? 425 : 465);
+      ctx.stroke();
+
+      ctx.strokeStyle = rightFlipper.active ? '#ec4899' : '#94a3b8';
+      ctx.beginPath();
+      ctx.moveTo(250, 440);
+      ctx.lineTo(190, rightFlipper.active ? 425 : 465);
+      ctx.stroke();
+
+      // Draw Ball
+      ctx.fillStyle = '#f8fafc';
+      ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2); ctx.fill();
+      ctx.shadowBlur = 8; ctx.shadowColor = '#fff';
+    }
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+    loop();
+  </script>
+</body>
+</html>

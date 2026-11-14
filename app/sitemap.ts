@@ -63,7 +63,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(guide.publishedAt),
   }));
 
-  // Dynamic original game routes: 46 indexable games
+  // Dynamic original game routes: 56 indexable games
   const gameRoutes: MetadataRoute.Sitemap = OPEN_SOURCE_GAMES.filter(isGameIndexable).map((game) => ({
     url: `${SITE_URL}/games/${game.slug}`,
     lastModified: new Date(game.lastmod || "2026-11-14"),
