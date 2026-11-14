@@ -95,8 +95,8 @@ export default function HomePage() {
       {/* 1. HERO SECTION */}
       <section className="relative overflow-hidden pt-12 pb-14 md:pt-16 md:pb-20 border-b border-neutral-800">
         {/* Ambient lighting */}
-        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-purple-500/10 blur-[130px] rounded-full pointer-events-none" />
-        <div className="absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[300px] bg-emerald-500/10 blur-[120px] rounded-full pointer-events-none" />
+        <div className="hidden sm:block absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[350px] bg-purple-500/10 blur-[80px] rounded-full pointer-events-none" />
+        <div className="hidden sm:block absolute top-1/3 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[450px] h-[300px] bg-emerald-500/10 blur-[80px] rounded-full pointer-events-none" />
 
         <div className="max-w-5xl mx-auto px-4 sm:px-6 text-center relative z-10">
           {/* Trust Badge */}
@@ -269,39 +269,39 @@ export default function HomePage() {
       </section>
 
       {/* FEATURED GAME SPOTLIGHT: CHAOS SKIES 3D */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-neutral-950 via-purple-950/30 to-neutral-900 border-2 border-amber-500/40 p-6 sm:p-10 lg:p-12 shadow-2xl shadow-amber-500/10">
-          {/* Ambient decorative glow */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/10 rounded-full blur-[100px] pointer-events-none" />
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full isolate">
+        <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-slate-900 via-indigo-950/40 to-slate-900 border-2 border-amber-500/50 p-6 sm:p-10 lg:p-12 shadow-2xl shadow-amber-500/10">
+          {/* Ambient decorative glow using CSS radial gradients (zero GPU blur overhead, prevents mobile tile crash) */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(245,158,11,0.15),transparent_60%)] pointer-events-none" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.15),transparent_60%)] pointer-events-none" />
 
           <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
             <div className="flex-1 space-y-5 text-center lg:text-left">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-mono font-bold tracking-wide">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/15 border border-amber-500/30 text-amber-300 text-xs font-mono font-bold tracking-wide">
                 <Trophy className="w-4 h-4 text-amber-400" />
-                <span>FEATURED 3D BROWSER COMBAT SIMULATOR</span>
+                <span>FEATURED 3D BROWSER COMBAT</span>
               </div>
 
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white font-mono tracking-tight">
                 ✈ CHAOS SKIES 3D
               </h2>
 
-              <p className="text-sm sm:text-base text-neutral-300 font-sans leading-relaxed max-w-2xl">
-                A browser-based 3D fighter jet combat simulator built with Three.js. Pilot legendary jets — including the <strong>Sukhoi Su-30MKI</strong> and <strong>HAL Tejas Mk1</strong> — across Neon City, Desert Canyons, and Pacific Isles with high-performance 60 FPS physics directly in your browser with zero installs.
+              <p className="text-sm sm:text-base text-slate-200 font-sans leading-relaxed max-w-2xl">
+                A browser-based 3D fighter jet combat experience built with Three.js. Pilot legendary jets — including the <strong>Sukhoi Su-30MKI</strong> and <strong>HAL Tejas Mk1</strong> — across Neon City, Desert Canyons, and Pacific Isles with high-performance 60 FPS physics directly in your browser with zero installs.
               </p>
 
               {/* Highlights tags */}
               <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2 pt-1">
-                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-emerald-400">
+                <span className="px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-xs font-mono text-emerald-400">
                   ✓ Su-30MKI &amp; Tejas Mk1
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-cyan-400">
+                <span className="px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-xs font-mono text-cyan-400">
                   ✓ Homing Missiles &amp; Flares
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-purple-400">
+                <span className="px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-xs font-mono text-purple-400">
                   ✓ Mobile Joystick + PC Mouse
                 </span>
-                <span className="px-3 py-1 rounded-lg bg-neutral-900 border border-neutral-700 text-xs font-mono text-amber-400">
+                <span className="px-3 py-1 rounded-lg bg-slate-800/80 border border-slate-700 text-xs font-mono text-amber-400">
                   ✓ 60 FPS WebGL
                 </span>
               </div>
@@ -309,7 +309,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
                 <Link
                   href="/games/chaos-skies-3d"
-                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-black font-mono font-black text-sm uppercase tracking-wider hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-amber-500/20 hover:scale-105"
+                  className="w-full sm:w-auto px-8 py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-yellow-500 text-black font-mono font-black text-sm uppercase tracking-wider hover:opacity-95 transition-all flex items-center justify-center gap-2 shadow-xl shadow-amber-500/25 hover:scale-105 active:scale-95"
                 >
                   <Play className="w-4 h-4 fill-current" />
                   <span>PLAY CHAOS SKIES 3D NOW</span>
@@ -317,7 +317,7 @@ export default function HomePage() {
 
                 <Link
                   href="/games"
-                  className="w-full sm:w-auto px-6 py-4 rounded-xl bg-neutral-900/90 hover:bg-neutral-800 border border-neutral-700 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
+                  className="w-full sm:w-auto px-6 py-4 rounded-xl bg-slate-800/90 hover:bg-slate-700 border border-slate-600 text-white font-mono font-bold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2"
                 >
                   <Gamepad2 className="w-4 h-4 text-purple-400" />
                   <span>Browse All Browser Games</span>
@@ -329,9 +329,9 @@ export default function HomePage() {
             <div className="w-full lg:w-96 flex-shrink-0">
               <Link
                 href="/games/chaos-skies-3d"
-                className="group block relative rounded-2xl overflow-hidden border-2 border-amber-500/30 hover:border-amber-400 transition-all bg-neutral-950 p-6 text-center space-y-4 shadow-xl"
+                className="group block relative rounded-2xl overflow-hidden border-2 border-amber-500/40 hover:border-amber-400 transition-all bg-gradient-to-b from-slate-800/90 via-slate-900/90 to-slate-950/90 p-6 text-center space-y-4 shadow-xl shadow-black/40"
               >
-                <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 text-amber-400 flex items-center justify-center mx-auto text-4xl shadow-lg shadow-amber-500/10 group-hover:scale-110 transition-transform">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-amber-400/20 to-amber-600/10 border border-amber-500/40 text-amber-400 flex items-center justify-center mx-auto text-4xl shadow-lg shadow-amber-500/20 group-hover:scale-110 transition-transform">
                   ✈️
                 </div>
                 <div>
@@ -341,11 +341,11 @@ export default function HomePage() {
                   <h3 className="text-xl font-black text-white font-mono mt-1">
                     Chaos Skies 3D
                   </h3>
-                  <p className="text-xs text-neutral-400 font-sans mt-1">
+                  <p className="text-xs text-slate-300 font-sans mt-1">
                     Play instantly in Full 3D with 60 FPS flight dynamics
                   </p>
                 </div>
-                <div className="w-full py-2.5 rounded-lg bg-amber-400 text-black font-mono font-bold text-xs flex items-center justify-center gap-2 group-hover:bg-amber-300 transition-colors">
+                <div className="w-full py-2.5 rounded-lg bg-amber-400 text-black font-mono font-bold text-xs flex items-center justify-center gap-2 group-hover:bg-amber-300 transition-colors shadow-md shadow-amber-400/20">
                   <Play className="w-3.5 h-3.5 fill-current" />
                   <span>LAUNCH GAME</span>
                 </div>

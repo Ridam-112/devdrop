@@ -332,7 +332,7 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
 
       <div
         id={slotId}
-        className={`w-full flex justify-center items-center py-2 px-1 border border-neutral-800/60 rounded-xl bg-neutral-950/40 backdrop-blur-sm transition-colors duration-200 hover:border-cyan-500/20 ${getMinHeightClass()}`}
+        className={`w-full flex justify-center items-center py-2 px-1 border border-neutral-800/60 rounded-xl bg-neutral-900/60 transition-colors duration-200 hover:border-cyan-500/20 ${getMinHeightClass()}`}
       >
         {renderAdFormat()}
       </div>
