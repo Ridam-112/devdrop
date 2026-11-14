@@ -3,11 +3,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ExternalLink, Sparkles } from "lucide-react";
 
-export const ADSTERRA_SMARTLINK = "https://araplhn.org/4/2dc767af72284fa0e3453ab9103c1429";
+export const ADSTERRA_SMARTLINK = "https://asiafilm.org/4/afb750cc6ce803e2aa45d8e7ee8321b0";
 export const MONETAG_DIRECT_LINK = "https://uplcm.com/4/12244922";
 
-// Active primary direct link for maximum CPM
-export const PRIMARY_DIRECT_LINK = MONETAG_DIRECT_LINK;
+// Active primary direct link for maximum CPM (Adsterra Smartlink)
+export const PRIMARY_DIRECT_LINK = ADSTERRA_SMARTLINK;
 
 // Generic Adsterra Iframe Banner component
 interface AdsterraIframeProps {
