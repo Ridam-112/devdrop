@@ -139,7 +139,7 @@ export default function GamesHubPage() {
   };
 
   return (
-    <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <div className="w-full">
       {/* Structured Data Script Tags */}
       <script
         type="application/ld+json"
@@ -154,73 +154,16 @@ export default function GamesHubPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
 
-      {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="mb-6">
-        <ol className="flex items-center gap-2 text-xs font-mono text-cyber-muted">
-          <li>
-            <Link href="/" className="hover:text-cyber-green transition-colors">
-              Home
-            </Link>
-          </li>
-          <li>/</li>
-          <li className="text-white font-semibold">Browser Games</li>
-        </ol>
-      </nav>
+      {/* SEO H1 (visually hidden, screen-reader accessible) */}
+      <h1 className="sr-only">Play Free HTML5 &amp; 3D Browser Games Online – DevDrop</h1>
 
-      {/* Hero Header Section */}
-      <header className="mb-8 relative">
-        <div className="flex flex-wrap items-center gap-2 mb-3">
-          <span className="text-[10px] uppercase font-mono font-bold tracking-widest px-2.5 py-1 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-            Browser Gaming Hub
-          </span>
-          <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-dark text-cyber-muted border border-cyber-borderSubtle">
-            HTML5 Canvas &amp; WebGL 3D
-          </span>
-          <span className="text-[10px] uppercase font-mono tracking-wider px-2.5 py-1 rounded bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/30">
-            Zero Download Required
-          </span>
-        </div>
-
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black font-mono tracking-tight text-white mb-4 leading-tight">
-          Play Free HTML5 &amp; 3D Browser Games Online
-        </h1>
-
-        {/* Front-loaded self-contained answer block (GEO / Claude-SEO standard) */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-cyber-card/60 border border-cyber-borderSubtle text-slate-300 font-sans text-sm sm:text-base leading-relaxed max-w-4xl backdrop-blur-md">
-          <p>
-            Experience our curated collection of <strong>56 free online HTML5 and 3D browser games</strong> playable directly in your web browser. Built on modern web standards including <strong>HTML5 Canvas, WebGL, Three.js, and JavaScript</strong>, these games require zero software downloads, emulators, or accounts. Enjoy fast-paced arcade action, flight simulators, 3D racers, sports games, and puzzles with instant client-side execution.
-          </p>
-        </div>
-
-        {/* Quick Highlights Telemetry Row */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
-          <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
-            <div className="text-xl sm:text-2xl font-black text-cyber-green">100%</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Free to Play</div>
-          </div>
-          <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
-            <div className="text-xl sm:text-2xl font-black text-cyber-cyan">60 FPS</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Hardware Accelerated</div>
-          </div>
-          <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
-            <div className="text-xl sm:text-2xl font-black text-white">0 MB</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">No Downloads</div>
-          </div>
-          <div className="p-3 rounded-xl bg-cyber-dark/80 border border-cyber-borderSubtle text-center font-mono">
-            <div className="text-xl sm:text-2xl font-black text-cyber-green">HTML5</div>
-            <div className="text-[10px] text-cyber-muted uppercase mt-0.5">Open Web Standards</div>
-          </div>
-        </div>
-      </header>
-
-      {/* Top Banner Ad Slot */}
-      <AdvertisementSlot slotId="games-top-banner" format="banner" className="my-6" />
-
-      {/* Interactive Catalog and Instant Player */}
-      <GamesClient />
+      {/* Nixtendo-style Gaming Dashboard */}
+      <div className="max-w-[1400px] mx-auto px-3 sm:px-6 py-6">
+        <GamesClient />
+      </div>
 
       {/* Educational & Technical SEO Guide Section */}
-      <section className="mt-16 pt-12 border-t border-cyber-borderSubtle space-y-12">
+      <section className="mt-16 pt-12 border-t border-cyber-borderSubtle space-y-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Article: Why Open Source HTML5 Gaming Matters */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 space-y-4">
@@ -349,7 +292,9 @@ export default function GamesHubPage() {
       </section>
 
       {/* Bottom Ad Placement */}
-      <AdvertisementSlot slotId="games-bottom-banner" format="horizontal" className="mt-12" />
-    </article>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AdvertisementSlot slotId="games-bottom-banner" format="horizontal" className="mt-12" />
+      </div>
+    </div>
   );
 }
