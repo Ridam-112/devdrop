@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { ToolItem, CATEGORIES } from "@/lib/data/tools";
+import { ToolItem, CATEGORIES, isToolIndexable } from "@/lib/data/tools";
 import {
   Radar,
   Smartphone,
@@ -120,21 +120,33 @@ interface ToolCardProps {
 
 export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) => {
   const category = CATEGORIES.find((c) => c.slug === tool.categorySlug);
+  const isReal = isToolIndexable(tool);
 
   return (
     <article
       className={`group relative rounded-2xl bg-cyber-card/90 border transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden ${
         featured
           ? "border-cyber-green/40 shadow-neon-green/20 hover:border-cyber-green"
+          : isReal
+          ? "border-emerald-500/20 hover:border-emerald-400/60 hover:shadow-lg hover:shadow-emerald-500/10"
           : "border-cyber-borderSubtle hover:border-cyber-cyan/40 hover:shadow-neon-cyan/10"
       }`}
     >
-      {/* Subtle top indicator glow */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-cyber-green/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      {/* Top glow */}
+      <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${isReal ? "via-emerald-400/60" : "via-cyber-green/40"}`} />
+
+      {/* Real Tool badge */}
+      {isReal && (
+        <div className="absolute top-3 right-3">
+          <span className="text-[9px] font-bold uppercase tracking-widest px-1.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+            ✓ Real Tool
+          </span>
+        </div>
+      )}
 
       <div className="p-6 flex flex-col flex-1">
         <div className="flex items-start justify-between gap-3 mb-4">
-          <div className="w-12 h-12 rounded-xl bg-cyber-dark/80 border border-cyber-border flex items-center justify-center text-cyber-green group-hover:text-cyber-cyan transition-colors duration-200">
+          <div className={`w-12 h-12 rounded-xl bg-cyber-dark/80 border flex items-center justify-center transition-colors duration-200 ${isReal ? "border-emerald-500/30 text-emerald-400 group-hover:text-emerald-300" : "border-cyber-border text-cyber-green group-hover:text-cyber-cyan"}`}>
             {ICON_MAP[tool.iconName] || <ShieldCheck className="w-6 h-6" />}
           </div>
 
@@ -144,7 +156,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
                 {tool.badge}
               </span>
             )}
-            {category && (
+            {category && !isReal && (
               <span className="text-[11px] font-mono px-2 py-0.5 rounded-full bg-cyber-panel text-slate-300 border border-cyber-borderSubtle">
                 {category.name}
               </span>
@@ -152,8 +164,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
           </div>
         </div>
 
-        <h3 className="text-lg font-bold text-white group-hover:text-cyber-green transition-colors duration-200 mb-1.5 flex items-center gap-1.5">
-          {tool.name}
+        <h3 className={`text-lg font-bold text-white transition-colors duration-200 mb-1.5 flex items-center gap-1.5 ${isReal ? "group-hover:text-emerald-400" : "group-hover:text-cyber-green"}`}>
+          <Link
+            href={`/tools/${tool.slug}`}
+            target={isReal ? "_blank" : undefined}
+            rel={isReal ? "noopener noreferrer" : undefined}
+            className="hover:underline flex items-center gap-1.5"
+          >
+            <span>{tool.name}</span>
+            {isReal && <span className="text-xs text-emerald-400/80 font-normal">↗</span>}
+          </Link>
         </h3>
 
         <p className="text-xs font-mono text-cyber-cyan/80 mb-3">
@@ -166,14 +186,16 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
 
         <div className="pt-4 border-t border-cyber-borderSubtle/60 flex items-center justify-between mt-auto">
           <span className="text-xs font-mono text-emerald-400/90 font-medium">
-            Free • Client-Side
+            {isReal ? "🟢 Free · No Upload" : "Free · Client-Side"}
           </span>
           <Link
             href={`/tools/${tool.slug}`}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyber-green group-hover:text-cyber-cyan group-hover:translate-x-0.5 transition-all duration-200"
+            target={isReal ? "_blank" : undefined}
+            rel={isReal ? "noopener noreferrer" : undefined}
+            className={`inline-flex items-center gap-1.5 text-xs font-semibold group-hover:translate-x-0.5 transition-all duration-200 ${isReal ? "text-emerald-400 group-hover:text-emerald-300" : "text-cyber-green group-hover:text-cyber-cyan"}`}
             aria-label={`Launch ${tool.name}`}
           >
-            Launch Tool
+            {isReal ? "Open Tool ↗" : "Launch Tool"}
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>

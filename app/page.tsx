@@ -79,7 +79,9 @@ export default function HomePage() {
     "pdf-maker",
     "barcode-generator"
   ];
-  const topSelectedTools = TOOLS.filter((t) => topSelectedToolSlugs.includes(t.slug));
+  const topSelectedTools = topSelectedToolSlugs
+    .map((slug) => TOOLS.find((t) => t.slug === slug))
+    .filter((t): t is ToolItem => Boolean(t));
 
   // Top selected games (60 FPS, user favorites)
   const topSelectedGameSlugs = [
@@ -194,7 +196,7 @@ export default function HomePage() {
             <div className="space-y-4">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
-                  Top Utilities
+                  Top Utilities &bull; Real Tools
                 </span>
                 <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
                   <Star className="w-3.5 h-3.5 fill-current" /> 4.9 (High-Utility)
@@ -210,29 +212,71 @@ export default function HomePage() {
                   Web Tools &amp; Utilities
                 </h3>
                 <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  Portfolio Website Builder, Image Compressor, Background Remover, PDF Maker, QR Code &amp; Barcode Generators, and JSON Formatters.
+                  100% genuine client-side working utilities: Portfolio Builder, AI Background Remover, Image Compressor, PDF Maker, QR Code &amp; Barcode Generators.
                 </p>
               </div>
 
+              {/* Direct interactive links opening in new tabs with unique SEO pages */}
               <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Portfolio Builder
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Image Compress
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  PDF Tools
-                </span>
+                <Link
+                  href="/tools/portfolio-builder"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-emerald-300 hover:text-white hover:bg-emerald-600/30 border border-emerald-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  Portfolio Builder ↗
+                </Link>
+                <Link
+                  href="/tools/photo-bg-remover"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-pink-300 hover:text-white hover:bg-pink-600/30 border border-pink-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  BG Remover ↗
+                </Link>
+                <Link
+                  href="/tools/image-compressor"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-cyan-300 hover:text-white hover:bg-cyan-600/30 border border-cyan-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  Image Compress ↗
+                </Link>
+                <Link
+                  href="/tools/pdf-maker"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-amber-300 hover:text-white hover:bg-amber-600/30 border border-amber-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  PDF Maker ↗
+                </Link>
+                <Link
+                  href="/tools/qr-code-generator"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-emerald-300 hover:text-white hover:bg-emerald-600/30 border border-emerald-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  QR Code ↗
+                </Link>
+                <Link
+                  href="/tools/json-formatter"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-yellow-300 hover:text-white hover:bg-yellow-600/30 border border-yellow-500/40 transition-all flex items-center gap-1 font-bold"
+                >
+                  JSON Formatter ↗
+                </Link>
               </div>
             </div>
 
             <div className="mt-6 pt-4 border-t border-[#232c54]">
               <Link
                 href="/tools"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 group-hover:opacity-95 transition-all"
               >
-                <span>EXPLORE ALL TOOLS</span>
+                <span>EXPLORE ALL REAL TOOLS ↗</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -503,9 +547,11 @@ export default function HomePage() {
           </div>
           <Link
             href="/tools"
+            target="_blank"
+            rel="noopener noreferrer"
             className="text-xs font-mono font-bold text-emerald-400 hover:underline flex items-center gap-1"
           >
-            View all {INDEXABLE_TOOLS_LABEL} <ArrowRight className="w-3.5 h-3.5" />
+            View all {INDEXABLE_TOOLS_LABEL} ↗ <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
 
