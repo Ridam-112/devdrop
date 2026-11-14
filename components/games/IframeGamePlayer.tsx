@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Play, Maximize2, RotateCcw, Volume2, ShieldCheck, Sparkles } from "lucide-react";
+import { Play, Maximize2, Minimize2, RotateCcw, Volume2, ShieldCheck, Sparkles, Smartphone, X } from "lucide-react";
 
 interface IframeGamePlayerProps {
   iframeUrl: string;
@@ -29,15 +29,24 @@ export const IframeGamePlayer: React.FC<IframeGamePlayerProps> = ({
     if (!containerRef.current) return;
 
     try {
-      if (!document.fullscreenElement) {
-        await containerRef.current.requestFullscreen();
-        setIsFullscreen(true);
+      if (!document.fullscreenElement && !isFullscreen) {
+        if (containerRef.current.requestFullscreen) {
+          await containerRef.current.requestFullscreen().catch(() => {
+            // Fallback for mobile browsers restricting requestFullscreen inside iframe parent
+            setIsFullscreen(true);
+          });
+          setIsFullscreen(true);
+        } else {
+          setIsFullscreen(true);
+        }
       } else {
-        await document.exitFullscreen();
+        if (document.fullscreenElement) {
+          await document.exitFullscreen().catch(() => {});
+        }
         setIsFullscreen(false);
       }
-    } catch (err) {
-      console.warn("Fullscreen request error:", err);
+    } catch {
+      setIsFullscreen((prev) => !prev);
     }
   };
 
@@ -50,6 +59,16 @@ export const IframeGamePlayer: React.FC<IframeGamePlayerProps> = ({
       document.removeEventListener("fullscreenchange", onFullscreenChange);
     };
   }, []);
+
+  useEffect(() => {
+    if (isFullscreen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [isFullscreen]);
 
   const handleRestart = () => {
     if (iframeRef.current) {
@@ -69,19 +88,49 @@ export const IframeGamePlayer: React.FC<IframeGamePlayerProps> = ({
       ref={containerRef}
       className={`w-full flex flex-col items-center select-none transition-all ${
         isFullscreen
-          ? "fixed inset-0 z-50 bg-black flex items-center justify-center p-0 m-0"
+          ? "fixed inset-0 z-50 bg-black flex items-center justify-center p-0 m-0 w-screen h-screen"
           : "relative"
       }`}
     >
       {/* Game Viewport Container */}
       <div
+        style={{ touchAction: isPlaying ? "none" : "auto", transform: "translateZ(0)", willChange: "transform" }}
         className={`w-full bg-neutral-950 overflow-hidden relative shadow-2xl transition-all duration-300 ${
           isFullscreen
             ? "h-full w-full rounded-none border-0"
-            : "h-[540px] sm:h-[680px] md:h-[760px] lg:h-[820px] rounded-2xl border-2 border-cyber-green/40 shadow-cyber-green/10"
+            : "h-[72vh] min-h-[460px] max-h-[840px] sm:h-[680px] md:h-[760px] lg:h-[820px] rounded-2xl border-2 border-cyber-green/40 shadow-cyber-green/10"
         }`}
-        style={{ transform: "translateZ(0)", willChange: "transform" }}
       >
+        {/* Floating Quick Action Overlay when playing (instant mobile fullscreen & restart) */}
+        {isPlaying && (
+          <div className="absolute top-3 right-3 z-30 flex items-center gap-2">
+            <button
+              onClick={handleRestart}
+              title="Restart Game"
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-black/80 hover:bg-black border border-white/20 text-white font-mono text-xs backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5 shadow-lg"
+            >
+              <RotateCcw className="w-3.5 h-3.5 text-cyber-green" />
+              <span className="hidden sm:inline">Restart</span>
+            </button>
+            <button
+              onClick={handleToggleFullscreen}
+              title={isFullscreen ? "Exit Fullscreen" : "Fullscreen Mode"}
+              className="p-2 sm:px-3 sm:py-1.5 rounded-xl bg-black/80 hover:bg-black border border-cyber-green/50 text-white font-mono text-xs backdrop-blur-md transition-all active:scale-95 flex items-center gap-1.5 shadow-lg"
+            >
+              {isFullscreen ? (
+                <>
+                  <Minimize2 className="w-3.5 h-3.5 text-cyber-cyan" />
+                  <span className="hidden sm:inline">Exit Fullscreen</span>
+                </>
+              ) : (
+                <>
+                  <Maximize2 className="w-3.5 h-3.5 text-cyber-cyan" />
+                  <span className="hidden sm:inline">Fullscreen</span>
+                </>
+              )}
+            </button>
+          </div>
+        )}
         {!isPlaying ? (
           /* High-Performance Click-to-Play Cover: Saves 100% bandwidth until user actually plays */
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center p-6 text-center bg-gradient-to-b from-neutral-900/95 via-neutral-950/98 to-black">
@@ -131,7 +180,10 @@ export const IframeGamePlayer: React.FC<IframeGamePlayerProps> = ({
                 Procedural Web Audio
               </span>
               <span>•</span>
-              <span>Touch & Keyboard</span>
+              <span className="flex items-center gap-1">
+                <Smartphone className="w-3.5 h-3.5 text-cyber-cyan" />
+                Phone Touch & Responsive
+              </span>
             </div>
           </div>
         ) : (

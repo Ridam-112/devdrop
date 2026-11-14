@@ -80,6 +80,17 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
       window.addEventListener("keydown", onKeyDown);
       window.addEventListener("keyup", onKeyUp);
 
+      const onCanvasTouch = (e: TouchEvent) => {
+        if (e.touches[0]) {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = WIDTH / rect.width;
+          const touchX = (e.touches[0].clientX - rect.left) * scaleX;
+          player.x = Math.max(0, Math.min(WIDTH - player.w, touchX - player.w / 2));
+        }
+      };
+      canvas.addEventListener("touchmove", onCanvasTouch, { passive: true });
+      canvas.addEventListener("touchstart", onCanvasTouch, { passive: true });
+
       let spawnTimer = 0;
 
       const loop = () => {
@@ -252,6 +263,8 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
       return () => {
         window.removeEventListener("keydown", onKeyDown);
         window.removeEventListener("keyup", onKeyUp);
+        canvas.removeEventListener("touchmove", onCanvasTouch);
+        canvas.removeEventListener("touchstart", onCanvasTouch);
         cancelAnimationFrame(animationFrameId);
       };
     }
@@ -292,6 +305,34 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
       };
 
       window.addEventListener("keydown", onKeyDown);
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+      const onTouchStartSnake = (e: TouchEvent) => {
+        if (e.touches[0]) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }
+      };
+      const onTouchEndSnake = (e: TouchEvent) => {
+        if (!isPlaying || !e.changedTouches[0]) return;
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        const dy = e.changedTouches[0].clientY - touchStartY;
+        const minDistance = 20;
+        if (Math.abs(dx) > Math.abs(dy)) {
+          if (Math.abs(dx) > minDistance) {
+            if (dx > 0 && dir.x === 0) nextDir = { x: 1, y: 0 };
+            else if (dx < 0 && dir.x === 0) nextDir = { x: -1, y: 0 };
+          }
+        } else {
+          if (Math.abs(dy) > minDistance) {
+            if (dy > 0 && dir.y === 0) nextDir = { x: 0, y: 1 };
+            else if (dy < 0 && dir.y === 0) nextDir = { x: 0, y: -1 };
+          }
+        }
+      };
+      canvas.addEventListener("touchstart", onTouchStartSnake, { passive: true });
+      canvas.addEventListener("touchend", onTouchEndSnake, { passive: true });
 
       const loop = () => {
         if (!isPlaying || localGameOver) return;
@@ -399,6 +440,8 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
 
       return () => {
         window.removeEventListener("keydown", onKeyDown);
+        canvas.removeEventListener("touchstart", onTouchStartSnake);
+        canvas.removeEventListener("touchend", onTouchEndSnake);
         cancelAnimationFrame(animationFrameId);
       };
     }
@@ -449,6 +492,17 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
       window.addEventListener("keydown", onKeyDown);
       window.addEventListener("keyup", onKeyUp);
       canvas.addEventListener("mousemove", onMouseMove);
+
+      const onTouchMovePaddle = (e: TouchEvent) => {
+        if (e.touches[0]) {
+          const rect = canvas.getBoundingClientRect();
+          const scaleX = WIDTH / rect.width;
+          const touchX = (e.touches[0].clientX - rect.left) * scaleX;
+          paddle.x = Math.max(0, Math.min(WIDTH - paddle.w, touchX - paddle.w / 2));
+        }
+      };
+      canvas.addEventListener("touchmove", onTouchMovePaddle, { passive: true });
+      canvas.addEventListener("touchstart", onTouchMovePaddle, { passive: true });
 
       const loop = () => {
         if (!isPlaying || localGameOver) return;
@@ -550,6 +604,8 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
         window.removeEventListener("keydown", onKeyDown);
         window.removeEventListener("keyup", onKeyUp);
         canvas.removeEventListener("mousemove", onMouseMove);
+        canvas.removeEventListener("touchmove", onTouchMovePaddle);
+        canvas.removeEventListener("touchstart", onTouchMovePaddle);
         cancelAnimationFrame(animationFrameId);
       };
     }
@@ -695,10 +751,25 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
     setIsPlaying(true);
   };
 
+  const sendKeyEvent = (key: string, isDown: boolean) => {
+    window.dispatchEvent(
+      new KeyboardEvent(isDown ? "keydown" : "keyup", {
+        key: key,
+        code: key === " " ? "Space" : key,
+        bubbles: true,
+      })
+    );
+    if (isDown && typeof navigator !== "undefined" && navigator.vibrate) {
+      try {
+        navigator.vibrate(10);
+      } catch {}
+    }
+  };
+
   return (
-    <div className="w-full flex flex-col items-center bg-cyber-dark/90 border border-cyber-border rounded-2xl p-4 sm:p-6 backdrop-blur-md shadow-2xl relative overflow-hidden">
+    <div className="w-full flex flex-col items-center bg-cyber-dark/90 border border-cyber-border rounded-2xl p-3 sm:p-6 backdrop-blur-md shadow-2xl relative overflow-hidden">
       {/* Top telemetry bar */}
-      <div className="w-full flex items-center justify-between pb-4 border-b border-cyber-borderSubtle mb-4">
+      <div className="w-full flex items-center justify-between pb-3 sm:pb-4 border-b border-cyber-borderSubtle mb-3 sm:mb-4">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-xl bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
             <Zap className="w-5 h-5 animate-pulse" />
@@ -707,7 +778,7 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
             <h3 className="text-base sm:text-lg font-bold font-mono text-white flex items-center gap-2">
               {gameName}
               <span className="text-[10px] font-sans px-2 py-0.5 rounded-full bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/30">
-                HTML5 Canvas 60FPS
+                Touch & Mobile Ready
               </span>
             </h3>
             <p className="text-xs font-mono text-cyber-muted">
@@ -717,7 +788,7 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
         </div>
 
         <div className="flex items-center gap-3 font-mono text-xs">
-          <div className="flex items-center gap-1.5 text-cyber-green bg-cyber-dark/80 px-3 py-1.5 rounded-lg border border-cyber-borderSubtle">
+          <div className="flex items-center gap-1.5 text-cyber-green bg-cyber-dark/80 px-2.5 sm:px-3 py-1.5 rounded-lg border border-cyber-borderSubtle">
             <Trophy className="w-4 h-4" />
             <span>BEST: {highScore}</span>
           </div>
@@ -732,8 +803,11 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
       </div>
 
       {/* Canvas Viewport Container */}
-      <div className="relative w-full max-w-[640px] aspect-[4/3] bg-black rounded-xl overflow-hidden border border-cyber-borderSubtle flex items-center justify-center shadow-inner">
-        <canvas ref={canvasRef} className="w-full h-full object-contain cursor-crosshair" />
+      <div
+        style={{ touchAction: "none" }}
+        className="relative w-full max-w-[640px] aspect-[4/3] bg-black rounded-xl overflow-hidden border border-cyber-borderSubtle flex items-center justify-center shadow-inner select-none"
+      >
+        <canvas ref={canvasRef} className="w-full h-full object-contain cursor-crosshair touch-none" />
 
         {/* Start / Overlay Screen */}
         {!isPlaying && (
@@ -782,6 +856,120 @@ export const PlayableGameCanvas: React.FC<PlayableGameCanvasProps> = ({ gameType
           </div>
         )}
       </div>
+
+      {/* On-Screen Mobile Touch Controller */}
+      {gameType === "space-defender" && (
+        <div className="w-full max-w-[640px] mt-3 flex items-center justify-between gap-3 p-3 bg-cyber-card/80 border border-cyber-borderSubtle rounded-xl select-none touch-none">
+          <div className="flex items-center gap-2">
+            <button
+              onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowLeft", true); }}
+              onPointerUp={(e) => { e.preventDefault(); sendKeyEvent("ArrowLeft", false); }}
+              onPointerLeave={() => sendKeyEvent("ArrowLeft", false)}
+              className="w-14 sm:w-16 h-12 sm:h-14 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-cyan/40 text-cyber-cyan active:bg-cyber-cyan active:text-black font-mono font-bold text-xl transition-all shadow-md active:scale-95 touch-none"
+              aria-label="Left"
+            >
+              ◀
+            </button>
+            <button
+              onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowRight", true); }}
+              onPointerUp={(e) => { e.preventDefault(); sendKeyEvent("ArrowRight", false); }}
+              onPointerLeave={() => sendKeyEvent("ArrowRight", false)}
+              className="w-14 sm:w-16 h-12 sm:h-14 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-cyan/40 text-cyber-cyan active:bg-cyber-cyan active:text-black font-mono font-bold text-xl transition-all shadow-md active:scale-95 touch-none"
+              aria-label="Right"
+            >
+              ▶
+            </button>
+          </div>
+          <div className="text-[10px] font-mono text-neutral-400 hidden xs:block">
+            Touch/Drag to Steer
+          </div>
+          <button
+            onPointerDown={(e) => { e.preventDefault(); sendKeyEvent(" ", true); }}
+            onPointerUp={(e) => { e.preventDefault(); sendKeyEvent(" ", false); }}
+            onPointerLeave={() => sendKeyEvent(" ", false)}
+            className="flex-1 max-w-[150px] sm:max-w-[180px] h-12 sm:h-14 flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-red-600 to-rose-500 border border-rose-400 text-white active:scale-95 font-mono font-black text-xs sm:text-sm tracking-wider uppercase transition-all shadow-lg shadow-rose-500/30 touch-none"
+            aria-label="Fire"
+          >
+            <span>🔥 FIRE</span>
+          </button>
+        </div>
+      )}
+
+      {gameType === "cyber-snake" && (
+        <div className="w-full max-w-[640px] mt-3 flex flex-col items-center gap-1.5 p-3 bg-cyber-card/80 border border-cyber-borderSubtle rounded-xl select-none touch-none">
+          <div className="text-[11px] font-mono text-neutral-400 mb-0.5">
+            📱 Swipe Canvas or Tap D-Pad
+          </div>
+          <button
+            onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowUp", true); setTimeout(() => sendKeyEvent("ArrowUp", false), 80); }}
+            className="w-14 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-green/40 text-cyber-green active:bg-cyber-green active:text-black font-mono font-bold text-lg transition-all shadow-md active:scale-95 touch-none"
+            aria-label="Up"
+          >
+            ▲
+          </button>
+          <div className="flex gap-4">
+            <button
+              onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowLeft", true); setTimeout(() => sendKeyEvent("ArrowLeft", false), 80); }}
+              className="w-14 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-green/40 text-cyber-green active:bg-cyber-green active:text-black font-mono font-bold text-lg transition-all shadow-md active:scale-95 touch-none"
+              aria-label="Left"
+            >
+              ◀
+            </button>
+            <button
+              onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowDown", true); setTimeout(() => sendKeyEvent("ArrowDown", false), 80); }}
+              className="w-14 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-green/40 text-cyber-green active:bg-cyber-green active:text-black font-mono font-bold text-lg transition-all shadow-md active:scale-95 touch-none"
+              aria-label="Down"
+            >
+              ▼
+            </button>
+            <button
+              onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowRight", true); setTimeout(() => sendKeyEvent("ArrowRight", false), 80); }}
+              className="w-14 h-11 flex items-center justify-center rounded-xl bg-neutral-900 border border-cyber-green/40 text-cyber-green active:bg-cyber-green active:text-black font-mono font-bold text-lg transition-all shadow-md active:scale-95 touch-none"
+              aria-label="Right"
+            >
+              ▶
+            </button>
+          </div>
+        </div>
+      )}
+
+      {gameType === "neon-breakout" && (
+        <div className="w-full max-w-[640px] mt-3 flex items-center justify-between gap-3 p-3 bg-cyber-card/80 border border-cyber-borderSubtle rounded-xl select-none touch-none">
+          <button
+            onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowLeft", true); }}
+            onPointerUp={(e) => { e.preventDefault(); sendKeyEvent("ArrowLeft", false); }}
+            onPointerLeave={() => sendKeyEvent("ArrowLeft", false)}
+            className="flex-1 h-12 sm:h-14 flex items-center justify-center gap-2 rounded-xl bg-neutral-900 border border-cyber-cyan/40 text-cyber-cyan active:bg-cyber-cyan active:text-black font-mono font-black text-xs sm:text-sm tracking-wider uppercase transition-all shadow-md active:scale-95 touch-none"
+            aria-label="Paddle Left"
+          >
+            <span>◀ PADDLE LEFT</span>
+          </button>
+          <div className="hidden sm:block text-[11px] font-mono text-neutral-400">
+            Touch/Drag Canvas
+          </div>
+          <button
+            onPointerDown={(e) => { e.preventDefault(); sendKeyEvent("ArrowRight", true); }}
+            onPointerUp={(e) => { e.preventDefault(); sendKeyEvent("ArrowRight", false); }}
+            onPointerLeave={() => sendKeyEvent("ArrowRight", false)}
+            className="flex-1 h-12 sm:h-14 flex items-center justify-center gap-2 rounded-xl bg-neutral-900 border border-cyber-cyan/40 text-cyber-cyan active:bg-cyber-cyan active:text-black font-mono font-black text-xs sm:text-sm tracking-wider uppercase transition-all shadow-md active:scale-95 touch-none"
+            aria-label="Paddle Right"
+          >
+            <span>PADDLE RIGHT ▶</span>
+          </button>
+        </div>
+      )}
+
+      {gameType === "clumsy-bird" && (
+        <div className="w-full max-w-[640px] mt-3 flex items-center justify-center p-3 bg-cyber-card/80 border border-cyber-borderSubtle rounded-xl select-none touch-none">
+          <button
+            onPointerDown={(e) => { e.preventDefault(); sendKeyEvent(" ", true); setTimeout(() => sendKeyEvent(" ", false), 100); }}
+            className="w-full max-w-sm h-12 sm:h-14 flex items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-cyber-cyan to-blue-500 border border-cyan-400 text-black active:scale-95 font-mono font-black text-sm sm:text-base tracking-wider uppercase transition-all shadow-lg shadow-cyan-500/30 touch-none"
+            aria-label="Flap Wings"
+          >
+            <span>🪽 TAP / FLAP WINGS</span>
+          </button>
+        </div>
+      )}
 
       {/* Control instructions bottom bar */}
       <div className="w-full max-w-[640px] flex flex-wrap items-center justify-between gap-2 mt-4 text-[11px] font-mono text-cyber-muted pt-3 border-t border-cyber-borderSubtle/60">

@@ -208,6 +208,44 @@ export const Playable2048: React.FC = () => {
     }
   };
 
+  const [touchStart, setTouchStart] = useState<{ x: number; y: number } | null>(null);
+
+  const triggerHaptic = () => {
+    if (typeof navigator !== "undefined" && navigator.vibrate) {
+      try {
+        navigator.vibrate(10);
+      } catch {}
+    }
+  };
+
+  const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (e.touches.length === 1) {
+      setTouchStart({ x: e.touches[0].clientX, y: e.touches[0].clientY });
+    }
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent<HTMLDivElement>) => {
+    if (!touchStart || e.changedTouches.length === 0) return;
+    const deltaX = e.changedTouches[0].clientX - touchStart.x;
+    const deltaY = e.changedTouches[0].clientY - touchStart.y;
+    const minSwipeDistance = 24;
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (Math.abs(deltaX) > minSwipeDistance) {
+        triggerHaptic();
+        if (deltaX > 0) makeMove("right");
+        else makeMove("left");
+      }
+    } else {
+      if (Math.abs(deltaY) > minSwipeDistance) {
+        triggerHaptic();
+        if (deltaY > 0) makeMove("down");
+        else makeMove("up");
+      }
+    }
+    setTouchStart(null);
+  };
+
   return (
     <div className="w-full max-w-md mx-auto bg-cyber-dark/90 border border-cyber-border rounded-2xl p-4 sm:p-6 backdrop-blur-md shadow-2xl">
       {/* Top Header */}
@@ -216,11 +254,11 @@ export const Playable2048: React.FC = () => {
           <h3 className="text-xl font-black font-mono text-white flex items-center gap-2">
             2048 HTML5
             <span className="text-[10px] font-sans px-2 py-0.5 rounded bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
-              MIT License
+              Swipe & Touch Ready
             </span>
           </h3>
           <p className="text-xs font-mono text-cyber-muted mt-0.5">
-            Join the numbers to get to the 2048 tile!
+            Swipe on screen or tap arrows to slide tiles!
           </p>
         </div>
 
@@ -239,8 +277,13 @@ export const Playable2048: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid container */}
-      <div className="relative aspect-square w-full bg-black/60 rounded-xl p-3 border border-cyber-borderSubtle shadow-inner grid grid-cols-4 gap-2.5">
+      {/* Grid container with Touch Swipe Support */}
+      <div
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        style={{ touchAction: "none" }}
+        className="relative aspect-square w-full bg-black/60 rounded-xl p-3 border border-cyber-borderSubtle shadow-inner grid grid-cols-4 gap-2.5 select-none cursor-grab active:cursor-grabbing"
+      >
         {grid.map((row, r) =>
           row.map((cell, c) => (
             <div
@@ -274,37 +317,54 @@ export const Playable2048: React.FC = () => {
         )}
       </div>
 
-      {/* Directional Pad for Mobile / Touch screens */}
-      <div className="mt-4 flex flex-col items-center gap-1 sm:hidden">
-        <button
-          onClick={() => makeMove("up")}
-          className="p-3 rounded-lg bg-cyber-card border border-cyber-borderSubtle text-white active:bg-cyber-cyan"
-          aria-label="Up"
-        >
-          <ArrowUp className="w-5 h-5" />
-        </button>
-        <div className="flex gap-4">
+      {/* Mobile Touch Controller: D-Pad */}
+      <div className="mt-4 flex flex-col items-center gap-2">
+        <div className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 sm:hidden">
+          📱 Swipe Grid or Tap Arrows
+        </div>
+        <div className="flex flex-col items-center gap-1">
           <button
-            onClick={() => makeMove("left")}
-            className="p-3 rounded-lg bg-cyber-card border border-cyber-borderSubtle text-white active:bg-cyber-cyan"
-            aria-label="Left"
+            onClick={() => {
+              triggerHaptic();
+              makeMove("up");
+            }}
+            className="w-14 h-12 flex items-center justify-center rounded-xl bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan hover:bg-cyber-cyan/20 active:scale-95 active:bg-cyber-cyan active:text-black transition-all shadow-md touch-manipulation"
+            aria-label="Up"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowUp className="w-6 h-6" />
           </button>
-          <button
-            onClick={() => makeMove("down")}
-            className="p-3 rounded-lg bg-cyber-card border border-cyber-borderSubtle text-white active:bg-cyber-cyan"
-            aria-label="Down"
-          >
-            <ArrowDown className="w-5 h-5" />
-          </button>
-          <button
-            onClick={() => makeMove("right")}
-            className="p-3 rounded-lg bg-cyber-card border border-cyber-borderSubtle text-white active:bg-cyber-cyan"
-            aria-label="Right"
-          >
-            <ArrowRight className="w-5 h-5" />
-          </button>
+          <div className="flex gap-2">
+            <button
+              onClick={() => {
+                triggerHaptic();
+                makeMove("left");
+              }}
+              className="w-14 h-12 flex items-center justify-center rounded-xl bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan hover:bg-cyber-cyan/20 active:scale-95 active:bg-cyber-cyan active:text-black transition-all shadow-md touch-manipulation"
+              aria-label="Left"
+            >
+              <ArrowLeft className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => {
+                triggerHaptic();
+                makeMove("down");
+              }}
+              className="w-14 h-12 flex items-center justify-center rounded-xl bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan hover:bg-cyber-cyan/20 active:scale-95 active:bg-cyber-cyan active:text-black transition-all shadow-md touch-manipulation"
+              aria-label="Down"
+            >
+              <ArrowDown className="w-6 h-6" />
+            </button>
+            <button
+              onClick={() => {
+                triggerHaptic();
+                makeMove("right");
+              }}
+              className="w-14 h-12 flex items-center justify-center rounded-xl bg-cyber-card border border-cyber-cyan/40 text-cyber-cyan hover:bg-cyber-cyan/20 active:scale-95 active:bg-cyber-cyan active:text-black transition-all shadow-md touch-manipulation"
+              aria-label="Right"
+            >
+              <ArrowRight className="w-6 h-6" />
+            </button>
+          </div>
         </div>
       </div>
 

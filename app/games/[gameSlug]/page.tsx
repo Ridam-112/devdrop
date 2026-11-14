@@ -212,7 +212,7 @@ export default function GameDetailPage({ params }: Props) {
   };
 
   return (
-    <article className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+    <article className="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 py-3 sm:py-8 w-full overflow-x-hidden">
       {/* Structured Data Script Tags */}
       <script
         type="application/ld+json"
@@ -228,7 +228,7 @@ export default function GameDetailPage({ params }: Props) {
       />
 
       {/* Breadcrumb Navigation */}
-      <nav aria-label="Breadcrumb" className="mb-6">
+      <nav aria-label="Breadcrumb" className="mb-3 sm:mb-6">
         <ol className="flex items-center gap-2 text-xs font-mono text-cyber-muted">
           <li>
             <Link href="/" className="hover:text-cyber-green transition-colors">
@@ -249,10 +249,10 @@ export default function GameDetailPage({ params }: Props) {
       </nav>
 
       {/* Compact Game Arena Header */}
-      <header className="mb-6 pb-4 border-b border-cyber-borderSubtle">
+      <header className="mb-4 sm:mb-6 pb-3 sm:pb-4 border-b border-cyber-borderSubtle">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
-            <div className="flex flex-wrap items-center gap-2 mb-2">
+            <div className="flex flex-wrap items-center gap-2 mb-1.5 sm:mb-2">
               <span className="text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-cyber-green/10 text-cyber-green border border-cyber-green/30">
                 {game.genre}
               </span>
@@ -260,7 +260,7 @@ export default function GameDetailPage({ params }: Props) {
                 60 FPS Hardware-Accelerated
               </span>
               <span className="text-[10px] font-mono tracking-wider px-2.5 py-0.5 rounded-full bg-cyber-card text-slate-300 border border-cyber-borderSubtle">
-                No Downloads Required
+                Mobile & Phone Ready
               </span>
             </div>
 
@@ -276,7 +276,7 @@ export default function GameDetailPage({ params }: Props) {
       </header>
 
       {/* Game Player Arena Section */}
-      <section className="my-8">
+      <section className="my-4 sm:my-8">
         {game.builtInGameType === "2048" ? (
           <Playable2048 />
         ) : game.builtInGameType && game.builtInGameType !== "iframe" ? (
