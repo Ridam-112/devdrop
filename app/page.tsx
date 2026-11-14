@@ -65,6 +65,7 @@ export const metadata: Metadata = {
 export default function HomePage() {
   // Curated spotlight of real everyday utilities
   const coreUtilitySlugs = [
+    "portfolio-builder",
     "photo-bg-remover",
     "image-compressor",
     "qr-code-generator",

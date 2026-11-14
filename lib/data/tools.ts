@@ -369,6 +369,76 @@ export const CATEGORIES: ToolCategory[] = [
 
 export const TOOLS: ToolItem[] = [
   {
+    "slug": "portfolio-builder",
+    "aliases": [
+      "portfolio-website-builder",
+      "free-portfolio-builder",
+      "developer-portfolio-maker",
+      "personal-website-builder"
+    ],
+    "name": "Portfolio Website Builder",
+    "h1": "Free Online Portfolio Website Builder: Create & Download Self-Contained HTML5 Sites",
+    "tagline": "Build a modern interactive developer portfolio in browser & download ready index.html",
+    "categorySlug": "developer-utils",
+    "iconName": "Globe",
+    "badge": "Top Featured",
+    "isPopular": true,
+    "shortIntro": "Answer a few questions, customize your experience and projects, preview animated sticky cards in real-time, and download a ready-to-deploy self-contained index.html for free.",
+    "description": "Generate a sleek, responsive portfolio website 100% in your browser. Includes expanding 3D cards, journey timeline, project stats, and single-file HTML export.",
+    "longDescription": "DevDrop Portfolio Website Builder empowers developers, designers, and students to construct an elegant personal portfolio without writing boilerplate code or installing Node.js dependencies. With 5 straightforward steps, you can define your bio, work history, featured projects with metrics, and core tech stacks. The tool compiles your data into a stunning, production-ready, zero-dependency index.html file featuring sticky interactive card expansion, horizontal career timelines, smooth theme switching, and fluid mobile responsiveness. Upload the generated file directly to GitHub Pages, Netlify, Vercel, or any web host with zero configuration.",
+    "features": [
+      "5-step intuitive portfolio creation wizard",
+      "Live interactive iframe preview with 3D expanding card scroll effects",
+      "Interactive career journey and timeline showcases",
+      "Featured project highlight card with metric statistics",
+      "Instant single-file index.html download & clipboard copy",
+      "100% client-side privacy with zero data sent to external servers",
+      "Light / Dark theme toggle and mobile viewport optimization"
+    ],
+    "limitations": [
+      "Generates static client-side single-page applications without dynamic server backend",
+      "Images are referenced via external URLs or placeholder vectors"
+    ],
+    "disclaimer": "DevDrop Portfolio Builder compiles HTML locally inside your browser memory. No career data or contact information is retained on our servers.",
+    "privacyNote": "Runs 100% locally in your browser. No personal data, email, or resume details are stored or uploaded.",
+    "howItWorks": [
+      "Step 1: Fill in your personal details, role, contact channels, and brief introductory bio",
+      "Step 2: Add your career experience milestones and educational background",
+      "Step 3: Detail your flagship featured project with key metrics and add other side projects",
+      "Step 4: Categorize your technical skills and tool proficiencies",
+      "Step 5: Preview your site in the live emulator, then download the ready-to-host index.html"
+    ],
+    "faqs": [
+      {
+        "question": "Is the Portfolio Website Builder completely free to use?",
+        "answer": "Yes, it is 100% free with unlimited exports, zero subscriptions, and no account required."
+      },
+      {
+        "question": "Where can I host the downloaded index.html file?",
+        "answer": "You can host it completely free on GitHub Pages, Netlify Drop, Vercel, Cloudflare Pages, or any shared web hosting."
+      },
+      {
+        "question": "Does the generated portfolio work on mobile devices?",
+        "answer": "Yes! The generated portfolio is engineered with responsive viewport tags, touch gestures, and fluid CSS clamp typography optimized for all screen sizes."
+      },
+      {
+        "question": "Can I edit the code after downloading?",
+        "answer": "Absolutely. The output is a clean, well-commented, single self-contained index.html file containing HTML, CSS, and vanilla JavaScript that you can modify in VS Code or any text editor."
+      }
+    ],
+    "relatedSlugs": [
+      "pdf-maker",
+      "qr-code-generator",
+      "json-formatter",
+      "image-compressor"
+    ],
+    "metaTitle": "Free Portfolio Website Builder — Create & Download HTML Sites | DevDrop",
+    "metaDescription": "Build your professional developer portfolio online in minutes. Interactive 3D expanding cards, project stats, and free instant index.html download. 100% client-side.",
+    "canonicalPath": "/tools/portfolio-builder",
+    "indexable": true,
+    "isSimulation": false
+  },
+  {
     "slug": "mobile-recharge-portal",
     "aliases": [
       "sim-recharge-engine",

@@ -48,6 +48,7 @@ import QrCodeGeneratorTool from "@/components/tools/QrCodeGeneratorTool";
 import BarcodeGeneratorTool from "@/components/tools/BarcodeGeneratorTool";
 import PdfMakerTool from "@/components/tools/PdfMakerTool";
 import PhotoToPdfTool from "@/components/tools/PhotoToPdfTool";
+import PortfolioBuilderTool from "@/components/tools/PortfolioBuilderTool";
 import UtilityToolEngine from "@/components/tools/UtilityToolEngine";
 
 interface Props {
@@ -281,6 +282,10 @@ export default function ToolDetailPage({ params }: Props) {
       case "images-to-pdf":
       case "jpg-to-pdf":
         return <PhotoToPdfTool />;
+      case "portfolio-builder":
+      case "portfolio-website-builder":
+      case "free-portfolio-builder":
+        return <PortfolioBuilderTool />;
       default:
         switch (tool.categorySlug) {
           case "image-media":

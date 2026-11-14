@@ -166,6 +166,15 @@ const SYNONYM_MAP: Record<string, string[]> = {
   "quiz": ["phishing-quiz", "cybersecurity-quiz"],
   "phishing": ["phishing-quiz"],
   "cybersecurity quiz": ["cybersecurity-quiz", "phishing-quiz"],
+
+  // Portfolio & Developer Tools
+  "portfolio": ["portfolio-builder"],
+  "portfolio builder": ["portfolio-builder"],
+  "website builder": ["portfolio-builder"],
+  "resume": ["portfolio-builder", "pdf-maker"],
+  "cv": ["portfolio-builder", "pdf-maker"],
+  "personal website": ["portfolio-builder"],
+  "developer portfolio": ["portfolio-builder"],
 };
 
 export interface SearchMatch {

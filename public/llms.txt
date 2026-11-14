@@ -34,6 +34,7 @@ Client-side document converters and compilers:
 
 ### 3. Developer & Productivity Utilities (Indexable)
 Daily developer and productivity tools with zero data storage:
+- [Portfolio Website Builder](https://devdrop.online/tools/portfolio-builder): Build a modern, interactive single-file developer portfolio website in-browser with expanding 3D cards, project stats, and free instant index.html download.
 - [QR Code Generator](https://devdrop.online/tools/qr-code-generator): Generate permanent static QR codes for URLs, Wi-Fi networks, and contact vCards with custom colors.
 - [Barcode Generator](https://devdrop.online/tools/barcode-generator): Create standard Code 128, EAN, and UPC barcodes with high-resolution download.
 - [JSON Formatter & Validator](https://devdrop.online/tools/json-formatter): Validate, pretty-print, and minify JSON payloads with syntax error highlighting.
