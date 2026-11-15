@@ -32,6 +32,7 @@ import {
 import { TOOLS, CATEGORIES, INDEXABLE_TOOLS_LABEL, ToolItem } from "@/lib/data/tools";
 import { OPEN_SOURCE_GAMES } from "@/lib/data/games";
 import { GUIDES } from "@/lib/data/guides";
+import { ConsoleDashboard } from "@/components/ConsoleDashboard";
 import { SITE_URL } from "@/lib/constants";
 import { ToolCard } from "@/components/ToolCard";
 import { AdvertisementSlot } from "@/components/AdvertisementSlot";
@@ -226,356 +227,88 @@ export default function HomePage() {
       </div>
 
       {/* ========================================================= */}
-      {/* 2. MAIN CARDS VIEW: TOOLS, GAMES, CYBER, GAME TOOLS,      */}
-      {/*    CATEGORIES, BLOGS & GUIDES                             */}
+      {/* 2. CONSOLE DASHBOARD VIEW (DITTO TO NIXTENDO REFERENCE UI) */}
+      {/*    CARDS: TOOLS, GAMES, CYBER LAB, GAME TOOLS + QUESTS     */}
       {/* ========================================================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full space-y-6">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#242c52] pb-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-cyan-400">
-              <Layers className="w-4 h-4" /> Explore DevDrop Ecosystem
-            </div>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-mono mt-1">
-              Platform Dashboard &amp; Hubs
-            </h2>
-          </div>
-          <span className="text-xs font-mono text-slate-400">Select any hub to launch instantly</span>
-        </div>
+        {/* Futuristic Console Dashboard Component */}
+        <ConsoleDashboard />
 
-        {/* 6 High-Impact Cards Grid (Inspired by the Reference Image) */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {/* Card 1: Tools (Everyday & Developer Tools) */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#182142] via-[#121833] to-[#0c1024] border-2 border-[#2b376b] hover:border-emerald-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-emerald-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 uppercase">
-                  Top Utilities &bull; Real Tools
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 4.9 (High-Utility)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/10 border border-emerald-400/40 flex items-center justify-center text-emerald-400 text-3xl shadow-lg">
-                🛠️
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-emerald-300 transition-colors">
-                  Web Tools &amp; Utilities
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  100% genuine client-side working utilities: Portfolio Builder, AI Background Remover, Image Compressor, PDF Maker, QR Code &amp; Barcode Generators.
+        {/* Categories & Blogs Supplementary Quick-Access Hubs */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 pt-2">
+          {/* Hub: Categories */}
+          <div className="rounded-3xl bg-gradient-to-r from-[#17142d] via-[#100f24] to-[#090917] border border-[#2e2654] hover:border-indigo-400/60 p-5 shadow-xl transition-all flex flex-col justify-between hover:-translate-y-0.5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase">
+                    12 Categories
+                  </span>
+                  <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-current" /> 5.0
+                  </span>
+                </div>
+                <div className="text-lg font-bold font-mono text-white">
+                  Explore All Categories
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed max-w-md">
+                  Developer &amp; Web Utilities, Image Processing, PDF &amp; Documents, Cyber Labs, AI Cognitive, and Gaming Sims.
                 </p>
               </div>
-
-              {/* Direct interactive links opening in new tabs with unique SEO pages */}
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <Link
-                  href="/tools/portfolio-builder"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-emerald-300 hover:text-white hover:bg-emerald-600/30 border border-emerald-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  Portfolio Builder ↗
-                </Link>
-                <Link
-                  href="/tools/photo-bg-remover"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-pink-300 hover:text-white hover:bg-pink-600/30 border border-pink-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  BG Remover ↗
-                </Link>
-                <Link
-                  href="/tools/image-compressor"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-cyan-300 hover:text-white hover:bg-cyan-600/30 border border-cyan-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  Image Compress ↗
-                </Link>
-                <Link
-                  href="/tools/pdf-maker"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-amber-300 hover:text-white hover:bg-amber-600/30 border border-amber-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  PDF Maker ↗
-                </Link>
-                <Link
-                  href="/tools/qr-code-generator"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-emerald-300 hover:text-white hover:bg-emerald-600/30 border border-emerald-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  QR Code ↗
-                </Link>
-                <Link
-                  href="/tools/json-formatter"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-[10px] font-mono px-2.5 py-1 rounded-lg bg-[#0b0e1b] text-yellow-300 hover:text-white hover:bg-yellow-600/30 border border-yellow-500/40 transition-all flex items-center gap-1 font-bold"
-                >
-                  JSON Formatter ↗
-                </Link>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
-              <Link
-                href="/tools"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/20 group-hover:opacity-95 transition-all"
-              >
-                <span>EXPLORE ALL REAL TOOLS ↗</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Card 2: Games (56+ Browser Games) */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#24173d] via-[#18112d] to-[#0e0a1f] border-2 border-[#43296d] hover:border-purple-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-purple-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/40 uppercase">
-                  60 FPS In-Browser
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 4.9 (56 Games)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500/20 to-pink-500/10 border border-purple-400/40 flex items-center justify-center text-purple-300 text-3xl shadow-lg">
-                🎮
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-purple-300 transition-colors">
-                  HTML5 &amp; 3D Games Hub
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  Chaos Skies 3D, Fruit Slice Master, Minesweeper, Parking Jam Puzzle, Water Sort, Pinball Classic, Tower Defense &amp; sports arcade.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Chaos Skies 3D
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Minesweeper
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Parking Jam
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
-              <Link
-                href="/games"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-purple-500 via-pink-500 to-indigo-500 text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-purple-500/20 group-hover:opacity-95 transition-all"
-              >
-                <span>PLAY BROWSER GAMES</span>
-                <Play className="w-3.5 h-3.5 fill-current" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Card 3: Cyber Tools (Wi-Fi & Network Security) */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#14233c] via-[#0f1a2e] to-[#09101d] border-2 border-[#223a63] hover:border-cyan-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-cyan-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 uppercase">
-                  Security Lab
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 4.8 (Diagnostics)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cyan-500/20 to-blue-500/10 border border-cyan-400/40 flex items-center justify-center text-cyan-400 text-3xl shadow-lg">
-                🛡️
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-cyan-300 transition-colors">
-                  Cyber &amp; Network Tools
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  Interactive Wi-Fi beacon sniffers, WPA handshake crackers, signal radars, router gateways, IP telemetry, and penetration simulators.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Wi-Fi Radar
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  WPA Handshake
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  IP Trace
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
-              <Link
-                href="/category/wifi-network"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 group-hover:opacity-95 transition-all"
-              >
-                <span>LAUNCH CYBER TOOLS</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Card 4: Game Tools (Free Fire & BGMI Gaming Sims) */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#331d16] via-[#21130e] to-[#140b08] border-2 border-[#5c3022] hover:border-amber-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-amber-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 uppercase">
-                  Esports Telemetry
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 4.8 (Gaming Hub)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-amber-500/20 to-orange-500/10 border border-amber-400/40 flex items-center justify-center text-amber-400 text-3xl shadow-lg">
-                🎯
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-amber-300 transition-colors">
-                  Game Data &amp; Esports Tools
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  Esports tournament predictors, Free Fire &amp; BGMI weapon armory viewers, rank ELO calculators, and live air-drop telemetry simulations.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Rank Calculator
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Weapon Armory
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Air-Drop Sim
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
-              <Link
-                href="/category/gaming-sims"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-amber-500/20 group-hover:opacity-95 transition-all"
-              >
-                <span>OPEN GAME TOOLS</span>
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
-
-          {/* Card 5: Categories Hub */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#1f1938] via-[#151126] to-[#0c0a17] border-2 border-[#382b63] hover:border-indigo-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-indigo-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 uppercase">
-                  12 Categories
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 5.0 (Organized)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500/20 to-purple-500/10 border border-indigo-400/40 flex items-center justify-center text-indigo-300 text-3xl shadow-lg">
+              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-400/30 flex items-center justify-center text-2xl flex-shrink-0">
                 📂
               </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-indigo-300 transition-colors">
-                  Explore All Categories
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  Browse by category: Developer &amp; Web Utilities, Image Processing, PDF &amp; Documents, Cyber Labs, AI Cognitive, Finance, and Stealth.
-                </p>
-              </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Image Media
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  PDF Docs
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Web Dev
-                </span>
-              </div>
             </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
+            <div className="mt-4 pt-3 border-t border-[#231e3d] flex items-center justify-between">
+              <div className="flex flex-wrap gap-1 text-[10px] font-mono text-slate-400">
+                <span className="px-2 py-0.5 rounded bg-black/40">Images</span>
+                <span className="px-2 py-0.5 rounded bg-black/40">PDFs</span>
+                <span className="px-2 py-0.5 rounded bg-black/40">Web Tools</span>
+              </div>
               <Link
                 href="#categories-hub"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-indigo-500/20 group-hover:opacity-95 transition-all"
+                className="py-2 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-mono font-bold text-xs flex items-center gap-1.5 transition-colors"
               >
-                <span>BROWSE CATEGORIES</span>
-                <ChevronRight className="w-4 h-4" />
+                <span>Browse Categories</span>
+                <ChevronRight className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
 
-          {/* Card 6: Blogs, Guides & Tutorials */}
-          <div className="group rounded-3xl bg-gradient-to-b from-[#132626] via-[#0d1c1c] to-[#071010] border-2 border-[#1f4242] hover:border-teal-400/60 p-6 shadow-xl transition-all duration-300 flex flex-col justify-between hover:shadow-teal-500/10 hover:-translate-y-1">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-mono font-bold px-2.5 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/40 uppercase">
-                  Tech Knowledge
-                </span>
-                <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-current" /> 4.9 (Articles)
-                </span>
-              </div>
-
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-teal-500/20 to-emerald-500/10 border border-teal-400/40 flex items-center justify-center text-teal-300 text-3xl shadow-lg">
-                📝
-              </div>
-
-              <div>
-                <h3 className="text-xl font-black font-mono text-white group-hover:text-teal-300 transition-colors">
+          {/* Hub: Blogs & Guides */}
+          <div className="rounded-3xl bg-gradient-to-r from-[#102422] via-[#0b1a19] to-[#071110] border border-[#1b423f] hover:border-teal-400/60 p-5 shadow-xl transition-all flex flex-col justify-between hover:-translate-y-0.5">
+            <div className="flex items-start justify-between gap-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 uppercase">
+                    Tech Knowledge
+                  </span>
+                  <span className="text-xs font-mono text-amber-300 flex items-center gap-1">
+                    <Star className="w-3 h-3 fill-current" /> 4.9
+                  </span>
+                </div>
+                <div className="text-lg font-bold font-mono text-white">
                   Blogs &amp; Technical Guides
-                </h3>
-                <p className="text-xs text-slate-300 font-sans mt-2 leading-relaxed">
-                  In-depth tutorials: compress photos to 100KB, convert JPG to PDF without upload, generate permanent QR codes, and math breakdowns.
+                </div>
+                <p className="text-xs text-slate-300 leading-relaxed max-w-md">
+                  Compress photos to 100KB, convert JPG to PDF without upload, create permanent QR codes, and algorithm guides.
                 </p>
               </div>
-
-              <div className="flex flex-wrap gap-1.5 pt-1">
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Image to 100KB
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  JPG to PDF
-                </span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#0b0e1b] text-slate-300 border border-[#232c54]">
-                  Custom QR
-                </span>
+              <div className="w-12 h-12 rounded-2xl bg-teal-500/10 border border-teal-400/30 flex items-center justify-center text-2xl flex-shrink-0">
+                📝
               </div>
             </div>
-
-            <div className="mt-6 pt-4 border-t border-[#232c54]">
+            <div className="mt-4 pt-3 border-t border-[#1b3331] flex items-center justify-between">
+              <div className="flex flex-wrap gap-1 text-[10px] font-mono text-slate-400">
+                <span className="px-2 py-0.5 rounded bg-black/40">100KB Compress</span>
+                <span className="px-2 py-0.5 rounded bg-black/40">JPG to PDF</span>
+              </div>
               <Link
                 href="/guides"
-                className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-teal-400 to-emerald-500 text-black font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-teal-500/20 group-hover:opacity-95 transition-all"
+                className="py-2 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-mono font-bold text-xs flex items-center gap-1.5 transition-colors"
               >
-                <span>READ BLOGS &amp; GUIDES</span>
-                <BookOpen className="w-4 h-4" />
+                <span>Read Guides</span>
+                <BookOpen className="w-3.5 h-3.5" />
               </Link>
             </div>
           </div>
