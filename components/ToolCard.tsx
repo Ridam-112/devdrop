@@ -164,7 +164,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
           </div>
         </div>
 
-        <h3 className={`text-lg font-bold text-white transition-colors duration-200 mb-1.5 flex items-center gap-1.5 ${isReal ? "group-hover:text-emerald-400" : "group-hover:text-cyber-green"}`}>
+        <div className={`text-lg font-bold text-white transition-colors duration-200 mb-1.5 flex items-center gap-1.5 ${isReal ? "group-hover:text-emerald-400" : "group-hover:text-cyber-green"}`}>
           <Link
             href={`/tools/${tool.slug}`}
             target={isReal ? "_blank" : undefined}
@@ -174,7 +174,7 @@ export const ToolCard: React.FC<ToolCardProps> = ({ tool, featured = false }) =>
             <span>{tool.name}</span>
             {isReal && <span className="text-xs text-emerald-400/80 font-normal">↗</span>}
           </Link>
-        </h3>
+        </div>
 
         <p className="text-xs font-mono text-cyber-cyan/80 mb-3">
           {tool.tagline}

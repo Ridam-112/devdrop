@@ -40,7 +40,23 @@ import { LiveSearchBar } from "@/components/LiveSearchBar";
 export const metadata: Metadata = {
   title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
   description:
-    "DevDrop offers free web utilities: portfolio builder, image compressors, background remover, QR codes, PDF tools, and 56+ instant browser games.",
+    "DevDrop provides free online utilities: portfolio builder, image compressor, background remover, QR codes, PDF tools, and 56+ browser games.",
+  keywords: [
+    "DevDrop",
+    "free web tools",
+    "browser games",
+    "poki alternative",
+    "crazygames alternative",
+    "portfolio website builder",
+    "free background remover",
+    "image compressor 100kb",
+    "canva alternative",
+    "wix alternative",
+    "photo to pdf",
+    "custom qr code generator",
+    "html5 games unblocked",
+    "online utilities"
+  ],
   alternates: {
     canonical: SITE_URL,
   },
@@ -120,8 +136,8 @@ export default function HomePage() {
               <img src="/logo.png" alt="DevDrop Brand" width={80} height={80} className="w-full h-full object-cover rounded-xl" />
             </div>
 
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white font-mono">
-              DevDrop<span className="text-cyan-400">.online</span>
+            <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white font-mono">
+              DevDrop<span className="text-cyan-400">.online</span> — Free Web Tools, Utilities &amp; Browser Games
             </h1>
 
             <p className="text-sm sm:text-base font-mono font-medium text-purple-300 tracking-wide uppercase">
@@ -143,6 +159,43 @@ export default function HomePage() {
           {/* Prominent Live Search Engine */}
           <div className="pt-2">
             <LiveSearchBar className="max-w-2xl mx-auto text-left" />
+          </div>
+
+          {/* Quick Social Share Bar (Improves Social Media Score) */}
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-mono">
+            <span className="text-slate-400">Share DevDrop:</span>
+            <a
+              href="https://twitter.com/intent/tweet?text=Check%20out%20DevDrop%20%E2%80%94%20Free%20Web%20Tools%2C%20Portfolio%20Builder%20%26%2056%2B%20HTML5%20Browser%20Games!&url=https%3A%2F%2Fwww.devdrop.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] px-2.5 py-1 rounded-full bg-[#1b2347] hover:bg-[#25305c] text-cyan-300 border border-[#344279] transition-all flex items-center gap-1 font-semibold"
+            >
+              <span>𝕏 Post</span>
+            </a>
+            <a
+              href="https://api.whatsapp.com/send?text=DevDrop%20%E2%80%94%20Free%20Web%20Tools%2C%20Portfolio%20Builder%2C%20and%2056%2B%20Browser%20Games%3A%20https%3A%2F%2Fwww.devdrop.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] px-2.5 py-1 rounded-full bg-[#1b2347] hover:bg-[#25305c] text-emerald-300 border border-[#344279] transition-all flex items-center gap-1 font-semibold"
+            >
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.devdrop.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] px-2.5 py-1 rounded-full bg-[#1b2347] hover:bg-[#25305c] text-blue-300 border border-[#344279] transition-all flex items-center gap-1 font-semibold"
+            >
+              <span>Facebook</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fwww.devdrop.online"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] px-2.5 py-1 rounded-full bg-[#1b2347] hover:bg-[#25305c] text-sky-300 border border-[#344279] transition-all flex items-center gap-1 font-semibold"
+            >
+              <span>LinkedIn</span>
+            </a>
           </div>
 
           {/* Quick Telemetry Counters (Like reference image dashboard stats) */}
@@ -681,9 +734,9 @@ export default function HomePage() {
                 <div className="w-10 h-10 rounded-xl bg-[#090d1f] border border-[#222e59] flex items-center justify-center text-cyan-400 group-hover:text-emerald-400 transition-colors mb-3">
                   <Sliders className="w-5 h-5" />
                 </div>
-                <h3 className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
+                <div className="text-base font-bold text-white group-hover:text-cyan-300 transition-colors">
                   {cat.name}
-                </h3>
+                </div>
                 <p className="text-xs text-slate-300 mt-1.5 leading-relaxed line-clamp-2">
                   {cat.description}
                 </p>
@@ -719,9 +772,9 @@ export default function HomePage() {
               <div className="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400 mb-4">
                 <ShieldCheck className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white mb-2">
+              <div className="text-sm font-bold text-white mb-2">
                 1. In-Browser Privacy
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Most tools run entirely in your browser. The Photo Background Remover is the exception: it sends the image to the Remove.bg API over encrypted HTTPS without data retention.
               </p>
@@ -731,9 +784,9 @@ export default function HomePage() {
               <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 mb-4">
                 <Zap className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white mb-2">
+              <div className="text-sm font-bold text-white mb-2">
                 2. Instant Zero-Latency
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 No server queues or waiting for remote cloud jobs. Code builds, calculations, and PDF compiles happen in milliseconds.
               </p>
@@ -743,9 +796,9 @@ export default function HomePage() {
               <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 mb-4">
                 <Lock className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white mb-2">
+              <div className="text-sm font-bold text-white mb-2">
                 3. Zero Sign-Ups or Paywalls
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 No credit cards, accounts, or mandatory emails. All utilities are unconditionally free for personal and commercial projects.
               </p>
@@ -755,11 +808,66 @@ export default function HomePage() {
               <div className="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/20 flex items-center justify-center text-pink-400 mb-4">
                 <Gamepad2 className="w-5 h-5" />
               </div>
-              <h3 className="text-sm font-bold text-white mb-2">
+              <div className="text-sm font-bold text-white mb-2">
                 4. 56+ Browser Games
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Enjoy 3D flight simulators, parking logic puzzles, minesweeper, and pinball with responsive mobile touch and keyboard controls.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ========================================================= */}
+      {/* 6.5. FREE IN-BROWSER ALTERNATIVES TO POPULAR PLATFORMS    */}
+      {/* ========================================================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div className="rounded-3xl bg-gradient-to-br from-[#121833] via-[#0b0f24] to-[#060814] border border-[#232c54] p-8 sm:p-10 shadow-xl space-y-6">
+          <div className="flex items-center gap-2 text-cyan-400 text-xs font-mono font-bold uppercase tracking-wider">
+            <Globe className="w-4 h-4" /> Better, Faster &amp; Privacy-First
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-white font-mono">
+            Free In-Browser Alternative to Poki, CrazyGames, Canva &amp; Wix
+          </h2>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed max-w-3xl">
+            Searching for fast web alternatives without heavy paywalls, intrusive ads, or complex registrations? DevDrop delivers pure client-side tools and 60 FPS HTML5 games designed for modern web browsers.
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+            <div className="p-5 rounded-2xl bg-[#0a0e1f] border border-[#1f284d]">
+              <div className="text-purple-400 font-mono font-bold text-xs uppercase mb-2">
+                🎮 Gaming Alternative
+              </div>
+              <div className="text-base font-bold text-white mb-2">
+                Poki &amp; CrazyGames Alternative
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Enjoy 56+ instant 3D and 2D games like Chaos Skies 3D, Fruit Slice Master, Minesweeper, and Parking Jam. Zero downloads, mobile touch-ready, and 60 FPS hardware acceleration.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-[#0a0e1f] border border-[#1f284d]">
+              <div className="text-emerald-400 font-mono font-bold text-xs uppercase mb-2">
+                🛠️ Media Tools Alternative
+              </div>
+              <div className="text-base font-bold text-white mb-2">
+                Canva &amp; Adobe Tools Alternative
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Compress JPG/PNG photos to target sizes (100KB, 50KB), remove background cutouts with AI, convert formats, and compile PDFs directly in your local browser sandbox without subscriptions.
+              </p>
+            </div>
+
+            <div className="p-5 rounded-2xl bg-[#0a0e1f] border border-[#1f284d]">
+              <div className="text-cyan-400 font-mono font-bold text-xs uppercase mb-2">
+                💼 Portfolio Builder Alternative
+              </div>
+              <div className="text-base font-bold text-white mb-2">
+                Wix &amp; Adobe Portfolio Alternative
+              </div>
+              <p className="text-xs text-slate-300 leading-relaxed">
+                Build a sleek interactive developer portfolio with 3D cards and dark mode in 5 simple steps. Download a self-contained, lightweight index.html ready to deploy anywhere for free.
               </p>
             </div>
           </div>
@@ -780,54 +888,54 @@ export default function HomePage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 What is DevDrop (devdrop.online)?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
-                DevDrop (https://devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and 56+ free browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
+                DevDrop (https://www.devdrop.online) is a free online platform offering client-side developer tools, everyday utilities, image optimization engines, QR generators, and 56+ free browser games. Everything is accessible instantly without accounts, subscriptions, or downloads.
               </p>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 Are my files or images uploaded to any server?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Most tools on DevDrop (including portfolio creation, image compression, QR generation, PDF compilation, JSON formatting, and hashing) run 100% locally in your browser memory without uploading files anywhere. For the Photo Background Remover, images are sent over encrypted HTTPS to the Remove.bg API for cutout processing and are never retained.
               </p>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 Is DevDrop completely free for commercial and personal projects?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Yes. Every utility, generator, and code formatter on DevDrop is completely free to use with no registration, subscriptions, or hidden charges.
               </p>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 How does the Portfolio Website Builder work?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 The Portfolio Builder guides you through 5 quick steps to fill your bio, work milestones, featured projects, and skills. It lets you preview the site live in an interactive emulator and download a standalone, production-ready index.html file that you can host anywhere for free.
               </p>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 Do generated QR codes or barcodes expire?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Never. DevDrop generates static standard QR codes and ISO barcodes containing direct data that remain scannable indefinitely without relying on redirect URLs.
               </p>
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-sm font-bold text-white">
+              <div className="text-sm font-bold text-white">
                 Are the browser games free to play?
-              </h3>
+              </div>
               <p className="text-xs text-slate-300 leading-relaxed">
                 Yes, all 56 games are free HTML5 and WebGL titles that run directly in your browser with zero installation and support both mobile and desktop controls.
               </p>

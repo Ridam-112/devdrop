@@ -50,9 +50,9 @@ export const Footer: React.FC = () => {
 
           {/* Col 2: Categories */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
               Categories
-            </h3>
+            </div>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
                 <Link href="/category/image-media" className="hover:text-emerald-400 transition-colors">
@@ -84,9 +84,9 @@ export const Footer: React.FC = () => {
 
           {/* Col 3: Popular Tools */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
               Featured Tools
-            </h3>
+            </div>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
                 <Link href="/tools/portfolio-builder" className="hover:text-emerald-400 transition-colors">
@@ -123,9 +123,9 @@ export const Footer: React.FC = () => {
 
           {/* Col 4: Legal & Policy Compliance */}
           <div>
-            <h3 className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
+            <div className="text-xs font-mono font-bold uppercase tracking-wider text-emerald-400 mb-4">
               Platform &amp; Legal
-            </h3>
+            </div>
             <ul className="space-y-2.5 text-xs text-slate-300">
               <li>
                 <Link href="/about" className="hover:text-emerald-400 transition-colors">
