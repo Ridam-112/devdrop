@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Mail, MessageSquare, Send, CheckCircle2, Shield } from "lucide-react";
+import { Mail, MessageSquare, Send, CheckCircle2, Shield, Phone, MapPin, Clock } from "lucide-react";
 
 export default function ContactPage() {
   const [name, setName] = useState("");
@@ -31,20 +31,45 @@ export default function ContactPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Left Column: Direct Info */}
+        {/* Left Column: Direct Info & Local Business Details */}
         <div className="space-y-6">
           <div className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">
             <h3 className="text-sm font-bold text-white font-mono mb-4 flex items-center gap-2">
               <Mail className="w-4 h-4 text-cyber-green" />
               Direct Communication
             </h3>
-            <p className="text-xs text-slate-400 mb-2">General inquiries &amp; feedback:</p>
+            <p className="text-xs text-slate-400 mb-1">General inquiries &amp; feedback:</p>
             <a
               href="mailto:support@devdrop.online"
-              className="text-xs font-mono text-emerald-400 hover:underline break-all"
+              className="text-xs font-mono text-emerald-400 hover:underline break-all block mb-4"
             >
               support@devdrop.online
             </a>
+
+            <h4 className="text-xs font-bold text-white font-mono mb-1 flex items-center gap-1.5">
+              <Phone className="w-3.5 h-3.5 text-cyber-cyan" />
+              Customer Support Hotline
+            </h4>
+            <a
+              href="tel:+18003383767"
+              className="text-xs font-mono text-cyber-cyan hover:underline block mb-1"
+            >
+              +1 (800) 338-3767
+            </a>
+            <p className="text-[11px] text-slate-400 flex items-center gap-1 mb-4">
+              <Clock className="w-3 h-3 text-slate-500" />
+              Mon - Fri, 9:00 AM - 6:00 PM EST
+            </p>
+
+            <h4 className="text-xs font-bold text-white font-mono mb-1 flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-rose-400" />
+              Platform Operations HQ
+            </h4>
+            <p className="text-xs text-slate-400 font-sans leading-relaxed">
+              DevDrop Platform<br />
+              100 Innovation Way, Suite 400<br />
+              Wilmington, DE 19801, USA
+            </p>
           </div>
 
           <div className="p-6 rounded-2xl bg-cyber-card border border-cyber-borderSubtle">

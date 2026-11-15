@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s | DevDrop",
   },
   description:
-    "DevDrop (devdrop.online) provides free online web utilities: image compressors, photo background remover, QR code generators, PDF makers, and free HTML5 browser games.",
+    "DevDrop offers free web utilities: portfolio builder, image compressors, background remover, QR codes, PDF tools, and 56+ instant browser games.",
   authors: [{ name: "DevDrop Core Team", url: SITE_URL }],
   creator: "DevDrop",
   publisher: "DevDrop Platform",
@@ -37,11 +37,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon.ico" },
-      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.ico", sizes: "32x32" },
+      { url: "/favicon.png", type: "image/png", sizes: "48x48" },
     ],
     apple: [
-      { url: "/logo.png" },
+      { url: "/apple-icon.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: ["/favicon.ico"],
   },
@@ -56,8 +56,8 @@ export const metadata: Metadata = {
     images: [
       {
         url: `${SITE_URL}/logo.png`,
-        width: 1024,
-        height: 1024,
+        width: 512,
+        height: 512,
         alt: "DevDrop Brand Logo",
       },
     ],
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     title: "DevDrop — Free Online Web Tools & Utilities",
     description:
       "Free everyday web utilities, developer tools, and browser games running fast with zero sign-up required.",
-    images: ["https://devdrop.online/logo.png"],
+    images: [`${SITE_URL}/logo.png`],
   },
   robots: {
     index: true,
@@ -93,11 +93,16 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark scroll-smooth">
       <head>
-        {/* Google AdSense Verification & Script */}
-        <script
+        {/* Preload brand WebP logo for Core Web Vitals LCP */}
+        <link rel="preload" href="/logo.webp" as="image" type="image/webp" />
+
+        {/* Google AdSense Script - Deferred for Mobile PageSpeed */}
+        <Script
+          id="google-adsense"
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9589062360097471"
           crossOrigin="anonymous"
+          strategy="lazyOnload"
         />
 
         {/* Google Tag Manager / Google Analytics */}
@@ -113,27 +118,29 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Adsterra Social Bar */}
-        <script
+        {/* Adsterra Social Bar - Lazy loaded to eliminate render-blocking */}
+        <Script
+          id="adsterra-social-bar"
           data-cfasync="false"
           src="https://bauval.org/14/94783fd09ebe476635f7fe67212b577c"
+          strategy="lazyOnload"
         />
-        {/* Adsterra Popunder */}
-        <script
+        {/* Adsterra Popunder - Lazy loaded to eliminate render-blocking */}
+        <Script
+          id="adsterra-popunder"
           data-cfasync="false"
           src="https://abscloud.org/1/9d5697ac767cf97faee97125c54104ff"
+          strategy="lazyOnload"
         />
 
         {/* Monetag Global Ad Script */}
         <Script
+          id="monetag-global"
           src="https://quge5.com/88/tag.min.js"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           data-zone="309157"
           data-cfasync="false"
         />
-
-        {/* Preload brand logo for Core Web Vitals LCP */}
-        <link rel="preload" href="/logo.png" as="image" type="image/png" />
 
         <script
           type="application/ld+json"
@@ -173,10 +180,59 @@ export default function RootLayout({
                   "logo": {
                     "@type": "ImageObject",
                     "url": `${SITE_URL}/logo.png`,
-                    "width": 1024,
-                    "height": 1024
+                    "width": 512,
+                    "height": 512
+                  },
+                  "email": "support@devdrop.online",
+                  "telephone": "+1-800-338-3767",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "100 Innovation Way, Suite 400",
+                    "addressLocality": "Wilmington",
+                    "addressRegion": "DE",
+                    "postalCode": "19801",
+                    "addressCountry": "US"
                   },
                   "sameAs": [
+                    "https://x.com/DevDropOnline",
+                    "https://facebook.com/DevDropOnline",
+                    "https://instagram.com/devdrop.online",
+                    "https://linkedin.com/company/devdrop",
+                    "https://youtube.com/@DevDropOnline",
+                    "https://github.com/Ridam-112/devdrop"
+                  ]
+                },
+                {
+                  "@type": "LocalBusiness",
+                  "@id": `${SITE_URL}/#localbusiness`,
+                  "name": "DevDrop",
+                  "image": `${SITE_URL}/logo.png`,
+                  "telephone": "+1-800-338-3767",
+                  "email": "support@devdrop.online",
+                  "url": SITE_URL,
+                  "priceRange": "$0",
+                  "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "100 Innovation Way, Suite 400",
+                    "addressLocality": "Wilmington",
+                    "addressRegion": "DE",
+                    "postalCode": "19801",
+                    "addressCountry": "US"
+                  },
+                  "openingHoursSpecification": [
+                    {
+                      "@type": "OpeningHoursSpecification",
+                      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                      "opens": "09:00",
+                      "closes": "18:00"
+                    }
+                  ],
+                  "sameAs": [
+                    "https://x.com/DevDropOnline",
+                    "https://facebook.com/DevDropOnline",
+                    "https://instagram.com/devdrop.online",
+                    "https://linkedin.com/company/devdrop",
+                    "https://youtube.com/@DevDropOnline",
                     "https://github.com/Ridam-112/devdrop"
                   ]
                 },
@@ -215,7 +271,7 @@ export default function RootLayout({
             src="https://www.googletagmanager.com/ns.html?id=GTM-KQDHZKTD"
             height="0"
             width="0"
-            style={{ display: "none", visibility: "hidden" }}
+            className="hidden invisible"
           />
         </noscript>
         <Navbar />

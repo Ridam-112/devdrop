@@ -40,7 +40,7 @@ import { LiveSearchBar } from "@/components/LiveSearchBar";
 export const metadata: Metadata = {
   title: "DevDrop — Free Online Web Tools, Utilities & Browser Games",
   description:
-    "DevDrop provides free online utilities: portfolio website builder, image compressors, photo background remover, QR code generator, PDF makers, and 56+ free browser games.",
+    "DevDrop offers free web utilities: portfolio builder, image compressors, background remover, QR codes, PDF tools, and 56+ instant browser games.",
   alternates: {
     canonical: SITE_URL,
   },
