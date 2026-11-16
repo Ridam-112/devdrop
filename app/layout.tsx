@@ -125,22 +125,16 @@ export default function RootLayout({
           src="https://bauval.org/14/94783fd09ebe476635f7fe67212b577c"
           strategy="lazyOnload"
         />
-        {/* Adsterra Popunder */}
-        <Script
-          id="adsterra-popunder"
-          data-cfasync="false"
-          src="https://abscloud.org/1/9d5697ac767cf97faee97125c54104ff"
-          strategy="lazyOnload"
-        />
 
-        {/* Monetag Global Ad Script */}
-        <Script
-          id="monetag-global"
-          src="https://quge5.com/88/tag.min.js"
-          strategy="lazyOnload"
-          data-zone="309157"
-          data-cfasync="false"
-        />
+        {/* Monetag Vignette (Zone 12277076) */}
+        <Script id="monetag-vignette" strategy="afterInteractive">
+          {`(function(s){s.dataset.zone='12277076',s.src='https://n6wxm.com/vignette.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`}
+        </Script>
+
+        {/* Monetag In-Page / Multi-tag (Zone 12277074) */}
+        <Script id="monetag-tag" strategy="afterInteractive">
+          {`(function(s){s.dataset.zone='12277074',s.src='https://nap5k.com/tag.min.js'})([document.documentElement, document.body].filter(Boolean).pop().appendChild(document.createElement('script')))`}
+        </Script>
 
         <script
           type="application/ld+json"
