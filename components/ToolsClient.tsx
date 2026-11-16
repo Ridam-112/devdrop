@@ -369,6 +369,11 @@ function ToolsContent() {
             </section>
           )}
 
+          {/* High-Converting Partner Sponsored Offer */}
+          <div className="my-8">
+            <AdvertisementSlot slotId="tools-directory-smartlink" format="smartlink" />
+          </div>
+
           {/* Other/simulation tools */}
           {otherTools.length > 0 && (
             <section>

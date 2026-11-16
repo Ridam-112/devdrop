@@ -395,6 +395,9 @@ export default function ToolDetailPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Top Banner Advertisement Slot */}
+      <AdvertisementSlot slotId={`tool-${tool.slug}-top`} format="horizontal" className="mb-6" />
+
       {/* Primary Application Workspace */}
       <section aria-label="Interactive Tool Workspace" className="w-full mb-8">
         {renderSimulator()}
@@ -556,6 +559,9 @@ export default function ToolDetailPage({ params }: Props) {
           <AdvertisementSlot slotId={`tool-${tool.slug}-sidebar`} format="rectangle" />
         </aside>
       </div>
+
+      {/* High-Impact Partner Sponsored Offer */}
+      <AdvertisementSlot slotId={`tool-${tool.slug}-smartlink`} format="smartlink" className="my-8" />
 
       {/* Related Tools Crawlable Section */}
       {relatedTools.length > 0 && (

@@ -1,6 +1,13 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { ExternalLink, Sparkles } from "lucide-react";
+
+export const ADSTERRA_SMARTLINK = "https://asiafilm.org/4/afb750cc6ce803e2aa45d8e7ee8321b0";
+export const MONETAG_DIRECT_LINK = "https://uplcm.com/4/12244922";
+
+// Active primary direct link for maximum CPM (Adsterra Smartlink)
+export const PRIMARY_DIRECT_LINK = ADSTERRA_SMARTLINK;
 
 // Generic Adsterra Iframe Banner component
 interface AdsterraIframeProps {
@@ -214,6 +221,43 @@ export const AdsterraNativeBanner: React.FC = () => {
   );
 };
 
+// High-Converting Smartlink Card (Adsterra & Monetag Direct Link)
+export const AdsterraSmartlinkCard: React.FC<{ title?: string; subtitle?: string; link?: string }> = ({
+  title = "⚡ Featured Partner Services & Web Boosters",
+  subtitle = "High-speed developer nodes, cloud utilities, and productivity offers curated by our sponsor network.",
+  link = PRIMARY_DIRECT_LINK,
+}) => {
+  return (
+    <a
+      href={link}
+      target="_blank"
+      rel="sponsored nofollow noopener"
+      className="w-full p-4 rounded-xl bg-gradient-to-r from-neutral-900 via-neutral-950 to-neutral-900 border border-neutral-800 hover:border-cyan-500/50 transition-all duration-300 flex items-center justify-between gap-4 group shadow-lg min-h-[72px]"
+    >
+      <div className="flex items-center gap-3">
+        <div className="p-2.5 rounded-lg bg-cyan-500/10 text-cyan-400 group-hover:scale-110 transition-transform">
+          <Sparkles className="w-5 h-5 animate-pulse" />
+        </div>
+        <div>
+          <span className="text-[10px] uppercase font-mono tracking-wider text-amber-400 block mb-0.5 font-bold">
+            Sponsored Offer
+          </span>
+          <h4 className="text-xs sm:text-sm font-mono font-bold text-white group-hover:text-cyan-400 transition-colors">
+            {title}
+          </h4>
+          <p className="text-[11px] text-neutral-400 font-sans mt-0.5 line-clamp-1">
+            {subtitle}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-800 text-cyan-400 text-xs font-mono font-bold group-hover:bg-cyan-500 group-hover:text-black transition-all shrink-0">
+        <span>Visit Partner</span>
+        <ExternalLink className="w-3.5 h-3.5" />
+      </div>
+    </a>
+  );
+};
+
 interface AdvertisementSlotProps {
   slotId?: string;
   format?: "banner" | "rectangle" | "horizontal" | "sidebar" | "mobile" | "native" | "smartlink";
@@ -236,6 +280,7 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
       case "banner":
         return "min-h-[70px]";
       case "smartlink":
+        return "min-h-[76px]";
       case "horizontal":
       case "native":
       default:
@@ -257,7 +302,7 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
       case "mobile":
         return <AdsterraBanner320x50 />;
       case "smartlink":
-        return <AdsterraResponsiveBanner />;
+        return <AdsterraSmartlinkCard />;
       default:
         return <AdsterraResponsiveBanner />;
     }
@@ -272,6 +317,15 @@ export const AdvertisementSlot: React.FC<AdvertisementSlotProps> = ({
         <span className="text-[9px] uppercase font-mono tracking-wider text-neutral-400 px-2 py-0.5 rounded bg-neutral-900 border border-neutral-800">
           Advertisement
         </span>
+        <a
+          href={PRIMARY_DIRECT_LINK}
+          target="_blank"
+          rel="sponsored nofollow noopener"
+          className="text-[9px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 hover:underline"
+        >
+          <span>Sponsored Partner</span>
+          <ExternalLink className="w-2.5 h-2.5" />
+        </a>
       </div>
 
       <div

@@ -607,6 +607,11 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* High-Converting Partner Sponsored Offer */}
+      <div className="max-w-5xl mx-auto px-4 w-full">
+        <AdvertisementSlot slotId="home-smartlink-offer" format="smartlink" />
+      </div>
+
       {/* ========================================================= */}
       {/* 7. FREQUENTLY ASKED QUESTIONS & STRUCTURED DATA          */}
       {/* ========================================================= */}
@@ -729,6 +734,11 @@ export default function HomePage() {
           }}
         />
       </section>
+
+      {/* Bottom Horizontal Leaderboard Advertisement */}
+      <div className="max-w-5xl mx-auto px-4 w-full">
+        <AdvertisementSlot slotId="home-bottom-banner" format="horizontal" />
+      </div>
     </div>
   );
 }
