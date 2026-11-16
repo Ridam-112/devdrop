@@ -118,30 +118,6 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* Adsterra Social Bar - Lazy loaded to eliminate render-blocking */}
-        <Script
-          id="adsterra-social-bar"
-          data-cfasync="false"
-          src="https://bauval.org/14/94783fd09ebe476635f7fe67212b577c"
-          strategy="lazyOnload"
-        />
-        {/* Adsterra Popunder - Lazy loaded to eliminate render-blocking */}
-        <Script
-          id="adsterra-popunder"
-          data-cfasync="false"
-          src="https://abscloud.org/1/9d5697ac767cf97faee97125c54104ff"
-          strategy="lazyOnload"
-        />
-
-        {/* Monetag Global Ad Script */}
-        <Script
-          id="monetag-global"
-          src="https://quge5.com/88/tag.min.js"
-          strategy="lazyOnload"
-          data-zone="309157"
-          data-cfasync="false"
-        />
-
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
