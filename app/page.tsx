@@ -300,6 +300,7 @@ export default function HomePage() {
             </div>
             <div className="mt-4 pt-3 border-t border-[#1b3331] flex items-center justify-between">
               <div className="flex flex-wrap gap-1 text-[10px] font-mono text-slate-400">
+                <span className="px-2 py-0.5 rounded bg-black/40">AI Game Prompts</span>
                 <span className="px-2 py-0.5 rounded bg-black/40">100KB Compress</span>
                 <span className="px-2 py-0.5 rounded bg-black/40">JPG to PDF</span>
               </div>
