@@ -102,7 +102,7 @@ export default function HomePage() {
 
   // Top selected games (60 FPS, user favorites)
   const topSelectedGameSlugs = [
-    "chaos-skies-3d",
+    "fighter-jet-dogfight-3d",
     "fruit-slice-master",
     "minesweeper-logic-puzzle",
     "parking-jam-puzzle",
@@ -577,7 +577,7 @@ export default function HomePage() {
                 Poki &amp; CrazyGames Alternative
               </div>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Enjoy 56+ instant 3D and 2D games like Chaos Skies 3D, Fruit Slice Master, Minesweeper, and Parking Jam. Zero downloads, mobile touch-ready, and 60 FPS hardware acceleration.
+                Enjoy 56+ instant 3D and 2D games like Fighter Jet Dogfight 3D (Chaos Skies), Fruit Slice Master, Minesweeper, and Parking Jam. Zero downloads, mobile touch-ready, and 60 FPS hardware acceleration.
               </p>
             </div>
 

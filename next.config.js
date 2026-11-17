@@ -41,6 +41,11 @@ const nextConfig = {
   async redirects() {
     return [
       {
+        source: '/games/chaos-skies-3d',
+        destination: '/games/fighter-jet-dogfight-3d',
+        permanent: true,
+      },
+      {
         source: '/tools/wifi-hacker',
         destination: '/tools/wifi-hacker-simulator',
         permanent: true,

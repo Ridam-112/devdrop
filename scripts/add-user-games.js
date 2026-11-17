@@ -625,9 +625,9 @@ try {
   process.exit(1);
 }
 
-// Find chaos-skies-3d
-const chaosGame = existingGames.find(g => g.slug === 'chaos-skies-3d');
-const otherExistingGames = existingGames.filter(g => g.slug !== 'chaos-skies-3d');
+// Find fighter-jet-dogfight-3d
+const chaosGame = existingGames.find(g => g.slug === 'fighter-jet-dogfight-3d' || g.slug === 'chaos-skies-3d');
+const otherExistingGames = existingGames.filter(g => g.slug !== 'fighter-jet-dogfight-3d' && g.slug !== 'chaos-skies-3d');
 
 // Construct formatted games objects for the 48 new games
 const formattedNewGames = NEW_GAMES_METADATA.map(meta => ({

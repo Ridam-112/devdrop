@@ -56,7 +56,7 @@ Educational guides and step-by-step tutorials targeting common productivity work
 
 ## Browser Games Catalog (56 Original HTML5 & 3D Games)
 100% free original HTML5, WebGL, and Three.js browser games playable with zero installs:
-- [Chaos Skies 3D](https://devdrop.online/games/chaos-skies-3d): 3D fighter jet combat simulator featuring supersonic dogfights in Three.js WebGL.
+- [Fighter Jet Dogfight 3D](https://devdrop.online/games/fighter-jet-dogfight-3d): 3D fighter jet combat simulator (Chaos Skies) featuring supersonic dogfights in Three.js WebGL.
 - [Fruit Slice Master](https://devdrop.online/games/fruit-slice-master): Tactile arcade fruit-slasher with particle splash physics.
 - [Minesweeper Cyber Logic](https://devdrop.online/games/minesweeper-logic-puzzle): Classic tactical mine deduction puzzle with safe first click.
 - [Parking Jam Puzzle](https://devdrop.online/games/parking-jam-puzzle): 2D car gridlock spatial reasoning puzzle.

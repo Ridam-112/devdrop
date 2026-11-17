@@ -246,16 +246,16 @@ export const ConsoleDashboard: React.FC<ConsoleDashboardProps> = () => {
                   HTML5 &amp; 3D Games
                 </div>
                 <p className="text-[11px] text-slate-300 mt-1 leading-relaxed">
-                  Chaos Skies 3D, Fruit Slice, Minesweeper &amp; 56+ Games
+                  Fighter Jet Dogfight, Fruit Slice, Minesweeper &amp; 56+ Games
                 </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-1 pt-1">
                 <Link
-                  href="/games/chaos-skies-3d"
+                  href="/games/fighter-jet-dogfight-3d"
                   className="text-[10px] font-mono px-2 py-0.5 rounded-md bg-[#09150f] text-emerald-300 border border-emerald-500/30 hover:border-emerald-400 transition-colors"
                 >
-                  Chaos Skies
+                  Fighter Jet 3D
                 </Link>
                 <Link
                   href="/games/fruit-slice-master"

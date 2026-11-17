@@ -419,7 +419,7 @@ export const GUIDES: GuideItem[] = [
         {
           heading: "Explore Free HTML5 Games and Web Utilities on DevDrop",
           body: [
-            "• 56+ Free Browser Games: Play instant 60 FPS games like Fruit Slice Master, Chaos Skies 3D, Minesweeper, and Parking Jam with zero downloads and full mobile touch support on DevDrop (https://www.devdrop.online/games).",
+            "• 56+ Free Browser Games: Play instant 60 FPS games like Fruit Slice Master, Fighter Jet Dogfight 3D (Chaos Skies), Minesweeper, and Parking Jam with zero downloads and full mobile touch support on DevDrop (https://www.devdrop.online/games).",
             "• Client-Side Utilities: Use 100% free developer tools including the Portfolio Builder, Smart Image Compressor, AI Background Remover, and QR Code Generator (https://www.devdrop.online/tools).",
             "• Technical Guides: Learn how modern web utilities, compression algorithms, and client-side engines work under the hood."
           ]

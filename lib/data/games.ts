@@ -38,6 +38,9 @@ export interface OpenSourceGame {
   indexable?: boolean;
   tips?: string[];
   lastmod?: string;
+  alternateName?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 export const GAME_GENRES = [
@@ -56,13 +59,14 @@ export const GAME_GENRES = [
 
 export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
   {
-    "slug": "chaos-skies-3d",
-    "name": "Chaos Skies 3D",
-    "tagline": "3D Fighter Jet Flight Simulator — Sukhoi Su-30MKI, HAL Tejas & High-G Dogfight Combat",
-    "h1": "Play Chaos Skies 3D Online: 3D Fighter Jet Flight Combat Simulator",
+    "slug": "fighter-jet-dogfight-3d",
+    "name": "Fighter Jet Dogfight 3D",
+    "alternateName": "Chaos Skies 3D",
+    "tagline": "Chaos Skies - Free Online 3D Fighter Jet Combat Game",
+    "h1": "Fighter Jet Dogfight 3D",
     "genre": "Action",
-    "description": "Fly modern fighter jets including the Sukhoi Su-30MKI and HAL Tejas in full 3D dogfights. Launch radar-guided missiles, drop heavy bombs, fire thermal flares, and perform high-G barrel rolls directly in your browser.",
-    "longDescription": "Chaos Skies 3D is a premier 3D flight action combat game built with Three.js, hardware-accelerated WebGL, and the Web Audio API. Pilot authentic Indian Air Force inspired combat jets like the Sukhoi Su-30MKI and HAL Tejas Mk1 across expansive 3D theaters: Neon City, Desert Canyon, and Pacific Isles. Features realistic flight physics, heat-seeking missile lock-on systems, defensive flare countermeasures, vertical loops, evasive barrel rolls, sniper zoom scope, and full touch joystick support on mobile phones.",
+    "description": "Play Fighter Jet Dogfight 3D (Chaos Skies), a free online fighter jet game. Fly the Su-30MKI and HAL Tejas in 3D air combat dogfights directly in your browser.",
+    "longDescription": "Experience thrilling air combat in Fighter Jet Dogfight 3D, widely known as Chaos Skies. Take the throttle of frontline military aircraft including the twin-engine Sukhoi Su-30MKI air-superiority jet and the agile HAL Tejas multirole fighter. Engage in heart-pounding dogfight maneuvers, lock on with heat-seeking missiles, and deploy thermal flare countermeasures against hostile anti-air locks. As an authentic 3D jet fighter game online and premier fighter jet game, this action-packed browser game lets you play free with zero setup and no download required. Built with Three.js WebGL graphics, Chaos Skies runs smoothly at 60 FPS across both desktop and mobile devices.",
     "techStack": [
       "Three.js",
       "WebGL",
@@ -73,12 +77,14 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
     ],
     "license": "Free-to-Play Web Edition",
     "githubUrl": "https://github.com/Ridam-112/devdrop",
-    "liveDemoUrl": "https://devdrop.online/games/chaos-skies-3d",
+    "liveDemoUrl": "https://devdrop.online/games/fighter-jet-dogfight-3d",
     "isPlayableDirectly": true,
     "builtInGameType": "iframe",
     "iframeUrl": "/games/chaos-skies-3d.html",
     "badge": "Featured Flight Combat",
     "releaseYear": 2026,
+    "ogImage": "/og/fighter-jet-dogfight-3d.png",
+    "ogImageAlt": "Fighter Jet Dogfight 3D gameplay screenshot - Su-30MKI dogfight",
     "features": [
       "Authentic 3D Fighter Jets: Sukhoi Su-30MKI & HAL Tejas Mk1",
       "Heat-seeking homing missiles with radar lock-on targeting HUD",
@@ -152,33 +158,29 @@ export const OPEN_SOURCE_GAMES: OpenSourceGame[] = [
         "action": "Mobile on-screen controls & steering"
       }
     ],
-    "metaTitle": "Chaos Skies 3D — Free Fighter Jet Flight Game | DevDrop",
-    "metaDescription": "Play Chaos Skies 3D online for free in your browser. Pilot Sukhoi Su-30MKI & HAL Tejas jets in high-octane 3D dogfights with homing missiles, flares, and loops. No download required.",
+    "metaTitle": "Fighter Jet Dogfight 3D: Free Online Jet Game | DevDrop",
+    "metaDescription": "Play Fighter Jet Dogfight 3D (Chaos Skies) free in your browser. Fly Su-30MKI & HAL Tejas, fire homing missiles, dodge with flares. No download, works on mobile.",
     "faqs": [
       {
-        "question": "What fighter jets can I fly in Chaos Skies 3D?",
-        "answer": "You can fly iconic Indian Air Force fighter jets including the twin-engine Sukhoi Su-30MKI air-superiority jet and the agile HAL Tejas Mk1 multirole fighter with customizable armaments and maneuvers."
+        "question": "What fighter jets can I fly in Fighter Jet Dogfight 3D?",
+        "answer": "You can fly authentic frontline combat jets including the twin-engine Sukhoi Su-30MKI air-superiority jet and the agile HAL Tejas Mk1 multirole fighter with customizable armaments and maneuvers."
       },
       {
-        "question": "Can I play Chaos Skies 3D on a mobile phone or tablet?",
-        "answer": "Yes! Chaos Skies 3D has custom on-screen virtual touch joysticks and action buttons. Simply turn your phone to landscape mode and enjoy full 3D aerial dogfights on iOS and Android devices."
+        "question": "Can I play Fighter Jet Dogfight 3D on a mobile phone or tablet?",
+        "answer": "Yes! Fighter Jet Dogfight 3D has custom on-screen virtual touch joysticks and action buttons. Simply turn your phone to landscape mode and enjoy full 3D aerial dogfights on iOS and Android devices."
       },
       {
-        "question": "How do I evade incoming enemy missiles in Chaos Skies 3D?",
+        "question": "How do I evade incoming enemy missiles in Fighter Jet Dogfight 3D?",
         "answer": "When the red 'MISSILE INCOMING' HUD alert flashes and beeps, immediately press C (or the FLARE button on mobile) to launch thermal flares, and perform an evasive barrel roll (press E) or loop (press R) to break the enemy missile lock."
       },
       {
-        "question": "Is Chaos Skies 3D free to play on DevDrop?",
-        "answer": "Yes! Chaos Skies 3D is 100% free to play with no downloads, account sign-ups, or in-app purchases required. Launch and enjoy directly in your web browser."
-      },
-      {
-        "question": "Can I play Chaos Skies 3D on mobile phones and tablets?",
-        "answer": "Absolutely. Chaos Skies 3D features responsive touch controls and fluid 60 FPS graphics optimized for iPhone, iPad, Android smartphones, and desktop computers."
+        "question": "Is Fighter Jet Dogfight 3D free to play on DevDrop?",
+        "answer": "Yes! Fighter Jet Dogfight 3D is 100% free to play with no downloads, account sign-ups, or in-app purchases required. Launch and enjoy directly in your web browser."
       }
     ],
     "indexable": true,
     "author": "DevDrop Studio",
-    "lastmod": "2026-11-14",
+    "lastmod": "2026-11-17",
     "tips": [
       "Use afterburners in short bursts to save fuel while closing distance to bogies.",
       "Deploy thermal flares the moment incoming missile radar alert tones reach maximum pitch.",

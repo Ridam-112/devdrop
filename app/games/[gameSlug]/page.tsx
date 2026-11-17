@@ -85,8 +85,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isIndexable = isGameIndexable(game);
   const canonicalUrl = `${SITE_URL}/games/${game.slug}`;
 
+  // Fix title bug: prevent Next.js layout template from duplicating "| DevDrop"
+  const formattedTitle = game.metaTitle.endsWith(" | DevDrop")
+    ? { absolute: game.metaTitle }
+    : { absolute: `${game.metaTitle} | DevDrop` };
+
+  // Open Graph & Twitter in-game screenshot preview image
+  // TODO: Verify in-game screenshot exists at /public/og/fighter-jet-dogfight-3d.png
+  const ogImageUrl = game.ogImage
+    ? (game.ogImage.startsWith("http") ? game.ogImage : `${SITE_URL}${game.ogImage}`)
+    : `${SITE_URL}/logo.png`;
+  const ogImageAlt = game.ogImageAlt || `${game.name} open source game preview`;
+  const ogImageWidth = game.ogImage ? 1200 : 1024;
+  const ogImageHeight = game.ogImage ? 630 : 1024;
+
   return {
-    title: game.metaTitle,
+    title: formattedTitle,
     description: game.metaDescription,
     alternates: {
       canonical: canonicalUrl,
@@ -120,10 +134,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: "website",
       images: [
         {
-          url: `${SITE_URL}/logo.png`,
-          width: 1024,
-          height: 1024,
-          alt: `${game.name} open source game preview`,
+          url: ogImageUrl,
+          width: ogImageWidth,
+          height: ogImageHeight,
+          alt: ogImageAlt,
         },
       ],
     },
@@ -131,6 +145,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary_large_image",
       title: game.metaTitle,
       description: game.metaDescription,
+      images: [ogImageUrl],
     },
   };
 }
@@ -147,6 +162,9 @@ export default function GameDetailPage({ params }: Props) {
   }
 
   const canonicalUrl = `${SITE_URL}/games/${game.slug}`;
+  const ogImageUrl = game.ogImage
+    ? (game.ogImage.startsWith("http") ? game.ogImage : `${SITE_URL}${game.ogImage}`)
+    : `${SITE_URL}/logo.png`;
   const relatedGames = OPEN_SOURCE_GAMES.filter(
     (g) => g.slug !== game.slug && (g.genre === game.genre || g.isPlayableDirectly)
   ).slice(0, 3);
@@ -182,6 +200,7 @@ export default function GameDetailPage({ params }: Props) {
     "@context": "https://schema.org",
     "@type": "VideoGame",
     name: game.name,
+    alternateName: game.alternateName,
     headline: game.h1,
     description: game.description,
     genre: game.genre,
@@ -190,6 +209,7 @@ export default function GameDetailPage({ params }: Props) {
     operatingSystem: "All (Modern Web Browsers)",
     browserRequirements: "Requires JavaScript. Requires HTML5 Canvas.",
     url: canonicalUrl,
+    image: ogImageUrl,
     offers: {
       "@type": "Offer",
       price: "0",
@@ -271,6 +291,12 @@ export default function GameDetailPage({ params }: Props) {
             <p className="text-xs sm:text-sm font-mono text-cyber-cyan mt-1">
               {game.tagline}
             </p>
+
+            {game.longDescription && (
+              <p className="text-xs sm:text-sm text-slate-300 font-sans mt-3 leading-relaxed max-w-4xl">
+                {game.longDescription}
+              </p>
+            )}
           </div>
         </div>
       </header>
